@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "951849886983",
+    "firebase_url": "https://boardbook-33f26.firebaseio.com",
+    "project_id": "boardbook-33f26",
+    "storage_bucket": "boardbook-33f26.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951849886983:android:f9b0116ae033a3198451a2",
+        "android_client_info": {
+          "package_name": "com.yahyeet.boardbook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951849886983-jvprr8q3nfk1km7dsih0q6llb7jiaq12.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiBTjJi1KzF5J__weq-oteIu3womASo2E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951849886983-jvprr8q3nfk1km7dsih0q6llb7jiaq12.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
