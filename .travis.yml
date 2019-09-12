@@ -38,7 +38,7 @@ script:
   - ./gradlew clean test build
 
 before_script:
-  - cd RES
+  - cd application
 
 before_install:
 - yes | sdkmanager "platforms;android-26"
