@@ -44,3 +44,5 @@ before_install:
 - yes | sdkmanager "platforms;android-26"
 - echo yes | sdkmanager "build-tools;27.0.1"
 
+notifications:
+    email: false
