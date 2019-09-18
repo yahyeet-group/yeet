@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.entity;
+package com.yahyeet.boardbook.model.entity;
 
 public class Match extends Entity {
     public Match(String id) {
