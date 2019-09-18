@@ -7,5 +7,5 @@ public interface IAuthService {
 
     void logOut(User user);
 
-    void register(String email, String password, String name);
+    void register(String email, String password, String name) throws Exception;
 }
