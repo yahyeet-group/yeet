@@ -1,7 +1,7 @@
-package com.yahyeet.boardbook.firebase;
+package com.yahyeet.boardbook.model.firebase;
 
-import com.yahyeet.boardbook.entity.Match;
-import com.yahyeet.boardbook.repository.IMatchRepository;
+import com.yahyeet.boardbook.model.entity.Match;
+import com.yahyeet.boardbook.model.repository.IMatchRepository;
 
 public class FirebaseMatchRepository implements IMatchRepository {
     @Override

@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.entity;
+package com.yahyeet.boardbook.model.entity;
 
 public class User extends Entity {
     private String name;

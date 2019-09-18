@@ -1,7 +1,7 @@
-package com.yahyeet.boardbook.firebase;
+package com.yahyeet.boardbook.model.firebase;
 
-import com.yahyeet.boardbook.entity.Game;
-import com.yahyeet.boardbook.repository.IGameRepository;
+import com.yahyeet.boardbook.model.entity.Game;
+import com.yahyeet.boardbook.model.repository.IGameRepository;
 
 public class FirebaseGameRepository implements IGameRepository {
     @Override
