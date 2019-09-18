@@ -1,6 +1,7 @@
-package com.yahyeet.boardbook.authentication;
+package com.yahyeet.boardbook.model.firebase;
 
-import com.yahyeet.boardbook.entity.User;
+import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.model.service.IAuthService;
 
 public class FirebaseAuthService implements IAuthService {
 

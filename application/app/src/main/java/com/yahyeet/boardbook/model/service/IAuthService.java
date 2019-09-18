@@ -1,6 +1,6 @@
-package com.yahyeet.boardbook.authentication;
+package com.yahyeet.boardbook.model.service;
 
-import com.yahyeet.boardbook.entity.User;
+import com.yahyeet.boardbook.model.entity.User;
 
 public interface IAuthService {
     User logIn(String email, String password);
