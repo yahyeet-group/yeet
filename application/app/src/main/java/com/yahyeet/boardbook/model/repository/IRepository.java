@@ -1,12 +1,15 @@
 package com.yahyeet.boardbook.model.repository;
 
+import java.util.List;
+
 public interface IRepository<T> {
-    void Add(T entity);
+    void create(T entity, RepositoryResultListener<T> listener);
 
-    void Find(String id);
+    void find(String id, RepositoryResultListener<T> listener);
 
-    void Remove(T entity);
+    void update(T entity, RepositoryResultListener<T> listener);
 
-    void Update(T entity);
+    void remove(T entity, RepositoryResultListener<Void> listener);
 
+    void all(RepositoryResultListener<List<T>> listener);
 }

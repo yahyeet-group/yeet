@@ -2,25 +2,33 @@ package com.yahyeet.boardbook.model.firebase;
 
 import com.yahyeet.boardbook.model.entity.ChatGroup;
 import com.yahyeet.boardbook.model.repository.IChatGroupRepository;
+import com.yahyeet.boardbook.model.repository.RepositoryResultListener;
+
+import java.util.List;
 
 public class FirebaseChatGroupRepository implements IChatGroupRepository {
     @Override
-    public void Add(ChatGroup group) {
+    public void create(ChatGroup group, RepositoryResultListener<ChatGroup> listener) {
 
     }
 
     @Override
-    public void Find(String id) {
+    public void find(String id, RepositoryResultListener<ChatGroup> listener) {
 
     }
 
     @Override
-    public void Remove(ChatGroup group) {
+    public void update(ChatGroup group, RepositoryResultListener<ChatGroup> listener) {
 
     }
 
     @Override
-    public void Update(ChatGroup group) {
+    public void remove(ChatGroup group, RepositoryResultListener<Void> listener) {
+
+    }
+
+    @Override
+    public void all(RepositoryResultListener<List<ChatGroup>> listener) {
 
     }
 }

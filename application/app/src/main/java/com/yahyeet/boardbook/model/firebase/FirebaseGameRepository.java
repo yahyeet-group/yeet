@@ -2,25 +2,33 @@ package com.yahyeet.boardbook.model.firebase;
 
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.repository.IGameRepository;
+import com.yahyeet.boardbook.model.repository.RepositoryResultListener;
+
+import java.util.List;
 
 public class FirebaseGameRepository implements IGameRepository {
     @Override
-    public void Add(Game game) {
+    public void create(Game game, RepositoryResultListener<Game> listener) {
 
     }
 
     @Override
-    public void Find(String id) {
+    public void find(String id, RepositoryResultListener<Game> listener) {
 
     }
 
     @Override
-    public void Remove(Game game) {
+    public void update(Game game, RepositoryResultListener<Game> listener) {
 
     }
 
     @Override
-    public void Update(Game game) {
+    public void remove(Game game, RepositoryResultListener<Void> listener) {
+
+    }
+
+    @Override
+    public void all(RepositoryResultListener<List<Game>> listener) {
 
     }
 }
