@@ -1,7 +1,7 @@
-package com.yahyeet.boardbook.firebase;
+package com.yahyeet.boardbook.model.firebase;
 
-import com.yahyeet.boardbook.entity.User;
-import com.yahyeet.boardbook.repository.IUserRepository;
+import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.model.repository.IUserRepository;
 
 public class FirebaseUserRepository implements IUserRepository {
     @Override

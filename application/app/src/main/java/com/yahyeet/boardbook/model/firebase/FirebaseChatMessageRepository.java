@@ -1,7 +1,7 @@
-package com.yahyeet.boardbook.firebase;
+package com.yahyeet.boardbook.model.firebase;
 
-import com.yahyeet.boardbook.entity.ChatMessage;
-import com.yahyeet.boardbook.repository.IChatMessageRepository;
+import com.yahyeet.boardbook.model.entity.ChatMessage;
+import com.yahyeet.boardbook.model.repository.IChatMessageRepository;
 
 public class FirebaseChatMessageRepository implements IChatMessageRepository {
     @Override

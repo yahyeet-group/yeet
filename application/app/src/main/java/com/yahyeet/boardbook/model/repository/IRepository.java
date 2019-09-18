@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.repository;
+package com.yahyeet.boardbook.model.repository;
 
 public interface IRepository<T> {
     void Add(T entity);
