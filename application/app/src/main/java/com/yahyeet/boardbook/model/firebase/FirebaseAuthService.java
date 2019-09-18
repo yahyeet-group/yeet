@@ -9,6 +9,7 @@ import com.yahyeet.boardbook.model.repository.IUserRepository;
 import com.yahyeet.boardbook.model.service.IAuthService;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class FirebaseAuthService implements IAuthService {
 
@@ -20,14 +21,35 @@ public class FirebaseAuthService implements IAuthService {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    public User logIn(String email, String password){
-       return null;
+    @Override
+    public User logIn(String email, String password) throws Exception {
+        AtomicReference<User> user = new AtomicReference<>();
+        mAuth.signInWithEmailAndPassword(email, password)
+               .addOnCompleteListener(task -> {
+                   if(task.isSuccessful()){
+                       Log.d(TAG, "signInWithEmail:success");
+                       FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                       assert firebaseUser != null;
+                       user.set(getSignedInUser(firebaseUser.getUid()));
+                   }
+                   else {
+                       Log.w(TAG, "signInWithEmail:failure");
+                   }
+               });
+
+        if(user.get() == null){
+            throw new Exception();
+        } else {
+            return user.get();
+        }
     }
 
+    @Override
     public void logOut(){
         mAuth.signOut();
     }
 
+    @Override
     public void register(String email, String password, String name) throws Exception {
         AtomicBoolean success = new AtomicBoolean(false);
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -51,5 +73,12 @@ public class FirebaseAuthService implements IAuthService {
         //TODO: Make this use a RepositoryContainer or some other solution instead of creating a new reference!
         IUserRepository userRepository = new FirebaseUserRepository();
         userRepository.Add(user);
+    }
+
+    private User getSignedInUser(String uid) {
+        //TODO: Make this use a RepositoryContainer or some other solution instead of creating a new reference!
+        IUserRepository userRepository = new FirebaseUserRepository();
+        User user = userRepository.Find(uid);
+        return user;
     }
 }
