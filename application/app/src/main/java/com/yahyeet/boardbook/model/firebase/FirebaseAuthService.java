@@ -24,8 +24,8 @@ public class FirebaseAuthService implements IAuthService {
        return null;
     }
 
-    public void logOut(User user){
-
+    public void logOut(){
+        mAuth.signOut();
     }
 
     public void register(String email, String password, String name) throws Exception {

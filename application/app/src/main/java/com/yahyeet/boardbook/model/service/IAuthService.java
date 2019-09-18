@@ -5,7 +5,7 @@ import com.yahyeet.boardbook.model.entity.User;
 public interface IAuthService {
     User logIn(String email, String password);
 
-    void logOut(User user);
+    void logOut();
 
     void register(String email, String password, String name) throws Exception;
 }
