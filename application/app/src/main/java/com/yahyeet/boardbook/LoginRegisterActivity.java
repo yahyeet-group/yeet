@@ -52,16 +52,12 @@ public class LoginRegisterActivity extends AppCompatActivity {
     }
 
     public void ShowRegisterPage(View view){
-
-
         Button loginButton = findViewById(R.id.loginButton);
         Button switchButton = findViewById(R.id.newAccountButton);
 
         // TODO write method in a cleaner form
 
         if(!registerPageBL){
-
-
             loginButton.setText("Register Account");
             switchButton.setText("Return");
         }
@@ -70,6 +66,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
             loginButton.setText("Log In");
             switchButton.setText("Make a New Account");
         }
+
         registerPageBL = !registerPageBL;
     }
 

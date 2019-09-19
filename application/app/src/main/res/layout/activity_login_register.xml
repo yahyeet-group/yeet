@@ -6,12 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".LoginRegisterActivity">
 
+
     <TextView
         android:id="@+id/emailPrompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        android:text="Email:"
+
+        android:text="@string/email"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/emailInput"
         app:layout_constraintStart_toStartOf="@+id/emailInput" />
@@ -21,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="Password:"
+        android:text="@string/password"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/passInput"
         app:layout_constraintStart_toStartOf="@+id/passInput" />
@@ -31,6 +33,7 @@
         android:layout_width="283dp"
         android:layout_height="56dp"
         android:ems="10"
+        android:hint="@string/passHint"
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/emailInput"
@@ -43,6 +46,7 @@
         android:layout_height="59dp"
         android:layout_marginStart="64dp"
         android:ems="10"
+        android:hint="@string/emailHint"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +60,7 @@
         android:layout_marginStart="56dp"
         android:layout_marginTop="88dp"
         android:onClick="LoginOrCreateAccount"
-        android:text="Log In"
+        android:text="@string/login"
         app:layout_constraintStart_toStartOf="@+id/passInput"
         app:layout_constraintTop_toBottomOf="@+id/passInput" />
 
@@ -66,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="116dp"
         android:onClick="ShowRegisterPage"
-        android:text="Make a New Account"
+        android:text="@string/newAcc"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
