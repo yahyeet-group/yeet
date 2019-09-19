@@ -11,7 +11,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        compileOptions{
+        compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8
             targetCompatibility JavaVersion.VERSION_1_8
         }
@@ -25,7 +25,6 @@ android {
     }
 
 }
-
 
 
 dependencies {
@@ -43,5 +42,5 @@ dependencies {
 }
 
 
-
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
+

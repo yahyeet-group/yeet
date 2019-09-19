@@ -11,21 +11,17 @@ import android.widget.EditText;
 
 import com.yahyeet.boardbook.model.entity.User;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginRegisterActivity extends AppCompatActivity {
 
 
-    Boolean makeNewAccount;
+    Boolean registerPageBL = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-    }
+        setContentView(R.layout.activity_login_register);
 
-    public void RegisterNewAccount(View view){
-        // TODO To be continued
     }
-
 
     public String[] FetchLoginFields(){
         EditText emailInput = findViewById(R.id.emailInput);
@@ -39,20 +35,42 @@ public class LoginActivity extends AppCompatActivity {
     public void LoginOrCreateAccount(View view){
 
         String[] temp = FetchLoginFields();
-        if(makeNewAccount){
+        if(registerPageBL){
             // TODO Make new account from fields
+            Log.v("test1", "Register account");
         }
         else {
-            User testr = new User("Somenumber", temp[0], temp[1]);
-            if(testr.getId().equals("Somenumber")){
-                GoToHome();
-            }
+            // TODO Log in as user from temp, send to HomeActivity?
+            Log.v("test2", "Not Register account");
+            GoToHome();
         }
     }
 
     void GoToHome(){
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+    }
+
+    public void ShowRegisterPage(View view){
+
+
+        Button loginButton = findViewById(R.id.loginButton);
+        Button switchButton = findViewById(R.id.newAccountButton);
+
+        // TODO write method in a cleaner form
+
+        if(!registerPageBL){
+
+
+            loginButton.setText("Register Account");
+            switchButton.setText("Return");
+        }
+        else{
+
+            loginButton.setText("Log In");
+            switchButton.setText("Make a New Account");
+        }
+        registerPageBL = !registerPageBL;
     }
 
 }
