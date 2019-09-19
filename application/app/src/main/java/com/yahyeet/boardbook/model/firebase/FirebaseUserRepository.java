@@ -1,17 +1,14 @@
 package com.yahyeet.boardbook.model.firebase;
 
-import android.app.ExpandableListActivity;
-import android.util.Log;
-
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.repository.IUserRepository;
-import com.yahyeet.boardbook.model.repository.RepositoryResultListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +27,8 @@ public class FirebaseUserRepository implements IUserRepository {
         this.firestore = firestore;
     }
 
-    public CompletableFuture<User> createWithPromise(User user) {
+    @Override
+    public CompletableFuture<User> create(User user) {
         return CompletableFuture.supplyAsync(() -> {
             Map<String, Object> userInput = new HashMap<>();
             userInput.put("email", user.getEmail());
@@ -41,19 +39,22 @@ public class FirebaseUserRepository implements IUserRepository {
 
             try {
                 DocumentReference documentReference = Tasks.await(task);
+
                 return documentReference.getId();
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
-        }).thenCompose(this::findWithPromise);
+        }).thenCompose(this::find);
     }
 
-    public CompletableFuture<User> findWithPromise(String id) {
+    @Override
+    public CompletableFuture<User> find(String id) {
         return CompletableFuture.supplyAsync(() -> {
             Task<DocumentSnapshot> task = firestore.collection(COLLECTION_NAME).document(id).get();
 
             try {
                 DocumentSnapshot document = Tasks.await(task);
+
                 if (document.exists()) {
                     User user = document.toObject(User.class);
                     user.setId(document.getId());
@@ -68,59 +69,58 @@ public class FirebaseUserRepository implements IUserRepository {
     }
 
     @Override
-    public void create(User user, RepositoryResultListener<User> listener) {
-        Map<String, Object> userInput = new HashMap<>();
-        userInput.put("email", user.getEmail());
-        userInput.put("name", user.getName());
+    public CompletableFuture<User> update(User user) {
+        return CompletableFuture.supplyAsync(() -> {
+            Map<String, Object> userInput = new HashMap<>();
+            userInput.put("email", user.getEmail());
+            userInput.put("name", user.getName());
 
+            Task<Void> task = firestore.collection(COLLECTION_NAME).document(user.getId()).update(userInput);
 
-        firestore.collection(COLLECTION_NAME)
-                .add(userInput).addOnSuccessListener(documentReference ->
-                this.find(documentReference.getId(), listener)
-        ).addOnFailureListener(listener::onError);
-    }
+            try {
+                Tasks.await(task);
 
-    @Override
-    public void find(String id, RepositoryResultListener<User> listener) {
-        firestore.collection(COLLECTION_NAME).document(id).get().addOnSuccessListener((documentSnapshot) -> {
-            if (documentSnapshot.exists()) {
-                User user = documentSnapshot.toObject(User.class);
-                user.setId(documentSnapshot.getId());
-                listener.onSuccess(user);
-            } else {
-                listener.onError(new Exception("User not found"));
+                return user.getId();
+            } catch (Exception e) {
+                throw new CompletionException(e);
             }
-        }).addOnFailureListener(listener::onError);
+        }).thenCompose(this::find);
     }
 
     @Override
-    public void update(User user, RepositoryResultListener<User> listener) {
-        Map<String, Object> userInput = new HashMap<>();
-        userInput.put("email", user.getEmail());
-        userInput.put("name", user.getName());
+    public CompletableFuture<Void> remove(User user) {
+        return CompletableFuture.supplyAsync(() -> {
+            Task<Void> task = firestore.collection(COLLECTION_NAME).document(user.getId()).delete();
 
-        firestore.collection(COLLECTION_NAME).document(user.getId()).update(userInput).addOnSuccessListener((aVoid) ->
-                this.find(user.getId(), listener)
-        ).addOnFailureListener(listener::onError);
-    }
+            try {
+                Tasks.await(task);
 
-    @Override
-    public void remove(User user, RepositoryResultListener<Void> listener) {
-        firestore.collection(COLLECTION_NAME).document(user.getId()).delete().addOnSuccessListener((aVoid) ->
-                listener.onSuccess(null)
-        ).addOnFailureListener(listener::onError);
-    }
-
-    @Override
-    public void all(RepositoryResultListener<List<User>> listener) {
-        firestore.collection(COLLECTION_NAME).get().addOnSuccessListener((documentSnapshots) -> {
-            List<User> users = new ArrayList<>();
-            for (QueryDocumentSnapshot document : documentSnapshots) {
-                User user = document.toObject(User.class);
-                user.setId(document.getId());
-                users.add(user);
+                return null;
+            } catch (Exception e) {
+                throw new CompletionException(e);
             }
-            listener.onSuccess(users);
-        }).addOnFailureListener(listener::onError);
+        });
+    }
+
+    @Override
+    public CompletableFuture<List<User>> all() {
+        return CompletableFuture.supplyAsync(() -> {
+            Task<QuerySnapshot> task = firestore.collection(COLLECTION_NAME).get();
+
+            try {
+                QuerySnapshot querySnapshot = Tasks.await(task);
+
+                List<User> users = new ArrayList<>();
+                for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
+                    User user = documentSnapshot.toObject(User.class);
+                    user.setId(documentSnapshot.getId());
+                    users.add(user);
+                }
+
+                return users;
+            } catch (Exception e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 }

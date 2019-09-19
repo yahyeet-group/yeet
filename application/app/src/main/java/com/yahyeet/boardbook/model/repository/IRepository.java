@@ -1,15 +1,18 @@
 package com.yahyeet.boardbook.model.repository;
 
+import com.yahyeet.boardbook.model.entity.Entity;
+
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
-public interface IRepository<T> {
-    void create(T entity, RepositoryResultListener<T> listener);
+public interface IRepository<T extends Entity> {
+    CompletableFuture<T> create(T entity);
 
-    void find(String id, RepositoryResultListener<T> listener);
+    CompletableFuture<T> find(String id);
 
-    void update(T entity, RepositoryResultListener<T> listener);
+    CompletableFuture<T> update(T entity);
 
-    void remove(T entity, RepositoryResultListener<Void> listener);
+    CompletableFuture<Void> remove(T entity);
 
-    void all(RepositoryResultListener<List<T>> listener);
+    CompletableFuture<List<T>> all();
 }

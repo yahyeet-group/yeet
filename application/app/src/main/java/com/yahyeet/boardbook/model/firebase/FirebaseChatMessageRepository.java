@@ -2,33 +2,33 @@ package com.yahyeet.boardbook.model.firebase;
 
 import com.yahyeet.boardbook.model.entity.ChatMessage;
 import com.yahyeet.boardbook.model.repository.IChatMessageRepository;
-import com.yahyeet.boardbook.model.repository.RepositoryResultListener;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class FirebaseChatMessageRepository implements IChatMessageRepository {
     @Override
-    public void create(ChatMessage message, RepositoryResultListener<ChatMessage> listener) {
-
+    public CompletableFuture<ChatMessage> create(ChatMessage entity) {
+        return null;
     }
 
     @Override
-    public void find(String id, RepositoryResultListener<ChatMessage> listener) {
-
+    public CompletableFuture<ChatMessage> find(String id) {
+        return null;
     }
 
     @Override
-    public void update(ChatMessage message, RepositoryResultListener<ChatMessage> listener) {
-
+    public CompletableFuture<ChatMessage> update(ChatMessage entity) {
+        return null;
     }
 
     @Override
-    public void remove(ChatMessage message, RepositoryResultListener<Void> listener) {
-
+    public CompletableFuture<Void> remove(ChatMessage entity) {
+        return null;
     }
 
     @Override
-    public void all(RepositoryResultListener<List<ChatMessage>> listener) {
-
+    public CompletableFuture<List<ChatMessage>> all() {
+        return null;
     }
 }

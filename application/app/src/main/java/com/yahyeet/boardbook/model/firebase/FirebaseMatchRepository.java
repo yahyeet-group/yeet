@@ -2,29 +2,33 @@ package com.yahyeet.boardbook.model.firebase;
 
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.repository.IMatchRepository;
-import com.yahyeet.boardbook.model.repository.RepositoryResultListener;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class FirebaseMatchRepository implements IMatchRepository {
     @Override
-    public void create(Match match, RepositoryResultListener<Match> listener) {
+    public CompletableFuture<Match> create(Match entity) {
+        return null;
     }
 
     @Override
-    public void find(String id, RepositoryResultListener<Match> listener) {
+    public CompletableFuture<Match> find(String id) {
+        return null;
     }
 
     @Override
-    public void update(Match match, RepositoryResultListener<Match> listener) {
+    public CompletableFuture<Match> update(Match entity) {
+        return null;
     }
 
     @Override
-    public void remove(Match match, RepositoryResultListener<Void> listener) {
+    public CompletableFuture<Void> remove(Match entity) {
+        return null;
     }
 
     @Override
-    public void all(RepositoryResultListener<List<Match>> listener) {
-
+    public CompletableFuture<List<Match>> all() {
+        return null;
     }
 }

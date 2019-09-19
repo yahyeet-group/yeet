@@ -2,33 +2,33 @@ package com.yahyeet.boardbook.model.firebase;
 
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.repository.IGameRepository;
-import com.yahyeet.boardbook.model.repository.RepositoryResultListener;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class FirebaseGameRepository implements IGameRepository {
     @Override
-    public void create(Game game, RepositoryResultListener<Game> listener) {
-
+    public CompletableFuture<Game> create(Game entity) {
+        return null;
     }
 
     @Override
-    public void find(String id, RepositoryResultListener<Game> listener) {
-
+    public CompletableFuture<Game> find(String id) {
+        return null;
     }
 
     @Override
-    public void update(Game game, RepositoryResultListener<Game> listener) {
-
+    public CompletableFuture<Game> update(Game entity) {
+        return null;
     }
 
     @Override
-    public void remove(Game game, RepositoryResultListener<Void> listener) {
-
+    public CompletableFuture<Void> remove(Game entity) {
+        return null;
     }
 
     @Override
-    public void all(RepositoryResultListener<List<Game>> listener) {
-
+    public CompletableFuture<List<Game>> all() {
+        return null;
     }
 }
