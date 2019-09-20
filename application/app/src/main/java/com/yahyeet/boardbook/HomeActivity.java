@@ -15,8 +15,12 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
     }
 
-    public void switchToLogin(View view){
-
+    /**
+     * This method when called starts a new login activity
+     * @param view is the visual object (ex a button) the method is bound to (I think)
+     */
+    public void ChangeToLogin(View view){
+        // TODO: Change so that old activities are retained and not created anew
         Intent intent = new Intent(this, LoginRegisterActivity.class);
         startActivity(intent);
 
