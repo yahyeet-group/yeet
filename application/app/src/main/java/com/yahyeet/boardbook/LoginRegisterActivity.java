@@ -58,8 +58,9 @@ public class LoginRegisterActivity extends AppCompatActivity {
      */
     void ChangeToHome(){
         // TODO: Change so that old activities are retained and not created anew
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(this, HomeActivity.class);
+        //startActivity(intent);
+        finish();
     }
 
     /**
