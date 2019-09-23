@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook;
+package com.yahyeet.boardbook.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,18 +6,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.model.firebase.FirebaseAuthService;
-import com.yahyeet.boardbook.model.service.IAuthService;
+import com.yahyeet.boardbook.model.handler.AuthHandler;
 
 public class HomeActivity extends AppCompatActivity {
 
+    // Authhandler to be replaced by boardbook facade
+    AuthHandler auth = new AuthHandler(new FirebaseAuthService());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        IAuthService auth = new FirebaseAuthService();
-        auth.signup("sasdas@gmail.com", "Apa123", "C2arl");
+
     }
 
     /**
@@ -26,7 +28,7 @@ public class HomeActivity extends AppCompatActivity {
      */
     public void ChangeToLogin(View view){
         // TODO: Change so that old activities are retained and not created anew
-        Intent intent = new Intent(this, LoginRegisterActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
 
     }
