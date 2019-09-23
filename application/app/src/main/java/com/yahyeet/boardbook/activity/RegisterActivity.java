@@ -28,7 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
      */
     public String[] FetchRegisterFields(){
         EditText emailInput = findViewById(R.id.emailRegisterInput);
-        EditText passInput = findViewById(R.id.passRegisterImput);
+        EditText passInput = findViewById(R.id.passRegisterInput);
         EditText userInput = findViewById(R.id.usernameRegisterInput);
 
         // TODO Send information in a better way :S

@@ -10,18 +10,17 @@
         android:id="@+id/registerButton"
         android:layout_width="174dp"
         android:layout_height="82dp"
-        android:layout_marginStart="56dp"
+        android:layout_marginStart="52dp"
         android:layout_marginBottom="64dp"
         android:onClick="RegisterAccount"
         android:text="@string/newAcc"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/emailRegisterInput" />
+        app:layout_constraintStart_toStartOf="@+id/passRegisterInput" />
 
     <EditText
-        android:id="@+id/passRegisterImput"
+        android:id="@+id/passRegisterInput"
         android:layout_width="283dp"
         android:layout_height="56dp"
-        android:layout_marginStart="4dp"
         android:layout_marginTop="64dp"
         android:ems="10"
         android:hint="@string/passHint"
@@ -36,8 +35,8 @@
         android:layout_marginBottom="16dp"
         android:text="@string/password"
         android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/passRegisterImput"
-        app:layout_constraintStart_toStartOf="@+id/passRegisterImput" />
+        app:layout_constraintBottom_toTopOf="@+id/passRegisterInput"
+        app:layout_constraintStart_toStartOf="@+id/passRegisterInput" />
 
     <TextView
         android:id="@+id/usernameRegisterPrompt"
@@ -53,13 +52,12 @@
         android:id="@+id/emailRegisterInput"
         android:layout_width="284dp"
         android:layout_height="59dp"
-        android:layout_marginStart="60dp"
         android:layout_marginTop="64dp"
         android:ems="10"
         android:hint="@string/emailHint"
         android:inputType="textEmailAddress"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/usernameRegisterInput"
+        app:layout_constraintTop_toBottomOf="@+id/usernameRegisterInput" />
 
     <TextView
         android:id="@+id/emailRegisterPrompt"
@@ -76,10 +74,11 @@
         android:id="@+id/usernameRegisterInput"
         android:layout_width="285dp"
         android:layout_height="54dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="124dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="@string/username"
-        app:layout_constraintStart_toStartOf="@+id/passRegisterImput"
-        app:layout_constraintTop_toBottomOf="@+id/passRegisterImput" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
