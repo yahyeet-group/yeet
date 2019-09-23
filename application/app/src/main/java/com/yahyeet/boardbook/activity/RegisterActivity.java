@@ -22,6 +22,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Method reads info in email and password fields
+     * @return a String[] in the form of {email, password}.
+     */
     public String[] FetchRegisterFields(){
         EditText emailInput = findViewById(R.id.emailRegisterInput);
         EditText passInput = findViewById(R.id.passRegisterImput);
@@ -32,11 +36,16 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *  Method makes a new account if the "Make a New Account" button has been tapped
+     * @param view is the visual object (ex a button) the method is bound to
+     */
     public void RegisterAccount(View view){
 
         String[] temp = FetchRegisterFields();
         try{
-            auth.signup(temp[0], temp[1], temp[2]);
+            finish();
+            //auth.signup(temp[0], temp[1], temp[2]);
         }
         catch (Exception e){
 

@@ -2,6 +2,7 @@ package com.yahyeet.boardbook.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -37,14 +38,14 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Method (will) logs in with the info in email/password inputs if such a account exists.
-     * Alternativly, the method makes a new account if the "Make a New Account" button has been tapped
      * @param view is the visual object (ex a button) the method is bound to (I think)
      */
     public void LoginAccount(View view){
 
         String[] temp = FetchLoginFields();
         try{
-            auth.login(temp[0], temp[1]);
+            //auth.login(temp[0], temp[1]);
+            finish();
         }
         catch (Exception e){
 
@@ -54,18 +55,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Method starts a new home activity.
-     */
-    void BackToHome(){
-        finish();
-    }
-
-    /**
-     * Changes the page details between making a new account or logging in.
+     * Starts a new activity of registry page and finishes this one.
      * @param view is the visual object (ex a button) the method is bound to (I think)
      */
     public void ShowRegisterPage(View view){
-
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

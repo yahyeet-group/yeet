@@ -10,8 +10,9 @@ public class FirebaseChatGroupRepository implements IChatGroupRepository {
     }
 
     @Override
-    public void Find(String id) {
-
+    public ChatGroup Find(String id) {
+        // Changed to be able to run code, was return void
+        return null;
     }
 
     @Override

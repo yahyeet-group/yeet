@@ -10,8 +10,9 @@ public class FirebaseMatchRepository implements IMatchRepository {
     }
 
     @Override
-    public void Find(String id) {
-
+    public Match Find(String id) {
+        // Changed to be able to run code, was return void
+        return null;
     }
 
     @Override

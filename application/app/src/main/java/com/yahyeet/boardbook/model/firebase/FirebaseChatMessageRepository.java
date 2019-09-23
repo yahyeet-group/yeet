@@ -10,8 +10,9 @@ public class FirebaseChatMessageRepository implements IChatMessageRepository {
     }
 
     @Override
-    public void Find(String id) {
-
+    public ChatMessage Find(String id) {
+        // Changed to be able to run code, was return void
+        return null;
     }
 
     @Override
