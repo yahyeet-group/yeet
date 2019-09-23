@@ -22,7 +22,7 @@ public class FirebaseAuthService implements IAuthService {
     }
 
     @Override
-    public User logIn(String email, String password) throws Exception {
+    public User login(String email, String password) throws Exception {
         AtomicReference<User> user = new AtomicReference<>();
         mAuth.signInWithEmailAndPassword(email, password)
                .addOnCompleteListener(task -> {
@@ -45,12 +45,12 @@ public class FirebaseAuthService implements IAuthService {
     }
 
     @Override
-    public void logOut(){
+    public void logout(){
         mAuth.signOut();
     }
 
     @Override
-    public void register(String email, String password, String name) throws Exception {
+    public void signup(String email, String password, String name) throws Exception {
         AtomicBoolean success = new AtomicBoolean(false);
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {

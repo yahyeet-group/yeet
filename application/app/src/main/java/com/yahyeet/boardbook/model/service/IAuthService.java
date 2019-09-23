@@ -3,9 +3,9 @@ package com.yahyeet.boardbook.model.service;
 import com.yahyeet.boardbook.model.entity.User;
 
 public interface IAuthService {
-    User logIn(String email, String password) throws Exception;
+    User login(String email, String password) throws Exception;
 
-    void logOut();
+    void logout();
 
-    void register(String email, String password, String name) throws Exception;
+    void signup(String email, String password, String name) throws Exception;
 }

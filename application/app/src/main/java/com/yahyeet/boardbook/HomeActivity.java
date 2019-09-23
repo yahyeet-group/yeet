@@ -17,7 +17,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         IAuthService auth = new FirebaseAuthService();
-        auth.register("sasdas@gmail.com", "Apa123", "C2arl");
+        auth.signup("sasdas@gmail.com", "Apa123", "C2arl");
     }
 
     /**
