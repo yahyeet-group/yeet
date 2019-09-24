@@ -11,6 +11,8 @@ import com.yahyeet.boardbook.model.firebase.FirebaseUserRepository;
 
 public class HomeActivity extends AppCompatActivity {
 
+    public final String yeet = "Yah-Yeet";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
