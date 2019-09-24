@@ -30,12 +30,8 @@ public class FirebaseUserRepository implements IUserRepository {
     @Override
     public CompletableFuture<User> create(User user) {
         return CompletableFuture.supplyAsync(() -> {
-            Map<String, Object> userInput = new HashMap<>();
-            userInput.put("email", user.getEmail());
-            userInput.put("name", user.getName());
-
             Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
-                    .add(userInput);
+                    .add(userToMap(user));
 
             try {
                 DocumentReference documentReference = Tasks.await(task);
