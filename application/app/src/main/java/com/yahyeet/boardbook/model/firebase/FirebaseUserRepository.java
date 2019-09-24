@@ -56,9 +56,7 @@ public class FirebaseUserRepository implements IUserRepository {
                 DocumentSnapshot document = Tasks.await(task);
 
                 if (document.exists()) {
-                    User user = document.toObject(User.class);
-                    user.setId(document.getId());
-                    return user;
+                    return documentToUser(document);
                 }
 
                 throw new CompletionException(new Exception("User not found"));
@@ -71,11 +69,9 @@ public class FirebaseUserRepository implements IUserRepository {
     @Override
     public CompletableFuture<User> update(User user) {
         return CompletableFuture.supplyAsync(() -> {
-            Map<String, Object> userInput = new HashMap<>();
-            userInput.put("email", user.getEmail());
-            userInput.put("name", user.getName());
-
-            Task<Void> task = firestore.collection(COLLECTION_NAME).document(user.getId()).update(userInput);
+            Task<Void> task = firestore.collection(COLLECTION_NAME)
+                    .document(user.getId())
+                    .update(userToMap(user));
 
             try {
                 Tasks.await(task);
@@ -112,9 +108,7 @@ public class FirebaseUserRepository implements IUserRepository {
 
                 List<User> users = new ArrayList<>();
                 for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
-                    User user = documentSnapshot.toObject(User.class);
-                    user.setId(documentSnapshot.getId());
-                    users.add(user);
+                    users.add(documentToUser(documentSnapshot));
                 }
 
                 return users;
@@ -122,5 +116,30 @@ public class FirebaseUserRepository implements IUserRepository {
                 throw new CompletionException(e);
             }
         });
+    }
+
+    private static Map<String, Object> userToMap(User user) {
+        Map<String, Object> userMap = new HashMap<>();
+
+        userMap.put("email", user.getEmail());
+        userMap.put("name", user.getName());
+
+        return userMap;
+    }
+
+    private static User documentToUser(DocumentSnapshot document) {
+        User user = new User();
+
+        user.setId(document.getId());
+
+        if (document.contains("email")) {
+            user.setEmail(document.getString("email"));
+        }
+
+        if (document.contains("name")) {
+            user.setName(document.getString("name"));
+        }
+
+        return user;
     }
 }
