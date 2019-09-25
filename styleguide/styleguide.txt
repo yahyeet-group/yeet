@@ -1,0 +1,104 @@
+
+Styleguide
+
+
+##################### FIELD NAMES
+
+Private
+	Things that are private does not require any extra thought. Just think about your variable names. Their purpose should easily be understood. All Fields should be in camelCase
+
+	E.g private int gamesPlayed = X;
+
+Protected
+	Protected fields should follow the naming convention of private except that they should be prepended with "p"
+
+	E.g protected int pId = X; (note here that a protected id should just be id = X;
+
+Public
+	Always consider if you need a public variable. Otherwise use the naming convention of private but prepend with "pub"
+
+	E.g public String pubName = "X";
+
+Generall
+	Always think about the readablity of your code. all initializations should be NAME = X; with those spaces between. not NAME=X.
+	If you have a lot of variables sharing the same word, myGame, game, pubGame, consider renaming your variables to greater reflect their purpose, there in not a limit on variable name lenght. myInstantiatedGames & currentGame & gameName are much more usefull since they can be diffirentiated.
+
+################### METHOD NAMES
+
+	All names should reflect their purpose and by reading the comment, parameters and name there should be little to no confusion.
+	Rather stray on the side of overclarity than "nice looking method names", they can always be changed if someone has a better idea, but theyll never have that idea if they dont get the purpose
+
+	E.g getAllMatchesByUser(User u);
+
+
+
+###################### NEW FILES
+
+Interfaces
+	All Interfaces should be prepended with an I(capitilzed i) and then a capitalized decscripitive name
+
+	E.g: IGame, IDatabase, IUser
+	Bad examples: iGame, Iinterface
+
+Class
+	All classes should have a capitallized name that is closely related to the topic its handling. If clases would need a double worded name use PascalCase but avoid where posible
+
+	E.g: Game, User, Things, TwoThings
+	Bad Examples: somethingilike, games, stuffS
+
+Abstract Classes
+	All classes that are abstract should follow the Class naming convention but be prepended with "abs".
+
+	E.g: absGame, absUser
+	Bad Examples: MyAbs, ABSSelector
+
+Enums
+	All enums should exists withing their own Files and not inside another file, The naming convention is PascalCase with "e" prepended
+
+	E.g eLoggedIn, eBoolean
+	Bad Examples: EEnteties
+
+	The Enums themselves should be capitalized snake case
+	
+	E.g: THIS_IS_AN_ENUMERATOR
+
+Firebase
+	Anything that directly communicates with firebase should being with Firebase and then the rest should be in PascalCase
+
+
+################### THINGS IN CODE THAT INST CODE
+
+Method Comments
+	All methods should be commented with their intended purpose to a point where people dont need to read the code at all to understand the purpose. Also they should be inside of a /** */ so that a javadoc can be generated.
+
+	E.g: /** Method takes a user parameter and returns a ArrayList with all matches the user has played */
+	Bad Example: Returns Matches, Returns all matches, 
+
+Comments
+	All one line comments should use // and mutiple line commets use /* */. Before one pushes to Develop they should remove all lines(there could be exeptions) that comment out things like System.out.println("See if code execs here");
+
+	E.g  //Refactor this using lambdas
+	Bad Example //This could 
+		    //Use some
+		    //updating
+
+TODO
+	TODOs are good to write out as soon as you know one. Write TODO in capials with an : after.  They are not only good for you but also for other people maybe taking over your works so that they faster can get an idea of what is left to implement. But always make sure to comment what the todo is
+	
+	E.g: //TODO: here there should be a helper method for toString() so that it can properly parse XXXX without being to big
+	Bad Example: //TODO parse
+
+
+Line-Brakes
+	To increas readablity of the code linebrakes should be used between methods.
+
+	Eg
+
+	this is somecode }
+
+
+	//Comment
+	startOfNewMethod()
+
+
+

@@ -8,5 +8,4 @@ public interface IRepository<T> {
     void Remove(T entity);
 
     void Update(T entity);
-
 }
