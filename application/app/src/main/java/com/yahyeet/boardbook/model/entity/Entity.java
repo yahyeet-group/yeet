@@ -7,9 +7,14 @@ public class Entity {
         this.id = id;
     }
 
+    public Entity() {
+    }
+
     public String getId() {
         return id;
     }
 
-
+    public void setId(String id) {
+        this.id = id;
+    }
 }

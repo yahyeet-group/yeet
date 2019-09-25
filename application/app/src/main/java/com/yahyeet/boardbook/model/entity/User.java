@@ -8,7 +8,23 @@ public class User extends Entity {
         this.name = name;
     }
 
+    public User() {
+        super();
+    }
+
     public String getName() {
         return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
