@@ -28,18 +28,32 @@ public class FirebaseChatGroupRepository implements IChatGroupRepository {
 
     @Override
     public CompletableFuture<ChatGroup> create(ChatGroup chatGroup) {
-        return CompletableFuture.supplyAsync(() -> {
-            Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
-                    .add(chatGroupToMap(chatGroup));
+        if (chatGroup.getId() == null) {
+            return CompletableFuture.supplyAsync(() -> {
+                Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
+                        .add(chatGroupToMap(chatGroup));
 
-            try {
-                DocumentReference documentReference = Tasks.await(task);
+                try {
+                    DocumentReference documentReference = Tasks.await(task);
 
-                return documentReference.getId();
-            } catch (Exception e) {
-                throw new CompletionException(e);
-            }
-        }).thenCompose(this::find);
+                    return documentReference.getId();
+                } catch (Exception e) {
+                    throw new CompletionException(e);
+                }
+            }).thenCompose(this::find);
+        } else {
+            return CompletableFuture.supplyAsync(() -> {
+                Task<Void> task = firestore.collection(COLLECTION_NAME).document(chatGroup.getId()).set(chatGroupToMap(chatGroup));
+
+                try {
+                    Tasks.await(task);
+
+                    return chatGroup.getId();
+                } catch (Exception e) {
+                    throw new CompletionException(e);
+                }
+            }).thenCompose(this::find);
+        }
     }
 
     @Override

@@ -24,13 +24,13 @@ public final class Boardbook {
     private ChatMessageHandler chatMessageHandler;
 
     public Boardbook(IAuthService authService,
-                     IUserRepository userRepository,
+                     UserHandler userHandler,
                      IGameRepository gameRepository,
                      IMatchRepository matchRepository,
                      IChatGroupRepository chatGroupRepository,
                      IChatMessageRepository chatMessageRepository) {
 
-        userHandler = new UserHandler(userRepository);
+        this.userHandler = userHandler;
         gameHandler = new GameHandler(gameRepository);
         matchHandler = new MatchHandler(matchRepository);
         chatGroupHandler = new ChatGroupHandler(chatGroupRepository);

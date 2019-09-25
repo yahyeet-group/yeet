@@ -28,19 +28,32 @@ public class FirebaseMatchRepository implements IMatchRepository {
 
     @Override
     public CompletableFuture<Match> create(Match match) {
-        return CompletableFuture.supplyAsync(() -> {
+        if (match.getId() == null) {
+            return CompletableFuture.supplyAsync(() -> {
+                Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
+                        .add(matchToMap(match));
 
-            Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
-                    .add(matchToMap(match));
+                try {
+                    DocumentReference documentReference = Tasks.await(task);
 
-            try {
-                DocumentReference documentReference = Tasks.await(task);
+                    return documentReference.getId();
+                } catch (Exception e) {
+                    throw new CompletionException(e);
+                }
+            }).thenCompose(this::find);
+        } else {
+            return CompletableFuture.supplyAsync(() -> {
+                Task<Void> task = firestore.collection(COLLECTION_NAME).document(match.getId()).set(matchToMap(match));
 
-                return documentReference.getId();
-            } catch (Exception e) {
-                throw new CompletionException(e);
-            }
-        }).thenCompose(this::find);
+                try {
+                    Tasks.await(task);
+
+                    return match.getId();
+                } catch (Exception e) {
+                    throw new CompletionException(e);
+                }
+            }).thenCompose(this::find);
+        }
     }
 
     @Override

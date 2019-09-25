@@ -28,18 +28,32 @@ public class FirebaseChatMessageRepository implements IChatMessageRepository {
 
     @Override
     public CompletableFuture<ChatMessage> create(ChatMessage chatMessage) {
-        return CompletableFuture.supplyAsync(() -> {
-            Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
-                    .add(chatMessageToMap(chatMessage));
+        if (chatMessage.getId() == null) {
+            return CompletableFuture.supplyAsync(() -> {
+                Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
+                        .add(chatMessageToMap(chatMessage));
 
-            try {
-                DocumentReference documentReference = Tasks.await(task);
+                try {
+                    DocumentReference documentReference = Tasks.await(task);
 
-                return documentReference.getId();
-            } catch (Exception e) {
-                throw new CompletionException(e);
-            }
-        }).thenCompose(this::find);
+                    return documentReference.getId();
+                } catch (Exception e) {
+                    throw new CompletionException(e);
+                }
+            }).thenCompose(this::find);
+        } else {
+            return CompletableFuture.supplyAsync(() -> {
+                Task<Void> task = firestore.collection(COLLECTION_NAME).document(chatMessage.getId()).set(chatMessageToMap(chatMessage));
+
+                try {
+                    Tasks.await(task);
+
+                    return chatMessage.getId();
+                } catch (Exception e) {
+                    throw new CompletionException(e);
+                }
+            }).thenCompose(this::find);
+        }
     }
 
     @Override

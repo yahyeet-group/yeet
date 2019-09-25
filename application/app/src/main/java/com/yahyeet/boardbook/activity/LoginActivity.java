@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -93,6 +94,8 @@ public class LoginActivity extends AppCompatActivity {
 
         BoardbookSingleton.getInstance().getAuthHandler().login(temp[0], temp[1]).thenAccept(u -> {
             // access logged in user from "u"
+
+            Looper.prepare();
 
             Context context = getApplicationContext();
             CharSequence text = "Hello toast says" + u.getName();

@@ -21,8 +21,9 @@ public class FirebaseAuthService implements IAuthService {
     private FirebaseAuth firebaseAuth;
     private UserHandler userHandler;
 
-    public FirebaseAuthService(FirebaseAuth firebaseAuth){
+    public FirebaseAuthService(FirebaseAuth firebaseAuth, UserHandler userHandler){
         this.firebaseAuth = firebaseAuth;
+        this.userHandler = userHandler;
     }
 
     @Override
@@ -35,6 +36,7 @@ public class FirebaseAuthService implements IAuthService {
                 Log.d(TAG, "signInWithEmail:success");
                 FirebaseUser firebaseUser = result.getUser();
                 assert firebaseUser != null;
+
                 return firebaseUser.getUid();
             } catch (Exception e) {
                 throw new CompletionException(e);

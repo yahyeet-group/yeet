@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -56,6 +57,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         BoardbookSingleton.getInstance().getAuthHandler().signup(temp[0], temp[1], temp[2]).thenAccept(u -> {
             // access logged in user from "u"
+
+            Looper.prepare();
 
             Context context = getApplicationContext();
             CharSequence text = "Hello toast!";

@@ -28,18 +28,32 @@ public class FirebaseGameRepository implements IGameRepository {
 
     @Override
     public CompletableFuture<Game> create(Game game) {
-        return CompletableFuture.supplyAsync(() -> {
-            Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
-                    .add(gameToMap(game));
+        if (game.getId() == null) {
+            return CompletableFuture.supplyAsync(() -> {
+                Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
+                        .add(gameToMap(game));
 
-            try {
-                DocumentReference documentReference = Tasks.await(task);
+                try {
+                    DocumentReference documentReference = Tasks.await(task);
 
-                return documentReference.getId();
-            } catch (Exception e) {
-                throw new CompletionException(e);
-            }
-        }).thenCompose(this::find);
+                    return documentReference.getId();
+                } catch (Exception e) {
+                    throw new CompletionException(e);
+                }
+            }).thenCompose(this::find);
+        } else {
+            return CompletableFuture.supplyAsync(() -> {
+                Task<Void> task = firestore.collection(COLLECTION_NAME).document(game.getId()).set(gameToMap(game));
+
+                try {
+                    Tasks.await(task);
+
+                    return game.getId();
+                } catch (Exception e) {
+                    throw new CompletionException(e);
+                }
+            }).thenCompose(this::find);
+        }
     }
 
     @Override
