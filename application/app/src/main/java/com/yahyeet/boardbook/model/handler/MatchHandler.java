@@ -31,7 +31,11 @@ public class MatchHandler {
         Match match = findMatch(id);
 
         if (match == null) {
-            return matchRepository.find(id);
+            return matchRepository.find(id).thenApply((m -> {
+                addMatch(m);
+
+                return m;
+            }));
         }
 
         return CompletableFuture.completedFuture(match);

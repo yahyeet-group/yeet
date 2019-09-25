@@ -31,7 +31,11 @@ public class GameHandler {
         Game game = findGame(id);
 
         if (game == null) {
-            return gameRepository.find(id);
+            return gameRepository.find(id).thenApply((g -> {
+                addGame(g);
+
+                return g;
+            }));
         }
 
         return CompletableFuture.completedFuture(game);

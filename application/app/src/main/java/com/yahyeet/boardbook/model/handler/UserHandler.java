@@ -31,7 +31,11 @@ public class UserHandler {
         User user = findUser(id);
 
         if (user == null) {
-            return userRepository.find(id);
+            return userRepository.find(id).thenApply((u -> {
+                addUser(u);
+
+                return u;
+            }));
         }
 
         return CompletableFuture.completedFuture(user);

@@ -31,7 +31,11 @@ public class ChatGroupHandler {
         ChatGroup chatGroup = findChatGroup(id);
 
         if (chatGroup == null) {
-            return chatGroupRepository.find(id);
+            return chatGroupRepository.find(id).thenApply((cg -> {
+                addChatGroup(cg);
+
+                return cg;
+            }));
         }
 
         return CompletableFuture.completedFuture(chatGroup);

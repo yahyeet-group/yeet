@@ -31,7 +31,11 @@ public class ChatMessageHandler {
         ChatMessage chatMessage = findChatMessage(id);
 
         if (chatMessage == null) {
-            return chatMessageRepository.find(id);
+            return chatMessageRepository.find(id).thenApply((cm -> {
+                addChatMessage(cm);
+
+                return cm;
+            }));
         }
 
         return CompletableFuture.completedFuture(chatMessage);
