@@ -4,4 +4,7 @@ public class Match extends Entity {
     public Match(String id) {
         super(id);
     }
+
+    public Match() {
+    }
 }
