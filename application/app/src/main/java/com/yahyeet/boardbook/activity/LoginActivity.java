@@ -6,9 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.service.IAuthService;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -43,13 +48,18 @@ public class LoginActivity extends AppCompatActivity {
     public void LoginAccount(View view){
 
         String[] temp = FetchLoginFields();
-        try{
-            //auth.login(temp[0], temp[1]);
-            finish();
-        }
-        catch (Exception e){
+        CompletableFuture<User> userPromise = BoardbookSingleton.getInstance().getAuthHandler().login(temp[0], temp[1]);
+        userPromise.thenApply(u -> {
+            try {
+                BoardbookSingleton.getInstance().getAuthHandler().setLoggedInUser(userPromise.get());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        });
+        //finish();
 
-        }
+
 
 
     }

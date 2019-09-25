@@ -16,6 +16,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        changeTest();
 
     }
 
@@ -28,6 +29,11 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
 
+    }
+
+    void changeTest(){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
 

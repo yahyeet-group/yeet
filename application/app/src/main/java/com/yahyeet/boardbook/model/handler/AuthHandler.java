@@ -10,20 +10,32 @@ public class AuthHandler {
     private IAuthService authService;
     private UserHandler userHandler;
 
+    private User loggedInUser;
+
     public AuthHandler(IAuthService authService, UserHandler userHandler) {
         this.authService = authService;
         this.userHandler = userHandler;
     }
 
-    CompletableFuture<User> login(String email, String password) {
+    public CompletableFuture<User> login(String email, String password) {
         return authService.login(email, password);
     }
 
-    CompletableFuture<Void> logout() {
+    public CompletableFuture<Void> logout() {
+        setLoggedInUser(null);
         return authService.logout();
     }
 
-    CompletableFuture<User> signup(String email, String password, String name) {
+    public CompletableFuture<User> signup(String email, String password, String name) {
         return authService.signup(email, password, name).thenCompose(user -> userHandler.create(user));
+    }
+
+
+    public User getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(User loggedInUser) {
+        this.loggedInUser = loggedInUser;
     }
 }
