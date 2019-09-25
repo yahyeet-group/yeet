@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.model.firebase.FirebaseAuthService;
+import com.yahyeet.boardbook.model.firebase.service.FirebaseAuthService;
 import com.yahyeet.boardbook.model.handler.AuthHandler;
 
 public class HomeActivity extends AppCompatActivity {
