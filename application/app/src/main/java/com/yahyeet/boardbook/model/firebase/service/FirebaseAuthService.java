@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.model.firebase;
+package com.yahyeet.boardbook.model.firebase.service;
 
 import android.util.Log;
 
@@ -8,6 +8,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.model.service.IAuthService;
 
 import java.util.concurrent.CompletableFuture;
@@ -18,13 +19,14 @@ public class FirebaseAuthService implements IAuthService {
     private static final String TAG = "Authentication";
 
     private FirebaseAuth firebaseAuth;
+    private UserHandler userHandler;
 
     public FirebaseAuthService(FirebaseAuth firebaseAuth){
         this.firebaseAuth = firebaseAuth;
     }
 
     @Override
-    public CompletableFuture<String> login(String email, String password) {
+    public CompletableFuture<User> login(String email, String password) {
         return CompletableFuture.supplyAsync(() -> {
             Task<AuthResult> task = firebaseAuth.signInWithEmailAndPassword(email, password);
 
@@ -37,7 +39,7 @@ public class FirebaseAuthService implements IAuthService {
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
-        });
+        }).thenCompose(uid -> userHandler.find(uid));
     }
 
     @Override

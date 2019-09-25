@@ -8,22 +8,22 @@ import java.util.concurrent.CompletableFuture;
 public class AuthHandler {
 
     private IAuthService authService;
+    private UserHandler userHandler;
 
-    public AuthHandler(IAuthService authService){
+    public AuthHandler(IAuthService authService, UserHandler userHandler) {
         this.authService = authService;
+        this.userHandler = userHandler;
     }
 
-    CompletableFuture<User> login(String email, String password) throws Exception{
-        return authService.login(email, password).thenApply((s) -> {
-            return new User("hs", "hs");
-        });
+    CompletableFuture<User> login(String email, String password) {
+        return authService.login(email, password);
     }
 
-    void logout(){
-        authService.logout();
+    CompletableFuture<Void> logout() {
+        return authService.logout();
     }
 
-    void signup(String email, String password, String name) throws Exception{
-        authService.signup(email, password, name);
+    CompletableFuture<User> signup(String email, String password, String name) {
+        return authService.signup(email, password, name).thenCompose(user -> userHandler.create(user));
     }
 }
