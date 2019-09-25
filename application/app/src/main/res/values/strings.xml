@@ -7,4 +7,5 @@
     <string name="newAcc">Make a New Account</string>
     <string name="emailHint">someEmail@something.comthing</string>
     <string name="passHint">verySecret321</string>
+    <string name="errorText">Wrong Email or Password</string>
 </resources>

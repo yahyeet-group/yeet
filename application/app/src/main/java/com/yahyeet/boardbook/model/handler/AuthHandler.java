@@ -18,7 +18,11 @@ public class AuthHandler {
     }
 
     public CompletableFuture<User> login(String email, String password) {
-        return authService.login(email, password);
+        return authService.login(email, password).thenApply(u -> {
+            loggedInUser = u;
+
+            return u;
+        });
     }
 
     public CompletableFuture<Void> logout() {
@@ -27,7 +31,11 @@ public class AuthHandler {
     }
 
     public CompletableFuture<User> signup(String email, String password, String name) {
-        return authService.signup(email, password, name).thenCompose(user -> userHandler.create(user));
+        return authService.signup(email, password, name).thenCompose(user -> userHandler.create(user)).thenApply(u ->{
+            loggedInUser = u;
+
+            return u;
+        });
     }
 
 
