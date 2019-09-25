@@ -5,7 +5,7 @@ import com.yahyeet.boardbook.model.entity.User;
 import java.util.concurrent.CompletableFuture;
 
 public interface IAuthService {
-    CompletableFuture<User> login(String email, String password);
+    CompletableFuture<String> login(String email, String password);
 
     void logout();
 

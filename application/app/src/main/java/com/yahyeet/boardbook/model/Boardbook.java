@@ -1,16 +1,13 @@
 package com.yahyeet.boardbook.model;
 
+import com.yahyeet.boardbook.model.handler.AuthHandler;
+import com.yahyeet.boardbook.model.service.IAuthService;
+
 public final class Boardbook {
 
+    private AuthHandler authHandler;
 
-    private static Boardbook instance;
-
-    private Boardbook() {}
-
-    public static Boardbook getInstance(){
-        if(instance == null){
-            instance = new Boardbook();
-        }
-        return instance;
+    private Boardbook(IAuthService authService) {
+        authHandler = new AuthHandler(authService);
     }
 }
