@@ -2,10 +2,12 @@ package com.yahyeet.boardbook.model.service;
 
 import com.yahyeet.boardbook.model.entity.User;
 
+import java.util.concurrent.CompletableFuture;
+
 public interface IAuthService {
-    User login(String email, String password) throws Exception;
+    CompletableFuture<User> login(String email, String password);
 
     void logout();
 
-    void signup(String email, String password, String name) throws Exception;
+    CompletableFuture<User> signup(String email, String password, String name) throws Exception;
 }

@@ -2,12 +2,17 @@ package com.yahyeet.boardbook.model.firebase;
 
 import android.util.Log;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.repository.IUserRepository;
 import com.yahyeet.boardbook.model.service.IAuthService;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -15,69 +20,57 @@ public class FirebaseAuthService implements IAuthService {
 
     private static final String TAG = "Authentication";
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth firebaseAuth;
 
     public FirebaseAuthService(){
-        mAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     @Override
-    public User login(String email, String password) throws Exception {
-        AtomicReference<User> user = new AtomicReference<>();
-        mAuth.signInWithEmailAndPassword(email, password)
-               .addOnCompleteListener(task -> {
-                   if(task.isSuccessful()){
-                       Log.d(TAG, "signInWithEmail:success");
-                       FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                       assert firebaseUser != null;
-                       user.set(getSignedInUser(firebaseUser.getUid()));
-                   }
-                   else {
-                       Log.w(TAG, "signInWithEmail:failure");
-                   }
-               });
+    public CompletableFuture<String> login(String email, String password) {
+        return CompletableFuture.supplyAsync(() -> {
+            Task<AuthResult> task = firebaseAuth.signInWithEmailAndPassword(email, password);
 
-        if(user.get() == null){
-            throw new Exception();
-        } else {
-            return user.get();
-        }
+            try {
+                AuthResult result = Tasks.await(task);
+                Log.d(TAG, "signInWithEmail:success");
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                assert firebaseUser != null;
+                return firebaseUser.getUid();
+            } catch (Exception e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     @Override
     public void logout(){
-        mAuth.signOut();
+        firebaseAuth.signOut();
     }
 
     @Override
-    public void signup(String email, String password, String name) throws Exception {
-        AtomicBoolean success = new AtomicBoolean(false);
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()){
-                        Log.d(TAG, "createUserWithEmail:success");
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        assert user != null;
-                        addUser(user.getUid(), name);
-                        success.set(true);
-                    } else {
-                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                        success.set(false);
-                    }
-                });
-        if(!success.get()) throw new Exception();
+    public CompletableFuture<User> signup(String email, String password, String name) {
+        return CompletableFuture.supplyAsync(() -> {
+            Task<AuthResult> task = firebaseAuth.createUserWithEmailAndPassword(email, password);
+
+            try {
+                AuthResult result = Tasks.await(task);
+                Log.d(TAG, "createUserWithEmail:success");
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                assert firebaseUser != null;
+                return new User(firebaseUser.getUid(), name);
+            } catch (Exception e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
     private void addUser(String Uid, String name){
         User user = new User(Uid, name);
-        //TODO: Make this use a RepositoryContainer or some other solution instead of creating a new reference!
-        IUserRepository userRepository = new FirebaseUserRepository();
         userRepository.Add(user);
     }
 
     private User getSignedInUser(String uid) {
-        //TODO: Make this use a RepositoryContainer or some other solution instead of creating a new reference!
-        IUserRepository userRepository = new FirebaseUserRepository();
         User user = userRepository.Find(uid);
         return user;
     }
