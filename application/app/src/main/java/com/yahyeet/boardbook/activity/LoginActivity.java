@@ -76,8 +76,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Method (will) logs in with the info in email/password inputs if such a account exists.
-     * @param view is the visual object (ex a button) the method is bound to (I think)
+     * Method logs in with the info in email/password inputs if such a account exists.
+     * @param view is the visual object (ex a button) the method is bound to
      */
     public void LoginAccount(View view){
 
@@ -94,15 +94,7 @@ public class LoginActivity extends AppCompatActivity {
 
         BoardbookSingleton.getInstance().getAuthHandler().login(temp[0], temp[1]).thenAccept(u -> {
             // access logged in user from "u"
-
-            Looper.prepare();
-
-            Context context = getApplicationContext();
-            CharSequence text = "Hello toast says" + u.getName();
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
+            finish();
 
         }).exceptionally(e -> {
             // Handle error ("e")
@@ -112,20 +104,6 @@ public class LoginActivity extends AppCompatActivity {
 
             return null;
         });
-
-        /*
-        CompletableFuture<User> userPromise = BoardbookSingleton.getInstance().getAuthHandler().login(temp[0], temp[1]);
-        userPromise.thenApply(u -> {
-            try {
-                BoardbookSingleton.getInstance().getAuthHandler().setLoggedInUser(userPromise.get());
-                //finish();
-            } catch (Exception e) {
-                showErrorMessage();
-                e.printStackTrace();
-            }
-            return null;
-        });
-        */
 
 
 

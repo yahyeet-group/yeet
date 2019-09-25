@@ -2,26 +2,27 @@ package com.yahyeet.boardbook.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.model.service.IAuthService;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 public class RegisterActivity extends AppCompatActivity {
 
 
     EditText emailInput;
-    EditText passInput;
+    EditText passwordInput;
     EditText userInput;
+
+    Button registerButton;
+
+    boolean emailVaild;
+    boolean passwordValid;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,23 +30,96 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         emailInput = findViewById(R.id.emailRegisterInput);
-        passInput = findViewById(R.id.passRegisterInput);
+        passwordInput = findViewById(R.id.passwordRegisterInput);
         userInput = findViewById(R.id.usernameRegisterInput);
+        registerButton = findViewById(R.id.registerButton);
 
+
+        emailInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if(!isEmailValid(emailInput.getText())){
+                    findViewById(R.id.emailErrorView).setAlpha(1);
+                    emailVaild = false;
+                }
+                else{
+                    findViewById(R.id.emailErrorView).setAlpha(0);
+                    emailVaild = true;
+
+                }
+
+                checkRegisterButtonValid();
+
+            }
+        });
+
+        passwordInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if(!isPasswordValid(passwordInput.getText())){
+                    findViewById(R.id.passwordErrorView).setAlpha(1);
+                    passwordValid = false;
+                }
+                else{
+                    findViewById(R.id.passwordErrorView).setAlpha(0);
+                    passwordValid = true;
+                }
+
+                checkRegisterButtonValid();
+            }
+        });
     }
 
 
+
+    void checkRegisterButtonValid(){
+        if(emailVaild && passwordValid){
+            registerButton.setAlpha(1);
+            registerButton.setClickable(true);
+
+        }
+        else{
+            registerButton.setClickable(false);
+            registerButton.setAlpha(0.5f);
+        }
+    }
+
+
+    /*
     /**
      * Method reads info in email and password fields
      * @return a String[] in the form of {email, password}.
-     */
+
     public String[] FetchRegisterFields(){
 
 
         // TODO Send information in a better way :S
-        return  new String[]{emailInput.getText().toString(), passInput.getText().toString(), userInput.getText().toString()};
+        return  new String[]{emailInput.getText().toString(), passwordInput.getText().toString(), userInput.getText().toString()};
 
     }
+    */
 
     /**
      *  Method makes a new account if the "Make a New Account" button has been tapped
@@ -53,19 +127,11 @@ public class RegisterActivity extends AppCompatActivity {
      */
     public void RegisterAccount(View view){
 
-        String[] temp = FetchRegisterFields();
-
-        BoardbookSingleton.getInstance().getAuthHandler().signup(temp[0], temp[1], temp[2]).thenAccept(u -> {
+        BoardbookSingleton.getInstance().getAuthHandler().signup(
+                emailInput.getText().toString(), passwordInput.getText().toString(), userInput.getText().toString()).thenAccept(u -> {
             // access logged in user from "u"
 
-            Looper.prepare();
-
-            Context context = getApplicationContext();
-            CharSequence text = "Hello toast!";
-            int duration = Toast.LENGTH_SHORT;
-
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
+            finish();
 
         }).exceptionally(e -> {
             // Handle error ("e")
@@ -75,6 +141,15 @@ public class RegisterActivity extends AppCompatActivity {
             return null;
         });
 
-
     }
+
+
+    boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    boolean isPasswordValid(CharSequence password){
+        return password.length() >= 6;
+    }
+
 }
