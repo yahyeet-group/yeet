@@ -44,11 +44,6 @@ public class FirebaseUserRepository implements IUserRepository {
     }
 
     @Override
-<<<<<<< HEAD
-    public User Find(String id) {
-        // Changed to be able to run code, was return void
-        return null;
-=======
     public CompletableFuture<User> find(String id) {
         return CompletableFuture.supplyAsync(() -> {
             Task<DocumentSnapshot> task = firestore.collection(COLLECTION_NAME).document(id).get();
@@ -65,7 +60,6 @@ public class FirebaseUserRepository implements IUserRepository {
                 throw new CompletionException(e);
             }
         });
->>>>>>> develop
     }
 
     @Override
