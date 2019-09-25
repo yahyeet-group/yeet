@@ -19,8 +19,8 @@ public class FirebaseAuthService implements IAuthService {
 
     private FirebaseAuth firebaseAuth;
 
-    public FirebaseAuthService(){
-        firebaseAuth = FirebaseAuth.getInstance();
+    public FirebaseAuthService(FirebaseAuth firebaseAuth){
+        this.firebaseAuth = firebaseAuth;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class FirebaseAuthService implements IAuthService {
             try {
                 AuthResult result = Tasks.await(task);
                 Log.d(TAG, "signInWithEmail:success");
-                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                FirebaseUser firebaseUser = result.getUser();
                 assert firebaseUser != null;
                 return firebaseUser.getUid();
             } catch (Exception e) {
@@ -41,8 +41,9 @@ public class FirebaseAuthService implements IAuthService {
     }
 
     @Override
-    public void logout(){
+    public CompletableFuture<Void> logout(){
         firebaseAuth.signOut();
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
@@ -53,7 +54,7 @@ public class FirebaseAuthService implements IAuthService {
             try {
                 AuthResult result = Tasks.await(task);
                 Log.d(TAG, "createUserWithEmail:success");
-                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                FirebaseUser firebaseUser = result.getUser();
                 assert firebaseUser != null;
                 return new User(firebaseUser.getUid(), name);
             } catch (Exception e) {
