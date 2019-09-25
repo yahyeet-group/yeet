@@ -63,11 +63,6 @@ public class FirebaseMatchRepository implements IMatchRepository {
     }
 
     @Override
-<<<<<<< HEAD
-    public Match Find(String id) {
-        // Changed to be able to run code, was return void
-        return null;
-=======
     public CompletableFuture<Match> update(Match match) {
         return CompletableFuture.supplyAsync(() -> {
             Task<Void> task = firestore.collection(COLLECTION_NAME)
@@ -82,7 +77,6 @@ public class FirebaseMatchRepository implements IMatchRepository {
                 throw new CompletionException(e);
             }
         }).thenCompose(this::find);
->>>>>>> develop
     }
 
     @Override

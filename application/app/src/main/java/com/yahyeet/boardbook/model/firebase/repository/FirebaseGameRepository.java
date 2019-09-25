@@ -43,11 +43,6 @@ public class FirebaseGameRepository implements IGameRepository {
     }
 
     @Override
-<<<<<<< HEAD
-    public Game Find(String id) {
-        // Changed to be able to run code, was return void
-        return null;
-=======
     public CompletableFuture<Game> find(String id) {
         return CompletableFuture.supplyAsync(() -> {
             Task<DocumentSnapshot> task = firestore.collection(COLLECTION_NAME).document(id).get();
@@ -64,7 +59,6 @@ public class FirebaseGameRepository implements IGameRepository {
                 throw new CompletionException(e);
             }
         });
->>>>>>> develop
     }
 
     @Override

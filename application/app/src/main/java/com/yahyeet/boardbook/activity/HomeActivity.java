@@ -12,9 +12,6 @@ import com.yahyeet.boardbook.model.handler.AuthHandler;
 
 public class HomeActivity extends AppCompatActivity {
 
-    // Authhandler to be replaced by boardbook facade
-    AuthHandler auth = new AuthHandler(new FirebaseAuthService());
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -43,11 +43,6 @@ public class FirebaseChatMessageRepository implements IChatMessageRepository {
     }
 
     @Override
-<<<<<<< HEAD
-    public ChatMessage Find(String id) {
-        // Changed to be able to run code, was return void
-        return null;
-=======
     public CompletableFuture<ChatMessage> find(String id) {
         return CompletableFuture.supplyAsync(() -> {
             Task<DocumentSnapshot> task = firestore.collection(COLLECTION_NAME).document(id).get();
@@ -64,7 +59,6 @@ public class FirebaseChatMessageRepository implements IChatMessageRepository {
                 throw new CompletionException(e);
             }
         });
->>>>>>> develop
     }
 
     @Override

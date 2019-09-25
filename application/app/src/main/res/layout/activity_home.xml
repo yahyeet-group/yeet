@@ -4,19 +4,4 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.HomeActivity">
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="273dp"
-        android:layout_height="158dp"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="294dp"
-        android:layout_marginBottom="389dp"
-        android:onClick="ChangeToLogin"
-        android:text="Login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.427" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    tools:context=".activity.HomeActivity"/>

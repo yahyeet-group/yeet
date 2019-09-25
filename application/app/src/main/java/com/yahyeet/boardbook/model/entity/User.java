@@ -2,6 +2,7 @@ package com.yahyeet.boardbook.model.entity;
 
 public class User extends Entity {
     private String name;
+    private String email;
 
     public User(String id, String name) {
         super(id);
