@@ -2,6 +2,7 @@ package com.yahyeet.boardbook.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -92,18 +93,31 @@ public class LoginActivity extends AppCompatActivity {
             showErrorMessage();
         }
 
+
+        ProgressDialog progress = new ProgressDialog(this);
+        // TODO: Make better loading text
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while loading...");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        progress.show();
+
         BoardbookSingleton.getInstance().getAuthHandler().login(temp[0], temp[1]).thenAccept(u -> {
             // access logged in user from "u"
+            progress.dismiss();
             finish();
 
         }).exceptionally(e -> {
             // Handle error ("e")
 
+            progress.dismiss();
             showErrorMessage();
             e.printStackTrace();
 
             return null;
         });
+
+
+
 
 
 

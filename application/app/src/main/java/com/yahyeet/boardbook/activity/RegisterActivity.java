@@ -2,6 +2,7 @@ package com.yahyeet.boardbook.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -127,15 +128,26 @@ public class RegisterActivity extends AppCompatActivity {
      */
     public void RegisterAccount(View view){
 
+
+        ProgressDialog progress = new ProgressDialog(this);
+        // TODO Make better loading text
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while loading...");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+        progress.show();
+
+
         BoardbookSingleton.getInstance().getAuthHandler().signup(
                 emailInput.getText().toString(), passwordInput.getText().toString(), userInput.getText().toString()).thenAccept(u -> {
             // access logged in user from "u"
 
+            progress.dismiss();
             finish();
 
         }).exceptionally(e -> {
             // Handle error ("e")
 
+            progress.dismiss();
             e.printStackTrace();
 
             return null;
