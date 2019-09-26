@@ -3,6 +3,7 @@ package com.yahyeet.boardbook.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,8 +22,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     Button registerButton;
 
-    boolean emailVaild;
-    boolean passwordValid;
+    boolean emailVaild = false;
+    boolean passwordValid = false;
 
 
     @Override
@@ -162,6 +163,16 @@ public class RegisterActivity extends AppCompatActivity {
 
     boolean isPasswordValid(CharSequence password){
         return password.length() >= 6;
+    }
+
+    /**
+     * Shows a new login activity
+     * @param view that method is attached to
+     */
+    public void showLoginPage(View view){
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

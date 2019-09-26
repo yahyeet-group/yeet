@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
 
         String[] temp = FetchLoginFields();
 
-        if(temp[1].length() < 6){
+        if(passInput.length() < 6){
             showErrorMessage();
         }
 

@@ -54,6 +54,7 @@
 
     <Button
         android:id="@+id/loginButton"
+        android:background="@drawable/custom_button"
         android:layout_width="174dp"
         android:layout_height="82dp"
         android:layout_marginStart="56dp"
