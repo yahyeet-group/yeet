@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_navigation"
-        android:background="@android:color/holo_blue_bright"
+        android:background="@android:color/white"
         />
 
 </RelativeLayout>
