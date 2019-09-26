@@ -10,5 +10,8 @@
     <string name="errorLoginText">Wrong Email or Password</string>
     <string name="emailErrorText">Email is not in correct format</string>
     <string name="passwordShortText">Password needs to be more than 6 characters</string>
-
+    <string name="home">Home</string>
+    <string name="chat">Chat</string>
+    <string name="game">Game</string>
+    <string name="friends">Friends</string>
 </resources>

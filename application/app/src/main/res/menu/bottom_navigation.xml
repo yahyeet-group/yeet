@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/home"></item>
+
+    <item
+        android:id="@+id/nav_game"
+        android:icon="@drawable/ic_games_black_24dp"
+        android:title="@string/game"></item>
+
+    <item
+        android:id="@+id/nav_friends"
+        android:icon="@drawable/ic_people_black_24dp"
+        android:title="@string/friends"></item>
+
+    <item
+        android:id="@+id/nav_chat"
+        android:icon="@drawable/ic_chat_black_24dp"
+        android:title="@string/chat"></item>
+
+</menu>
