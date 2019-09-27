@@ -17,7 +17,7 @@ public class ChatMessageHandler {
         this.chatMessageRepository = chatMessageRepository;
     }
 
-    CompletableFuture<ChatMessage> create(ChatMessage chatMessage) {
+    public CompletableFuture<ChatMessage> create(ChatMessage chatMessage) {
         return chatMessageRepository.create(chatMessage).thenApply((u) -> {
             addChatMessage(u);
 
@@ -27,7 +27,7 @@ public class ChatMessageHandler {
         });
     }
 
-    CompletableFuture<ChatMessage> find(String id) {
+    public CompletableFuture<ChatMessage> find(String id) {
         ChatMessage chatMessage = findChatMessage(id);
 
         if (chatMessage == null) {
@@ -42,7 +42,7 @@ public class ChatMessageHandler {
     }
 
 
-    CompletableFuture<ChatMessage> update(ChatMessage chatMessage) {
+    public CompletableFuture<ChatMessage> update(ChatMessage chatMessage) {
         return chatMessageRepository.update(chatMessage).thenApply((u) -> {
             updateChatMessage(u);
 
@@ -53,7 +53,7 @@ public class ChatMessageHandler {
     }
 
 
-    CompletableFuture<Void> remove(ChatMessage chatMessage) {
+    public CompletableFuture<Void> remove(ChatMessage chatMessage) {
         return chatMessageRepository.remove(chatMessage).thenApply((v) -> {
             removeChatMessage(chatMessage);
 
@@ -63,7 +63,7 @@ public class ChatMessageHandler {
         });
     }
 
-    CompletableFuture<List<ChatMessage>> all() {
+    public CompletableFuture<List<ChatMessage>> all() {
         return chatMessageRepository.all();
     }
 

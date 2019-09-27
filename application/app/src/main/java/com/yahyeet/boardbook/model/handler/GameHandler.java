@@ -17,7 +17,7 @@ public class GameHandler {
         this.gameRepository = gameRepository;
     }
 
-    CompletableFuture<Game> create(Game game) {
+    public CompletableFuture<Game> create(Game game) {
         return gameRepository.create(game).thenApply((u) -> {
             addGame(u);
 
@@ -27,7 +27,7 @@ public class GameHandler {
         });
     }
 
-    CompletableFuture<Game> find(String id) {
+    public CompletableFuture<Game> find(String id) {
         Game game = findGame(id);
 
         if (game == null) {
@@ -42,7 +42,7 @@ public class GameHandler {
     }
 
 
-    CompletableFuture<Game> update(Game game) {
+    public CompletableFuture<Game> update(Game game) {
         return gameRepository.update(game).thenApply((u) -> {
             updateGame(u);
 
@@ -53,7 +53,7 @@ public class GameHandler {
     }
 
 
-    CompletableFuture<Void> remove(Game game) {
+    public CompletableFuture<Void> remove(Game game) {
         return gameRepository.remove(game).thenApply((v) -> {
             removeGame(game);
 
@@ -63,7 +63,7 @@ public class GameHandler {
         });
     }
 
-    CompletableFuture<List<Game>> all() {
+    public CompletableFuture<List<Game>> all() {
         return gameRepository.all();
     }
 

@@ -17,7 +17,7 @@ public class MatchHandler {
         this.matchRepository = matchRepository;
     }
 
-    CompletableFuture<Match> create(Match match) {
+    public CompletableFuture<Match> create(Match match) {
         return matchRepository.create(match).thenApply((u) -> {
             addMatch(u);
 
@@ -27,7 +27,7 @@ public class MatchHandler {
         });
     }
 
-    CompletableFuture<Match> find(String id) {
+    public CompletableFuture<Match> find(String id) {
         Match match = findMatch(id);
 
         if (match == null) {
@@ -42,7 +42,7 @@ public class MatchHandler {
     }
 
 
-    CompletableFuture<Match> update(Match match) {
+    public CompletableFuture<Match> update(Match match) {
         return matchRepository.update(match).thenApply((u) -> {
             updateMatch(u);
 
@@ -53,7 +53,7 @@ public class MatchHandler {
     }
 
 
-    CompletableFuture<Void> remove(Match match) {
+    public CompletableFuture<Void> remove(Match match) {
         return matchRepository.remove(match).thenApply((v) -> {
             removeMatch(match);
 
@@ -63,7 +63,7 @@ public class MatchHandler {
         });
     }
 
-    CompletableFuture<List<Match>> all() {
+    public CompletableFuture<List<Match>> all() {
         return matchRepository.all();
     }
 

@@ -17,7 +17,7 @@ public class UserHandler {
         this.userRepository = userRepository;
     }
 
-    CompletableFuture<User> create(User user) {
+    public CompletableFuture<User> create(User user) {
         return userRepository.create(user).thenApply((u) -> {
             addUser(u);
 
@@ -27,7 +27,7 @@ public class UserHandler {
         });
     }
 
-    CompletableFuture<User> find(String id) {
+    public CompletableFuture<User> find(String id) {
         User user = findUser(id);
 
         if (user == null) {
@@ -42,7 +42,7 @@ public class UserHandler {
     }
 
 
-    CompletableFuture<User> update(User user) {
+    public CompletableFuture<User> update(User user) {
         return userRepository.update(user).thenApply((u) -> {
             updateUser(u);
 
@@ -53,7 +53,7 @@ public class UserHandler {
     }
 
 
-    CompletableFuture<Void> remove(User user) {
+    public CompletableFuture<Void> remove(User user) {
         return userRepository.remove(user).thenApply((v) -> {
             removeUser(user);
 
@@ -63,7 +63,7 @@ public class UserHandler {
         });
     }
 
-    CompletableFuture<List<User>> all() {
+    public CompletableFuture<List<User>> all() {
         return userRepository.all();
     }
 

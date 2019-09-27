@@ -17,7 +17,7 @@ public class ChatGroupHandler {
         this.chatGroupRepository = chatGroupRepository;
     }
 
-    CompletableFuture<ChatGroup> create(ChatGroup chatGroup) {
+    public CompletableFuture<ChatGroup> create(ChatGroup chatGroup) {
         return chatGroupRepository.create(chatGroup).thenApply((u) -> {
             addChatGroup(u);
 
@@ -27,7 +27,7 @@ public class ChatGroupHandler {
         });
     }
 
-    CompletableFuture<ChatGroup> find(String id) {
+    public CompletableFuture<ChatGroup> find(String id) {
         ChatGroup chatGroup = findChatGroup(id);
 
         if (chatGroup == null) {
@@ -42,7 +42,7 @@ public class ChatGroupHandler {
     }
 
 
-    CompletableFuture<ChatGroup> update(ChatGroup chatGroup) {
+    public CompletableFuture<ChatGroup> update(ChatGroup chatGroup) {
         return chatGroupRepository.update(chatGroup).thenApply((u) -> {
             updateChatGroup(u);
 
@@ -53,7 +53,7 @@ public class ChatGroupHandler {
     }
 
 
-    CompletableFuture<Void> remove(ChatGroup chatGroup) {
+    public CompletableFuture<Void> remove(ChatGroup chatGroup) {
         return chatGroupRepository.remove(chatGroup).thenApply((v) -> {
             removeChatGroup(chatGroup);
 
@@ -63,7 +63,7 @@ public class ChatGroupHandler {
         });
     }
 
-    CompletableFuture<List<ChatGroup>> all() {
+    public CompletableFuture<List<ChatGroup>> all() {
         return chatGroupRepository.all();
     }
 

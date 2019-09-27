@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.model.firebase;
+package com.yahyeet.boardbook.model.firebase.repository;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -29,18 +29,32 @@ public class FirebaseUserRepository implements IUserRepository {
 
     @Override
     public CompletableFuture<User> create(User user) {
-        return CompletableFuture.supplyAsync(() -> {
-            Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
-                    .add(userToMap(user));
+        if (user.getId() == null) {
+            return CompletableFuture.supplyAsync(() -> {
+                Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
+                        .add(userToMap(user));
 
-            try {
-                DocumentReference documentReference = Tasks.await(task);
+                try {
+                    DocumentReference documentReference = Tasks.await(task);
 
-                return documentReference.getId();
-            } catch (Exception e) {
-                throw new CompletionException(e);
-            }
-        }).thenCompose(this::find);
+                    return documentReference.getId();
+                } catch (Exception e) {
+                    throw new CompletionException(e);
+                }
+            }).thenCompose(this::find);
+        } else {
+            return CompletableFuture.supplyAsync(() -> {
+                Task<Void> task = firestore.collection(COLLECTION_NAME).document(user.getId()).set(userToMap(user));
+
+                try {
+                    Tasks.await(task);
+
+                    return user.getId();
+                } catch (Exception e) {
+                    throw new CompletionException(e);
+                }
+            }).thenCompose(this::find);
+        }
     }
 
     @Override
