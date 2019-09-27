@@ -1,10 +1,12 @@
-package com.yahyeet.boardbook;
+package com.yahyeet.boardbook.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class empty_activity extends AppCompatActivity {
+import com.yahyeet.boardbook.R;
+
+public class EmptyActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.model.firebase.service.FirebaseAuthService;
-import com.yahyeet.boardbook.model.handler.AuthHandler;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -31,7 +29,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     void changeTest(){
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, EmptyActivity.class);
         startActivity(intent);
     }
 
