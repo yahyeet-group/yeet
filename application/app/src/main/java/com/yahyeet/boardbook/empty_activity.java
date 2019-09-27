@@ -6,11 +6,17 @@ package com.yahyeet.boardbook;
 
         import android.os.Bundle;
         import android.view.MenuItem;
+        import android.view.View;
+        import android.widget.Button;
+        import android.widget.ImageButton;
+        import android.widget.Toast;
 
         import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class empty_activity extends AppCompatActivity {
 
+
+    ImageButton btnCreate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +26,15 @@ public class empty_activity extends AppCompatActivity {
         bottomnav.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
+
+        btnCreate = findViewById(R.id.btn_create);
+
+        btnCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(empty_activity.this, "test", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

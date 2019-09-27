@@ -10,7 +10,9 @@
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_navigation"/>
+        android:layout_above="@+id/bottom_navigation">
+
+    </FrameLayout>
 
 
     //android:background="?android:attr/windowBackground"
@@ -21,6 +23,14 @@
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_navigation"
         android:background="@android:color/white"
-        />
+        >
+
+        <ImageButton
+            android:id="@+id/btn_create"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/btn_background"
+            android:src="@drawable/ic_add_black_24dp" />
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </RelativeLayout>
