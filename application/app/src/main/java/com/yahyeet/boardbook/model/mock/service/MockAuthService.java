@@ -5,6 +5,7 @@ import com.yahyeet.boardbook.model.service.IAuthService;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 public class MockAuthService implements IAuthService {
 
@@ -22,7 +23,8 @@ public class MockAuthService implements IAuthService {
                     return mockUser.user;
                 }
             }
-            return null;
+
+            throw new CompletionException(new Exception("User not found"));
         });
     }
 
@@ -34,14 +36,11 @@ public class MockAuthService implements IAuthService {
     @Override
     public CompletableFuture<User> signup(String email, String password, String name) {
         return CompletableFuture.supplyAsync(() -> {
-            mockUserDb.add(new AuthenticationUser(email, password, new User("", name)));
+            User user = new User("", name);
+            AuthenticationUser authUser = new AuthenticationUser(email, password, user);
+            mockUserDb.add(authUser);
 
-            for(AuthenticationUser mockUser : mockUserDb){
-                if(mockUser.email.equals(email) && mockUser.password.equals(password)){
-                    return mockUser.user;
-                }
-            }
-            return null;
+            return user;
         });
 
     }
