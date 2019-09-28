@@ -59,7 +59,7 @@
         android:layout_height="82dp"
         android:layout_marginStart="56dp"
         android:layout_marginBottom="96dp"
-        android:onClick="LoginAccount"
+        android:onClick="loginAccount"
         android:text="@string/login"
         app:layout_constraintBottom_toBottomOf="@+id/newAccountButton"
         app:layout_constraintStart_toStartOf="@+id/passLoginInput" />
