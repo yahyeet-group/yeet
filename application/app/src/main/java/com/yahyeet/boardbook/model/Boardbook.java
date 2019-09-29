@@ -23,6 +23,8 @@ public final class Boardbook {
     private ChatGroupHandler chatGroupHandler;
     private ChatMessageHandler chatMessageHandler;
 
+    private boolean TEST_FLAG = false;
+
     public Boardbook(IAuthService authService,
                      UserHandler userHandler,
                      IGameRepository gameRepository,
@@ -30,13 +32,15 @@ public final class Boardbook {
                      IChatGroupRepository chatGroupRepository,
                      IChatMessageRepository chatMessageRepository) {
 
-        this.userHandler = userHandler;
-        gameHandler = new GameHandler(gameRepository);
-        matchHandler = new MatchHandler(matchRepository);
-        chatGroupHandler = new ChatGroupHandler(chatGroupRepository);
-        chatMessageHandler = new ChatMessageHandler(chatMessageRepository);
+        if(TEST_FLAG = false) {
+            this.userHandler = userHandler;
+            gameHandler = new GameHandler(gameRepository);
+            matchHandler = new MatchHandler(matchRepository);
+            chatGroupHandler = new ChatGroupHandler(chatGroupRepository);
+            chatMessageHandler = new ChatMessageHandler(chatMessageRepository);
 
-        authHandler = new AuthHandler(authService, userHandler);
+            authHandler = new AuthHandler(authService, userHandler);
+        }
     }
 
     public AuthHandler getAuthHandler() {
