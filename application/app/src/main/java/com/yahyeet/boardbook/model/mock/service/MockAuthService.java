@@ -45,7 +45,7 @@ public class MockAuthService implements IAuthService {
 
     }
 
-    public class AuthenticationUser {
+    public static class AuthenticationUser {
         public String email;
         public String password;
         public User user;
