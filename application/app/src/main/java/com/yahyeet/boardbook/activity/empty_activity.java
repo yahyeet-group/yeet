@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook;
+package com.yahyeet.boardbook.activity;
 
         import androidx.annotation.NonNull;
         import androidx.appcompat.app.AppCompatActivity;
@@ -7,11 +7,11 @@ package com.yahyeet.boardbook;
         import android.os.Bundle;
         import android.view.MenuItem;
         import android.view.View;
-        import android.widget.Button;
         import android.widget.ImageButton;
         import android.widget.Toast;
 
         import com.google.android.material.bottomnavigation.BottomNavigationView;
+        import com.yahyeet.boardbook.R;
 
 public class empty_activity extends AppCompatActivity {
 
