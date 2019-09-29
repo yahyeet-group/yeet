@@ -17,12 +17,23 @@ public class ChatGroup extends Entity {
     }
 
     /// Messages
-    public void addMessage(ChatMessage message){
-        messages.add(message);
+
+    // Tried to add a message, if the user is in the group it gets added and returns true, if not it returns false
+    public boolean addMessage(ChatMessage message){
+        if(users.contains(message.getSender())){
+            messages.add(message);
+            return true;
+        }else {return false;}
+
     }
 
     public List<ChatMessage> getAllMessages(){
         return messages;
+    }
+
+    //TODO this should maybe return an "This message has been removed message"
+    public void removeMessage(ChatMessage message){
+        messages.remove(message);
     }
 
 
