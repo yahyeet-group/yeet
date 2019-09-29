@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.activity;
+package com.yahyeet.boardbook.presenter;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -17,7 +17,7 @@ public class BoardbookSingleton {
 
     private BoardbookSingleton() { }
 
-    public static Boardbook getInstance() {
+    static Boardbook getInstance() {
         if (instance == null) {
 
             IUserRepository userRepository = new FirebaseUserRepository(FirebaseFirestore.getInstance());

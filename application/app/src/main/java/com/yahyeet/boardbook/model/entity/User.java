@@ -13,6 +13,10 @@ public class User extends Entity {
         super();
     }
 
+    public User getThis(){
+        return this;
+    }
+
     public String getName() {
         return name;
     }
