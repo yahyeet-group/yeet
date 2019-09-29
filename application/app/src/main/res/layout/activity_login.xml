@@ -68,7 +68,7 @@
         android:id="@+id/newAccountButton"
         android:layout_width="406dp"
         android:layout_height="60dp"
-        android:onClick="ShowRegisterPage"
+        android:onClick="showRegisterPage"
         android:text="@string/newAcc"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

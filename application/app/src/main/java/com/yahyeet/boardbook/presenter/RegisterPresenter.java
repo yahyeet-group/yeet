@@ -1,17 +1,17 @@
 package com.yahyeet.boardbook.presenter;
 
-import com.yahyeet.boardbook.activity.RegisterActivity;
+import com.yahyeet.boardbook.activity.IRegisterActivity;
 
-public class RegisterPresenter implements IRegisterPresenter {
+public class RegisterPresenter {
 
 
-    private RegisterActivity registerActivity;
+    private IRegisterActivity registerActivity;
 
-    public RegisterPresenter(RegisterActivity registerActivity){
+    public RegisterPresenter(IRegisterActivity registerActivity){
         this.registerActivity = registerActivity;
     }
 
-    @Override
+
     public void signup(String email, String password, String username) {
 
         BoardbookSingleton.getInstance().getAuthHandler().signup(email, password, username).thenAccept(u -> {

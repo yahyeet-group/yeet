@@ -1,19 +1,20 @@
 package com.yahyeet.boardbook.presenter;
 
 
+import com.yahyeet.boardbook.activity.ILoginActivity;
 import com.yahyeet.boardbook.activity.LoginActivity;
 
-public class LoginPresenter implements ILoginPresenter {
+public class LoginPresenter {
 
 
-    private LoginActivity loginActivity;
+    private ILoginActivity loginActivity;
 
 
     public LoginPresenter(LoginActivity loginActivity){
         this.loginActivity = loginActivity;
     }
 
-    @Override
+
     public void login(String email, String password) {
 
 

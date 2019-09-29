@@ -2,7 +2,6 @@ package com.yahyeet.boardbook.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,14 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.presenter.BoardbookSingleton;
-import com.yahyeet.boardbook.presenter.IRegisterPresenter;
 import com.yahyeet.boardbook.presenter.RegisterPresenter;
 
 public class RegisterActivity extends AppCompatActivity {
 
 
-    IRegisterPresenter registerPresenter;
+    RegisterPresenter registerPresenter;
 
     EditText emailInput;
     EditText passwordInput;
@@ -117,6 +114,14 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    public RegisterPresenter getRegisterPresenter() {
+        return registerPresenter;
+    }
+
+    public void setRegisterPresenter(RegisterPresenter registerPresenter) {
+        this.registerPresenter = registerPresenter;
+    }
+
     /**
      *  Method makes a new account if the "Make a New Account" button has been tapped
      * @param view is the visual object (ex a button) the method is bound to
@@ -132,6 +137,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     boolean isPasswordValid(CharSequence password){
         return password.length() >= 6;
+    }
+
+
+    @Override
+    public void finish(){
+        super.finish();
     }
 
     /**

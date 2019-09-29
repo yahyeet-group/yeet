@@ -2,7 +2,6 @@ package com.yahyeet.boardbook.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,10 +12,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.presenter.ILoginPresenter;
 import com.yahyeet.boardbook.presenter.LoginPresenter;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements ILoginActivity {
 
     EditText emailInput;
     EditText passInput;
@@ -24,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
 
     Button loginButton;
 
-    ILoginPresenter loginPresenter;
+    LoginPresenter loginPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,11 +96,11 @@ public class LoginActivity extends AppCompatActivity {
         return loginButton;
     }
 
-    public ILoginPresenter getLoginPresenter() {
+    public LoginPresenter getLoginPresenter() {
         return loginPresenter;
     }
 
-    public void setLoginPresenter(ILoginPresenter loginPresenter) {
+    public void setLoginPresenter(LoginPresenter loginPresenter) {
         this.loginPresenter = loginPresenter;
     }
 
@@ -123,18 +121,9 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-
-//        String[] temp = fetchLoginFields();
-
-
-
-
-
-
+        //        String[] temp = fetchLoginFields();
 
         loginPresenter.login(emailInput.getText().toString(), passInput.getText().toString());
-
-
 
 
         /*BoardbookSingleton.getInstance().getAuthHandler().login(temp[0], temp[1]).thenAccept(u -> {
@@ -152,6 +141,11 @@ public class LoginActivity extends AppCompatActivity {
             return null;
         });*/
 
+    }
+
+    @Override
+    public void finish(){
+        super.finish();
     }
 
 
@@ -176,7 +170,7 @@ public class LoginActivity extends AppCompatActivity {
      * Starts a new activity of registry page and finishes this one.
      * @param view is the visual object (ex a button) the method is bound to (I think)
      */
-    public void ShowRegisterPage(View view){
+    public void showRegisterPage(View view){
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
         finish();
