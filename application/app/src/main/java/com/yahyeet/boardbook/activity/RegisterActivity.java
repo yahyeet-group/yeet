@@ -13,7 +13,7 @@ import android.widget.EditText;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.presenter.RegisterPresenter;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements IRegisterActivity{
 
 
     RegisterPresenter registerPresenter;
