@@ -27,8 +27,8 @@
 
         <ImageButton
             android:id="@+id/btn_create"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/btn_background"
             android:src="@drawable/ic_add_black_24dp" />
     </com.google.android.material.bottomnavigation.BottomNavigationView>
