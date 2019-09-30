@@ -32,6 +32,7 @@ public final class Boardbook {
                      IChatGroupRepository chatGroupRepository,
                      IChatMessageRepository chatMessageRepository) {
 
+        /// Use this for dependency injection for mock databases
         if(TEST_FLAG = false) {
             this.userHandler = userHandler;
             gameHandler = new GameHandler(gameRepository);
