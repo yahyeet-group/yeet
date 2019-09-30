@@ -4,4 +4,7 @@ public class ChatMessage extends Entity {
     public ChatMessage(String id) {
         super(id);
     }
+
+    public ChatMessage() {
+    }
 }

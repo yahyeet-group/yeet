@@ -4,10 +4,17 @@ public class User extends Entity {
     private String name;
     private String email;
 
-    public User(String id, String name, String email) {
+    public User(String id, String name) {
         super(id);
         this.name = name;
-        this.email = email;
+    }
+
+    public User() {
+        super();
+    }
+
+    public User getThis(){
+        return this;
     }
 
     public String getName() {
@@ -16,5 +23,13 @@ public class User extends Entity {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
