@@ -33,6 +33,7 @@ public class HomeActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
 
+        // TODO: Assign this functionallity via xml
         btnCreate = findViewById(R.id.btn_create);
 
         btnCreate.setOnClickListener(new View.OnClickListener() {
