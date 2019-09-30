@@ -2,7 +2,6 @@ package com.yahyeet.boardbook.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,9 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.presenter.RegisterPresenter;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements IRegisterActivity{
 
+
+    RegisterPresenter registerPresenter;
 
     EditText emailInput;
     EditText passwordInput;
@@ -30,6 +32,10 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        // TODO: Make accountManagerActivity (To be created) assign loginPresenter and registerPresenter
+        registerPresenter = new RegisterPresenter(this);
+
 
         emailInput = findViewById(R.id.emailRegisterInput);
         passwordInput = findViewById(R.id.passwordRegisterInput);
@@ -108,52 +114,20 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-
-    /*
-    /**
-     * Method reads info in email and password fields
-     * @return a String[] in the form of {email, password}.
-
-    public String[] FetchRegisterFields(){
-
-
-        // TODO Send information in a better way :S
-        return  new String[]{emailInput.getText().toString(), passwordInput.getText().toString(), userInput.getText().toString()};
-
+    public RegisterPresenter getRegisterPresenter() {
+        return registerPresenter;
     }
-    */
+
+    public void setRegisterPresenter(RegisterPresenter registerPresenter) {
+        this.registerPresenter = registerPresenter;
+    }
 
     /**
      *  Method makes a new account if the "Make a New Account" button has been tapped
      * @param view is the visual object (ex a button) the method is bound to
      */
     public void RegisterAccount(View view){
-
-
-        ProgressDialog progress = new ProgressDialog(this);
-        // TODO Make better loading text
-        progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
-        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-        progress.show();
-
-
-        BoardbookSingleton.getInstance().getAuthHandler().signup(
-                emailInput.getText().toString(), passwordInput.getText().toString(), userInput.getText().toString()).thenAccept(u -> {
-            // access logged in user from "u"
-
-            progress.dismiss();
-            finish();
-
-        }).exceptionally(e -> {
-            // Handle error ("e")
-
-            progress.dismiss();
-            e.printStackTrace();
-
-            return null;
-        });
-
+        registerPresenter.signup(emailInput.getText().toString(), passwordInput.getText().toString(), userInput.getText().toString());
     }
 
 
@@ -163,6 +137,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     boolean isPasswordValid(CharSequence password){
         return password.length() >= 6;
+    }
+
+
+    @Override
+    public void finish(){
+        super.finish();
     }
 
     /**
