@@ -22,7 +22,7 @@ import com.yahyeet.boardbook.R;
 
 public class HomeActivity extends AppCompatActivity {
 
-    ImageButton btnCreate;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,17 +32,6 @@ public class HomeActivity extends AppCompatActivity {
         bottomnav.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
-
-        // TODO: Assign this functionallity via xml
-        btnCreate = findViewById(R.id.btn_create);
-
-        btnCreate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(HomeActivity.this, "test", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         changeTest();
 
     }
