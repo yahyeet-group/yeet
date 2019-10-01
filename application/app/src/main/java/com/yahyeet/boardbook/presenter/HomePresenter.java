@@ -1,9 +1,10 @@
 package com.yahyeet.boardbook.presenter;
 
+import android.content.Context;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.IHomeFragment;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.presenter.adapter.MatchAdapter;
@@ -11,25 +12,27 @@ import com.yahyeet.boardbook.presenter.adapter.MatchAdapter;
 public class HomePresenter {
 
     private MatchAdapter matchAdapter;
-    private IHomeFragment view;
+    // TODO: Remove if never necessary
+    private IHomeFragment homeFragment;
 
-    public HomePresenter(IHomeFragment view){
-        this.view = view;
+    public HomePresenter(IHomeFragment homeFragment){
+        this.homeFragment = homeFragment;
     }
 
-
+    /**
+     * Makes recyclerView to repopulate its matches with current data
+     */
     public void repopulateMatches(){
         matchAdapter.notifyDataSetChanged();
     }
 
-    public void enableMatchFeed(RecyclerView matchRecyclerView){
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getFragmentContext());
+    /**
+     * Creates the necessary structure for populating matches
+     * @param matchRecyclerView the RecyclerView that will be populated with matches
+     */
+    public void enableMatchFeed(RecyclerView matchRecyclerView, Context viewContext){
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
         matchRecyclerView.setLayoutManager(layoutManager);
-
 
         // TODO: Replace with accessing database and displaying current users games
         Match[] temp = new Match[20];

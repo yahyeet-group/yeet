@@ -20,7 +20,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.matchViewHol
 
     private static final String TAG = "MatchAdapter";
 
-    // TODO Replace with match array
+
     private Match[] myDataset;
 
     public static class matchViewHolder extends RecyclerView.ViewHolder {
@@ -50,7 +50,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.matchViewHol
 
     }
 
-    // TODO replace with match instead of string
+
     public MatchAdapter (Match[] dataset){
         myDataset = dataset;
     }

@@ -34,27 +34,27 @@ public class HomeFragment extends Fragment implements IHomeFragment{
         enableMatchFeed();
     }
 
+    /**
+     * Initiates recyclerView of matches in fragment and populates it
+     */
     public void enableMatchFeed(){
-
         // TODO: Examine how these method calls can get nullPointerException
         RecyclerView matchRecycler = getView().findViewById(R.id.homeMatchRecycler);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
         matchRecycler.setHasFixedSize(true);
-        homePresenter.enableMatchFeed(matchRecycler);
+
+        homePresenter.enableMatchFeed(matchRecycler, getView().getContext());
     }
 
+    /**
+     * Orders recyclerView of matches to repopulate itself
+     */
     void repopulateHomePage(){
         homePresenter.repopulateMatches();
     }
 
-    public Context getFragmentContext(){
-        if(getView().getContext() != null)
-            return getView().getContext();
-        else{
-            // TODO: Implement in case of trying to get context before view is created
-            //throw NullPointerException;
-        }
-        return null;
-    }
 
 
 
