@@ -28,8 +28,11 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.matchViewHol
         // TODO Replace this area with match class as a custom view object
         private TextView winlossText;
         private TextView gameText;
+        private TextView roleText;
         private TextView playersText;
+        private TextView dateText;
         private ImageView imageView;
+
 
         public matchViewHolder(View v) {
             super(v);
@@ -38,7 +41,9 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.matchViewHol
 
             winlossText = v.findViewById(R.id.winLossView);
             gameText = v.findViewById(R.id.gameView);
-            playersText = v.findViewById(R.id.)
+            roleText = v.findViewById(R.id.roleView);
+            dateText = v.findViewById(R.id.dateView);
+            playersText = v.findViewById(R.id.playersView);
             imageView = v.findViewById(R.id.gameImageView);
         }
 
@@ -66,8 +71,12 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.matchViewHol
     // Method that assigns data to the view
     @Override
     public void onBindViewHolder(matchViewHolder holder, int position) {
-        holder.winlossView.setText("Winner");
-        holder.gameView.setText("Avalon?");
+        // TODO: Replace with model integration when match is implemented
+        holder.winlossText.setText("Winner");
+        holder.gameText.setText("Avalon?");
+        holder.playersText.setText("6 Players");
+        holder.dateText.setText("Some Date");
+        holder.roleText.setText("(" + "Merlin" + ")");
         //holder.imageView.setImageURI();
     }
 
