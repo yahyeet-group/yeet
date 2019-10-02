@@ -9,10 +9,11 @@
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="wrap_content"
-        android:layout_height="676dp"
+        android:layout_height="wrap_content"
         android:layout_above="@id/constraintLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginBottom="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
     </FrameLayout>
 
@@ -46,7 +47,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="180dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/btn_background"
             android:elevation="180dp"
             android:src="@drawable/ic_add_black_24dp"

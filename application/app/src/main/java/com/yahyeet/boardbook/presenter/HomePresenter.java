@@ -33,15 +33,8 @@ public class HomePresenter {
     public void enableMatchFeed(RecyclerView matchRecyclerView, Context viewContext){
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
         matchRecyclerView.setLayoutManager(layoutManager);
-
-        // TODO: Replace with accessing database and displaying current users games
-        Match[] temp = new Match[20];
-
-        for(int i = 0; i < 20; i++){
-            temp[i] = new Match(Integer.toString(i));
-        }
-
-        matchAdapter = new MatchAdapter(temp);
+        //TODO: Replace with matches from user
+        matchAdapter = new MatchAdapter(null);
         matchRecyclerView.setAdapter(matchAdapter);
     }
 

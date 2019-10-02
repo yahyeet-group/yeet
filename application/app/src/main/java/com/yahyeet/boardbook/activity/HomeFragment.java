@@ -44,14 +44,13 @@ public class HomeFragment extends Fragment implements IHomeFragment{
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         matchRecycler.setHasFixedSize(true);
-
         homePresenter.enableMatchFeed(matchRecycler, getView().getContext());
     }
 
     /**
      * Orders recyclerView of matches to repopulate itself
      */
-    void repopulateHomePage(){
+    public void repopulateMatchFeed(){
         homePresenter.repopulateMatches();
     }
 

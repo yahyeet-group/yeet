@@ -1,23 +1,14 @@
 package com.yahyeet.boardbook.activity;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-
 import com.yahyeet.boardbook.R;
 
 public class HomeActivity extends AppCompatActivity {
@@ -50,11 +41,10 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        BottomNavigationView bottomnav = findViewById(R.id.bottom_navigation);
-        bottomnav.setOnNavigationItemSelectedListener(navListener);
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
-
     }
 
 
@@ -69,7 +59,5 @@ public class HomeActivity extends AppCompatActivity {
         // TODO: Change so that old activities are retained and not created anew
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-
     }
-
 }
