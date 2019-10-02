@@ -15,22 +15,23 @@ public class HomePresenter {
     // TODO: Remove if never necessary
     private IHomeFragment homeFragment;
 
-    public HomePresenter(IHomeFragment homeFragment){
+    public HomePresenter(IHomeFragment homeFragment) {
         this.homeFragment = homeFragment;
     }
 
     /**
      * Makes recyclerView to repopulate its matches with current data
      */
-    public void repopulateMatches(){
+    public void repopulateMatches() {
         matchAdapter.notifyDataSetChanged();
     }
 
     /**
      * Creates the necessary structure for populating matches
+     *
      * @param matchRecyclerView the RecyclerView that will be populated with matches
      */
-    public void enableMatchFeed(RecyclerView matchRecyclerView, Context viewContext){
+    public void enableMatchFeed(RecyclerView matchRecyclerView, Context viewContext) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
         matchRecyclerView.setLayoutManager(layoutManager);
         //TODO: Replace with matches from user

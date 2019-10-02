@@ -16,7 +16,7 @@ import com.yahyeet.boardbook.presenter.HomePresenter;
 
 import javax.annotation.Nonnull;
 
-public class HomeFragment extends Fragment implements IHomeFragment{
+public class HomeFragment extends Fragment implements IHomeFragment {
 
 
     private HomePresenter homePresenter;
@@ -25,19 +25,19 @@ public class HomeFragment extends Fragment implements IHomeFragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         homePresenter = new HomePresenter(this);
-        return inflater.inflate(R.layout.fragment_home,container,false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
 
     @Override
-    public void onViewCreated(@Nonnull View view, Bundle savedInstanceState){
+    public void onViewCreated(@Nonnull View view, Bundle savedInstanceState) {
         enableMatchFeed();
     }
 
     /**
      * Initiates recyclerView of matches in fragment and populates it
      */
-    public void enableMatchFeed(){
+    public void enableMatchFeed() {
         // TODO: Examine how these method calls can get nullPointerException
         RecyclerView matchRecycler = getView().findViewById(R.id.homeMatchRecycler);
 
@@ -50,11 +50,9 @@ public class HomeFragment extends Fragment implements IHomeFragment{
     /**
      * Orders recyclerView of matches to repopulate itself
      */
-    public void repopulateMatchFeed(){
+    public void repopulateMatchFeed() {
         homePresenter.repopulateMatches();
     }
-
-
 
 
 }

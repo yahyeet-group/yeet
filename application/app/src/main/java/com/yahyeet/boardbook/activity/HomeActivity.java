@@ -1,4 +1,5 @@
 package com.yahyeet.boardbook.activity;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -9,16 +10,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 import android.content.Intent;
+
 import com.yahyeet.boardbook.R;
 
 public class HomeActivity extends AppCompatActivity {
 
 
-
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = menuItem -> {
         Fragment selectedFragment = null;
 
-        switch(menuItem.getItemId()) {
+        switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 selectedFragment = new HomeFragment();
                 break;
@@ -32,7 +33,7 @@ public class HomeActivity extends AppCompatActivity {
                 selectedFragment = new ChatFragment();
                 break;
         }
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
         return true;
     };
 
@@ -44,18 +45,16 @@ public class HomeActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
     }
-
-
-
 
 
     /**
      * This method when called starts a new login activity
+     *
      * @param view is the visual object (ex a button) the method is bound to (I think)
      */
-    public void ChangeToLogin(View view){
+    public void ChangeToLogin(View view) {
         // TODO: Change so that old activities are retained and not created anew
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);

@@ -6,7 +6,7 @@ public class RegisterPresenter {
 
     private IRegisterActivity registerActivity;
 
-    public RegisterPresenter(IRegisterActivity registerActivity){
+    public RegisterPresenter(IRegisterActivity registerActivity) {
         this.registerActivity = registerActivity;
     }
 

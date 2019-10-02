@@ -10,7 +10,7 @@ public class LoginPresenter {
     private ILoginActivity loginActivity;
 
 
-    public LoginPresenter(LoginActivity loginActivity){
+    public LoginPresenter(LoginActivity loginActivity) {
         this.loginActivity = loginActivity;
     }
 

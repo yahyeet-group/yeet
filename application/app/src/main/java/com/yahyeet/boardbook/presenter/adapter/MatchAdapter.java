@@ -47,8 +47,8 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
     }
 
 
-    public MatchAdapter (Match[] dataset){
-        if(dataset != null)
+    public MatchAdapter(Match[] dataset) {
+        if (dataset != null)
             myDataset = dataset;
         else
             myDataset = new Match[0];

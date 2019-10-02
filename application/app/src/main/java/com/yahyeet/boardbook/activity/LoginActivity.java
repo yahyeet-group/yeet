@@ -40,10 +40,12 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
 
         emailInput.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -72,11 +74,12 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
 
     /**
      * Method reads info in email and password fields
+     *
      * @return a String[] in the form of {email, password}.
      */
-    public String[] fetchLoginFields(){
+    public String[] fetchLoginFields() {
         // TODO Send information in a better way :S
-        return  new String[]{emailInput.getText().toString(), passInput.getText().toString()};
+        return new String[]{emailInput.getText().toString(), passInput.getText().toString()};
 
     }
 
@@ -105,18 +108,16 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
     }
 
     /**
-     *
      * @param view
      */
-    public void loginAccount(View view){
-
+    public void loginAccount(View view) {
 
 
         // Remove focus from activity
         emailInput.clearFocus();
         passInput.clearFocus();
 
-        if(passInput.length() < 6){
+        if (passInput.length() < 6) {
             showErrorMessage();
             return;
         }
@@ -144,7 +145,7 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
     }
 
     @Override
-    public void finish(){
+    public void finish() {
         super.finish();
     }
 
@@ -155,22 +156,21 @@ public class LoginActivity extends AppCompatActivity implements ILoginActivity {
     /**
      * Reveals error message on wrong email/password combination
      */
-    public void showErrorMessage(){
+    public void showErrorMessage() {
         errorText.setAlpha(1);
     }
 
-    public void hideErrorMessage(){
+    public void hideErrorMessage() {
         errorText.setAlpha(0);
     }
 
 
-
-
     /**
      * Starts a new activity of registry page and finishes this one.
+     *
      * @param view is the visual object (ex a button) the method is bound to (I think)
      */
-    public void showRegisterPage(View view){
+    public void showRegisterPage(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
         finish();
