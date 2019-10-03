@@ -1,6 +1,7 @@
 package com.yahyeet.boardbook.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +12,12 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.presenter.RegisterPresenter;
+import com.yahyeet.boardbook.presenter.LoginPresenter;
 
-public class RegisterActivity extends AppCompatActivity implements IRegisterActivity {
+public class RegisterFragment extends Fragment implements ILoginActivity{
 
 
-    RegisterPresenter registerPresenter;
+    LoginPresenter loginPresenter;
 
     EditText emailInput;
     EditText passwordInput;
@@ -29,18 +30,19 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterActi
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        //setContentView(R.layout.fragment_register);
 
         // TODO: Make accountManagerActivity (To be created) assign loginPresenter and registerPresenter
-        registerPresenter = new RegisterPresenter(this);
+        loginPresenter = new LoginPresenter(this);
 
 
-        emailInput = findViewById(R.id.emailRegisterInput);
-        passwordInput = findViewById(R.id.passwordRegisterInput);
-        userInput = findViewById(R.id.usernameRegisterInput);
-        registerButton = findViewById(R.id.registerButton);
+        emailInput = getView().findViewById(R.id.emailRegisterInput);
+        passwordInput = getView().findViewById(R.id.passwordRegisterInput);
+        userInput = getView().findViewById(R.id.usernameRegisterInput);
+        registerButton = getView().findViewById(R.id.registerButton);
+        this.
 
 
         emailInput.addTextChangedListener(new TextWatcher() {
@@ -58,10 +60,10 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterActi
             public void afterTextChanged(Editable editable) {
 
                 if (!isEmailValid(emailInput.getText())) {
-                    findViewById(R.id.emailErrorView).setAlpha(1);
+                    getView().findViewById(R.id.emailErrorView).setAlpha(1);
                     emailVaild = false;
                 } else {
-                    findViewById(R.id.emailErrorView).setAlpha(0);
+                    getView().findViewById(R.id.emailErrorView).setAlpha(0);
                     emailVaild = true;
 
                 }
@@ -86,10 +88,10 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterActi
             public void afterTextChanged(Editable editable) {
 
                 if (!isPasswordValid(passwordInput.getText())) {
-                    findViewById(R.id.passwordErrorView).setAlpha(1);
+                    getView().findViewById(R.id.passwordErrorView).setAlpha(1);
                     passwordValid = false;
                 } else {
-                    findViewById(R.id.passwordErrorView).setAlpha(0);
+                    getView().findViewById(R.id.passwordErrorView).setAlpha(0);
                     passwordValid = true;
                 }
 
@@ -110,6 +112,7 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterActi
         }
     }
 
+    /*
     public RegisterPresenter getRegisterPresenter() {
         return registerPresenter;
     }
@@ -118,14 +121,19 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterActi
         this.registerPresenter = registerPresenter;
     }
 
-    /**
+     */
+
+    /*
      * Method makes a new account if the "Make a New Account" button has been tapped
      *
      * @param view is the visual object (ex a button) the method is bound to
      */
+    /*
     public void RegisterAccount(View view) {
         registerPresenter.signup(emailInput.getText().toString(), passwordInput.getText().toString(), userInput.getText().toString());
     }
+    */
+
 
 
     boolean isEmailValid(CharSequence email) {
@@ -136,7 +144,32 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterActi
         return password.length() >= 6;
     }
 
+    @Override
+    public LoginPresenter getLoginPresenter() {
+        return null;
+    }
 
+    @Override
+    public void setLoginPresenter(LoginPresenter loginPresenter) {
+
+    }
+
+    @Override
+    public void loginAccount(View view) {
+
+    }
+
+    @Override
+    public void showErrorMessage() {
+
+    }
+
+    @Override
+    public void hideErrorMessage() {
+
+    }
+
+    /*
     @Override
     public void finish() {
         super.finish();
@@ -147,10 +180,11 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterActi
      *
      * @param view that method is attached to
      */
+
     public void showLoginPage(View view) {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+        //Intent intent = new Intent(this, LoginFragment.class);
+        //startActivity(intent);
+        //finish();
     }
 
 }

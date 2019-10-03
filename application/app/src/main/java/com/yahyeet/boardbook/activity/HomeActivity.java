@@ -56,7 +56,7 @@ public class HomeActivity extends AppCompatActivity {
      */
     public void changeToLogin(View view) {
         // TODO: Change so that old activities are retained and not created anew
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, LoginFragment.class);
         startActivity(intent);
     }
 }

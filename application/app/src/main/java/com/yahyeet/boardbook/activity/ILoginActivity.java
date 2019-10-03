@@ -12,7 +12,6 @@ public interface ILoginActivity {
 
     void loginAccount(View view);
 
-    void finish();
 
     void showErrorMessage();
 
