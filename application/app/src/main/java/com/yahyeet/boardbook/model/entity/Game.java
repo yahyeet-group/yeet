@@ -34,7 +34,10 @@ public class Game extends Entity {
         this.teamSetup = teamSetup;
     }
 
-    public Game(){}; //TODO Here there must also be a discussion of how to implement towards Firebase
+    public Game() {
+    }
+
+    ; //TODO Here there must also be a discussion of how to implement towards Firebase
 
     //TODO if I implement an edit here how to we update it in Firebase aswell.
 
@@ -60,7 +63,7 @@ public class Game extends Entity {
     }
 
     /// Current implementation will be that all teams first element will be team name and remaining Strings will be roles
-    public void addTeam(String teamName){
+    public void addTeam(String teamName) {
         List<String> team = new ArrayList<>();
         team.add(teamName);
         teamSetup.add(team);
@@ -69,47 +72,48 @@ public class Game extends Entity {
 
 
     /// Adds one role for the specified team
-    public void addRole(String teamName, String roleName){
-        for (int i = 0; i< teamSetup.size(); i++ ){
-            if(teamSetup.get(i).get(0) == teamName){
+    public void addRole(String teamName, String roleName) {
+        for (int i = 0; i < teamSetup.size(); i++) {
+            if (teamSetup.get(i).get(0) == teamName) {
                 teamSetup.get(i).add(roleName);
                 break;
             }
         }
-   }
+    }
+
     /// Adds and entire list of roles to one team
-    public void addRole(String teamName, List<String> roleNames){
-        for (int i = 0; i< teamSetup.size(); i++ ){
-            if(teamSetup.get(i).get(0) == teamName){
+    public void addRole(String teamName, List<String> roleNames) {
+        for (int i = 0; i < teamSetup.size(); i++) {
+            if (teamSetup.get(i).get(0) == teamName) {
                 List<String> subsetTS = teamSetup.get(i);
-               roleNames.forEach((n)-> subsetTS.add(n) );
-               break;
+                roleNames.forEach((n) -> subsetTS.add(n));
+                break;
             }
         }
     }
 
-   /// Returns a list with all team NAMES. Not the entire team array with all roles but only the names of them all
+    /// Returns a list with all team NAMES. Not the entire team array with all roles but only the names of them all
     // I.E the first element of every array.
-   public List<String> getAllTeamNames(){
-       List<String> teams = new ArrayList<>();
-       for (int i = 0; i< teamSetup.size(); i++ ){
-           teams.add(teamSetup.get(i).get(0));
-       }
-       return teams;
-   }
+    public List<String> getAllTeamNames() {
+        List<String> teams = new ArrayList<>();
+        for (int i = 0; i < teamSetup.size(); i++) {
+            teams.add(teamSetup.get(i).get(0));
+        }
+        return teams;
+    }
 
 
     // Returns a list of all roles for a specific team name
-   public List<String> getAllRoles(String teamName){
-       for (int i = 0; i< teamSetup.size(); i++ ){
-           if(teamSetup.get(i).get(0) == teamName){
-               List<String> roles = new ArrayList<>(teamSetup.get(i));
-               roles.remove(0);
-               return roles;
-           }
-       }
-       return null;
-   }
+    public List<String> getAllRoles(String teamName) {
+        for (int i = 0; i < teamSetup.size(); i++) {
+            if (teamSetup.get(i).get(0) == teamName) {
+                List<String> roles = new ArrayList<>(teamSetup.get(i));
+                roles.remove(0);
+                return roles;
+            }
+        }
+        return null;
+    }
 
 
 }

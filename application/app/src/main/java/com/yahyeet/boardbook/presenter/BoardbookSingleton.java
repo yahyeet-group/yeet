@@ -15,7 +15,8 @@ import com.yahyeet.boardbook.model.repository.IUserRepository;
 public class BoardbookSingleton {
     private static Boardbook instance;
 
-    private BoardbookSingleton() { }
+    private BoardbookSingleton() {
+    }
 
     static Boardbook getInstance() {
         if (instance == null) {

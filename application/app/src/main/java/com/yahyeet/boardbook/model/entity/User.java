@@ -13,7 +13,7 @@ public class User extends Entity {
         super();
     }
 
-    public User getThis(){
+    public User getThis() {
         return this;
     }
 
