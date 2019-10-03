@@ -32,8 +32,9 @@ public class ChatMessage extends Entity {
         return content;
     }
 
-    //TODO broadcast the edit and save the edit into Firebase 
-    public String editContent(String content) {
+
+    //TODO broadcast the edit and save the edit into Firebase
+    public String editContent(String content){
         this.content = content;
         return content;
     }
