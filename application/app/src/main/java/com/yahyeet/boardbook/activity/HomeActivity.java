@@ -54,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
      *
      * @param view is the visual object (ex a button) the method is bound to (I think)
      */
-    public void ChangeToLogin(View view) {
+    public void changeToLogin(View view) {
         // TODO: Change so that old activities are retained and not created anew
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);

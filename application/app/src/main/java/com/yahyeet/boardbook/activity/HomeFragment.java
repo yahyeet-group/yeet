@@ -18,7 +18,6 @@ import javax.annotation.Nonnull;
 
 public class HomeFragment extends Fragment implements IHomeFragment {
 
-
     private HomePresenter homePresenter;
 
     @Nullable
@@ -27,7 +26,6 @@ public class HomeFragment extends Fragment implements IHomeFragment {
         homePresenter = new HomePresenter(this);
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
-
 
     @Override
     public void onViewCreated(@Nonnull View view, Bundle savedInstanceState) {
@@ -53,6 +51,4 @@ public class HomeFragment extends Fragment implements IHomeFragment {
     public void repopulateMatchFeed() {
         homePresenter.repopulateMatches();
     }
-
-
 }
