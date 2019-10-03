@@ -33,7 +33,7 @@ public final class Boardbook {
                      IChatMessageRepository chatMessageRepository) {
 
         /// Use this for dependency injection for mock databases
-        if(TEST_FLAG = false) {
+
             this.userHandler = userHandler;
             gameHandler = new GameHandler(gameRepository);
             matchHandler = new MatchHandler(matchRepository);
@@ -41,7 +41,7 @@ public final class Boardbook {
             chatMessageHandler = new ChatMessageHandler(chatMessageRepository);
 
             authHandler = new AuthHandler(authService, userHandler);
-        }
+        
     }
 
     public AuthHandler getAuthHandler() {
