@@ -13,7 +13,7 @@ import android.widget.EditText;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.presenter.RegisterPresenter;
 
-public class RegisterActivity extends AppCompatActivity implements IRegisterActivity{
+public class RegisterActivity extends AppCompatActivity implements IRegisterActivity {
 
 
     RegisterPresenter registerPresenter;
@@ -57,11 +57,10 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterActi
             @Override
             public void afterTextChanged(Editable editable) {
 
-                if(!isEmailValid(emailInput.getText())){
+                if (!isEmailValid(emailInput.getText())) {
                     findViewById(R.id.emailErrorView).setAlpha(1);
                     emailVaild = false;
-                }
-                else{
+                } else {
                     findViewById(R.id.emailErrorView).setAlpha(0);
                     emailVaild = true;
 
@@ -86,11 +85,10 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterActi
             @Override
             public void afterTextChanged(Editable editable) {
 
-                if(!isPasswordValid(passwordInput.getText())){
+                if (!isPasswordValid(passwordInput.getText())) {
                     findViewById(R.id.passwordErrorView).setAlpha(1);
                     passwordValid = false;
-                }
-                else{
+                } else {
                     findViewById(R.id.passwordErrorView).setAlpha(0);
                     passwordValid = true;
                 }
@@ -101,14 +99,12 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterActi
     }
 
 
-
-    void checkRegisterButtonValid(){
-        if(emailVaild && passwordValid){
+    void checkRegisterButtonValid() {
+        if (emailVaild && passwordValid) {
             registerButton.setAlpha(1);
             registerButton.setClickable(true);
 
-        }
-        else{
+        } else {
             registerButton.setClickable(false);
             registerButton.setAlpha(0.5f);
         }
@@ -123,10 +119,11 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterActi
     }
 
     /**
-     *  Method makes a new account if the "Make a New Account" button has been tapped
+     * Method makes a new account if the "Make a New Account" button has been tapped
+     *
      * @param view is the visual object (ex a button) the method is bound to
      */
-    public void RegisterAccount(View view){
+    public void RegisterAccount(View view) {
         registerPresenter.signup(emailInput.getText().toString(), passwordInput.getText().toString(), userInput.getText().toString());
     }
 
@@ -135,21 +132,22 @@ public class RegisterActivity extends AppCompatActivity implements IRegisterActi
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    boolean isPasswordValid(CharSequence password){
+    boolean isPasswordValid(CharSequence password) {
         return password.length() >= 6;
     }
 
 
     @Override
-    public void finish(){
+    public void finish() {
         super.finish();
     }
 
     /**
      * Shows a new login activity
+     *
      * @param view that method is attached to
      */
-    public void showLoginPage(View view){
+    public void showLoginPage(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
