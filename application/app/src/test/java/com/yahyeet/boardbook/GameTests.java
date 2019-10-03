@@ -21,9 +21,9 @@ public class GameTests {
     public void addTeam(){
         Game game = getTestGame();
         game.addTeam("SOM");
-        assertEquals(game.getAllTeamNames().get(0), "SOM");
+        assertEquals( "SOM", game.getAllTeamNames().get(0));
         game.addTeam("LSOA");
-        assertEquals(game.getAllTeamNames().get(1), "LSOA");
+        assertEquals( "LSOA", game.getAllTeamNames().get(1));
 
     }
 
@@ -33,14 +33,14 @@ public class GameTests {
         Game game = getTestGame();
         game.addTeam("LSOA");
         game.addRole("LSOA", "Merlin");
-        assertEquals(game.getAllRoles("LSOA").get(0), "Merlin");
+        assertEquals( "Merlin", game.getAllRoles("LSOA").get(0));
 
         game.addTeam("SOM");
         game.addRole("SOM", "Mordred");
-        assertEquals(game.getAllRoles("SOM").get(0), "Mordred");
+        assertEquals( "Mordred", game.getAllRoles("SOM").get(0));
 
         game.addRole("SOM", "Morgana");
-        assertEquals(game.getAllRoles("SOM"), new ArrayList<String>(){{add("Mordred"); add("Morgana");}});
+        assertEquals( new ArrayList<String>(){{add("Mordred"); add("Morgana");}}, game.getAllRoles("SOM"));
     }
 
 
