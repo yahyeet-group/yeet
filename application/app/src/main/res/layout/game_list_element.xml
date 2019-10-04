@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/gameSeachName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="GameName"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/gameListImage"
+        app:layout_constraintTop_toTopOf="@+id/gameListImage" />
+
+    <TextView
+        android:id="@+id/gameSearchPlayers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="PlayerAmount"
+        android:textSize="24sp"
+        app:layout_constraintStart_toEndOf="@+id/gameSeachName"
+        app:layout_constraintTop_toTopOf="@+id/gameSeachName" />
+
+    <ImageView
+        android:id="@+id/gameListImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/colorAccent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
