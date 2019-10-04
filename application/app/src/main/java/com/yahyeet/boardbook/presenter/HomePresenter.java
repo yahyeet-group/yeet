@@ -35,7 +35,10 @@ public class HomePresenter {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
         matchRecyclerView.setLayoutManager(layoutManager);
         //TODO: Replace with matches from user
-        matchAdapter = new MatchAdapter(null);
+        Match[] data = new Match[20];
+        for(int i = 0; i < 20; i++)
+            data[i] = new Match();
+        matchAdapter = new MatchAdapter(data);
         matchRecyclerView.setAdapter(matchAdapter);
     }
 
