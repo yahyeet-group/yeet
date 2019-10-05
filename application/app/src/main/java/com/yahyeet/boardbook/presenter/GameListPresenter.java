@@ -11,11 +11,13 @@ import com.yahyeet.boardbook.presenter.adapter.GameListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.function.Function;
 
 public class GameListPresenter {
 
     private IGameFragment gameFragment;
+    private BaseAdapter adapter;
+    private List<Game> dataset;
+    List<Game> mockGames = new ArrayList<>();
 
 
     public GameListPresenter(IGameFragment gameFragment) {
@@ -25,38 +27,64 @@ public class GameListPresenter {
 
     public void enableGameList(Context viewContext, ListView gameListView){
 
-        List<Game> gameList = new ArrayList<>();
+        dataset = new ArrayList<>();
 
         // TODO: Enable when boardbook has games
-        //BoardbookSingleton.getInstance().getGameHandler().all().thenApply((Function<List<Game>, Object>) gameList::addAll);
+        //BoardbookSingleton.getInstance().getGameHandler().all().thenApply((Function<List<Game>, Object>) dataset::addAll);
 
 
 
-        gameList.add(new Game("First Name", "Desc", "Null"));
+        dataset.add(new Game("First Name", "Desc", "Null"));
+        dataset.add(new Game("Second Name", "Desc", "Null"));
 
-        BaseAdapter adapter = new GameListAdapter(viewContext, gameList);
+        // Cashes all games, remove later
+        mockGames.addAll(dataset);
+
+        adapter = new GameListAdapter(viewContext, dataset);
         gameListView.setAdapter(adapter);
 
     }
 
-    public BaseAdapter searchGame(String query, Context context){
-        List<Game> games = new ArrayList<>();
+    public void updateGamesWithQuery(String query){
+        updateDataset(query);
 
-        try{
+        if(adapter.areAllItemsEnabled())
+            System.out.println("Items enabled");
+
+        adapter.notifyDataSetChanged();
+    }
+
+
+    // TODO: Method requires better name
+    private void updateDataset(String query){
+
+
+        // Test Code
+        List<Game> games = findMatchingName(mockGames, query);
+
+
+        //List<Game> games = new ArrayList<>();
+        /*try{
+            // TODO: Needs to be implemented, might cause lag in app
             games = findMatchingName(BoardbookSingleton.getInstance().getGameHandler().all().get(), query);
         }
         catch (InterruptedException | ExecutionException e){
             // TODO: Dunno what to do here, others required
-        }
+        }*/
 
-        return new GameListAdapter(context, games);
+        // Need to keep same object adapter and this class
+        dataset.clear();
+        dataset.addAll(games);
     }
 
     // TODO: Write tests for this method
     private List<Game> findMatchingName(List<Game> games, String query){
         List<Game> matchingGames = new ArrayList<>();
+        if(query.isEmpty())
+            return games;
+
         for(Game g : games){
-            if(g.getName().contains(query)){
+            if(g.getName().toLowerCase().contains(query.toLowerCase())){
                 matchingGames.add(g);
             }
         }
