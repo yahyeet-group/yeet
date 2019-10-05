@@ -4,27 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/gameSeachName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:text="GameName"
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/gameListImage"
         app:layout_constraintTop_toTopOf="@+id/gameListImage" />
 
     <TextView
-        android:id="@+id/gameSearchPlayers"
+        android:id="@+id/gameListTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:text="PlayerAmount"
-        android:textSize="24sp"
-        app:layout_constraintStart_toEndOf="@+id/gameSeachName"
-        app:layout_constraintTop_toTopOf="@+id/gameSeachName" />
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="Time"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/gameListDifficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Difficulty"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/gameListTime"
+        app:layout_constraintTop_toBottomOf="@+id/gameListTime" />
+
+    <TextView
+        android:id="@+id/gameListRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Rating"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/gameListDifficulty"
+        app:layout_constraintTop_toBottomOf="@+id/gameListDifficulty" />
 
     <ImageView
         android:id="@+id/gameListImage"
@@ -32,6 +53,8 @@
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@color/colorAccent" />

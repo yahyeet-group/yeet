@@ -20,7 +20,7 @@
 
     <ListView
         android:id="@+id/gameListView"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,7 @@
 
     <GridView
         android:id="@+id/gameGridView"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:columnWidth="92dp"
         android:gravity="center"

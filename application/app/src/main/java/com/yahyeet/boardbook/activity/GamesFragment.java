@@ -58,15 +58,27 @@ public class GamesFragment extends Fragment implements IGameFragment{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                gamePresenter.updateGamesWithQuery(searchInput.getText().toString());
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                gamePresenter.updateGamesWithQuery(searchInput.getText().toString());
+
             }
         });
 
+        int width = getScreenMetrics().widthPixels;
+        gameGridView.setColumnWidth(width / 3);
+
+
         enableGameGrid();
+    }
+
+    private DisplayMetrics getScreenMetrics(){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        // TODO: Make sure activity is not null, fragment exists without activity?
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics;
     }
 
     public void enableGameList(){
@@ -76,15 +88,7 @@ public class GamesFragment extends Fragment implements IGameFragment{
     }
 
     public void enableGameGrid(){
-        // Get window size
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        // TODO: Make sure activity is not null, fragment exists without activity?
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int width = displayMetrics.widthPixels;
-        gameGridView.setColumnWidth(width / 3);
-
         gamePresenter.displayGameGrid(getView().getContext(), gameGridView);
-
         gameGridView.setVisibility(View.VISIBLE);
         gameListView.setVisibility(View.INVISIBLE);
     }

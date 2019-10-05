@@ -11,6 +11,7 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="10dp"
         app:chainUseRtl="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,21 +23,13 @@
         android:id="@+id/gameGridName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
         android:text="GameName"
         android:textAlignment="center"
         android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/gameGridImage"
         app:layout_constraintStart_toStartOf="@+id/gameGridImage"
         app:layout_constraintTop_toBottomOf="@+id/gameGridImage" />
 
-    <TextView
-        android:id="@+id/gameGridPlayers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Players: 5"
-        android:textAlignment="center"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/gameGridName"
-        app:layout_constraintStart_toStartOf="@+id/gameGridName"
-        app:layout_constraintTop_toBottomOf="@+id/gameGridName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

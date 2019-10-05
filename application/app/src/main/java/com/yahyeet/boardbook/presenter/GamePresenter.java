@@ -1,6 +1,7 @@
 package com.yahyeet.boardbook.presenter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
@@ -20,6 +21,8 @@ public class GamePresenter {
     private BaseAdapter listAdapter;
     private BaseAdapter gridAdapter;
 
+    private String lastQuery;
+
     private boolean gameListEnabled;
     private boolean gameGridEnabled;
 
@@ -38,6 +41,7 @@ public class GamePresenter {
             enableGameList(viewContext, gameListView);
         gameListEnabled = true;
         gameGridEnabled = false;
+        updateDataset(lastQuery);
     }
 
     public void displayGameGrid(Context viewContext, GridView gameGridView){
@@ -45,6 +49,7 @@ public class GamePresenter {
             enableGameGrid(viewContext, gameGridView);
         gameGridEnabled = true;
         gameListEnabled = false;
+        updateDataset(lastQuery);
     }
 
     private void enableGameList(Context viewContext, ListView gameListView){
@@ -68,6 +73,7 @@ public class GamePresenter {
 
 
     public void updateGamesWithQuery(String query){
+        lastQuery = query;
         updateDataset(query);
         if(gameListEnabled)
             listAdapter.notifyDataSetChanged();
@@ -89,17 +95,18 @@ public class GamePresenter {
         dataset.add(new Game("Third Name ", "Desc", "Null"));
         dataset.add(new Game("Fourth name", "Desc", "Null"));
 
+        for(int i = 0; i < 20; i++){
+            dataset.add(new Game( "Name: " + i, "Desc", "Null"));
+        }
+
         // Cashes all games, remove later
         mockGames.addAll(dataset);
     }
 
     // TODO: Method requires better name
     private void updateDataset(String query){
-
-
         // Test Code
         List<Game> games = findMatchingName(mockGames, query);
-
 
         //List<Game> games = new ArrayList<>();
         /*try{
@@ -118,7 +125,7 @@ public class GamePresenter {
     // TODO: Write tests for this method
     private List<Game> findMatchingName(List<Game> games, String query){
         List<Game> matchingGames = new ArrayList<>();
-        if(query.isEmpty())
+        if(TextUtils.isEmpty(query))
             return games;
 
         for(Game g : games){

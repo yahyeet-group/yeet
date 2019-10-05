@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.yahyeet.boardbook.R;
@@ -27,10 +26,7 @@ public class GameGridAdapter extends GameAdapter {
     @Override
     void setupViewElements(View convertView, Game currentItem) {
         TextView textViewName = convertView.findViewById(R.id.gameGridName);
-        TextView textViewPlayers = convertView.findViewById(R.id.gameGridPlayers);
 
         textViewName.setText(currentItem.getName());
-        // TODO: Add playercount to game
-        textViewPlayers.setText("5 Players");
     }
 }
