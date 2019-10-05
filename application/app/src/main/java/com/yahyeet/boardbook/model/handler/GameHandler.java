@@ -1,7 +1,7 @@
 package com.yahyeet.boardbook.model.handler;
 
 import com.yahyeet.boardbook.model.entity.Game;
-import com.yahyeet.boardbook.model.repository.IGameRepository;
+import com.yahyeet.boardbook.model.repository.IRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +9,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class GameHandler {
 
-    private IGameRepository gameRepository;
+    private IRepository<Game> gameRepository;
     private List<GameHandlerListener> listeners = new ArrayList<>();
     private List<Game> games = new ArrayList<>();
 
-    public GameHandler(IGameRepository gameRepository) {
+    public GameHandler(IRepository<Game> gameRepository) {
         this.gameRepository = gameRepository;
     }
 

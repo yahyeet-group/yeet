@@ -1,7 +1,7 @@
 package com.yahyeet.boardbook.model.handler;
 
 import com.yahyeet.boardbook.model.entity.ChatMessage;
-import com.yahyeet.boardbook.model.repository.IChatMessageRepository;
+import com.yahyeet.boardbook.model.repository.IRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +9,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class ChatMessageHandler {
 
-    private IChatMessageRepository chatMessageRepository;
+    private IRepository<ChatMessage> chatMessageRepository;
     private List<ChatMessageHandlerListener> listeners = new ArrayList<>();
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
-    public ChatMessageHandler(IChatMessageRepository chatMessageRepository) {
+    public ChatMessageHandler(IRepository<ChatMessage> chatMessageRepository) {
         this.chatMessageRepository = chatMessageRepository;
     }
 
