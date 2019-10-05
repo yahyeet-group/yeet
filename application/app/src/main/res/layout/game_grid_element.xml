@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/gameGridImage"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:chainUseRtl="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/gameGridName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GameName"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/gameGridImage"
+        app:layout_constraintStart_toStartOf="@+id/gameGridImage"
+        app:layout_constraintTop_toBottomOf="@+id/gameGridImage" />
+
+    <TextView
+        android:id="@+id/gameGridPlayers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Players: 5"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/gameGridName"
+        app:layout_constraintStart_toStartOf="@+id/gameGridName"
+        app:layout_constraintTop_toBottomOf="@+id/gameGridName" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,27 +12,25 @@ import com.yahyeet.boardbook.model.entity.Game;
 
 import java.util.List;
 
-public class GameListAdapter extends GameAdapter {
+public class GameGridAdapter extends GameAdapter {
 
-    public GameListAdapter(Context context, List<Game> gameList) {
+
+    public GameGridAdapter(Context context, List<Game> gameList) {
         super(context, gameList);
     }
 
-
     @Override
-    protected View getConvertView(ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.game_list_element, parent, false);
+    View getConvertView(ViewGroup parent) {
+        return LayoutInflater.from(context).inflate(R.layout.game_grid_element, parent, false);
     }
 
     @Override
     void setupViewElements(View convertView, Game currentItem) {
-        TextView textViewName = convertView.findViewById(R.id.gameSeachName);
-        TextView textViewPlayers = convertView.findViewById(R.id.gameSearchPlayers);
+        TextView textViewName = convertView.findViewById(R.id.gameGridName);
+        TextView textViewPlayers = convertView.findViewById(R.id.gameGridPlayers);
 
         textViewName.setText(currentItem.getName());
         // TODO: Add playercount to game
         textViewPlayers.setText("5 Players");
     }
-
-
 }
