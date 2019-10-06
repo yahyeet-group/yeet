@@ -11,7 +11,6 @@ public class UserHandler {
 
     private IUserRepository userRepository;
     private List<UserHandlerListener> listeners = new ArrayList<>();
-    private List<User> users = new ArrayList<>();
 
     public UserHandler(IUserRepository userRepository) {
         this.userRepository = userRepository;
@@ -19,8 +18,6 @@ public class UserHandler {
 
     public CompletableFuture<User> create(User user) {
         return userRepository.create(user).thenApply((u) -> {
-            addUser(u);
-
             notifyListenersOnUserAdd(u);
 
             return u;
@@ -28,24 +25,12 @@ public class UserHandler {
     }
 
     public CompletableFuture<User> find(String id) {
-        User user = findUser(id);
-
-        if (user == null) {
-            return userRepository.find(id).thenApply((u -> {
-                addUser(u);
-
-                return u;
-            }));
-        }
-
-        return CompletableFuture.completedFuture(user);
+        return userRepository.find(id);
     }
 
 
     public CompletableFuture<User> update(User user) {
         return userRepository.update(user).thenApply((u) -> {
-            updateUser(u);
-
             notifyListenersOnUserUpdate(u);
 
             return u;
@@ -55,8 +40,6 @@ public class UserHandler {
 
     public CompletableFuture<Void> remove(User user) {
         return userRepository.remove(user).thenApply((v) -> {
-            removeUser(user);
-
             notifyListenersOnUserRemove(user);
 
             return null;
@@ -90,37 +73,6 @@ public class UserHandler {
     private void notifyListenersOnUserRemove(User user) {
         for (UserHandlerListener listener : listeners) {
             listener.onRemoveUser(user);
-        }
-    }
-
-    private User findUser(String id) {
-        for (User user : users) {
-            if (user.getId().equals(id)) {
-                return user;
-            }
-        }
-
-        return null;
-    }
-
-    private void addUser(User user) {
-        users.add(user);
-    }
-
-    private void updateUser(User user) {
-        for (int index = 0; index < users.size(); ++index) {
-            if (user.getId().equals(users.get(index).getId())) {
-                users.set(index, user);
-            }
-        }
-    }
-
-    private void removeUser(User user) {
-        for (int index = 0; index < users.size(); ++index) {
-            if (user.getId().equals(users.get(index).getId())) {
-                users.remove(index);
-                return;
-            }
         }
     }
 }

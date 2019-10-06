@@ -23,15 +23,11 @@ public class BoardbookSingleton {
 
             IUserRepository userRepository = new FirebaseUserRepository(FirebaseFirestore.getInstance());
 
-            UserHandler userHandler = new UserHandler(userRepository);
-
             instance = new Boardbook(
-                    new FirebaseAuthService(FirebaseAuth.getInstance(), userHandler),
-                    userHandler,
+                    new FirebaseAuthService(FirebaseAuth.getInstance(), userRepository),
+                    userRepository,
                     new FirebaseGameRepository(FirebaseFirestore.getInstance()),
-                    new FirebaseMatchRepository(FirebaseFirestore.getInstance()),
-                    new FirebaseChatGroupRepository(FirebaseFirestore.getInstance()),
-                    new FirebaseChatMessageRepository(FirebaseFirestore.getInstance())
+                    new FirebaseMatchRepository(FirebaseFirestore.getInstance())
             );
 
             return instance;

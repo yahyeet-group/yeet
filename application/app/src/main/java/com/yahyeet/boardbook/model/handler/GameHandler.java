@@ -11,7 +11,6 @@ public class GameHandler {
 
     private IGameRepository gameRepository;
     private List<GameHandlerListener> listeners = new ArrayList<>();
-    private List<Game> games = new ArrayList<>();
 
     public GameHandler(IGameRepository gameRepository) {
         this.gameRepository = gameRepository;
@@ -19,8 +18,6 @@ public class GameHandler {
 
     public CompletableFuture<Game> create(Game game) {
         return gameRepository.create(game).thenApply((u) -> {
-            addGame(u);
-
             notifyListenersOnGameAdd(u);
 
             return u;
@@ -28,24 +25,12 @@ public class GameHandler {
     }
 
     public CompletableFuture<Game> find(String id) {
-        Game game = findGame(id);
-
-        if (game == null) {
-            return gameRepository.find(id).thenApply((g -> {
-                addGame(g);
-
-                return g;
-            }));
-        }
-
-        return CompletableFuture.completedFuture(game);
+        return gameRepository.find(id);
     }
 
 
     public CompletableFuture<Game> update(Game game) {
         return gameRepository.update(game).thenApply((u) -> {
-            updateGame(u);
-
             notifyListenersOnGameUpdate(u);
 
             return u;
@@ -55,8 +40,6 @@ public class GameHandler {
 
     public CompletableFuture<Void> remove(Game game) {
         return gameRepository.remove(game).thenApply((v) -> {
-            removeGame(game);
-
             notifyListenersOnGameRemove(game);
 
             return null;
@@ -90,37 +73,6 @@ public class GameHandler {
     private void notifyListenersOnGameRemove(Game game) {
         for (GameHandlerListener listener : listeners) {
             listener.onRemoveGame(game);
-        }
-    }
-
-    private Game findGame(String id) {
-        for (Game game : games) {
-            if (game.getId().equals(id)) {
-                return game;
-            }
-        }
-
-        return null;
-    }
-
-    private void addGame(Game game) {
-        games.add(game);
-    }
-
-    private void updateGame(Game game) {
-        for (int index = 0; index < games.size(); ++index) {
-            if (game.getId().equals(games.get(index).getId())) {
-                games.set(index, game);
-            }
-        }
-    }
-
-    private void removeGame(Game game) {
-        for (int index = 0; index < games.size(); ++index) {
-            if (game.getId().equals(games.get(index).getId())) {
-                games.remove(index);
-                return;
-            }
         }
     }
 }

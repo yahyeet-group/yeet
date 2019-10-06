@@ -8,8 +8,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.model.handler.UserHandler;
-import com.yahyeet.boardbook.model.service.IAuthService;
+import com.yahyeet.boardbook.model.repository.IUserRepository;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -19,11 +18,11 @@ public class FirebaseAuthService implements IAuthService {
     private static final String TAG = "Authentication";
 
     private FirebaseAuth firebaseAuth;
-    private UserHandler userHandler;
+    private IUserRepository userRepository;
 
-    public FirebaseAuthService(FirebaseAuth firebaseAuth, UserHandler userHandler){
+    public FirebaseAuthService(FirebaseAuth firebaseAuth, IUserRepository userRepository){
         this.firebaseAuth = firebaseAuth;
-        this.userHandler = userHandler;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -41,7 +40,7 @@ public class FirebaseAuthService implements IAuthService {
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
-        }).thenCompose(uid -> userHandler.find(uid));
+        }).thenCompose(uid -> userRepository.find(uid));
     }
 
     @Override
