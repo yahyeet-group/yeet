@@ -1,7 +1,7 @@
 package com.yahyeet.boardbook.model.handler;
 
 import com.yahyeet.boardbook.model.entity.Match;
-import com.yahyeet.boardbook.model.repository.IRepository;
+import com.yahyeet.boardbook.model.repository.IMatchRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +9,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class MatchHandler {
 
-    private IRepository<Match> matchRepository;
+    private IMatchRepository matchRepository;
     private List<MatchHandlerListener> listeners = new ArrayList<>();
     private List<Match> matchs = new ArrayList<>();
 
-    public MatchHandler(IRepository<Match> matchRepository) {
+    public MatchHandler(IMatchRepository matchRepository) {
         this.matchRepository = matchRepository;
     }
 

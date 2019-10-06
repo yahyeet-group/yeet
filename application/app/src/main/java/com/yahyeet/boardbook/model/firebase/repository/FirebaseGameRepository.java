@@ -8,7 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.yahyeet.boardbook.model.entity.Game;
-import com.yahyeet.boardbook.model.repository.IRepository;
+import com.yahyeet.boardbook.model.repository.IGameRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
-public class FirebaseGameRepository implements IRepository<Game> {
+public class FirebaseGameRepository implements IGameRepository {
     private FirebaseFirestore firestore;
 
     public static final String COLLECTION_NAME = "games";

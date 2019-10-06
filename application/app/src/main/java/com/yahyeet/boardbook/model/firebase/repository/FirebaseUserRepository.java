@@ -8,7 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.model.repository.IRepository;
+import com.yahyeet.boardbook.model.repository.IUserRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
 
-public class FirebaseUserRepository implements IRepository<User> {
+public class FirebaseUserRepository implements IUserRepository {
     private FirebaseFirestore firestore;
 
     public static final String COLLECTION_NAME = "users";

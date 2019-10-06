@@ -10,6 +10,7 @@ import com.yahyeet.boardbook.model.firebase.repository.FirebaseMatchRepository;
 import com.yahyeet.boardbook.model.firebase.repository.FirebaseUserRepository;
 import com.yahyeet.boardbook.model.firebase.service.FirebaseAuthService;
 import com.yahyeet.boardbook.model.handler.UserHandler;
+import com.yahyeet.boardbook.model.repository.IUserRepository;
 
 public class BoardbookSingleton {
     private static Boardbook instance;

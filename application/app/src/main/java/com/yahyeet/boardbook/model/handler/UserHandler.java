@@ -1,7 +1,7 @@
 package com.yahyeet.boardbook.model.handler;
 
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.model.repository.IRepository;
+import com.yahyeet.boardbook.model.repository.IUserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +9,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class UserHandler {
 
-    private IRepository<User> userRepository;
+    private IUserRepository userRepository;
     private List<UserHandlerListener> listeners = new ArrayList<>();
     private List<User> users = new ArrayList<>();
 
-    public UserHandler(IRepository<User> userRepository) {
+    public UserHandler(IUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
