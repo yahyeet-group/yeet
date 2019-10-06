@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.model.firebase.repository;
+package com.yahyeet.boardbook.model.repository;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -7,8 +7,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.model.repository.IUserRepository;
+import com.yahyeet.boardbook.model.entity.ChatGroup;
+import com.yahyeet.boardbook.model.repository.IChatGroupRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,22 +17,21 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
-
-public class FirebaseUserRepository implements IUserRepository {
+public class FirebaseChatGroupRepository implements IChatGroupRepository {
     private FirebaseFirestore firestore;
 
-    public static final String COLLECTION_NAME = "users";
+    public static final String COLLECTION_NAME = "chatGroups";
 
-    public FirebaseUserRepository(FirebaseFirestore firestore) {
+    public FirebaseChatGroupRepository(FirebaseFirestore firestore) {
         this.firestore = firestore;
     }
 
     @Override
-    public CompletableFuture<User> create(User user) {
-        if (user.getId() == null) {
+    public CompletableFuture<ChatGroup> create(ChatGroup chatGroup) {
+        if (chatGroup.getId() == null) {
             return CompletableFuture.supplyAsync(() -> {
                 Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
-                        .add(userToMap(user));
+                        .add(chatGroupToMap(chatGroup));
 
                 try {
                     DocumentReference documentReference = Tasks.await(task);
@@ -44,12 +43,12 @@ public class FirebaseUserRepository implements IUserRepository {
             }).thenCompose(this::find);
         } else {
             return CompletableFuture.supplyAsync(() -> {
-                Task<Void> task = firestore.collection(COLLECTION_NAME).document(user.getId()).set(userToMap(user));
+                Task<Void> task = firestore.collection(COLLECTION_NAME).document(chatGroup.getId()).set(chatGroupToMap(chatGroup));
 
                 try {
                     Tasks.await(task);
 
-                    return user.getId();
+                    return chatGroup.getId();
                 } catch (Exception e) {
                     throw new CompletionException(e);
                 }
@@ -58,7 +57,7 @@ public class FirebaseUserRepository implements IUserRepository {
     }
 
     @Override
-    public CompletableFuture<User> find(String id) {
+    public CompletableFuture<ChatGroup> find(String id) {
         return CompletableFuture.supplyAsync(() -> {
             Task<DocumentSnapshot> task = firestore.collection(COLLECTION_NAME).document(id).get();
 
@@ -66,10 +65,10 @@ public class FirebaseUserRepository implements IUserRepository {
                 DocumentSnapshot document = Tasks.await(task);
 
                 if (document.exists()) {
-                    return documentToUser(document);
+                    return documentToChatGroup(document);
                 }
 
-                throw new CompletionException(new Exception("User not found"));
+                throw new CompletionException(new Exception("ChatGroup not found"));
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
@@ -77,16 +76,16 @@ public class FirebaseUserRepository implements IUserRepository {
     }
 
     @Override
-    public CompletableFuture<User> update(User user) {
+    public CompletableFuture<ChatGroup> update(ChatGroup chatGroup) {
         return CompletableFuture.supplyAsync(() -> {
             Task<Void> task = firestore.collection(COLLECTION_NAME)
-                    .document(user.getId())
-                    .update(userToMap(user));
+                    .document(chatGroup.getId())
+                    .update(chatGroupToMap(chatGroup));
 
             try {
                 Tasks.await(task);
 
-                return user.getId();
+                return chatGroup.getId();
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
@@ -94,9 +93,9 @@ public class FirebaseUserRepository implements IUserRepository {
     }
 
     @Override
-    public CompletableFuture<Void> remove(User user) {
+    public CompletableFuture<Void> remove(ChatGroup chatGroup) {
         return CompletableFuture.supplyAsync(() -> {
-            Task<Void> task = firestore.collection(COLLECTION_NAME).document(user.getId()).delete();
+            Task<Void> task = firestore.collection(COLLECTION_NAME).document(chatGroup.getId()).delete();
 
             try {
                 Tasks.await(task);
@@ -109,47 +108,36 @@ public class FirebaseUserRepository implements IUserRepository {
     }
 
     @Override
-    public CompletableFuture<List<User>> all() {
+    public CompletableFuture<List<ChatGroup>> all() {
         return CompletableFuture.supplyAsync(() -> {
             Task<QuerySnapshot> task = firestore.collection(COLLECTION_NAME).get();
 
             try {
                 QuerySnapshot querySnapshot = Tasks.await(task);
 
-                List<User> users = new ArrayList<>();
+                List<ChatGroup> chatGroups = new ArrayList<>();
                 for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
-                    users.add(documentToUser(documentSnapshot));
+                    chatGroups.add(documentToChatGroup(documentSnapshot));
                 }
 
-                return users;
+                return chatGroups;
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
         });
     }
 
-    private static Map<String, Object> userToMap(User user) {
-        Map<String, Object> userMap = new HashMap<>();
+    private static Map<String, Object> chatGroupToMap(ChatGroup chatGroup) {
+        Map<String, Object> chatGroupMap = new HashMap<>();
 
-        userMap.put("email", user.getEmail());
-        userMap.put("name", user.getName());
-
-        return userMap;
+        return chatGroupMap;
     }
 
-    private static User documentToUser(DocumentSnapshot document) {
-        User user = new User();
+    private static ChatGroup documentToChatGroup(DocumentSnapshot document) {
+        ChatGroup chatGroup = new ChatGroup();
 
-        user.setId(document.getId());
+        chatGroup.setId(document.getId());
 
-        if (document.contains("email")) {
-            user.setEmail(document.getString("email"));
-        }
-
-        if (document.contains("name")) {
-            user.setName(document.getString("name"));
-        }
-
-        return user;
+        return chatGroup;
     }
 }

@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.model.firebase.repository;
+package com.yahyeet.boardbook.model.repository;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -7,8 +7,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.yahyeet.boardbook.model.entity.Match;
-import com.yahyeet.boardbook.model.repository.IMatchRepository;
+import com.yahyeet.boardbook.model.entity.Game;
+import com.yahyeet.boardbook.model.repository.IGameRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,21 +17,21 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
-public class FirebaseMatchRepository implements IMatchRepository {
+public class FirebaseGameRepository implements IGameRepository {
     private FirebaseFirestore firestore;
 
-    public static final String COLLECTION_NAME = "matches";
+    public static final String COLLECTION_NAME = "games";
 
-    public FirebaseMatchRepository(FirebaseFirestore firestore) {
+    public FirebaseGameRepository(FirebaseFirestore firestore) {
         this.firestore = firestore;
     }
 
     @Override
-    public CompletableFuture<Match> create(Match match) {
-        if (match.getId() == null) {
+    public CompletableFuture<Game> create(Game game) {
+        if (game.getId() == null) {
             return CompletableFuture.supplyAsync(() -> {
                 Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
-                        .add(matchToMap(match));
+                        .add(gameToMap(game));
 
                 try {
                     DocumentReference documentReference = Tasks.await(task);
@@ -43,12 +43,12 @@ public class FirebaseMatchRepository implements IMatchRepository {
             }).thenCompose(this::find);
         } else {
             return CompletableFuture.supplyAsync(() -> {
-                Task<Void> task = firestore.collection(COLLECTION_NAME).document(match.getId()).set(matchToMap(match));
+                Task<Void> task = firestore.collection(COLLECTION_NAME).document(game.getId()).set(gameToMap(game));
 
                 try {
                     Tasks.await(task);
 
-                    return match.getId();
+                    return game.getId();
                 } catch (Exception e) {
                     throw new CompletionException(e);
                 }
@@ -57,7 +57,7 @@ public class FirebaseMatchRepository implements IMatchRepository {
     }
 
     @Override
-    public CompletableFuture<Match> find(String id) {
+    public CompletableFuture<Game> find(String id) {
         return CompletableFuture.supplyAsync(() -> {
             Task<DocumentSnapshot> task = firestore.collection(COLLECTION_NAME).document(id).get();
 
@@ -65,10 +65,10 @@ public class FirebaseMatchRepository implements IMatchRepository {
                 DocumentSnapshot document = Tasks.await(task);
 
                 if (document.exists()) {
-                    return documentToMatch(document);
+                    return documentToGame(document);
                 }
 
-                throw new CompletionException(new Exception("Match not found"));
+                throw new CompletionException(new Exception("Game not found"));
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
@@ -76,16 +76,16 @@ public class FirebaseMatchRepository implements IMatchRepository {
     }
 
     @Override
-    public CompletableFuture<Match> update(Match match) {
+    public CompletableFuture<Game> update(Game game) {
         return CompletableFuture.supplyAsync(() -> {
             Task<Void> task = firestore.collection(COLLECTION_NAME)
-                    .document(match.getId())
-                    .update(matchToMap(match));
+                    .document(game.getId())
+                    .update(gameToMap(game));
 
             try {
                 Tasks.await(task);
 
-                return match.getId();
+                return game.getId();
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
@@ -93,9 +93,9 @@ public class FirebaseMatchRepository implements IMatchRepository {
     }
 
     @Override
-    public CompletableFuture<Void> remove(Match match) {
+    public CompletableFuture<Void> remove(Game game) {
         return CompletableFuture.supplyAsync(() -> {
-            Task<Void> task = firestore.collection(COLLECTION_NAME).document(match.getId()).delete();
+            Task<Void> task = firestore.collection(COLLECTION_NAME).document(game.getId()).delete();
 
             try {
                 Tasks.await(task);
@@ -108,36 +108,36 @@ public class FirebaseMatchRepository implements IMatchRepository {
     }
 
     @Override
-    public CompletableFuture<List<Match>> all() {
+    public CompletableFuture<List<Game>> all() {
         return CompletableFuture.supplyAsync(() -> {
             Task<QuerySnapshot> task = firestore.collection(COLLECTION_NAME).get();
 
             try {
                 QuerySnapshot querySnapshot = Tasks.await(task);
 
-                List<Match> matches = new ArrayList<>();
+                List<Game> games = new ArrayList<>();
                 for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
-                    matches.add(documentToMatch(documentSnapshot));
+                    games.add(documentToGame(documentSnapshot));
                 }
 
-                return matches;
+                return games;
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
         });
     }
 
-    private static Map<String, Object> matchToMap(Match match) {
-        Map<String, Object> matchMap = new HashMap<>();
+    private static Map<String, Object> gameToMap(Game game) {
+        Map<String, Object> gameMap = new HashMap<>();
 
-        return matchMap;
+        return gameMap;
     }
 
-    private static Match documentToMatch(DocumentSnapshot document) {
-        Match match = new Match();
+    private static Game documentToGame(DocumentSnapshot document) {
+        Game game = new Game();
 
-        match.setId(document.getId());
+        game.setId(document.getId());
 
-        return match;
+        return game;
     }
 }

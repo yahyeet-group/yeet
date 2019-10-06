@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.model.firebase.service;
+package com.yahyeet.boardbook.model.service;
 
 import android.util.Log;
 

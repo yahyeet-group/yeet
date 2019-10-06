@@ -3,12 +3,12 @@ package com.yahyeet.boardbook.presenter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.yahyeet.boardbook.model.Boardbook;
-import com.yahyeet.boardbook.model.firebase.repository.FirebaseChatGroupRepository;
-import com.yahyeet.boardbook.model.firebase.repository.FirebaseChatMessageRepository;
-import com.yahyeet.boardbook.model.firebase.repository.FirebaseGameRepository;
-import com.yahyeet.boardbook.model.firebase.repository.FirebaseMatchRepository;
-import com.yahyeet.boardbook.model.firebase.repository.FirebaseUserRepository;
-import com.yahyeet.boardbook.model.firebase.service.FirebaseAuthService;
+import com.yahyeet.boardbook.model.repository.FirebaseChatGroupRepository;
+import com.yahyeet.boardbook.model.repository.FirebaseChatMessageRepository;
+import com.yahyeet.boardbook.model.repository.FirebaseGameRepository;
+import com.yahyeet.boardbook.model.repository.FirebaseMatchRepository;
+import com.yahyeet.boardbook.model.repository.FirebaseUserRepository;
+import com.yahyeet.boardbook.model.service.FirebaseAuthService;
 import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.model.repository.IUserRepository;
 

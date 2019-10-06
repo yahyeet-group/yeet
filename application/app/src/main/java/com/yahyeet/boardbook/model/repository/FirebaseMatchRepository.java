@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.model.firebase.repository;
+package com.yahyeet.boardbook.model.repository;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -7,8 +7,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.yahyeet.boardbook.model.entity.ChatGroup;
-import com.yahyeet.boardbook.model.repository.IChatGroupRepository;
+import com.yahyeet.boardbook.model.entity.Match;
+import com.yahyeet.boardbook.model.repository.IMatchRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,21 +17,21 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
-public class FirebaseChatGroupRepository implements IChatGroupRepository {
+public class FirebaseMatchRepository implements IMatchRepository {
     private FirebaseFirestore firestore;
 
-    public static final String COLLECTION_NAME = "chatGroups";
+    public static final String COLLECTION_NAME = "matches";
 
-    public FirebaseChatGroupRepository(FirebaseFirestore firestore) {
+    public FirebaseMatchRepository(FirebaseFirestore firestore) {
         this.firestore = firestore;
     }
 
     @Override
-    public CompletableFuture<ChatGroup> create(ChatGroup chatGroup) {
-        if (chatGroup.getId() == null) {
+    public CompletableFuture<Match> create(Match match) {
+        if (match.getId() == null) {
             return CompletableFuture.supplyAsync(() -> {
                 Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
-                        .add(chatGroupToMap(chatGroup));
+                        .add(matchToMap(match));
 
                 try {
                     DocumentReference documentReference = Tasks.await(task);
@@ -43,12 +43,12 @@ public class FirebaseChatGroupRepository implements IChatGroupRepository {
             }).thenCompose(this::find);
         } else {
             return CompletableFuture.supplyAsync(() -> {
-                Task<Void> task = firestore.collection(COLLECTION_NAME).document(chatGroup.getId()).set(chatGroupToMap(chatGroup));
+                Task<Void> task = firestore.collection(COLLECTION_NAME).document(match.getId()).set(matchToMap(match));
 
                 try {
                     Tasks.await(task);
 
-                    return chatGroup.getId();
+                    return match.getId();
                 } catch (Exception e) {
                     throw new CompletionException(e);
                 }
@@ -57,7 +57,7 @@ public class FirebaseChatGroupRepository implements IChatGroupRepository {
     }
 
     @Override
-    public CompletableFuture<ChatGroup> find(String id) {
+    public CompletableFuture<Match> find(String id) {
         return CompletableFuture.supplyAsync(() -> {
             Task<DocumentSnapshot> task = firestore.collection(COLLECTION_NAME).document(id).get();
 
@@ -65,10 +65,10 @@ public class FirebaseChatGroupRepository implements IChatGroupRepository {
                 DocumentSnapshot document = Tasks.await(task);
 
                 if (document.exists()) {
-                    return documentToChatGroup(document);
+                    return documentToMatch(document);
                 }
 
-                throw new CompletionException(new Exception("ChatGroup not found"));
+                throw new CompletionException(new Exception("Match not found"));
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
@@ -76,16 +76,16 @@ public class FirebaseChatGroupRepository implements IChatGroupRepository {
     }
 
     @Override
-    public CompletableFuture<ChatGroup> update(ChatGroup chatGroup) {
+    public CompletableFuture<Match> update(Match match) {
         return CompletableFuture.supplyAsync(() -> {
             Task<Void> task = firestore.collection(COLLECTION_NAME)
-                    .document(chatGroup.getId())
-                    .update(chatGroupToMap(chatGroup));
+                    .document(match.getId())
+                    .update(matchToMap(match));
 
             try {
                 Tasks.await(task);
 
-                return chatGroup.getId();
+                return match.getId();
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
@@ -93,9 +93,9 @@ public class FirebaseChatGroupRepository implements IChatGroupRepository {
     }
 
     @Override
-    public CompletableFuture<Void> remove(ChatGroup chatGroup) {
+    public CompletableFuture<Void> remove(Match match) {
         return CompletableFuture.supplyAsync(() -> {
-            Task<Void> task = firestore.collection(COLLECTION_NAME).document(chatGroup.getId()).delete();
+            Task<Void> task = firestore.collection(COLLECTION_NAME).document(match.getId()).delete();
 
             try {
                 Tasks.await(task);
@@ -108,36 +108,36 @@ public class FirebaseChatGroupRepository implements IChatGroupRepository {
     }
 
     @Override
-    public CompletableFuture<List<ChatGroup>> all() {
+    public CompletableFuture<List<Match>> all() {
         return CompletableFuture.supplyAsync(() -> {
             Task<QuerySnapshot> task = firestore.collection(COLLECTION_NAME).get();
 
             try {
                 QuerySnapshot querySnapshot = Tasks.await(task);
 
-                List<ChatGroup> chatGroups = new ArrayList<>();
+                List<Match> matches = new ArrayList<>();
                 for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
-                    chatGroups.add(documentToChatGroup(documentSnapshot));
+                    matches.add(documentToMatch(documentSnapshot));
                 }
 
-                return chatGroups;
+                return matches;
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
         });
     }
 
-    private static Map<String, Object> chatGroupToMap(ChatGroup chatGroup) {
-        Map<String, Object> chatGroupMap = new HashMap<>();
+    private static Map<String, Object> matchToMap(Match match) {
+        Map<String, Object> matchMap = new HashMap<>();
 
-        return chatGroupMap;
+        return matchMap;
     }
 
-    private static ChatGroup documentToChatGroup(DocumentSnapshot document) {
-        ChatGroup chatGroup = new ChatGroup();
+    private static Match documentToMatch(DocumentSnapshot document) {
+        Match match = new Match();
 
-        chatGroup.setId(document.getId());
+        match.setId(document.getId());
 
-        return chatGroup;
+        return match;
     }
 }
