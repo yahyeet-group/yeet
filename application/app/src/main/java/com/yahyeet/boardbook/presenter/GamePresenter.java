@@ -1,7 +1,9 @@
 package com.yahyeet.boardbook.presenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ListView;

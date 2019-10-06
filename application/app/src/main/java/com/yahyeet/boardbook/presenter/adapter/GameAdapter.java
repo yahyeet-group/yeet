@@ -1,6 +1,8 @@
 package com.yahyeet.boardbook.presenter.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,15 +11,16 @@ import android.widget.TextView;
 
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.model.entity.Game;
+import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
 import java.util.List;
 
 public abstract class GameAdapter extends BaseAdapter {
 
     protected Context context;
-    protected List<Game> gameList;
+    private  List<Game> gameList;
 
-    public GameAdapter(Context context, List<Game> gameList){
+    GameAdapter(Context context, List<Game> gameList){
         this.context = context;
         this.gameList = gameList;
     }
@@ -43,6 +46,14 @@ public abstract class GameAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = getConvertView(parent);
         }
+
+
+        convertView.setOnClickListener(view -> {
+            Intent intent = new Intent();
+            intent.putExtra("Game", gameList.get(position).getId());
+            context.startActivity(intent);
+
+        });
 
         Game currentItem = (Game) getItem(position);
         setupViewElements(convertView, currentItem);

@@ -9,6 +9,9 @@ import com.yahyeet.boardbook.activity.IHomeFragment;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.presenter.adapter.MatchAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomePresenter {
 
     private MatchAdapter matchAdapter;
@@ -35,9 +38,9 @@ public class HomePresenter {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
         matchRecyclerView.setLayoutManager(layoutManager);
         //TODO: Replace with matches from user
-        Match[] data = new Match[20];
+        List<Match> data = new ArrayList<>();
         for(int i = 0; i < 20; i++)
-            data[i] = new Match();
+            data.add(new Match());
         matchAdapter = new MatchAdapter(data);
         matchRecyclerView.setAdapter(matchAdapter);
     }
