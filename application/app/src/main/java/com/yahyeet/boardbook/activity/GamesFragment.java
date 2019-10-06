@@ -41,7 +41,7 @@ public class GamesFragment extends Fragment implements IGameFragment{
         Button enableList = getView().findViewById(R.id.listDisplayButton);
         Button enableGrid = getView().findViewById(R.id.gridDisplayButton);
 
-        // TODO: Figure out why it wants view1 and view2 as parameters
+
         enableList.setOnClickListener(view1 -> enableGameList());
         enableGrid.setOnClickListener(view2 -> enableGameGrid());
 

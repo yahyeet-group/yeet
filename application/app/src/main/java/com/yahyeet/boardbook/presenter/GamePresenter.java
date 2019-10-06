@@ -15,6 +15,8 @@ import com.yahyeet.boardbook.presenter.adapter.GameListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Function;
 
 public class GamePresenter {
 
@@ -23,12 +25,11 @@ public class GamePresenter {
     private BaseAdapter listAdapter;
     private BaseAdapter gridAdapter;
 
-    private String lastQuery;
+    // Initiated to no initial search
+    private String lastQuery = "";
 
     private boolean gameListEnabled;
     private boolean gameGridEnabled;
-
-    List<Game> mockGames = new ArrayList<>();
 
 
 
@@ -36,13 +37,12 @@ public class GamePresenter {
         this.gameFragment = gameFragment;
     }
 
-
-
     public void displayGameList(Context viewContext, ListView gameListView){
         if(listAdapter == null)
             enableGameList(viewContext, gameListView);
         gameListEnabled = true;
         gameGridEnabled = false;
+
         updateDataset(lastQuery);
     }
 
@@ -51,6 +51,7 @@ public class GamePresenter {
             enableGameGrid(viewContext, gameGridView);
         gameGridEnabled = true;
         gameListEnabled = false;
+
         updateDataset(lastQuery);
     }
 
@@ -87,41 +88,36 @@ public class GamePresenter {
     private void initiateDataset(){
         dataset = new ArrayList<>();
 
-        // TODO: Enable when boardbook has games
-        //BoardbookSingleton.getInstance().getGameHandler().all().thenApply((Function<List<Game>, Object>) dataset::addAll);
-
-
         // TODO: Long names mess with other objects in grid
-        dataset.add(new Game("First Name", "Desc", "Null"));
-        dataset.add(new Game("Second Name", "Desc", "Null"));
-        dataset.add(new Game("Third Name ", "Desc", "Null"));
-        dataset.add(new Game("Fourth name", "Desc", "Null"));
-
-        for(int i = 0; i < 20; i++){
-            dataset.add(new Game( "Name: " + i, "Desc", "Null"));
-        }
+        // TODO: Enable when boardbook has games
+        BoardbookSingleton.getInstance().getGameHandler().all().thenApply((Function<List<Game>, Object>) dataset::addAll);
 
         // Cashes all games, remove later
-        mockGames.addAll(dataset);
+        //mockGames.addAll(dataset);
     }
 
     // TODO: Method requires better name
     private void updateDataset(String query){
         // Test Code
-        List<Game> games = findMatchingName(mockGames, query);
 
-        //List<Game> games = new ArrayList<>();
-        /*try{
+        List<Game> games = new ArrayList<>();
+        try{
             // TODO: Needs to be implemented, might cause lag in app
-            games = findMatchingName(BoardbookSingleton.getInstance().getGameHandler().all().get(), query);
+            games = BoardbookSingleton.getInstance().getGameHandler().all().get();
+
         }
         catch (InterruptedException | ExecutionException e){
             // TODO: Dunno what to do here, others required
-        }*/
+        }
 
-        // Need to keep same object listAdapter and this class
         dataset.clear();
-        dataset.addAll(games);
+
+        if(games != null && games.size() > 0){
+            games = findMatchingName(games, query);
+
+            // Need to keep same object in listAdapter and this class
+            dataset.addAll(games);
+        }
     }
 
     // TODO: Write tests for this method

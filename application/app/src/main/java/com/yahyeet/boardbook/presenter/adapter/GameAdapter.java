@@ -51,7 +51,7 @@ public abstract class GameAdapter extends BaseAdapter {
 
         convertView.setOnClickListener(view -> {
             Intent intent = new Intent(context, GameDetailActivity.class);
-            //intent.putExtra("Game", gameList.get(position).getId());
+            intent.putExtra("Game", gameList.get(position).getId());
             context.startActivity(intent);
 
         });

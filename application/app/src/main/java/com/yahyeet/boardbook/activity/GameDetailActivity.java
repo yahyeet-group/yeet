@@ -47,6 +47,13 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
         gameDescription = findViewById(R.id.gameDetailDescription);
         gameRules = findViewById(R.id.gameDetailRules);
 
+
+
+    }
+
+    protected void onStart() {
+        super.onStart();
+        gameDetailPresenter.initiateGameDetail();
     }
 
     public void setGameName(String name) {
