@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.GameDetailActivity;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
@@ -49,8 +50,8 @@ public abstract class GameAdapter extends BaseAdapter {
 
 
         convertView.setOnClickListener(view -> {
-            Intent intent = new Intent();
-            intent.putExtra("Game", gameList.get(position).getId());
+            Intent intent = new Intent(context, GameDetailActivity.class);
+            //intent.putExtra("Game", gameList.get(position).getId());
             context.startActivity(intent);
 
         });

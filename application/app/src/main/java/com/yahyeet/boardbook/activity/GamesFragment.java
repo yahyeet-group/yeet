@@ -43,7 +43,6 @@ public class GamesFragment extends Fragment implements IGameFragment{
 
         // TODO: Figure out why it wants view1 and view2 as parameters
         enableList.setOnClickListener(view1 -> enableGameList());
-
         enableGrid.setOnClickListener(view2 -> enableGameGrid());
 
         // TODO: Examine how these method calls can get nullPointerException
@@ -81,13 +80,13 @@ public class GamesFragment extends Fragment implements IGameFragment{
         return displayMetrics;
     }
 
-    public void enableGameList(){
+    private void enableGameList(){
         gamePresenter.displayGameList(getView().getContext(), gameListView);
         gameListView.setVisibility(View.VISIBLE);
         gameGridView.setVisibility(View.INVISIBLE);
     }
 
-    public void enableGameGrid(){
+    private void enableGameGrid(){
         gamePresenter.displayGameGrid(getView().getContext(), gameGridView);
         gameGridView.setVisibility(View.VISIBLE);
         gameListView.setVisibility(View.INVISIBLE);
