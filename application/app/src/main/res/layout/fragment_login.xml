@@ -5,7 +5,7 @@
     android:id="@+id/loginLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.LoginActivity">
+    tools:context=".activity.accountActivity.LoginFragment">
 
 
     <TextView
@@ -54,24 +54,14 @@
 
     <Button
         android:id="@+id/loginButton"
-        android:background="@drawable/custom_button"
         android:layout_width="174dp"
         android:layout_height="82dp"
         android:layout_marginStart="56dp"
-        android:layout_marginBottom="96dp"
-        android:onClick="loginAccount"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/custom_button"
         android:text="@string/login"
-        app:layout_constraintBottom_toBottomOf="@+id/newAccountButton"
-        app:layout_constraintStart_toStartOf="@+id/passLoginInput" />
-
-    <Button
-        android:id="@+id/newAccountButton"
-        android:layout_width="406dp"
-        android:layout_height="60dp"
-        android:onClick="showRegisterPage"
-        android:text="@string/newAcc"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/passLoginInput"
+        app:layout_constraintTop_toBottomOf="@+id/errorView" />
 
     <TextView
         android:id="@+id/errorView"
