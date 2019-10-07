@@ -6,4 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".activity.ProfileActivity">
 
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/username"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="30sp"
+        tools:layout_editor_absoluteX="31dp"
+        tools:layout_editor_absoluteY="70dp" />
+
+    <ImageView
+        android:id="@+id/tvProfileImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="255dp"
+        tools:layout_editor_absoluteY="36dp"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="189dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/overall_statistics"
+        android:textSize="30sp"
+        tools:layout_editor_absoluteX="93dp"
+        tools:layout_editor_absoluteY="207dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

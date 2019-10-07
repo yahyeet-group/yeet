@@ -15,4 +15,5 @@
     <string name="game">Game</string>
     <string name="friends">Friends</string>
     <string name="friend">Friend</string>
+    <string name="overall_statistics">Overall Statistics</string>
 </resources>
