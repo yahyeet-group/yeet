@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
-import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -12,6 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.content.Intent;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.accountActivity.AccountManagerActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -19,6 +19,7 @@ public class HomeActivity extends AppCompatActivity {
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = menuItem -> {
         Fragment selectedFragment = null;
 
+        // TODO: Save fragments in case of long load time from accessing database
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 selectedFragment = new HomeFragment();
@@ -51,12 +52,10 @@ public class HomeActivity extends AppCompatActivity {
 
     /**
      * This method when called starts a new login activity
-     *
-     * @param view is the visual object (ex a button) the method is bound to (I think)
      */
-    public void changeToLogin(View view) {
+    public void changeToLogin() {
         // TODO: Change so that old activities are retained and not created anew
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, AccountManagerActivity.class);
         startActivity(intent);
     }
 }

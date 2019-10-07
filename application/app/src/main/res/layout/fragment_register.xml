@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.RegisterActivity">
+    tools:context=".activity.accountActivity.RegisterFragment">
 
     <Button
         android:id="@+id/registerButton"
@@ -15,7 +15,6 @@
         android:alpha="0.5"
         android:background="@drawable/custom_button"
         android:clickable="false"
-        android:onClick="RegisterAccount"
         android:text="@string/newAcc"
         app:layout_constraintStart_toStartOf="@+id/passwordRegisterInput"
         app:layout_constraintTop_toBottomOf="@+id/passwordRegisterInput" />
@@ -104,13 +103,4 @@
         app:layout_constraintStart_toStartOf="@+id/emailRegisterInput"
         app:layout_constraintTop_toBottomOf="@+id/emailRegisterInput" />
 
-    <Button
-        android:id="@+id/loginReturnView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
-        android:onClick="showLoginPage"
-        android:text="Return to Login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
