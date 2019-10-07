@@ -1,35 +1,44 @@
 package com.yahyeet.boardbook.model.entity;
 
-public class User extends Entity {
-    private String name;
-    private String email;
+import java.time.LocalDateTime;
+import java.util.List;
 
-    public User(String id, String name) {
+public class User extends AbstractEntity {
+    private String name;
+    private List<User> friends;
+    private List<Match> matches;
+
+    public User(String id, String name, List<User> friends, List<Match> matches) {
         super(id);
         this.name = name;
+        this.friends = friends;
+        this.matches = matches;
     }
 
     public User() {
-        super();
-    }
-
-    public User getThis() {
-        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public List<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<User> friends) {
+        this.friends = friends;
+    }
+
+    public List<Match> getMatches() {
+        return matches;
+    }
+
+    public void setMatches(List<Match> matches) {
+        this.matches = matches;
     }
 }
