@@ -31,17 +31,13 @@ public final class Boardbook {
                      IMatchRepository matchRepository,
                      IChatGroupRepository chatGroupRepository,
                      IChatMessageRepository chatMessageRepository) {
-
         /// Use this for dependency injection for mock databases
-        if(TEST_FLAG = false) {
             this.userHandler = userHandler;
             gameHandler = new GameHandler(gameRepository);
             matchHandler = new MatchHandler(matchRepository);
             chatGroupHandler = new ChatGroupHandler(chatGroupRepository);
             chatMessageHandler = new ChatMessageHandler(chatMessageRepository);
-
             authHandler = new AuthHandler(authService, userHandler);
-        }
     }
 
     public AuthHandler getAuthHandler() {
