@@ -32,10 +32,10 @@
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="180dp"
         android:background="@android:color/darker_gray"
-        app:layout_constraintTop_toBottomOf="@+id/tvProfileImage"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -70,7 +70,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <ProgressBar
-        android:id="@+id/pgWinrate"
+        android:id="@+id/pbWinrate"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -85,8 +85,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:text="@string/winrate"
-        app:layout_constraintStart_toStartOf="@+id/pgWinrate"
-        app:layout_constraintTop_toBottomOf="@+id/pgWinrate" />
+        app:layout_constraintStart_toStartOf="@+id/pbWinrate"
+        app:layout_constraintTop_toBottomOf="@+id/pbWinrate" />
 
     <TextView
         android:id="@+id/tvGamesPlayed"
