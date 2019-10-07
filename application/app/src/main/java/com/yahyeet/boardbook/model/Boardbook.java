@@ -22,7 +22,7 @@ public final class Boardbook {
                      IGameRepository gameRepository,
                      IMatchRepository matchRepository
     ) {
-        userHandler = new UserHandler(userRepository);
+        userHandler = new UserHandler(userRepository, matchRepository);
         gameHandler = new GameHandler(gameRepository);
         matchHandler = new MatchHandler(matchRepository);
         authHandler = new AuthHandler(authService, userHandler);
