@@ -44,6 +44,7 @@ public class GamePresenter {
         gameGridEnabled = false;
 
         updateDataset(lastQuery);
+        listAdapter.notifyDataSetChanged();
     }
 
     public void displayGameGrid(Context viewContext, GridView gameGridView){
@@ -53,6 +54,7 @@ public class GamePresenter {
         gameListEnabled = false;
 
         updateDataset(lastQuery);
+        gridAdapter.notifyDataSetChanged();
     }
 
     private void enableGameList(Context viewContext, ListView gameListView){
@@ -100,24 +102,27 @@ public class GamePresenter {
     private void updateDataset(String query){
         // Test Code
 
-        List<Game> games = new ArrayList<>();
+
         try{
             // TODO: Needs to be implemented, might cause lag in app
-            games = BoardbookSingleton.getInstance().getGameHandler().all().get();
+            BoardbookSingleton.getInstance().getGameHandler().all().thenAccept(allGames -> {
+                List<Game> games = allGames;
+
+                dataset.clear();
+                if(games != null && games.size() > 0){
+                    games = findMatchingName(games, query);
+
+                    // Need to keep same object in listAdapter and this class
+                    dataset.addAll(games);
+                }
+            });
 
         }
-        catch (InterruptedException | ExecutionException e){
+        catch (Exception e){
             // TODO: Dunno what to do here, others required
         }
 
-        dataset.clear();
 
-        if(games != null && games.size() > 0){
-            games = findMatchingName(games, query);
-
-            // Need to keep same object in listAdapter and this class
-            dataset.addAll(games);
-        }
     }
 
     // TODO: Write tests for this method
