@@ -16,4 +16,6 @@
     <string name="friends">Friends</string>
     <string name="friend">Friend</string>
     <string name="overall_statistics">Overall Statistics</string>
+    <string name="winrate">Win Rate</string>
+    <string name="games_played">Games Played</string>
 </resources>
