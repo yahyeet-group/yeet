@@ -34,10 +34,7 @@ public class RegisterFragment extends Fragment{
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup view, @Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         parent = view;
-
-
         return inflater.inflate(R.layout.fragment_register, view, false);
     }
 
