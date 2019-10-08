@@ -27,9 +27,6 @@ public class GamePresenter implements GameHandlerListener {
     private BaseAdapter listAdapter;
     private BaseAdapter gridAdapter;
 
-    // Initiated to no initial search
-    private String lastQuery = "";
-
     private boolean gameListEnabled;
     private boolean gameGridEnabled;
 
@@ -69,12 +66,6 @@ public class GamePresenter implements GameHandlerListener {
         gameGridView.setAdapter(gridAdapter);
     }
 
-    public void updateGamesWithQuery(String query) {
-        lastQuery = query;
-        updateDataset(query);
-
-    }
-
     private void initiateGamePresenter() {
 
         gameFragment.disableFragmentInteraction();
@@ -88,8 +79,7 @@ public class GamePresenter implements GameHandlerListener {
     }
 
     // TODO: Method requires better name
-    private void updateDataset(String query) {
-
+    public void updateGamesWithQuery(String query) {
         gameFragment.disableFragmentInteraction();
         BoardbookSingleton.getInstance().getGameHandler().all().thenAccept(games -> {
             gameDatabase.clear();
@@ -145,6 +135,10 @@ public class GamePresenter implements GameHandlerListener {
             return games;
 
         for (Game g : games) {
+            if(g.getName() == null){
+                return matchingGames;
+            }
+
             if (g.getName().toLowerCase().contains(query.toLowerCase())) {
                 matchingGames.add(g);
             }
