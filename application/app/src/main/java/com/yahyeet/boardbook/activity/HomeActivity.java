@@ -9,8 +9,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 import android.content.Intent;
+import android.widget.ImageButton;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.CreateingMatches.CreateMatchActivity;
 import com.yahyeet.boardbook.activity.accountActivity.AccountManagerActivity;
 
 public class HomeActivity extends AppCompatActivity {
@@ -38,6 +40,9 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     };
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +52,12 @@ public class HomeActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+        ImageButton createButton = findViewById(R.id.btn_create);
+        createButton.setOnClickListener((n) -> {
+            Intent intent = new Intent(this, CreateMatchActivity.class);
+            startActivity(intent);
+            System.out.println("yeet");
+        });
     }
 
 
