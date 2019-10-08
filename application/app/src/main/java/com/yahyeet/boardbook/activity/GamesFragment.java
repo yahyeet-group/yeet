@@ -1,5 +1,6 @@
 package com.yahyeet.boardbook.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,35 +22,30 @@ import com.yahyeet.boardbook.presenter.GamePresenter;
 
 import javax.annotation.Nonnull;
 
-public class GamesFragment extends Fragment implements IGameFragment{
+public class GamesFragment extends Fragment implements IGameFragment {
 
     private GamePresenter gamePresenter;
     private TextView searchInput;
     private ListView gameListView;
     private GridView gameGridView;
+    private Button enableList;
+    private Button enableGrid;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        gamePresenter = new GamePresenter(this);
+
         return inflater.inflate(R.layout.fragment_game, container, false);
     }
 
     @Override
     public void onViewCreated(@Nonnull View view, Bundle savedInstanceState) {
+        setAllViews();
 
-        Button enableList = getView().findViewById(R.id.listDisplayButton);
-        Button enableGrid = getView().findViewById(R.id.gridDisplayButton);
-
+        gamePresenter = new GamePresenter(this);
 
         enableList.setOnClickListener(view1 -> enableGameList());
         enableGrid.setOnClickListener(view2 -> enableGameGrid());
-
-        // TODO: Examine how these method calls can get nullPointerException
-        gameListView = getView().findViewById(R.id.gameListView);
-        gameGridView = getView().findViewById(R.id.gameGridView);
-        searchInput = getView().findViewById(R.id.searchInput);
-
         searchInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -73,25 +69,55 @@ public class GamesFragment extends Fragment implements IGameFragment{
         enableGameGrid();
     }
 
-    private DisplayMetrics getScreenMetrics(){
+    private void setAllViews(){
+
+        // TODO: Examine how these method calls can get nullPointerException
+        gameListView = getView().findViewById(R.id.gameListView);
+        gameGridView = getView().findViewById(R.id.gameGridView);
+        searchInput = getView().findViewById(R.id.searchInput);
+
+        enableList = getView().findViewById(R.id.gameListDisplayButton);
+        enableGrid = getView().findViewById(R.id.gameGridDisplayButton);
+    }
+
+    private DisplayMetrics getScreenMetrics() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         // TODO: Make sure activity is not null, fragment exists without activity?
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         return displayMetrics;
     }
 
-    private void enableGameList(){
+    private void enableGameList() {
         gamePresenter.displayGameList(getView().getContext(), gameListView);
         gameListView.setVisibility(View.VISIBLE);
         gameGridView.setVisibility(View.INVISIBLE);
     }
 
-    private void enableGameGrid(){
+    private void enableGameGrid() {
         gamePresenter.displayGameGrid(getView().getContext(), gameGridView);
         gameGridView.setVisibility(View.VISIBLE);
         gameListView.setVisibility(View.INVISIBLE);
     }
 
 
+    @Override
+    public void disableFragmentInteraction() {
 
+        searchInput.setEnabled(false);
+        enableList.setEnabled(false);
+        enableGrid.setEnabled(false);
+        getView().findViewById(R.id.gameLoadingLayout).setVisibility(View.VISIBLE);
+
+
+    }
+
+    @Override
+    public void enableFragmentInteraction() {
+
+        searchInput.setEnabled(true);
+        enableList.setEnabled(true);
+        enableGrid.setEnabled(true);
+        getView().findViewById(R.id.gameLoadingLayout).setVisibility(View.INVISIBLE);
+
+    }
 }

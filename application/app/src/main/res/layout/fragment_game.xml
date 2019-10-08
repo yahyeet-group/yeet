@@ -42,7 +42,7 @@
         app:layout_constraintTop_toTopOf="@id/gameListView" />
 
     <Button
-        android:id="@+id/listDisplayButton"
+        android:id="@+id/gameListDisplayButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
@@ -51,12 +51,46 @@
         app:layout_constraintTop_toBottomOf="@+id/searchInput" />
 
     <Button
-        android:id="@+id/gridDisplayButton"
+        android:id="@+id/gameGridDisplayButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
         android:text="Display Grid"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchInput" />
+
+    <RelativeLayout
+        android:id="@+id/gameLoadingLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="240dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ProgressBar
+            android:id="@+id/gameProgressLoading"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp" />
+
+        <TextView
+            android:id="@+id/progressText"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gameProgressLoading"
+            android:layout_alignStart="@+id/gameProgressLoading"
+            android:layout_alignEnd="@+id/gameProgressLoading"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="0dp"
+            android:text="@string/gameLoadingText"
+            android:textAlignment="center"
+            android:textSize="24sp" />
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
