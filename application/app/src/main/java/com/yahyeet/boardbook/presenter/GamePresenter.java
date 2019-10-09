@@ -84,7 +84,6 @@ public class GamePresenter implements GameHandlerListener {
 
     // TODO: Method requires better name
     public void updateGamesWithQuery(String query) {
-        gameFragment.disableFragmentInteraction();
         List<Game> temp = findMatchingName(all, query);
         gameDatabase.clear();
         gameDatabase.addAll(temp);
@@ -146,7 +145,13 @@ public class GamePresenter implements GameHandlerListener {
         if(query == null)
             return games;
 
-        return games.stream().filter(game -> game.getName().toLowerCase().contains(query)).collect(Collectors.toList());
+        try{
+            return games.stream().filter(game -> game.getName().toLowerCase().contains(query)).collect(Collectors.toList());
+        } catch (NullPointerException e) {
+            //TODO: Alert that a null name object exists
+            return games;
+        }
+
 
     }
 
