@@ -38,7 +38,6 @@ public class FriendsPresenter {
     public void enableFriendsList(RecyclerView matchRecyclerView, Context viewContext) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
         matchRecyclerView.setLayoutManager(layoutManager);
-        //TODO: Replace with matches from user
 
         List<User> userList = new ArrayList<>();
         for (int i = 0; i < 30; i++) {

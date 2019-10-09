@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.activity;
+package com.yahyeet.boardbook.activity.AddFriends;
 
 public interface IAddFriendActivity {
 
