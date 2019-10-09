@@ -17,20 +17,18 @@ import androidx.fragment.app.Fragment;
 
 import com.yahyeet.boardbook.R;
 
-public class LoginFragment extends Fragment{
+class LoginFragment extends Fragment{
 
     private IAccountManager accountManager;
-    private View parent;
+    private View fragmentContainer;
 
     private EditText emailInput;
     private EditText passInput;
     private TextView errorText;
 
-    private Button loginButton;
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup view, @Nullable Bundle savedInstanceState) {
-        parent = view;
+        fragmentContainer = view;
         return inflater.inflate(R.layout.fragment_login, view, false);
     }
 
@@ -38,13 +36,14 @@ public class LoginFragment extends Fragment{
     public void onStart() {
         super.onStart();
 
-        loginButton = parent.findViewById(R.id.loginButton);
-
-        emailInput = parent.findViewById(R.id.emailLoginInput);
-        passInput = parent.findViewById(R.id.passLoginInput);
-        errorText = parent.findViewById(R.id.errorView);
-
+        Button loginButton = fragmentContainer.findViewById(R.id.loginButton);
         loginButton.setOnClickListener(view1 -> loginAccount());
+
+        emailInput = fragmentContainer.findViewById(R.id.emailLoginInput);
+        passInput = fragmentContainer.findViewById(R.id.passLoginInput);
+        errorText = fragmentContainer.findViewById(R.id.errorView);
+
+
         emailInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

@@ -1,15 +1,12 @@
 package com.yahyeet.boardbook.presenter;
 
-import android.content.Intent;
-
-import com.yahyeet.boardbook.activity.HomeActivity;
-import com.yahyeet.boardbook.activity.accountActivity.AccountManagerActivity;
+import com.yahyeet.boardbook.activity.accountActivity.IAccountManager;
 
 public class AccountManagerPresenter {
 
-    private AccountManagerActivity accountManagerActivity;
+    private IAccountManager accountManagerActivity;
 
-    public AccountManagerPresenter(AccountManagerActivity accountManagerActivity){
+    public AccountManagerPresenter(IAccountManager accountManagerActivity){
         this.accountManagerActivity = accountManagerActivity;
     }
 
@@ -38,9 +35,7 @@ public class AccountManagerPresenter {
         });
     }
 
-    // TODO: This really needs to be interface abstracted
     private void finishAccountManager(){
-        Intent startHome = new Intent(accountManagerActivity, HomeActivity.class);
-        accountManagerActivity.startActivity(startHome);
+        accountManagerActivity.finishAccountManager();
     }
 }

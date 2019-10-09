@@ -16,7 +16,7 @@ import android.widget.EditText;
 
 import com.yahyeet.boardbook.R;
 
-public class RegisterFragment extends Fragment{
+class RegisterFragment extends Fragment{
 
 
     private IAccountManager accountManager;

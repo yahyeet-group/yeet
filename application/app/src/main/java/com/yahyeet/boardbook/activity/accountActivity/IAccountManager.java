@@ -4,4 +4,5 @@ public interface IAccountManager {
 
     void loginAccount(String email, String password);
     void registerAccount(String email, String password, String username);
+    void finishAccountManager();
 }

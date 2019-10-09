@@ -2,11 +2,13 @@ package com.yahyeet.boardbook.activity.accountActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.HomeActivity;
 import com.yahyeet.boardbook.presenter.AccountManagerPresenter;
 
 public class AccountManagerActivity extends AppCompatActivity implements IAccountManager {
@@ -29,6 +31,8 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
         loginFragment = new LoginFragment();
         registerFragment = new RegisterFragment();
 
+
+
         getSupportFragmentManager().beginTransaction().replace(R.id.accountManagerContainer, loginFragment, "Login").commit();
     }
 
@@ -38,6 +42,13 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 
     public void registerAccount(String email, String password, String username){
         accountManagerPresenter.registerAccount(email, password, username);
+    }
+
+    @Override
+    public void finishAccountManager() {
+        Intent startHome = new Intent(this, HomeActivity.class);
+        startActivity(startHome);
+        finish();
     }
 
     @Override
