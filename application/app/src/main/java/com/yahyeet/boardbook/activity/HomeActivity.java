@@ -19,7 +19,6 @@ public class HomeActivity extends AppCompatActivity {
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = menuItem -> {
         Fragment selectedFragment = null;
 
-        // TODO: Save fragments in case of long load time from accessing database
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 selectedFragment = new HomeFragment();
@@ -49,13 +48,4 @@ public class HomeActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
     }
 
-
-    /**
-     * This method when called starts a new login activity
-     */
-    public void changeToLogin() {
-        // TODO: Change so that old activities are retained and not created anew
-        Intent intent = new Intent(this, AccountManagerActivity.class);
-        startActivity(intent);
-    }
 }
