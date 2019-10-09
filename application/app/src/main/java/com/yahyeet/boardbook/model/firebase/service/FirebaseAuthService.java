@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.model.service;
+package com.yahyeet.boardbook.model.firebase.service;
 
 import android.util.Log;
 
@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.repository.IUserRepository;
+import com.yahyeet.boardbook.model.service.IAuthService;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;

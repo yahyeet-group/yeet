@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.model.repository;
+package com.yahyeet.boardbook.model.firebase.repository;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -7,8 +7,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.model.repository.IUserRepository;
+import com.yahyeet.boardbook.model.entity.Game;
+import com.yahyeet.boardbook.model.repository.IGameRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,22 +17,21 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
-
-public class FirebaseUserRepository implements IUserRepository {
+public class FirebaseGameRepository implements IGameRepository {
     private FirebaseFirestore firestore;
 
-    public static final String COLLECTION_NAME = "users";
+    public static final String COLLECTION_NAME = "games";
 
-    public FirebaseUserRepository(FirebaseFirestore firestore) {
+    public FirebaseGameRepository(FirebaseFirestore firestore) {
         this.firestore = firestore;
     }
 
     @Override
-    public CompletableFuture<User> create(User user) {
-        if (user.getId() == null) {
+    public CompletableFuture<Game> create(Game game) {
+        if (game.getId() == null) {
             return CompletableFuture.supplyAsync(() -> {
                 Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
-                        .add(userToMap(user));
+                        .add(gameToMap(game));
 
                 try {
                     DocumentReference documentReference = Tasks.await(task);
@@ -44,12 +43,12 @@ public class FirebaseUserRepository implements IUserRepository {
             }).thenCompose(this::find);
         } else {
             return CompletableFuture.supplyAsync(() -> {
-                Task<Void> task = firestore.collection(COLLECTION_NAME).document(user.getId()).set(userToMap(user));
+                Task<Void> task = firestore.collection(COLLECTION_NAME).document(game.getId()).set(gameToMap(game));
 
                 try {
                     Tasks.await(task);
 
-                    return user.getId();
+                    return game.getId();
                 } catch (Exception e) {
                     throw new CompletionException(e);
                 }
@@ -58,7 +57,7 @@ public class FirebaseUserRepository implements IUserRepository {
     }
 
     @Override
-    public CompletableFuture<User> find(String id) {
+    public CompletableFuture<Game> find(String id) {
         return CompletableFuture.supplyAsync(() -> {
             Task<DocumentSnapshot> task = firestore.collection(COLLECTION_NAME).document(id).get();
 
@@ -66,10 +65,10 @@ public class FirebaseUserRepository implements IUserRepository {
                 DocumentSnapshot document = Tasks.await(task);
 
                 if (document.exists()) {
-                    return documentToUser(document);
+                    return documentToGame(document);
                 }
 
-                throw new CompletionException(new Exception("User not found"));
+                throw new CompletionException(new Exception("Game not found"));
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
@@ -77,16 +76,16 @@ public class FirebaseUserRepository implements IUserRepository {
     }
 
     @Override
-    public CompletableFuture<User> update(User user) {
+    public CompletableFuture<Game> update(Game game) {
         return CompletableFuture.supplyAsync(() -> {
             Task<Void> task = firestore.collection(COLLECTION_NAME)
-                    .document(user.getId())
-                    .update(userToMap(user));
+                    .document(game.getId())
+                    .update(gameToMap(game));
 
             try {
                 Tasks.await(task);
 
-                return user.getId();
+                return game.getId();
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
@@ -94,9 +93,9 @@ public class FirebaseUserRepository implements IUserRepository {
     }
 
     @Override
-    public CompletableFuture<Void> remove(User user) {
+    public CompletableFuture<Void> remove(Game game) {
         return CompletableFuture.supplyAsync(() -> {
-            Task<Void> task = firestore.collection(COLLECTION_NAME).document(user.getId()).delete();
+            Task<Void> task = firestore.collection(COLLECTION_NAME).document(game.getId()).delete();
 
             try {
                 Tasks.await(task);
@@ -109,47 +108,36 @@ public class FirebaseUserRepository implements IUserRepository {
     }
 
     @Override
-    public CompletableFuture<List<User>> all() {
+    public CompletableFuture<List<Game>> all() {
         return CompletableFuture.supplyAsync(() -> {
             Task<QuerySnapshot> task = firestore.collection(COLLECTION_NAME).get();
 
             try {
                 QuerySnapshot querySnapshot = Tasks.await(task);
 
-                List<User> users = new ArrayList<>();
+                List<Game> games = new ArrayList<>();
                 for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
-                    users.add(documentToUser(documentSnapshot));
+                    games.add(documentToGame(documentSnapshot));
                 }
 
-                return users;
+                return games;
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
         });
     }
 
-    private static Map<String, Object> userToMap(User user) {
-        Map<String, Object> userMap = new HashMap<>();
+    private static Map<String, Object> gameToMap(Game game) {
+        Map<String, Object> gameMap = new HashMap<>();
 
-        userMap.put("email", user.getEmail());
-        userMap.put("name", user.getName());
-
-        return userMap;
+        return gameMap;
     }
 
-    private static User documentToUser(DocumentSnapshot document) {
-        User user = new User();
+    private static Game documentToGame(DocumentSnapshot document) {
+        Game game = new Game();
 
-        user.setId(document.getId());
+        game.setId(document.getId());
 
-        if (document.contains("email")) {
-            user.setEmail(document.getString("email"));
-        }
-
-        if (document.contains("name")) {
-            user.setName(document.getString("name"));
-        }
-
-        return user;
+        return game;
     }
 }
