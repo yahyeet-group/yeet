@@ -140,4 +140,9 @@ public class FirebaseMatchRepository implements IMatchRepository {
 
         return match;
     }
+
+    @Override
+    public CompletableFuture<List<Match>> findMatchesByUserId(String id) {
+        return null;
+    }
 }
