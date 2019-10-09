@@ -40,7 +40,7 @@ public abstract class GameAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         // inflate the layout for each list row
         if (convertView == null) {
-            convertView = getConvertView(parent);
+            convertView = getInflatedView(parent);
         }
 
 
@@ -58,7 +58,7 @@ public abstract class GameAdapter extends BaseAdapter {
         return convertView;
     }
 
-    abstract View getConvertView(ViewGroup parent);
+    abstract View getInflatedView(ViewGroup parent);
 
     abstract void setupViewElements(View convertView, Game currentItem);
 }

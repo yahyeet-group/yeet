@@ -19,7 +19,7 @@ public class GameListAdapter extends GameAdapter {
 
 
     @Override
-    protected View getConvertView(ViewGroup parent) {
+    protected View getInflatedView(ViewGroup parent) {
         return LayoutInflater.from(context).inflate(R.layout.game_list_element, parent, false);
     }
 

@@ -7,14 +7,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IHomeFragment;
 import com.yahyeet.boardbook.model.entity.Match;
+import com.yahyeet.boardbook.model.handler.MatchHandlerListener;
 import com.yahyeet.boardbook.presenter.adapter.MatchAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePresenter {
+public class HomePresenter implements MatchHandlerListener {
 
     private MatchAdapter matchAdapter;
+    private List<Match> matchDatabase;
+
+
     // TODO: Remove if never necessary
     private IHomeFragment homeFragment;
 
@@ -25,7 +29,7 @@ public class HomePresenter {
     /**
      * Makes recyclerView to repopulate its matches with current data
      */
-    public void repopulateMatches() {
+    public void updateMatchAdapter() {
         matchAdapter.notifyDataSetChanged();
     }
 
@@ -38,11 +42,37 @@ public class HomePresenter {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
         matchRecyclerView.setLayoutManager(layoutManager);
         //TODO: Replace with matches from user
-        List<Match> data = new ArrayList<>();
+        matchDatabase = new ArrayList<>();
         for(int i = 0; i < 20; i++)
-            data.add(new Match());
-        matchAdapter = new MatchAdapter(data);
+            matchDatabase.add(new Match());
+        matchAdapter = new MatchAdapter(matchDatabase);
         matchRecyclerView.setAdapter(matchAdapter);
     }
 
+    @Override
+    public void onAddMatch(Match match) {
+        matchDatabase.add(match);
+        updateMatchAdapter();
+    }
+
+    @Override
+    public void onUpdateMatch(Match match) {
+        for (int i = 0; i < matchDatabase.size(); i++) {
+            if (matchDatabase.get(i).getId().equals(match.getId())) {
+                matchDatabase.set(i, match);
+            }
+        }
+        updateMatchAdapter();
+    }
+
+    @Override
+    public void onRemoveMatch(Match match) {
+        for (int i = 0; i < matchDatabase.size(); i++) {
+            if (matchDatabase.get(i).getId().equals(match.getId())) {
+                matchDatabase.remove(i);
+                break;
+            }
+        }
+        updateMatchAdapter();
+    }
 }

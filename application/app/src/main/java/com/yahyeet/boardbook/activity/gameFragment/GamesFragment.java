@@ -52,7 +52,7 @@ public class GamesFragment extends Fragment implements IGameFragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                gamePresenter.updateGamesWithQuery(searchInput.getText().toString());
+                gamePresenter.searchGames(searchInput.getText().toString());
             }
 
             @Override

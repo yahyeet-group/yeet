@@ -45,25 +45,25 @@ public class GamePresenter implements GameHandlerListener {
 
     public void displayGameList(Context viewContext, ListView gameListView) {
         if (listAdapter == null)
-            enableGameList(viewContext, gameListView);
+            initiateListAdapter(viewContext, gameListView);
         gameListEnabled = true;
         gameGridEnabled = false;
     }
 
     public void displayGameGrid(Context viewContext, GridView gameGridView) {
         if (gridAdapter == null)
-            enableGameGrid(viewContext, gameGridView);
+            initiateGridAdapter(viewContext, gameGridView);
         gameGridEnabled = true;
         gameListEnabled = false;
     }
 
-    private void enableGameList(Context viewContext, ListView gameListView) {
+    private void initiateListAdapter(Context viewContext, ListView gameListView) {
         listAdapter = new GameListAdapter(viewContext, gameDatabase);
         gameListView.setAdapter(listAdapter);
 
     }
 
-    private void enableGameGrid(Context viewContext, GridView gameGridView) {
+    private void initiateGridAdapter(Context viewContext, GridView gameGridView) {
         gridAdapter = new GameGridAdapter(viewContext, gameDatabase);
         gameGridView.setAdapter(gridAdapter);
     }
@@ -82,7 +82,7 @@ public class GamePresenter implements GameHandlerListener {
     }
 
     // TODO: Method requires better name
-    public void updateGamesWithQuery(String query) {
+    public void searchGames(String query) {
         List<Game> temp = findMatchingName(all, query);
         gameDatabase.clear();
         gameDatabase.addAll(temp);
@@ -102,6 +102,28 @@ public class GamePresenter implements GameHandlerListener {
             });
 
         });*/
+    }
+
+
+    private void updateAdapters() {
+        if (gameListEnabled)
+            listAdapter.notifyDataSetChanged();
+        else if (gameGridEnabled)
+            gridAdapter.notifyDataSetChanged();
+    }
+
+    // TODO: Write tests for this method
+    private List<Game> findMatchingName(List<Game> games, String query) {
+
+        if (query == null)
+            return games;
+
+        try {
+            return games.stream().filter(game -> game.getName().toLowerCase().contains(query)).collect(Collectors.toList());
+        } catch (NullPointerException e) {
+            //TODO: Alert that a null name object exists
+            return games;
+        }
     }
 
     @Override
@@ -129,29 +151,6 @@ public class GamePresenter implements GameHandlerListener {
             }
         }
         updateAdapters();
-    }
-
-    private void updateAdapters() {
-        if (gameListEnabled)
-            listAdapter.notifyDataSetChanged();
-        else if (gameGridEnabled)
-            gridAdapter.notifyDataSetChanged();
-    }
-
-    // TODO: Write tests for this method
-    private List<Game> findMatchingName(List<Game> games, String query) {
-
-        if (query == null)
-            return games;
-
-        try {
-            return games.stream().filter(game -> game.getName().toLowerCase().contains(query)).collect(Collectors.toList());
-        } catch (NullPointerException e) {
-            //TODO: Alert that a null name object exists
-            return games;
-        }
-
-
     }
 
 

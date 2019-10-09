@@ -19,7 +19,7 @@ public class GameGridAdapter extends GameAdapter {
     }
 
     @Override
-    View getConvertView(ViewGroup parent) {
+    View getInflatedView(ViewGroup parent) {
         return LayoutInflater.from(context).inflate(R.layout.game_grid_element, parent, false);
     }
 
