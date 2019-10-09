@@ -13,10 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.model.entity.Match;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHolder> {
 
     private static final String TAG = "MatchAdapter";
-    private Match[] myDataset;
+    private List<Match> myDataset;
 
     static class MatchViewHolder extends RecyclerView.ViewHolder {
 
@@ -47,11 +50,11 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
     }
 
 
-    public MatchAdapter(Match[] dataset) {
+    public MatchAdapter(List<Match> dataset) {
         if (dataset != null)
             myDataset = dataset;
         else
-            myDataset = new Match[0];
+            myDataset = new ArrayList<>();
     }
 
     // Creates new view, does not assign data
@@ -81,7 +84,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
 
     @Override
     public int getItemCount() {
-        return myDataset.length;
+        return myDataset.size();
     }
 
 
