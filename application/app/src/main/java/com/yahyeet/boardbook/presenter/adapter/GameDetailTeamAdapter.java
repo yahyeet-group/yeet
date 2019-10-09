@@ -36,7 +36,7 @@ public class GameDetailTeamAdapter extends RecyclerView.Adapter<GameDetailTeamAd
             view = v;
 
             gameTeamName = v.findViewById(R.id.gameDetailTeamName);
-            roleList = v.findViewById(R.id.gameDetailTeamRoles);
+            roleList = v.findViewById(R.id.gameDetailTeamRoleList);
         }
 
 

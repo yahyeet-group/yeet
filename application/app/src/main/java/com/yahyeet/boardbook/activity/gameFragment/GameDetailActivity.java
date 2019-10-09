@@ -1,6 +1,7 @@
 package com.yahyeet.boardbook.activity.gameFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
     private TextView gameDescription;
     private TextView gameRules;
     private ImageView gameImage;
+    private RecyclerView teamListView;
 
 
     @Override
@@ -41,6 +43,7 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
         gameName = findViewById(R.id.gameDetailName);
         gameDescription = findViewById(R.id.gameDetailDescription);
         gameRules = findViewById(R.id.gameDetailRules);
+        teamListView = findViewById(R.id.gameDetailTeamsList);
 
 
 
@@ -61,6 +64,10 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
 
     public void setGameRules(String rules) {
         this.gameRules.setText(rules);
+    }
+
+    public void enableGameDetailList(){
+
     }
 
 }
