@@ -17,6 +17,7 @@ import com.yahyeet.boardbook.presenter.adapter.GameListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GamePresenter implements GameHandlerListener {
 
@@ -31,6 +32,8 @@ public class GamePresenter implements GameHandlerListener {
     private boolean gameGridEnabled;
 
     final private List<Game> gameDatabase = new ArrayList<>();
+    private List<Game> all;
+
 
     public GamePresenter(IGameFragment gameFragment) {
         this.gameFragment = gameFragment;
@@ -71,6 +74,7 @@ public class GamePresenter implements GameHandlerListener {
         gameFragment.disableFragmentInteraction();
         BoardbookSingleton.getInstance().getGameHandler().all().thenAccept(initGames -> {
             gameDatabase.addAll(initGames);
+            all = initGames;
             uiHandler.post(() -> {
                 gameFragment.enableFragmentInteraction();
                 updateAdapters();
@@ -81,7 +85,11 @@ public class GamePresenter implements GameHandlerListener {
     // TODO: Method requires better name
     public void updateGamesWithQuery(String query) {
         gameFragment.disableFragmentInteraction();
-        BoardbookSingleton.getInstance().getGameHandler().all().thenAccept(games -> {
+        List<Game> temp = findMatchingName(all, query);
+        gameDatabase.clear();
+        gameDatabase.addAll(temp);
+
+        /*BoardbookSingleton.getInstance().getGameHandler().all().thenAccept(games -> {
             gameDatabase.clear();
             if (games != null && games.size() > 0) {
                 games = findMatchingName(games, query);
@@ -95,29 +103,33 @@ public class GamePresenter implements GameHandlerListener {
                 updateAdapters();
             });
 
-        });
-        /*try {
-
-
-        } catch (Exception e) {
-            // TODO: Dunno what to do here, others required
-        }*/
-
-
+        });*/
     }
 
     @Override
     public void onAddGame(Game game) {
+        gameDatabase.add(game);
         updateAdapters();
     }
 
     @Override
     public void onUpdateGame(Game game) {
+        for(int i = 0; i < gameDatabase.size(); i++){
+            if(gameDatabase.get(i).getId().equals(game.getId())){
+                gameDatabase.set(i, game);
+            }
+        }
         updateAdapters();
     }
 
     @Override
     public void onRemoveGame(Game game) {
+        for(int i = 0; i < gameDatabase.size(); i++){
+            if(gameDatabase.get(i).getId().equals(game.getId())){
+                gameDatabase.remove(i);
+                break;
+            }
+        }
         updateAdapters();
     }
 
@@ -130,20 +142,12 @@ public class GamePresenter implements GameHandlerListener {
 
     // TODO: Write tests for this method
     private List<Game> findMatchingName(List<Game> games, String query) {
-        List<Game> matchingGames = new ArrayList<>();
-        if (TextUtils.isEmpty(query))
+
+        if(query == null)
             return games;
 
-        for (Game g : games) {
-            if(g.getName() == null){
-                return matchingGames;
-            }
+        return games.stream().filter(game -> game.getName().toLowerCase().contains(query)).collect(Collectors.toList());
 
-            if (g.getName().toLowerCase().contains(query.toLowerCase())) {
-                matchingGames.add(g);
-            }
-        }
-        return matchingGames;
     }
 
 
