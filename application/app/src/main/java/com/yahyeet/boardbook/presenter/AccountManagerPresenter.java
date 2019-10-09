@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import com.yahyeet.boardbook.activity.HomeActivity;
 import com.yahyeet.boardbook.activity.accountActivity.AccountManagerActivity;
+import com.yahyeet.boardbook.model.entity.User;
 
 public class AccountManagerPresenter {
 
@@ -15,8 +16,11 @@ public class AccountManagerPresenter {
     public AccountManagerPresenter(AccountManagerActivity accountManagerActivity){
         this.accountManagerActivity = accountManagerActivity;
 
-        if(fastPass)
+        if(fastPass){
+            BoardbookSingleton.getInstance().getAuthHandler().setLoggedInUser(new User(null, "The Almighty Temp User"));
             finishAccountManager();
+        }
+
 
     }
 
