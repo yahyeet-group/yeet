@@ -113,8 +113,8 @@ public class GamePresenter implements GameHandlerListener {
 
     @Override
     public void onUpdateGame(Game game) {
-        for(int i = 0; i < gameDatabase.size(); i++){
-            if(gameDatabase.get(i).getId().equals(game.getId())){
+        for (int i = 0; i < gameDatabase.size(); i++) {
+            if (gameDatabase.get(i).getId().equals(game.getId())) {
                 gameDatabase.set(i, game);
             }
         }
@@ -123,8 +123,8 @@ public class GamePresenter implements GameHandlerListener {
 
     @Override
     public void onRemoveGame(Game game) {
-        for(int i = 0; i < gameDatabase.size(); i++){
-            if(gameDatabase.get(i).getId().equals(game.getId())){
+        for (int i = 0; i < gameDatabase.size(); i++) {
+            if (gameDatabase.get(i).getId().equals(game.getId())) {
                 gameDatabase.remove(i);
                 break;
             }
@@ -142,10 +142,10 @@ public class GamePresenter implements GameHandlerListener {
     // TODO: Write tests for this method
     private List<Game> findMatchingName(List<Game> games, String query) {
 
-        if(query == null)
+        if (query == null)
             return games;
 
-        try{
+        try {
             return games.stream().filter(game -> game.getName().toLowerCase().contains(query)).collect(Collectors.toList());
         } catch (NullPointerException e) {
             //TODO: Alert that a null name object exists
