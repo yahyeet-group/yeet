@@ -1,18 +1,13 @@
-package com.yahyeet.boardbook.activity;
+package com.yahyeet.boardbook.activity.gameFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.presenter.GameDetailPresenter;
-import com.yahyeet.boardbook.presenter.GamePresenter;
-
-import java.util.List;
 
 public class GameDetailActivity extends AppCompatActivity implements IGameDetailActivity{
 

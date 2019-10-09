@@ -1,27 +1,102 @@
 package com.yahyeet.boardbook.presenter.adapter;
 
-import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class GameDetailTeamAdapter extends BaseExpandableListAdapter {
+public class GameDetailTeamAdapter extends RecyclerView.Adapter<GameDetailTeamAdapter.GameDetailViewHolder> {
 
+
+    private List<String> myDataset;
+    private Map<String, List<String>> roleMap;
+
+    static class GameDetailViewHolder extends RecyclerView.ViewHolder {
+
+        // TODO Replace this area with match class as a custom view object
+        private TextView gameTeamName;
+        private RecyclerView roleList;
+
+        private View view;
+
+
+        GameDetailViewHolder(View v) {
+            super(v);
+
+            view = v;
+
+            gameTeamName = v.findViewById(R.id.gameDetailTeamName);
+            roleList = v.findViewById(R.id.gameDetailTeamRoles);
+        }
+
+
+    }
+
+
+    public GameDetailTeamAdapter(List<String> dataset) {
+        if (dataset != null)
+            myDataset = dataset;
+        else {
+            myDataset = new ArrayList<>();
+            myDataset.add("");
+        }
+
+
+    }
+
+    // Creates new view, does not assign data
+    @NonNull
+    @Override
+    public GameDetailViewHolder onCreateViewHolder(ViewGroup viewGroup,
+                                                   int viewType) {
+        View v = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.game_detail_team_element, viewGroup, false);
+
+        return new GameDetailViewHolder(v);
+    }
+
+    // Replace the contents of a view (invoked by the layout manager)
+    // Method that assigns data to the view
+    @Override
+    public void onBindViewHolder(GameDetailViewHolder holder, int position) {
+        // TODO: Replace with model integration when game is implemented
+
+        holder.gameTeamName.setText("Team Name");
+
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(holder.view.getContext());
+        holder.roleList.setLayoutManager(layoutManager);
+
+        List<String> teamRoleList = roleMap.get(holder.gameTeamName.getText().toString());
+        GameDetailRoleAdapter roleAdapter = new GameDetailRoleAdapter(teamRoleList);
+
+        holder.roleList.setAdapter(roleAdapter);
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return myDataset.size();
+    }
+
+    /*
     private static final String TAG = "MatchAdapter";
-    private Context context;
+    private Context view;
     private List<String> teamNames;
     private HashMap<String, List<String>> roleNames;
 
-    public GameDetailTeamAdapter(Context context, List<List<String>> teamSetup){
-        this.context = context;
+    public GameDetailTeamAdapter(Context view, List<List<String>> teamSetup){
+        this.view = view;
 
         for(List<String> team : teamSetup){
             teamNames.add(team.get(0));
@@ -44,7 +119,7 @@ public class GameDetailTeamAdapter extends BaseExpandableListAdapter {
     public View getChildView(int listPosition, int expandedListPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         final String expandedListText = (String) getChild(listPosition, expandedListPosition);
         if (convertView == null) {
-            LayoutInflater layoutInflater = (LayoutInflater) this.context
+            LayoutInflater layoutInflater = (LayoutInflater) this.view
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.game_detail_role, null);
         }
@@ -78,7 +153,7 @@ public class GameDetailTeamAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int listPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String listTitle = (String) getGroup(listPosition);
         if (convertView == null) {
-            LayoutInflater layoutInflater = (LayoutInflater) context.
+            LayoutInflater layoutInflater = (LayoutInflater) view.
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.game_detail_header, null);
         }
@@ -97,64 +172,6 @@ public class GameDetailTeamAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int listPosition, int expandedListPosition) {
         return true;
-    }
-
-    /*static class GameDetailViewHolder extends RecyclerView.ViewHolder {
-
-        // TODO Replace this area with match class as a custom view object
-        private TextView gameTeamName;
-        private ListView roleList;
-
-
-
-        GameDetailViewHolder(View v) {
-            super(v);
-            // Define click listener for the ViewHolder's View.
-            v.setOnClickListener(v1 -> Log.d(TAG, "Element " + getAdapterPosition() + " clicked."));
-
-            gameTeamName = v.findViewById(R.id.gameDetailTeamName);
-            roleList = v.findViewById(R.id.gameDetailRoleList);
-        }
-
-
-    }
-
-
-    public GameDetailTeamAdapter(List<Game> dataset) {
-        if (dataset != null)
-            myDataset = dataset;
-        else{
-            myDataset = new ArrayList<>();
-            myDataset.add(new Game());
-        }
-
-
-    }
-
-    // Creates new view, does not assign data
-    @NonNull
-    @Override
-    public GameDetailViewHolder onCreateViewHolder(ViewGroup viewGroup,
-                                              int viewType) {
-        View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.game_detail_header, viewGroup, false);
-
-        return new GameDetailViewHolder(v);
-    }
-
-    // Replace the contents of a view (invoked by the layout manager)
-    // Method that assigns data to the view
-    @Override
-    public void onBindViewHolder(GameDetailViewHolder holder, int position) {
-        // TODO: Replace with model integration when game is implemented
-
-        holder.gameTeamName.setText("Team Name");
-        //holder.imageView.setImageURI();
-    }
-
-    @Override
-    public int getItemCount() {
-        return myDataset.size();
     }*/
 
 

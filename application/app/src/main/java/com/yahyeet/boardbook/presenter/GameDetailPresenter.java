@@ -1,6 +1,6 @@
 package com.yahyeet.boardbook.presenter;
 
-import com.yahyeet.boardbook.activity.IGameDetailActivity;
+import com.yahyeet.boardbook.activity.gameFragment.IGameDetailActivity;
 import com.yahyeet.boardbook.model.entity.Game;
 
 import java.util.concurrent.ExecutionException;

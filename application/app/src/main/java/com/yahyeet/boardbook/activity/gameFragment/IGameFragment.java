@@ -1,6 +1,5 @@
-package com.yahyeet.boardbook.activity;
+package com.yahyeet.boardbook.activity.gameFragment;
 
-import android.content.Context;
 
 public interface IGameFragment {
 

@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.activity;
+package com.yahyeet.boardbook.activity.gameFragment;
 
 public interface IGameDetailActivity {
 

@@ -1,18 +1,13 @@
 package com.yahyeet.boardbook.presenter.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
-import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.activity.GameDetailActivity;
+import com.yahyeet.boardbook.activity.gameFragment.GameDetailActivity;
 import com.yahyeet.boardbook.model.entity.Game;
-import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
 import java.util.List;
 

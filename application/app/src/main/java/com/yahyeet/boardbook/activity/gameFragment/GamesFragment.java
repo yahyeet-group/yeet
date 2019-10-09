@@ -1,6 +1,5 @@
-package com.yahyeet.boardbook.activity;
+package com.yahyeet.boardbook.activity.gameFragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;

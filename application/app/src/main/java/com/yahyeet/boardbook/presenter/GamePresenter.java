@@ -3,12 +3,11 @@ package com.yahyeet.boardbook.presenter;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.TextUtils;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
 
-import com.yahyeet.boardbook.activity.IGameFragment;
+import com.yahyeet.boardbook.activity.gameFragment.IGameFragment;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.handler.GameHandler;
 import com.yahyeet.boardbook.model.handler.GameHandlerListener;
