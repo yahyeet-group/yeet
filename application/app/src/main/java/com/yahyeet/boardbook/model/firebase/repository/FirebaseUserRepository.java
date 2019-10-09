@@ -152,14 +152,4 @@ public class FirebaseUserRepository implements IUserRepository {
     public CompletableFuture<List<User>> findFriendsByUserId(String id) {
         return null;
     }
-
-    @Override
-    public CompletableFuture<Void> addFriend(User currentUser, User targetUser) {
-        return null;
-    }
-
-    @Override
-    public CompletableFuture<Void> removeFriend(User currentUser, User targetUser) {
-        return null;
-    }
 }
