@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.CreateingMatches.fragments.SelectGameFragment;
 
-public class CreateMatchActivity extends AppCompatActivity {
+public class CreateMatchActivity extends AppCompatActivity implements ICreateMatchActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

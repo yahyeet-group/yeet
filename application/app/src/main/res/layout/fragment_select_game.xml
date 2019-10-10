@@ -8,17 +8,8 @@
     android:background="#00C90B0B"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="370dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="42dp"
-        android:layout_marginTop="187dp"
-        android:layout_marginBottom="300dp"
-        android:text="Hello There general Kenobi"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.21"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/games_recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
