@@ -21,4 +21,7 @@
     <string name="tempTeam">as Good</string>
     <string name="tempRole">(Merlin)</string>
 
+    <string name="searchHint">Search Games</string>
+    <string name="gameLoadingText">Please wait a moment</string>
+
 </resources>

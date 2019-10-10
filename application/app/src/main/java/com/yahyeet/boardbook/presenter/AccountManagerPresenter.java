@@ -4,13 +4,24 @@ import android.content.Intent;
 
 import com.yahyeet.boardbook.activity.HomeActivity;
 import com.yahyeet.boardbook.activity.accountActivity.AccountManagerActivity;
+import com.yahyeet.boardbook.model.entity.User;
 
 public class AccountManagerPresenter {
 
     private AccountManagerActivity accountManagerActivity;
 
+    // Set true to skip login
+    private Boolean fastPass = true;
+
     public AccountManagerPresenter(AccountManagerActivity accountManagerActivity){
         this.accountManagerActivity = accountManagerActivity;
+
+        if(fastPass){
+            BoardbookSingleton.getInstance().getAuthHandler().setLoggedInUser(new User("The Almighty Temp User"));
+            finishAccountManager();
+        }
+
+
     }
 
     public void loginAccount(String email, String password) {

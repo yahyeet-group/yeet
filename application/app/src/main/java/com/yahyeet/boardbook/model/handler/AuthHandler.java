@@ -31,7 +31,7 @@ public class AuthHandler {
     }
 
     public CompletableFuture<User> signup(String email, String password, String name) {
-        return CompletableFuture.completedFuture(new User("123", "123123"));
+        return CompletableFuture.completedFuture(new User("123123"));
 
         //return authService.signup(email, password, name).thenCompose(user -> userHandler.create(user)).thenApply(u ->{
         //    loggedInUser = u;
