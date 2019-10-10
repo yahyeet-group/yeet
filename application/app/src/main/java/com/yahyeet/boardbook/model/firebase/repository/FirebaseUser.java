@@ -1,8 +1,14 @@
 package com.yahyeet.boardbook.model.firebase.repository;
 
-import java.util.List;
+import com.yahyeet.boardbook.model.entity.AbstractEntity;
+import com.yahyeet.boardbook.model.entity.User;
 
-public class FirebaseUser {
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+class FirebaseUser {
     private String id;
     private String name;
     private List<String> friends;
@@ -38,5 +44,39 @@ public class FirebaseUser {
 
     public void setFriends(List<String> friends) {
         this.friends = friends;
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> data = new HashMap<>();
+
+        if (name != null) {
+            data.put("name", name);
+        }
+
+        if (friends != null) {
+            data.put("friends", friends);
+        }
+
+        return data;
+    }
+
+    public static FirebaseUser fromUser(User user) {
+        FirebaseUser firebaseUser = new FirebaseUser(user.getId(), user.getName(), null);
+
+        if (user.getFriends() != null) {
+            firebaseUser.setFriends(
+                    user
+                            .getFriends()
+                            .stream()
+                            .map(AbstractEntity::getId)
+                            .collect(Collectors.toList())
+            );
+        }
+
+        return firebaseUser;
+    }
+
+    public User toUser() {
+        return new User(id, name);
     }
 }
