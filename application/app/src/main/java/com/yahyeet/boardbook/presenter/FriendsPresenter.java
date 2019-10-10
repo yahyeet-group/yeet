@@ -1,19 +1,21 @@
 package com.yahyeet.boardbook.presenter;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.widget.BaseAdapter;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.activity.IFriendFragment;
-import com.yahyeet.boardbook.activity.IHomeFragment;
-import com.yahyeet.boardbook.model.entity.Match;
+import com.yahyeet.boardbook.activity.FriendsActivity.IFriendFragment;
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.model.handler.UserHandlerListener;
 import com.yahyeet.boardbook.presenter.adapter.FriendsAdapter;
-import com.yahyeet.boardbook.presenter.adapter.MatchAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FriendsPresenter {
 
@@ -21,7 +23,12 @@ public class FriendsPresenter {
     // TODO: Remove if never necessary
     private IFriendFragment friendsFragment;
 
-    public FriendsPresenter(IFriendFragment friendsFragment) { this.friendsFragment = friendsFragment; }
+    final private List<User> userDatabase = new ArrayList<>();
+    private List<User> all = new ArrayList<>();
+
+    public FriendsPresenter(IFriendFragment friendsFragment) {
+        this.friendsFragment = friendsFragment;
+    }
 
     /**
      * Makes recyclerView to repopulate its matches with current data
@@ -39,16 +46,47 @@ public class FriendsPresenter {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
         matchRecyclerView.setLayoutManager(layoutManager);
 
-        List<User> userList = new ArrayList<>();
+
         for (int i = 0; i < 30; i++) {
-            userList.add(new User(Integer.toString(i), "Name: " + i));
+            userDatabase.add(new User(Integer.toString(i), "Name: " + i));
 
         }
 
+        all.addAll(userDatabase);
 
-
-        friendsAdapter = new FriendsAdapter(userList);
+        friendsAdapter = new FriendsAdapter(userDatabase);
         matchRecyclerView.setAdapter(friendsAdapter);
     }
+
+    private void initiateFriendPresenter() {
+
+        friendsFragment.disableFragmentInteraction();
+        //List<User> friends = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
+        //userDatabase.addAll(friends);
+        //all = friends;
+        friendsFragment.enableFragmentInteraction();
+        repopulateMatches();
+    }
+
+    public void searchFriends(String query) {
+        List<User> temp = findMatchingName(all, query);
+        userDatabase.clear();
+        userDatabase.addAll(temp);
+        repopulateMatches();
+
+    }
+
+    private List<User> findMatchingName(List<User> users, String query) {
+
+        if (query == null)
+            return users;
+
+        if (users == null) {
+            return new ArrayList<>();
+        }
+
+        return users.stream().filter(user -> user.getName().toLowerCase().contains(query)).collect(Collectors.toList());
+    }
+
 
 }

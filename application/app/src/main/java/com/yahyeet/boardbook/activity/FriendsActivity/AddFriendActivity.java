@@ -1,16 +1,11 @@
-package com.yahyeet.boardbook.activity.AddFriends;
+package com.yahyeet.boardbook.activity.FriendsActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.view.View;
 import android.widget.ImageButton;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.activity.HomeActivity;
 
 public class AddFriendActivity extends AppCompatActivity {
 

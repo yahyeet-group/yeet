@@ -66,9 +66,9 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendVi
     // Method that assigns data to the view
     @Override
     public void onBindViewHolder(FriendViewHolder holder, int position) {
-        // TODO: Replace with model integration when match is implemented
 
-        holder.friendName.setText("Vex " + position);
+
+        holder.friendName.setText(myDataset.get(position).getName());
         //holder.friendPicture.setImageURI();
     }
 
