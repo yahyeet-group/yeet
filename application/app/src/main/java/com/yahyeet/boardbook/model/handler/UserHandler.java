@@ -1,7 +1,6 @@
 package com.yahyeet.boardbook.model.handler;
 
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.model.repository.IGameRepository;
 import com.yahyeet.boardbook.model.repository.IMatchRepository;
 import com.yahyeet.boardbook.model.repository.IUserRepository;
 
@@ -11,7 +10,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class UserHandler {
-
     private IUserRepository userRepository;
     private IMatchRepository matchRepository;
     private List<UserHandlerListener> listeners = new ArrayList<>();
@@ -27,17 +25,23 @@ public class UserHandler {
 
     public CompletableFuture<User> save(User user) {
         if (user.getId() == null) {
-            return userRepository.create(user).thenApplyAsync(createdUser -> {
-                notifyListenersOnUserAdd(createdUser);
+            return userRepository
+                    .create(user)
+                    .thenCompose(this::populate)
+                    .thenApplyAsync(createdUser -> {
+                        notifyListenersOnUserAdd(createdUser);
 
-                return createdUser;
-            });
+                        return createdUser;
+                    });
         } else {
-            return userRepository.update(user).thenApplyAsync(updatedUser -> {
-                notifyListenersOnUserUpdate(updatedUser);
+            return userRepository
+                    .update(user)
+                    .thenCompose(this::populate)
+                    .thenApplyAsync(updatedUser -> {
+                        notifyListenersOnUserUpdate(updatedUser);
 
-                return updatedUser;
-            });
+                        return updatedUser;
+                    });
         }
     }
 
@@ -59,11 +63,21 @@ public class UserHandler {
     }
 
     public CompletableFuture<List<User>> all() {
-        return userRepository.all().thenCompose(users -> {
-            List<CompletableFuture<User>> completableFutures = users.stream().map(this::populate).collect(Collectors.toList());
+        return userRepository.all().thenComposeAsync(users -> {
+            List<CompletableFuture<User>> completableFutures = users
+                    .stream()
+                    .map(this::populate)
+                    .collect(Collectors.toList());
 
-            CompletableFuture<Void> allFutures = CompletableFuture.allOf(completableFutures.toArray(new CompletableFuture[completableFutures.size()]));
-            return allFutures.thenApply(future -> completableFutures.stream().map(CompletableFuture::join).collect(Collectors.toList()));
+            CompletableFuture<Void> allFutures = CompletableFuture.allOf(
+                    completableFutures
+                            .toArray(new CompletableFuture[0])
+            );
+            return allFutures.thenApplyAsync(
+                    future -> completableFutures
+                            .stream()
+                            .map(CompletableFuture::join)
+                            .collect(Collectors.toList()));
         });
     }
 
@@ -72,15 +86,13 @@ public class UserHandler {
             throw new IllegalArgumentException("Cannot populate a user without an identifier");
         }
 
-        return this.find(user.getId()).thenApply(u -> {
-            user.setName(u.getName());
-
-            return u;
-        }).thenCompose(u -> this.userRepository.findFriendsByUserId(user.getId())).thenApply(friends -> {
+        return userRepository.findFriendsByUserId(user.getId()).thenApply(friends -> {
             user.setFriends(friends);
 
             return null;
-        }).thenCompose(o -> this.matchRepository.findMatchesByUserId(user.getId())).thenApply(matches -> {
+        }).thenCompose(
+                o -> matchRepository.findMatchesByUserId(user.getId())
+        ).thenApply(matches -> {
             user.setMatches(matches);
 
             return user;
