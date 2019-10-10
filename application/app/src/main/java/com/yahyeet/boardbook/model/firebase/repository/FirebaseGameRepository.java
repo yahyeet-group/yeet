@@ -11,11 +11,10 @@ import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.repository.IGameRepository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.stream.Collectors;
 
 public class FirebaseGameRepository implements IGameRepository {
     private FirebaseFirestore firestore;
@@ -32,78 +31,34 @@ public class FirebaseGameRepository implements IGameRepository {
 
     }
 
-
-
     @Override
     public CompletableFuture<Game> find(String id) {
-        return CompletableFuture.supplyAsync(() -> {
-            Task<DocumentSnapshot> task = firestore.collection(COLLECTION_NAME).document(id).get();
-
-            try {
-                DocumentSnapshot document = Tasks.await(task);
-
-                if (document.exists()) {
-                    return documentToGame(document);
-                }
-
-                throw new CompletionException(new Exception("Game not found"));
-            } catch (Exception e) {
-                throw new CompletionException(e);
-            }
-        });
+        return findFirebaseGameById(id).thenApplyAsync(FirebaseGame::toGame);
     }
+
 
     @Override
     public CompletableFuture<Game> update(Game game) {
-        return CompletableFuture.supplyAsync(() -> {
-            Task<Void> task = firestore.collection(COLLECTION_NAME)
-                    .document(game.getId())
-                    .update(FirebaseGame.fromGame(game).toMap());
-
-            try {
-                Tasks.await(task);
-
-                return game.getId();
-            } catch (Exception e) {
-                throw new CompletionException(e);
-            }
-        }).thenCompose(this::find);
+        return updateFirebaseGame(FirebaseGame.fromGame(game)).thenApplyAsync(FirebaseGame::toGame);
     }
+
 
     @Override
     public CompletableFuture<Void> remove(Game game) {
-        return CompletableFuture.supplyAsync(() -> {
-            Task<Void> task = firestore.collection(COLLECTION_NAME).document(game.getId()).delete();
+        return removeFirebaseGameById(game.getId());
 
-            try {
-                Tasks.await(task);
-
-                return null;
-            } catch (Exception e) {
-                throw new CompletionException(e);
-            }
-        });
     }
 
     @Override
     public CompletableFuture<List<Game>> all() {
-        return CompletableFuture.supplyAsync(() -> {
-            Task<QuerySnapshot> task = firestore.collection(COLLECTION_NAME).get();
-
-            try {
-                QuerySnapshot querySnapshot = Tasks.await(task);
-
-                List<Game> games = new ArrayList<>();
-                for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
-                    games.add(documentToGame(documentSnapshot));
-                }
-
-                return games;
-            } catch (Exception e) {
-                throw new CompletionException(e);
-            }
-        });
+        return findAllFirebaseGames().thenApplyAsync(firebaseUsers ->
+                firebaseUsers
+                        .stream()
+                        .map(FirebaseGame::toGame)
+                        .collect(Collectors.toList())
+        );
     }
+
 
     private CompletableFuture<Game> createFirebaseGame(FirebaseGame firebaseGame) {
         return CompletableFuture.supplyAsync(() -> {
@@ -120,17 +75,78 @@ public class FirebaseGameRepository implements IGameRepository {
         }).thenCompose(this::find);
     }
 
-    private static Map<String, Object> gameToMap(Game game) {
-        Map<String, Object> gameMap = new HashMap<>();
+    private CompletableFuture<FirebaseGame> findFirebaseGameById(String id) {
+        return CompletableFuture.supplyAsync(() -> {
+            Task<DocumentSnapshot> task = firestore.collection(COLLECTION_NAME).document(id).get();
 
-        return gameMap;
+            try {
+                DocumentSnapshot document = Tasks.await(task);
+
+                if (document.exists()) {
+                    FirebaseGame firebaseGame = document.toObject(FirebaseGame.class);
+                    firebaseGame.setId(document.getId());
+                    return firebaseGame;
+                }
+
+                throw new CompletionException(new Exception("Game not found"));
+            } catch (Exception e) {
+                throw new CompletionException(e);
+            }
+        });
     }
 
-    private static Game documentToGame(DocumentSnapshot document) {
-        Game game = new Game();
+    // TODO: Same as in other firebaseEntities
+    private CompletableFuture<Void> removeFirebaseGameById(String id) {
+        return CompletableFuture.supplyAsync(() -> {
+            Task<Void> task = firestore.collection(COLLECTION_NAME).document(id).delete();
 
-        game.setId(document.getId());
+            try {
+                Tasks.await(task);
 
-        return game;
+                return null;
+            } catch (Exception e) {
+                throw new CompletionException(e);
+            }
+        });
     }
+
+    private CompletableFuture<FirebaseGame> updateFirebaseGame(FirebaseGame firebaseGame) {
+        return CompletableFuture.supplyAsync(() -> {
+            Task<Void> task = firestore.collection(COLLECTION_NAME)
+                    .document(firebaseGame.getId())
+                    .update(firebaseGame.toMap());
+
+            try {
+                Tasks.await(task);
+
+                return firebaseGame.getId();
+            } catch (Exception e) {
+                throw new CompletionException(e);
+            }
+        }).thenCompose(this::findFirebaseGameById);
+    }
+
+    private CompletableFuture<List<FirebaseGame>> findAllFirebaseGames() {
+        return CompletableFuture.supplyAsync(() -> {
+            Task<QuerySnapshot> task = firestore.collection(COLLECTION_NAME).get();
+
+            try {
+                QuerySnapshot querySnapshot = Tasks.await(task);
+
+                return querySnapshot
+                        .getDocuments()
+                        .stream()
+                        .map(documentSnapshot -> {
+                            FirebaseGame firebaseGame = documentSnapshot.toObject(FirebaseGame.class);
+                            firebaseGame.setId(documentSnapshot.getId());
+                            return firebaseGame;
+                        })
+                        .collect(Collectors.toList());
+            } catch (Exception e) {
+                throw new CompletionException(e);
+            }
+        });
+    }
+
+
 }

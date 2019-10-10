@@ -23,6 +23,8 @@ public class FirebaseGame {
 
     private List<FirebaseGameTeam> teams;
 
+    public FirebaseGame() {}
+
     public FirebaseGame(String name, String description, String rules,
                         int difficulty, int minPlayers, int maxPlayers,
                         List<FirebaseGameTeam> teams ) {
@@ -52,8 +54,9 @@ public class FirebaseGame {
         );
     }
 
-    public static Game firebaseGameToGame(FirebaseGame firebaseGame){
+    public static Game toGame(FirebaseGame firebaseGame){
        return new Game(
+                firebaseGame.getId(),
                 firebaseGame.getName(),
                 firebaseGame.getDescription(),
                 firebaseGame.getRules(),

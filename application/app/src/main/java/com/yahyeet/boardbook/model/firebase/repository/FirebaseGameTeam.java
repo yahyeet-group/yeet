@@ -3,22 +3,26 @@ package com.yahyeet.boardbook.model.firebase.repository;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.yahyeet.boardbook.model.entity.GameTeam;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-class FirebaseGameTeam {
+class FirebaseGameTeam implements Serializable {
 
     private String name;
     private List<FirebaseGameRole> gameRoles;
 
-    public FirebaseGameTeam(String name, List<FirebaseGameRole> gameRoles) {
+    public FirebaseGameTeam() {
+    }
+
+    FirebaseGameTeam(String name, List<FirebaseGameRole> gameRoles) {
         this.name = name;
         this.gameRoles = gameRoles;
     }
 
-    public Map<String, Object> toMap(){
+    Map<String, Object> toMap(){
         Map<String, Object> map = new HashMap<>();
 
         if (name != null) {
@@ -31,7 +35,7 @@ class FirebaseGameTeam {
     }
 
 
-    public static FirebaseGameTeam fromGameTeam(GameTeam gameTeam){
+    static FirebaseGameTeam fromGameTeam(GameTeam gameTeam){
         return new FirebaseGameTeam(
                 gameTeam.getName(),
                 gameTeam.getRoleList()
@@ -41,7 +45,7 @@ class FirebaseGameTeam {
         );
     }
 
-    public GameTeam toGameTeam(){
+    GameTeam toGameTeam(){
         return new GameTeam(
                 name,
                 gameRoles
@@ -49,5 +53,21 @@ class FirebaseGameTeam {
                     .map(FirebaseGameRole::toGameRole)
                     .collect(Collectors.toList())
         );
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<FirebaseGameRole> getGameRoles() {
+        return gameRoles;
+    }
+
+    public void setGameRoles(List<FirebaseGameRole> gameRoles) {
+        this.gameRoles = gameRoles;
     }
 }

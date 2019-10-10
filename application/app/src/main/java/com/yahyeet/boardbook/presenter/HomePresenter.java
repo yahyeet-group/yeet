@@ -6,6 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IHomeFragment;
+import com.yahyeet.boardbook.model.entity.Game;
+import com.yahyeet.boardbook.model.entity.GameRole;
+import com.yahyeet.boardbook.model.entity.GameTeam;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.handler.MatchHandlerListener;
@@ -40,6 +43,7 @@ public class HomePresenter implements MatchHandlerListener {
      * @param matchRecyclerView the RecyclerView that will be populated with matches
      */
     public void enableMatchFeed(RecyclerView matchRecyclerView, Context viewContext) {
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
         matchRecyclerView.setLayoutManager(layoutManager);
         //TODO: Replace with matches from user

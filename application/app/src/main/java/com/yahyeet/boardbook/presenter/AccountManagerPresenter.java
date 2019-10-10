@@ -16,7 +16,8 @@ public class AccountManagerPresenter {
     public AccountManagerPresenter(AccountManagerActivity accountManagerActivity){
         this.accountManagerActivity = accountManagerActivity;
         if(fastPass){
-            BoardbookSingleton.getInstance().getAuthHandler().setLoggedInUser(new User("The Almighty Temp User"));
+            // TODO: Remove this later
+            //BoardbookSingleton.getInstance().getAuthHandler().setLoggedInUser(new User("The Almighty Temp User"));
             finishAccountManager();
         }
     }

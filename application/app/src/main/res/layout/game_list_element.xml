@@ -17,35 +17,37 @@
         app:layout_constraintTop_toTopOf="@+id/gameListImage" />
 
     <TextView
-        android:id="@+id/gameListTime"
+        android:id="@+id/gameDifficulty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="Time"
+        android:text="Difficulty"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/gameListDifficulty"
+        android:id="@+id/gameListMinMaxPlayers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Difficulty"
+        android:text="2 - 5 Players"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/gameListTime"
-        app:layout_constraintTop_toBottomOf="@+id/gameListTime" />
+        app:layout_constraintBottom_toTopOf="@+id/gameListTeamAmount"
+        app:layout_constraintEnd_toEndOf="@+id/gameDifficulty"
+        app:layout_constraintTop_toBottomOf="@+id/gameDifficulty" />
 
     <TextView
-        android:id="@+id/gameListRating"
+        android:id="@+id/gameListTeamAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Rating"
+        android:text="0 - 5 Teams"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/gameListDifficulty"
-        app:layout_constraintTop_toBottomOf="@+id/gameListDifficulty" />
+        app:layout_constraintEnd_toEndOf="@+id/gameListMinMaxPlayers"
+        app:layout_constraintTop_toBottomOf="@+id/gameListMinMaxPlayers"
+        app:layout_constraintVertical_bias="0.57" />
 
     <ImageView
         android:id="@+id/gameListImage"

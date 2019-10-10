@@ -12,20 +12,32 @@ public class FirebaseGameRole {
 
     private String name;
 
-    public FirebaseGameRole(String name) {
+    public FirebaseGameRole() {
+    }
+
+    FirebaseGameRole(String name) {
         this.name = name;
     }
 
 
-    public static FirebaseGameRole fromGameRole(GameRole gameRole) {
+    static FirebaseGameRole fromGameRole(GameRole gameRole) {
         return new FirebaseGameRole(gameRole.getName());
     }
 
-    public GameRole toGameRole(){
+    GameRole toGameRole(){
         return new GameRole(name);
     }
 
 
+    Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+
+        if (name != null) {
+            map.put("name", name);
+        }
+
+        return map;
+    }
 
     public String getName() {
         return name;
@@ -35,13 +47,5 @@ public class FirebaseGameRole {
         this.name = name;
     }
 
-    public Map<String, Object> toMap() {
-        Map<String, Object> map = new HashMap<>();
 
-        if (name != null) {
-            map.put("name", name);
-        }
-
-        return map;
-    }
 }

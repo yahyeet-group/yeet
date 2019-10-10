@@ -12,13 +12,15 @@ public class Game extends AbstractEntity {
     private int difficulty;
     private List<GameTeam> teams;
 
-    public Game(String name,
+    public Game(String id,
+                String name,
                 String description,
                 String rules,
                 int difficulty,
                 int minPlayers,
                 int maxPlayers,
                 List<GameTeam> teams) {
+        setId(id);
         this.name = name;
         this.description = description;
         this.difficulty = difficulty;
