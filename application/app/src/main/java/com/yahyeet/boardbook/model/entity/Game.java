@@ -34,6 +34,12 @@ public class Game extends Entity {
         this.teamSetup = teamSetup;
     }
 
+    // Constructor used for testing
+    public Game(String name, String description){
+        this.name = name;
+        this.description = description;
+    }
+
     public Game() {
     }
 

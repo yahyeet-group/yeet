@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.activity.CreateingMatches.fragments.SelectGameFragment;
+import com.yahyeet.boardbook.activity.CreateingMatches.SelectGame.SelectGameFragment;
 
 public class CreateMatchActivity extends AppCompatActivity implements ICreateMatchActivity {
 
