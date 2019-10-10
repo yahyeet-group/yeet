@@ -3,6 +3,7 @@ package com.yahyeet.boardbook.model.firebase.repository;
 import com.yahyeet.boardbook.model.entity.AbstractEntity;
 import com.yahyeet.boardbook.model.entity.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,13 +14,12 @@ class FirebaseUser {
     private String name;
     private List<String> friends;
 
-    public FirebaseUser() {
-    }
+    public FirebaseUser() {}
 
-    public FirebaseUser(String id, String name, List<String> friends) {
+    public FirebaseUser(String id, String name) {
         this.id = id;
         this.name = name;
-        this.friends = friends;
+        friends = new ArrayList<>();
     }
 
     public String getId() {
@@ -61,7 +61,7 @@ class FirebaseUser {
     }
 
     public static FirebaseUser fromUser(User user) {
-        FirebaseUser firebaseUser = new FirebaseUser(user.getId(), user.getName(), null);
+        FirebaseUser firebaseUser = new FirebaseUser(user.getId(), user.getName());
 
         if (user.getFriends() != null) {
             firebaseUser.setFriends(
