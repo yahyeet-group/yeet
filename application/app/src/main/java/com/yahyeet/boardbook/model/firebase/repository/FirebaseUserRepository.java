@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class FirebaseUserRepository implements IUserRepository {
     private FirebaseFirestore firestore;
 
-    public static final String COLLECTION_NAME = "users";
+    private static final String COLLECTION_NAME = "users";
 
     public FirebaseUserRepository(FirebaseFirestore firestore) {
         this.firestore = firestore;
@@ -32,52 +32,78 @@ public class FirebaseUserRepository implements IUserRepository {
     @Override
     public CompletableFuture<User> create(User user) {
         if (user.getId() == null) {
-            return createWithoutId(user);
+            return createFirebaseUserWithoutId(FirebaseUser.fromUser(user)).thenApplyAsync(FirebaseUser::toUser);
         } else {
-            return createWithId(user);
+            return createFirebaseUserWithId(FirebaseUser.fromUser(user)).thenApplyAsync(FirebaseUser::toUser);
         }
     }
 
     @Override
     public CompletableFuture<User> find(String id) {
+        return findFirebaseUserById(id).thenApplyAsync(FirebaseUser::toUser);
+    }
+
+    @Override
+    public CompletableFuture<User> update(User user) {
+        return updateFirebaseUser(FirebaseUser.fromUser(user)).thenApplyAsync(FirebaseUser::toUser);
+    }
+
+    @Override
+    public CompletableFuture<Void> remove(User user) {
+        return removeFirebaseUserById(user.getId());
+
+    }
+
+    @Override
+    public CompletableFuture<List<User>> all() {
+        return findAllFirebaseUsers().thenApplyAsync(firebaseUsers ->
+                firebaseUsers
+                        .stream()
+                        .map(FirebaseUser::toUser)
+                        .collect(Collectors.toList())
+        );
+    }
+
+    @Override
+    public CompletableFuture<List<User>> findFriendsByUserId(String id) {
+        return findFirebaseFriendsByUserId(id).thenApplyAsync(firebaseFriends ->
+                firebaseFriends
+                        .stream()
+                        .map(FirebaseUser::toUser)
+                        .collect(Collectors.toList())
+        );
+    }
+
+    private CompletableFuture<List<FirebaseUser>> findFirebaseFriendsByUserId(String id) {
+        return findFirebaseUserById(id).thenComposeAsync(firebaseUser -> {
+            List<CompletableFuture<FirebaseUser>> completableFutures = firebaseUser.getFriends().stream().map(this::findFirebaseUserById).collect(Collectors.toList());
+
+            CompletableFuture<Void> allFutures = CompletableFuture.allOf(completableFutures.toArray(new CompletableFuture[0]));
+            return allFutures.thenApply(future -> completableFutures.stream().map(CompletableFuture::join).collect(Collectors.toList()));
+        });
+    }
+
+    private CompletableFuture<List<FirebaseUser>> findAllFirebaseUsers() {
         return CompletableFuture.supplyAsync(() -> {
-            Task<DocumentSnapshot> task = firestore.collection(COLLECTION_NAME).document(id).get();
+            Task<QuerySnapshot> task = firestore.collection(COLLECTION_NAME).get();
 
             try {
-                DocumentSnapshot document = Tasks.await(task);
+                QuerySnapshot querySnapshot = Tasks.await(task);
 
-                if (document.exists()) {
-                    return documentToUser(document);
-                }
-
-                throw new CompletionException(new Exception("User not found"));
+                return querySnapshot
+                        .getDocuments()
+                        .stream()
+                        .map(documentSnapshot -> documentSnapshot.toObject(FirebaseUser.class))
+                        .collect(Collectors.toList());
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
         });
     }
 
-    @Override
-    public CompletableFuture<User> update(User user) {
+    private CompletableFuture<Void> removeFirebaseUserById(String id) {
         return CompletableFuture.supplyAsync(() -> {
-            Task<Void> task = firestore.collection(COLLECTION_NAME)
-                    .document(user.getId()).update
-                    .update(userToMap(user));
-
-            try {
-                Tasks.await(task);
-
-                return user.getId();
-            } catch (Exception e) {
-                throw new CompletionException(e);
-            }
-        }).thenCompose(this::find);
-    }
-
-    @Override
-    public CompletableFuture<Void> remove(User user) {
-        return CompletableFuture.supplyAsync(() -> {
-            Task<Void> task = firestore.collection(COLLECTION_NAME).document(user.getId()).delete();
+            Task<Void> task = firestore.collection(COLLECTION_NAME).document(id).delete();
 
             try {
                 Tasks.await(task);
@@ -87,59 +113,6 @@ public class FirebaseUserRepository implements IUserRepository {
                 throw new CompletionException(e);
             }
         });
-    }
-
-    @Override
-    public CompletableFuture<List<User>> all() {
-        return CompletableFuture.supplyAsync(() -> {
-            Task<QuerySnapshot> task = firestore.collection(COLLECTION_NAME).get();
-
-            try {
-                QuerySnapshot querySnapshot = Tasks.await(task);
-
-                List<User> users = new ArrayList<>();
-                for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
-                    FirebaseUser user = documentSnapshot.toObject(FirebaseUser.class);
-                    users.add(documentToUser(documentSnapshot));
-                }
-
-                return users;
-            } catch (Exception e) {
-                throw new CompletionException(e);
-            }
-        });
-    }
-
-    @Override
-    public CompletableFuture<List<User>> findFriendsByUserId(String id) {
-        return CompletableFuture.supplyAsync(() -> {
-            Task<DocumentSnapshot> task = firestore.collection(COLLECTION_NAME).document(id).get();
-
-            try {
-                DocumentSnapshot document = Tasks.await(task);
-
-                if (document.exists()) {
-                    if (document.contains("friends")) {
-                        return (List<String>) document.get("friends");
-                    } else {
-                        throw new CompletionException(new Exception("User has no friends list"));
-                    }
-                }
-
-                throw new CompletionException(new Exception("User not found"));
-            } catch (Exception e) {
-                throw new CompletionException(e);
-            }
-        }).thenComposeAsync(friendIds -> {
-            List<CompletableFuture<User>> completableFutures = friendIds.stream().map(this::find).collect(Collectors.toList());
-
-            CompletableFuture<Void> allFutures = CompletableFuture.allOf(completableFutures.toArray(new CompletableFuture[0]));
-            return allFutures.thenApply(future -> completableFutures.stream().map(CompletableFuture::join).collect(Collectors.toList()));
-        });
-    }
-
-    private CompletableFuture<List<String>> findFriendIdsByUserId(String id) {
-        return findFirebaseUserById(id).thenApplyAsync(user -> user.getFriends());
     }
 
     private CompletableFuture<FirebaseUser> findFirebaseUserById(String id) {
@@ -160,65 +133,27 @@ public class FirebaseUserRepository implements IUserRepository {
         });
     }
 
-    @Override
-    public CompletableFuture<Void> addFriend(User currentUser, User targetUser) {
-        return null;
-    }
-
-    @Override
-    public CompletableFuture<Void> removeFriend(User currentUser, User targetUser) {
-        return null;
-    }
-
-    private static FirebaseUser userToFirebaseUser(User user) {
-        FirebaseUser firebaseUser = new FirebaseUser(user.getId(), user.getName(), null);
-
-        if (user.getFriends() != null) {
-            firebaseUser.setFriends(
-                    user
-                            .getFriends()
-                            .stream()
-                            .map(AbstractEntity::getId)
-                            .collect(Collectors.toList())
-            );
-        }
-
-        return firebaseUser;
-    }
-
-    private static User firebaseUserToUser(FirebaseUser firebaseUser) {
-        return new User(firebaseUser.getId(), firebaseUser.getName());
-    }
-
-    private static Map<String, Object> userToMap(User user) {
-        Map<String, Object> userMap = new HashMap<>();
-
-        userMap.put("name", user.getName());
-
-        return userMap;
-    }
-
-    private CompletableFuture<User> createWithId(User user) {
+    private CompletableFuture<FirebaseUser> createFirebaseUserWithId(FirebaseUser firebaseUser) {
         return CompletableFuture.supplyAsync(() -> {
             Task<Void> task = firestore
                     .collection(COLLECTION_NAME)
-                    .document(user.getId())
-                    .set(userToMap(user));
+                    .document(firebaseUser.getId())
+                    .set(firebaseUser);
 
             try {
                 Tasks.await(task);
 
-                return user.getId();
+                return firebaseUser.getId();
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
-        }).thenCompose(this::find);
+        }).thenCompose(this::findFirebaseUserById);
     }
 
-    private CompletableFuture<User> createWithoutId(User user) {
+    private CompletableFuture<FirebaseUser> createFirebaseUserWithoutId(FirebaseUser firebaseUser) {
         return CompletableFuture.supplyAsync(() -> {
             Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
-                    .add(userToMap(user));
+                    .add(firebaseUser);
 
             try {
                 DocumentReference documentReference = Tasks.await(task);
@@ -227,10 +162,10 @@ public class FirebaseUserRepository implements IUserRepository {
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
-        }).thenCompose(this::find);
+        }).thenCompose(this::findFirebaseUserById);
     }
 
-    private CompletableFuture<Void> updateFirebaseUser(FirebaseUser firebaseUser) {
+    private CompletableFuture<FirebaseUser> updateFirebaseUser(FirebaseUser firebaseUser) {
         return CompletableFuture.supplyAsync(() -> {
             Task<Void> task = firestore.collection(COLLECTION_NAME)
                     .document(firebaseUser.getId())
@@ -239,17 +174,64 @@ public class FirebaseUserRepository implements IUserRepository {
             try {
                 Tasks.await(task);
 
-                return user.getId();
+                return firebaseUser.getId();
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
-        }).thenCompose(this::find);
+        }).thenCompose(this::findFirebaseUserById);
     }
 
-    private CompletableFuture<Void> addFriendToFriendsList(User targetUser, User friendToBeAdded) {
+    private CompletableFuture<Void> updateFriendsList(FirebaseUser firebaseUser) {
+        return findFirebaseUserById(firebaseUser.getId())
+                .thenComposeAsync(user -> {
+                    List<String> addedFriends = extractAddedFriends(user.getFriends(), firebaseUser.getFriends());
+                    List<String> removedFriends = extractRemovedFriends(user.getFriends(), firebaseUser.getFriends());
+
+                    List<CompletableFuture<Void>> completableFutures = addedFriends
+                            .stream()
+                            .map(addFriendId -> addFriendToFriendsList(user, addFriendId))
+                            .collect(Collectors.toList());
+                    completableFutures.addAll(
+                            removedFriends
+                                    .stream()
+                                    .map(removeFriendId -> removeFriendFromFriendsList(user, removeFriendId))
+                                    .collect(Collectors.toList())
+                    );
+                    return CompletableFuture.allOf(
+                            completableFutures.toArray(new CompletableFuture[0])
+                    );
+                });
+    }
+
+    private List<String> extractAddedFriends(List<String> localFriends, List<String> remoteFriends) {
+        return localFriends
+                .stream()
+                .filter(localFriendId ->
+                        remoteFriends
+                                .stream()
+                                .noneMatch(remoteFriendId ->
+                                        remoteFriendId
+                                                .equals(localFriendId)))
+                .collect(Collectors.toList());
+    }
+
+    private List<String> extractRemovedFriends(List<String> localFriends, List<String> remoteFriends) {
+        return remoteFriends
+                .stream()
+                .filter(remoteFriendId ->
+                        localFriends
+                                .stream()
+                                .noneMatch(localFriendId ->
+                                        localFriendId
+                                                .equals(remoteFriendId)))
+                .collect(Collectors.toList());
+    }
+
+    private CompletableFuture<Void> addFriendToFriendsList(FirebaseUser targetUser, String
+            friendIdToBeAdded) {
         return findFirebaseUserById(targetUser.getId()).thenComposeAsync(firebaseUser -> {
-            if (firebaseUser.getFriends() != null && firebaseUser.getFriends().stream().noneMatch(friendId -> friendId.equals(friendToBeAdded.getId()))) {
-                firebaseUser.getFriends().add(friendToBeAdded.getId());
+            if (firebaseUser.getFriends() != null && firebaseUser.getFriends().stream().noneMatch(friendId -> friendId.equals(friendIdToBeAdded))) {
+                firebaseUser.getFriends().add(friendIdToBeAdded);
                 updateFirebaseUser(firebaseUser);
             }
 
@@ -257,10 +239,11 @@ public class FirebaseUserRepository implements IUserRepository {
         });
     }
 
-    private CompletableFuture<Void> removeFriendFromFriendsList(User targetUser, User friendToBeRemoved) {
+    private CompletableFuture<Void> removeFriendFromFriendsList(FirebaseUser targetUser, String
+            friendIdToBeRemoved) {
         return findFirebaseUserById(targetUser.getId()).thenComposeAsync(firebaseUser -> {
-            if (firebaseUser.getFriends() != null && firebaseUser.getFriends().stream().anyMatch(friendId -> friendId.equals(friendToBeRemoved.getId()))) {
-                firebaseUser.setFriends(firebaseUser.getFriends().stream().filter(friendId -> !friendId.equals(friendToBeRemoved.getId())).collect(Collectors.toList()));
+            if (firebaseUser.getFriends() != null && firebaseUser.getFriends().stream().anyMatch(friendId -> friendId.equals(friendIdToBeRemoved))) {
+                firebaseUser.setFriends(firebaseUser.getFriends().stream().filter(friendId -> !friendId.equals(friendIdToBeRemoved)).collect(Collectors.toList()));
                 updateFirebaseUser(firebaseUser);
             }
 
