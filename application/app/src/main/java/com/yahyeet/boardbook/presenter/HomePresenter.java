@@ -1,7 +1,6 @@
 package com.yahyeet.boardbook.presenter;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;

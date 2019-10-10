@@ -15,16 +15,14 @@ public class AccountManagerPresenter {
 
     public AccountManagerPresenter(AccountManagerActivity accountManagerActivity){
         this.accountManagerActivity = accountManagerActivity;
-
         if(fastPass){
             BoardbookSingleton.getInstance().getAuthHandler().setLoggedInUser(new User("The Almighty Temp User"));
             finishAccountManager();
         }
-
-
     }
 
     public void loginAccount(String email, String password) {
+
         BoardbookSingleton.getInstance().getAuthHandler().login(email, password).thenAccept(u -> {
             // access logged in user from "u"
             finishAccountManager();
