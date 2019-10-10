@@ -4,12 +4,8 @@ public class GameRole extends AbstractEntity {
     private String name;
 
 
-    public GameRole(String id, String name) {
-        super(id);
+    public GameRole(String name) {
         this.name = name;
-    }
-
-    public GameRole() {
     }
 
     public String getName() {

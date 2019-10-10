@@ -1,23 +1,31 @@
 package com.yahyeet.boardbook.model.entity;
 
 import java.util.List;
+import java.util.Map;
 
 public class Game extends AbstractEntity {
     private String name;
     private String description;
+    private String rules;
     private int minPlayers;
     private int maxPlayers;
+    private int difficulty;
     private List<GameTeam> teams;
-    private List<GameRole> roles;
 
-    public Game(String id, String name, String description, int minPlayers, int maxPlayers, List<GameTeam> teams, List<GameRole> roles) {
-        super(id);
+    public Game(String name,
+                String description,
+                String rules,
+                int difficulty,
+                int minPlayers,
+                int maxPlayers,
+                List<GameTeam> teams) {
         this.name = name;
         this.description = description;
+        this.difficulty = difficulty;
+        this.rules = rules;
         this.minPlayers = minPlayers;
         this.maxPlayers = maxPlayers;
         this.teams = teams;
-        this.roles = roles;
     }
 
     public Game() {
@@ -37,6 +45,22 @@ public class Game extends AbstractEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getRules() {
+        return rules;
+    }
+
+    public void setRules(String rules) {
+        this.rules = rules;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
     }
 
     public int getMinPlayers() {
@@ -61,14 +85,6 @@ public class Game extends AbstractEntity {
 
     public void setTeams(List<GameTeam> teams) {
         this.teams = teams;
-    }
-
-    public List<GameRole> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<GameRole> roles) {
-        this.roles = roles;
     }
 }
 

@@ -28,33 +28,11 @@ public class FirebaseGameRepository implements IGameRepository {
 
     @Override
     public CompletableFuture<Game> create(Game game) {
-        if (game.getId() == null) {
-            return CompletableFuture.supplyAsync(() -> {
-                Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
-                        .add(gameToMap(game));
+        return createFirebaseGame(FirebaseGame.fromGame(game));
 
-                try {
-                    DocumentReference documentReference = Tasks.await(task);
-
-                    return documentReference.getId();
-                } catch (Exception e) {
-                    throw new CompletionException(e);
-                }
-            }).thenCompose(this::find);
-        } else {
-            return CompletableFuture.supplyAsync(() -> {
-                Task<Void> task = firestore.collection(COLLECTION_NAME).document(game.getId()).set(gameToMap(game));
-
-                try {
-                    Tasks.await(task);
-
-                    return game.getId();
-                } catch (Exception e) {
-                    throw new CompletionException(e);
-                }
-            }).thenCompose(this::find);
-        }
     }
+
+
 
     @Override
     public CompletableFuture<Game> find(String id) {
@@ -80,7 +58,7 @@ public class FirebaseGameRepository implements IGameRepository {
         return CompletableFuture.supplyAsync(() -> {
             Task<Void> task = firestore.collection(COLLECTION_NAME)
                     .document(game.getId())
-                    .update(gameToMap(game));
+                    .update(FirebaseGame.fromGame(game).toMap());
 
             try {
                 Tasks.await(task);
@@ -125,6 +103,21 @@ public class FirebaseGameRepository implements IGameRepository {
                 throw new CompletionException(e);
             }
         });
+    }
+
+    private CompletableFuture<Game> createFirebaseGame(FirebaseGame firebaseGame) {
+        return CompletableFuture.supplyAsync(() -> {
+            Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
+                    .add(firebaseGame);
+
+            try {
+                DocumentReference documentReference = Tasks.await(task);
+
+                return documentReference.getId();
+            } catch (Exception e) {
+                throw new CompletionException(e);
+            }
+        }).thenCompose(this::find);
     }
 
     private static Map<String, Object> gameToMap(Game game) {
