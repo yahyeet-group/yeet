@@ -93,7 +93,11 @@ public class FirebaseUserRepository implements IUserRepository {
                 return querySnapshot
                         .getDocuments()
                         .stream()
-                        .map(documentSnapshot -> documentSnapshot.toObject(FirebaseUser.class))
+                        .map(documentSnapshot -> {
+                            FirebaseUser firebaseUser = documentSnapshot.toObject(FirebaseUser.class);
+                            firebaseUser.setId(documentSnapshot.getId());
+                            return firebaseUser;
+                        })
                         .collect(Collectors.toList());
             } catch (Exception e) {
                 throw new CompletionException(e);
@@ -123,7 +127,9 @@ public class FirebaseUserRepository implements IUserRepository {
                 DocumentSnapshot document = Tasks.await(task);
 
                 if (document.exists()) {
-                    return document.toObject(FirebaseUser.class);
+                    FirebaseUser firebaseUser = document.toObject(FirebaseUser.class);
+                    firebaseUser.setId(document.getId());
+                    return firebaseUser;
                 }
 
                 throw new CompletionException(new Exception("User not found"));
