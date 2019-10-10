@@ -31,11 +31,13 @@ public class AuthHandler {
     }
 
     public CompletableFuture<User> signup(String email, String password, String name) {
-        return authService.signup(email, password, name).thenCompose(user -> userHandler.create(user)).thenApply(u ->{
-            loggedInUser = u;
+        return CompletableFuture.completedFuture(new User("123", "123123"));
 
-            return u;
-        });
+        //return authService.signup(email, password, name).thenCompose(user -> userHandler.create(user)).thenApply(u ->{
+        //    loggedInUser = u;
+//
+        //    return u;
+        //});
     }
 
 
