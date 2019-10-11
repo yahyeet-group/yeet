@@ -10,7 +10,7 @@ public class AccountManagerPresenter {
     private AccountManagerActivity accountManagerActivity;
 
     // Set true to skip login
-    private Boolean fastPass = true;
+    private Boolean fastPass = false;
 
     public AccountManagerPresenter(AccountManagerActivity accountManagerActivity){
         this.accountManagerActivity = accountManagerActivity;
@@ -22,7 +22,7 @@ public class AccountManagerPresenter {
     }
 
     public void loginAccount(String email, String password) {
-
+        accountManagerActivity.disableManagerInteraction();
         BoardbookSingleton.getInstance().getAuthHandler().login(email, password).thenAccept(u -> {
             // access logged in user from "u"
             finishAccountManager();
@@ -30,18 +30,21 @@ public class AccountManagerPresenter {
             // Handle error ("e")
             // TODO: Make presenter tell view to act upon different exceptions
             e.printStackTrace();
+            accountManagerActivity.enableManagerInteraction();
             return null;
         });
 
     }
 
     public void registerAccount(String email, String password, String username) {
+        accountManagerActivity.disableManagerInteraction();
         BoardbookSingleton.getInstance().getAuthHandler().signup(email, password, username).thenAccept(u -> {
             // access logged in user from "u"
             finishAccountManager();
         }).exceptionally(e -> {
             // Handle error ("e")
             // TODO: Make presenter tell view to act upon different exceptions
+            accountManagerActivity.enableManagerInteraction();
             e.printStackTrace();
             return null;
         });
