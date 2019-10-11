@@ -95,6 +95,7 @@ public class FirebaseGameRepository implements IGameRepository {
 		});
 	}
 
+	@SuppressWarnings("checked")
 	private FirebaseGame documentToFirebaseGame(DocumentSnapshot document) {
 		Map<String, Object> data = document.getData();
 
@@ -124,7 +125,6 @@ public class FirebaseGameRepository implements IGameRepository {
 		}
 
 		if (data.containsKey("teams")) {
-			@SuppressWarnings("checked")
 			List<Map<String, Object>> teams = (List<Map<String, Object>>) data.get("teams");
 
 			game.setTeams(teams.stream().map(team -> {
@@ -135,7 +135,6 @@ public class FirebaseGameRepository implements IGameRepository {
 					}
 
 					if (team.containsKey("roles")) {
-						@SuppressWarnings("checked")
 						List<Map<String, Object>> roles = (List<Map<String, Object>>) team.get("roles");
 
 						firebaseGameTeam.setRoles(
