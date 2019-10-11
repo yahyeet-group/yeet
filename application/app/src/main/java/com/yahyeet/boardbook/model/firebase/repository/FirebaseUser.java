@@ -77,6 +77,8 @@ class FirebaseUser {
     }
 
     public User toUser() {
-        return new User(name);
+        User user = new User(name);
+        user.setId(getId());
+        return user;
     }
 }
