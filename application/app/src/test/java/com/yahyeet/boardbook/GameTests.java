@@ -35,12 +35,14 @@ public class GameTests {
 
         GameTeam lsoaTeam = new GameTeam("LSOA");
         lsoaTeam.getRoles().add(new GameRole("Merlin"));
+        game.getTeams().add(lsoaTeam);
 
         assertEquals( "Merlin", game.getTeams().get(0).getRoles().get(0).getName());
 
         GameTeam somTeam = new GameTeam("SOM");
         somTeam.getRoles().add(new GameRole("Mordred"));
-        assertEquals( "Mordred", game.getTeams().get(0).getRoles().get(0).getName());
+        game.getTeams().add(somTeam);
+        assertEquals( "Mordred", game.getTeams().get(1).getRoles().get(0).getName());
     }
 
     private Game getTestGame(){
