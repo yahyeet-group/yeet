@@ -22,78 +22,79 @@ import javax.annotation.Nonnull;
 
 public class FriendsFragment extends Fragment implements IFriendFragment {
 
-    private FriendsPresenter friendsPresenter;
-    private ImageButton addFriendbtn;
-    private TextView friendSearch;
+	private FriendsPresenter friendsPresenter;
+	private ImageButton addFriendbtn;
+	private TextView friendSearch;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        friendsPresenter = new FriendsPresenter(this);
-        return inflater.inflate(R.layout.fragment_friends, container, false);
-    }
+	@Nullable
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		friendsPresenter = new FriendsPresenter(this);
+		return inflater.inflate(R.layout.fragment_friends, container, false);
+	}
 
-    @Override
-    public void onViewCreated(@Nonnull View view, Bundle savedInstanceState) {
-        setAllViews();
+	@Override
+	public void onViewCreated(@Nonnull View view, Bundle savedInstanceState) {
+		setAllViews();
 
-        friendsPresenter = new FriendsPresenter(this);
+		friendsPresenter = new FriendsPresenter(this);
 
-        friendSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+		friendSearch.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
+			}
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+			@Override
+			public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                friendsPresenter.searchFriends(friendSearch.getText().toString());
-            }
+				friendsPresenter.searchFriends(friendSearch.getText().toString());
+			}
 
-            @Override
-            public void afterTextChanged(Editable editable) {
+			@Override
+			public void afterTextChanged(Editable editable) {
 
-            }
-        });
+			}
+		});
 
-    }
+	}
 
-    private void setAllViews(){
+	private void setAllViews() {
 
-        friendSearch = getView().findViewById((R.id.friendSearch));
+		friendSearch = getView().findViewById((R.id.friendSearch));
 
-    }
-    public void onStart() {
-        super.onStart();
-        enableFriendList();
+	}
 
-        View view = getView();
+	public void onStart() {
+		super.onStart();
+		enableFriendList();
 
-        addFriendbtn = view.findViewById(R.id.addFriendButton);
+		View view = getView();
 
-        addFriendbtn.setOnClickListener(view1 -> {
-            Intent intent = new Intent(getContext(), AddFriendActivity.class);
-            startActivity(intent);
-        });
-    }
+		addFriendbtn = view.findViewById(R.id.addFriendButton);
 
-    @Override
-    public void enableFriendList() {
-        RecyclerView recyclerView = getView().findViewById(R.id.friendsRecycler);
-        friendsPresenter.enableFriendsList(recyclerView, getContext());
-    }
+		addFriendbtn.setOnClickListener(view1 -> {
+			Intent intent = new Intent(getContext(), AddFriendActivity.class);
+			startActivity(intent);
+		});
+	}
 
-    @Override
-    public void disableFragmentInteraction() {
-        addFriendbtn.setEnabled(false);
-        friendSearch.setEnabled(false);
-    }
+	@Override
+	public void enableFriendList() {
+		RecyclerView recyclerView = getView().findViewById(R.id.friendsRecycler);
+		friendsPresenter.enableFriendsList(recyclerView, getContext());
+	}
 
-    @Override
-    public void enableFragmentInteraction() {
+	@Override
+	public void disableFragmentInteraction() {
+		addFriendbtn.setEnabled(false);
+		friendSearch.setEnabled(false);
+	}
 
-        addFriendbtn.setEnabled(true);
-        friendSearch.setEnabled(true);
-    }
+	@Override
+	public void enableFragmentInteraction() {
+
+		addFriendbtn.setEnabled(true);
+		friendSearch.setEnabled(true);
+	}
 }
