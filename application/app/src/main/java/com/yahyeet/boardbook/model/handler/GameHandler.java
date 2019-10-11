@@ -16,27 +16,29 @@ public class GameHandler {
         this.gameRepository = gameRepository;
     }
 
-    public CompletableFuture<Game> create(Game game) {
-        return gameRepository.create(game).thenApply((u) -> {
-            notifyListenersOnGameAdd(u);
-
-            return u;
-        });
-    }
-
     public CompletableFuture<Game> find(String id) {
         return gameRepository.find(id);
     }
 
+    public CompletableFuture<Game> save(Game game) {
+        if (game.getId() == null) {
+            return gameRepository
+              .create(game)
+              .thenApplyAsync(createdGame -> {
+                  notifyListenersOnGameAdd(createdGame);
 
-    public CompletableFuture<Game> update(Game game) {
-        return gameRepository.update(game).thenApply((u) -> {
-            notifyListenersOnGameUpdate(u);
+                  return createdGame;
+              });
+        } else {
+            return gameRepository
+              .update(game)
+              .thenApplyAsync(updatedGame -> {
+                  notifyListenersOnGameUpdate(updatedGame);
 
-            return u;
-        });
+                  return updatedGame;
+              });
+        }
     }
-
 
     public CompletableFuture<Void> remove(Game game) {
         return gameRepository.remove(game).thenApply((v) -> {

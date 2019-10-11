@@ -4,6 +4,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.yahyeet.boardbook.model.entity.GameTeam;
 
 import java.io.Serializable;
+import java.security.cert.CollectionCertStoreParameters;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,14 +14,14 @@ import java.util.stream.Collectors;
 class FirebaseGameTeam implements Serializable {
 
 	private String name;
-	private List<FirebaseGameRole> gameRoles;
+	private List<FirebaseGameRole> roles;
 
 	public FirebaseGameTeam() {
 	}
 
-	FirebaseGameTeam(String name, List<FirebaseGameRole> gameRoles) {
+	FirebaseGameTeam(String name) {
 		this.name = name;
-		this.gameRoles = gameRoles;
+		this.roles = new ArrayList<>();
 	}
 
 	Map<String, Object> toMap() {
@@ -29,27 +31,30 @@ class FirebaseGameTeam implements Serializable {
 			map.put("name", name);
 		}
 
-		map.put("roles", gameRoles.stream().map(FirebaseGameRole::toMap));
+		map.put("roles", roles.stream().map(FirebaseGameRole::toMap).collect(Collectors.toList()));
 
 		return map;
 	}
 
 
 	static FirebaseGameTeam fromGameTeam(GameTeam gameTeam) {
-		return new FirebaseGameTeam(
-			gameTeam.getName(),
+		FirebaseGameTeam firebaseGameTeam = new FirebaseGameTeam(gameTeam.getName());
+
+		firebaseGameTeam.setRoles(
 			gameTeam.getRoles()
 				.stream()
 				.map(FirebaseGameRole::fromGameRole)
 				.collect(Collectors.toList())
 		);
+
+		return firebaseGameTeam;
 	}
 
 	GameTeam toGameTeam() {
 		GameTeam gameTeam = new GameTeam(name);
 
 		gameTeam.setRoles(
-			gameRoles
+			roles
 				.stream()
 				.map(FirebaseGameRole::toGameRole)
 				.collect(Collectors.toList()));
@@ -65,11 +70,11 @@ class FirebaseGameTeam implements Serializable {
 		this.name = name;
 	}
 
-	public List<FirebaseGameRole> getGameRoles() {
-		return gameRoles;
+	public List<FirebaseGameRole> getRoles() {
+		return roles;
 	}
 
-	public void setGameRoles(List<FirebaseGameRole> gameRoles) {
-		this.gameRoles = gameRoles;
+	public void setRoles(List<FirebaseGameRole> roles) {
+		this.roles = roles;
 	}
 }
