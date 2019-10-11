@@ -11,6 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.content.Intent;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.FriendsActivity.FriendsFragment;
 import com.yahyeet.boardbook.activity.accountActivity.AccountManagerActivity;
 import com.yahyeet.boardbook.activity.gameFragment.GamesFragment;
 
