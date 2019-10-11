@@ -1,126 +1,126 @@
 package com.yahyeet.boardbook.model.handler;
 
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.model.repository.IMatchRepository;
 import com.yahyeet.boardbook.model.repository.IUserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 public class UserHandler {
+	private IUserRepository userRepository;
+	private IMatchRepository matchRepository;
+	private List<UserHandlerListener> listeners = new ArrayList<>();
 
-    private IUserRepository userRepository;
-    private List<UserHandlerListener> listeners = new ArrayList<>();
-    private List<User> users = new ArrayList<>();
+	public UserHandler(IUserRepository userRepository, IMatchRepository matchRepository) {
+		this.userRepository = userRepository;
+		this.matchRepository = matchRepository;
+	}
 
-    public UserHandler(IUserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+	public CompletableFuture<User> find(String id) {
+		return userRepository.find(id).thenCompose(this::populate);
+	}
 
-    public CompletableFuture<User> create(User user) {
-        return userRepository.create(user).thenApply((u) -> {
-            addUser(u);
+	public CompletableFuture<User> save(User user) {
+		if (user.getId() == null) {
+			return userRepository
+				.create(user)
+				.thenCompose(this::populate)
+				.thenApplyAsync(createdUser -> {
+					notifyListenersOnUserAdd(createdUser);
 
-            notifyListenersOnUserAdd(u);
+					return createdUser;
+				});
+		} else {
+			return userRepository
+				.update(user)
+				.thenCompose(this::populate)
+				.thenApplyAsync(updatedUser -> {
+					notifyListenersOnUserUpdate(updatedUser);
 
-            return u;
-        });
-    }
+					return updatedUser;
+				});
+		}
+	}
 
-    public CompletableFuture<User> find(String id) {
-        User user = findUser(id);
+	public CompletableFuture<User> update(User user) {
+		return userRepository.update(user).thenCompose((u) -> {
+			notifyListenersOnUserUpdate(u);
 
-        if (user == null) {
-            return userRepository.find(id).thenApply((u -> {
-                addUser(u);
+			return this.populate(u);
+		});
+	}
 
-                return u;
-            }));
-        }
+	public CompletableFuture<Void> remove(User user) {
+		return userRepository.remove(user).thenApply((v) -> {
+			notifyListenersOnUserRemove(user);
 
-        return CompletableFuture.completedFuture(user);
-    }
+			return null;
+		});
+	}
 
+	public CompletableFuture<List<User>> all() {
+		return userRepository.all().thenComposeAsync(users -> {
+			List<CompletableFuture<User>> completableFutures = users
+				.stream()
+				.map(this::populate)
+				.collect(Collectors.toList());
 
-    public CompletableFuture<User> update(User user) {
-        return userRepository.update(user).thenApply((u) -> {
-            updateUser(u);
+			CompletableFuture<Void> allFutures = CompletableFuture.allOf(
+				completableFutures
+					.toArray(new CompletableFuture[0])
+			);
+			return allFutures.thenApplyAsync(
+				future -> completableFutures
+					.stream()
+					.map(CompletableFuture::join)
+					.collect(Collectors.toList()));
+		});
+	}
 
-            notifyListenersOnUserUpdate(u);
+	public CompletableFuture<User> populate(User user) {
+		if (user.getId() == null) {
+			throw new IllegalArgumentException("Cannot populate a user without an identifier");
+		}
 
-            return u;
-        });
-    }
+		return userRepository.findFriendsByUserId(user.getId()).thenApply(friends -> {
+			user.setFriends(friends);
 
+			return null;
+		}).thenCompose(
+			o -> matchRepository.findMatchesByUserId(user.getId())
+		).thenApply(matches -> {
+			user.setMatches(matches);
 
-    public CompletableFuture<Void> remove(User user) {
-        return userRepository.remove(user).thenApply((v) -> {
-            removeUser(user);
+			return user;
+		});
+	}
 
-            notifyListenersOnUserRemove(user);
+	public void addListener(UserHandlerListener listener) {
+		listeners.add(listener);
+	}
 
-            return null;
-        });
-    }
+	public void removeListener(UserHandlerListener listener) {
+		listeners.remove(listener);
+	}
 
-    public CompletableFuture<List<User>> all() {
-        return userRepository.all();
-    }
+	private void notifyListenersOnUserAdd(User user) {
+		for (UserHandlerListener listener : listeners) {
+			listener.onAddUser(user);
+		}
+	}
 
-    public void addListener(UserHandlerListener listener) {
-        listeners.add(listener);
-    }
+	private void notifyListenersOnUserUpdate(User user) {
+		for (UserHandlerListener listener : listeners) {
+			listener.onUpdateUser(user);
+		}
+	}
 
-    public void removeListener(UserHandlerListener listener) {
-        listeners.remove(listener);
-    }
-
-    private void notifyListenersOnUserAdd(User user) {
-        for (UserHandlerListener listener : listeners) {
-            listener.onAddUser(user);
-        }
-    }
-
-    private void notifyListenersOnUserUpdate(User user) {
-        for (UserHandlerListener listener : listeners) {
-            listener.onUpdateUser(user);
-        }
-    }
-
-    private void notifyListenersOnUserRemove(User user) {
-        for (UserHandlerListener listener : listeners) {
-            listener.onRemoveUser(user);
-        }
-    }
-
-    private User findUser(String id) {
-        for (User user : users) {
-            if (user.getId().equals(id)) {
-                return user;
-            }
-        }
-
-        return null;
-    }
-
-    private void addUser(User user) {
-        users.add(user);
-    }
-
-    private void updateUser(User user) {
-        for (int index = 0; index < users.size(); ++index) {
-            if (user.getId().equals(users.get(index).getId())) {
-                users.set(index, user);
-            }
-        }
-    }
-
-    private void removeUser(User user) {
-        for (int index = 0; index < users.size(); ++index) {
-            if (user.getId().equals(users.get(index).getId())) {
-                users.remove(index);
-                return;
-            }
-        }
-    }
+	private void notifyListenersOnUserRemove(User user) {
+		for (UserHandlerListener listener : listeners) {
+			listener.onRemoveUser(user);
+		}
+	}
 }

@@ -24,4 +24,15 @@
     <string name="searchHint">Search Games</string>
     <string name="gameLoadingText">Please wait a moment</string>
 
+    <string name="minusSign"> - </string>
+    <string name="space"> </string>
+
+    <string name="players"> Players</string>
+    <string name="teams"> Teams</string>
+
+
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
+
 </resources>

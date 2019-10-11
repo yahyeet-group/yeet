@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.model.entity.GameRole;
 import com.yahyeet.boardbook.model.entity.Match;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class GameDetailRoleAdapter extends RecyclerView.Adapter<GameDetailRoleAdapter.RoleViewHolder>{
 
-    private List<String> myDataset;
+    private List<GameRole> myDataset;
 
     static class RoleViewHolder extends RecyclerView.ViewHolder {
 
@@ -28,19 +29,18 @@ public class GameDetailRoleAdapter extends RecyclerView.Adapter<GameDetailRoleAd
         RoleViewHolder(View v) {
             super(v);
 
-            v.findViewById(R.id.gameDetailRoleName);
+            roleName = v.findViewById(R.id.gameDetailRoleName);
         }
 
 
     }
 
 
-    public GameDetailRoleAdapter(List<String> dataset) {
+    public GameDetailRoleAdapter(List<GameRole> dataset) {
         if (dataset != null)
             myDataset = dataset;
         else{
             myDataset = new ArrayList<>();
-            myDataset.add("");
         }
 
 
@@ -62,7 +62,7 @@ public class GameDetailRoleAdapter extends RecyclerView.Adapter<GameDetailRoleAd
     @Override
     public void onBindViewHolder(@NonNull GameDetailRoleAdapter.RoleViewHolder holder, int position) {
 
-        holder.roleName.setText(myDataset.get(position));
+        holder.roleName.setText(myDataset.get(position).getName());
 
     }
 
@@ -70,4 +70,6 @@ public class GameDetailRoleAdapter extends RecyclerView.Adapter<GameDetailRoleAd
     public int getItemCount() {
         return myDataset.size();
     }
+
+
 }
