@@ -53,12 +53,8 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
     public MatchAdapter(List<Match> dataset) {
         if (dataset != null)
             myDataset = dataset;
-        else{
+        else
             myDataset = new ArrayList<>();
-            myDataset.add(new Match());
-        }
-
-
     }
 
     // Creates new view, does not assign data

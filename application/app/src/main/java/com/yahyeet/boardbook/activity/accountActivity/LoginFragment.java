@@ -17,10 +17,11 @@ import androidx.fragment.app.Fragment;
 
 import com.yahyeet.boardbook.R;
 
-public class LoginFragment extends Fragment{
+class LoginFragment extends Fragment{
 
     private IAccountManager accountManager;
-    private View parent;
+    private View fragmentContainer;
+    private Button loginButton;
 
     private EditText emailInput;
     private EditText passwordInput;
@@ -28,11 +29,9 @@ public class LoginFragment extends Fragment{
     private TextView emailText;
     private TextView passwordText;
 
-    private Button loginButton;
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup view, @Nullable Bundle savedInstanceState) {
-        parent = view;
+        fragmentContainer = view;
         return inflater.inflate(R.layout.fragment_login, view, false);
     }
 
@@ -40,16 +39,16 @@ public class LoginFragment extends Fragment{
     public void onStart() {
         super.onStart();
 
-        loginButton = parent.findViewById(R.id.loginButton);
-
-        emailInput = parent.findViewById(R.id.loginEmailInput);
-        passwordInput = parent.findViewById(R.id.loginPasswordInput);
-        errorText = parent.findViewById(R.id.loginErrorText);
-
-        emailText = parent.findViewById(R.id.loginEmailPrompt);
-        passwordText = parent.findViewById(R.id.loginPasswordPrompt);
-
+        loginButton = fragmentContainer.findViewById(R.id.loginButton);
         loginButton.setOnClickListener(view1 -> loginAccount());
+
+        emailInput = fragmentContainer.findViewById(R.id.loginEmailInput);
+        passwordInput = fragmentContainer.findViewById(R.id.loginPasswordInput);
+        errorText = fragmentContainer.findViewById(R.id.loginErrorText);
+
+        emailText = fragmentContainer.findViewById(R.id.loginEmailPrompt);
+        passwordText = fragmentContainer.findViewById(R.id.loginPasswordPrompt);
+
         emailInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

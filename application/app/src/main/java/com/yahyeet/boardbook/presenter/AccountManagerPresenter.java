@@ -1,5 +1,6 @@
 package com.yahyeet.boardbook.presenter;
 
+import com.yahyeet.boardbook.activity.accountActivity.IAccountManager;
 import android.content.Intent;
 
 import com.yahyeet.boardbook.activity.HomeActivity;
@@ -7,12 +8,12 @@ import com.yahyeet.boardbook.activity.accountActivity.AccountManagerActivity;
 
 public class AccountManagerPresenter {
 
-    private AccountManagerActivity accountManagerActivity;
+    private IAccountManager accountManagerActivity;
 
     // Set true to skip login
     private Boolean fastPass = false;
 
-    public AccountManagerPresenter(AccountManagerActivity accountManagerActivity){
+    public AccountManagerPresenter(IAccountManager accountManagerActivity){
         this.accountManagerActivity = accountManagerActivity;
         if(fastPass){
             // TODO: Remove this later
@@ -50,9 +51,7 @@ public class AccountManagerPresenter {
         });
     }
 
-    // TODO: This really needs to be interface abstracted
     private void finishAccountManager(){
-        Intent startHome = new Intent(accountManagerActivity, HomeActivity.class);
-        accountManagerActivity.startActivity(startHome);
+        accountManagerActivity.finishAccountManager();
     }
 }
