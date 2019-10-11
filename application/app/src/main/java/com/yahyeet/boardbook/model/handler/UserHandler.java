@@ -46,7 +46,6 @@ public class UserHandler {
 	}
 
 	public CompletableFuture<User> update(User user) {
-		// TODO: update relation entities
 		return userRepository.update(user).thenCompose((u) -> {
 			notifyListenersOnUserUpdate(u);
 
