@@ -1,18 +1,16 @@
 package com.yahyeet.boardbook.model.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameTeam extends AbstractEntity {
     private String name;
-    private List<GameRole> roleList;
+    private List<GameRole> roles;
 
-
-    public GameTeam(String name, List<GameRole> rolelist) {
+    public GameTeam(String name) {
         this.name = name;
-        this.roleList = rolelist;
+        roles = new ArrayList<>();
     }
-
-
 
     public String getName() {
         return name;
@@ -22,12 +20,11 @@ public class GameTeam extends AbstractEntity {
         this.name = name;
     }
 
-
-    public List<GameRole> getRoleList() {
-        return roleList;
+    public List<GameRole> getRoles() {
+        return roles;
     }
 
-    public void setRoleList(List<GameRole> roleList) {
-        this.roleList = roleList;
+    public void setRoles(List<GameRole> roles) {
+        this.roles = roles;
     }
 }

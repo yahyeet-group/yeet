@@ -3,7 +3,6 @@ package com.yahyeet.boardbook.model.entity;
 public class GameRole extends AbstractEntity {
     private String name;
 
-
     public GameRole(String name) {
         this.name = name;
     }

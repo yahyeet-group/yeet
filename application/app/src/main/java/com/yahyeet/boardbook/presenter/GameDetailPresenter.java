@@ -29,7 +29,7 @@ public class GameDetailPresenter {
     public void initiateGameDetail(){
         gameDetailActivity.setGameName(game.getName());
         gameDetailActivity.setGameDescription(game.getDescription());
-        gameDetailActivity.setGameRules(game.getRules());
+        gameDetailActivity.setGameRules("");
     }
 
     /**

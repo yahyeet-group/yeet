@@ -79,7 +79,7 @@ public class GameDetailTeamAdapter extends RecyclerView.Adapter<GameDetailTeamAd
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(holder.view.getContext());
         holder.roleList.setLayoutManager(layoutManager);
 
-        GameDetailRoleAdapter roleAdapter = new GameDetailRoleAdapter(myDataset.get(position).getRoleList());
+        GameDetailRoleAdapter roleAdapter = new GameDetailRoleAdapter(myDataset.get(position).getRoles());
 
         holder.roleList.setAdapter(roleAdapter);
 

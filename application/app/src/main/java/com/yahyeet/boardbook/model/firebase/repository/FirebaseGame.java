@@ -12,152 +12,146 @@ import java.util.stream.Collectors;
 
 public class FirebaseGame {
 
-    private String id;
-    private String name;
-    private String description;
-    private String rules;
+	private String id;
+	private String name;
+	private String description;
 
-    private int difficulty;
-    private int minPlayers;
-    private int maxPlayers;
+	private int difficulty;
+	private int minPlayers;
+	private int maxPlayers;
 
-    private List<FirebaseGameTeam> teams;
+	private List<FirebaseGameTeam> teams;
 
-    public FirebaseGame() {}
+	public FirebaseGame() {
+	}
 
-    public FirebaseGame(String name, String description, String rules,
-                        int difficulty, int minPlayers, int maxPlayers,
-                        List<FirebaseGameTeam> teams ) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.rules = rules;
-        this.difficulty = difficulty;
-        this.minPlayers = minPlayers;
-        this.maxPlayers = maxPlayers;
-        this.teams = teams;
+	public FirebaseGame(String id,
+											String name,
+											String description,
+											int difficulty,
+											int minPlayers,
+											int maxPlayers) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.difficulty = difficulty;
+		this.minPlayers = minPlayers;
+		this.maxPlayers = maxPlayers;
+		this.teams = new ArrayList<>();
 
-    }
+	}
 
-    public static FirebaseGame fromGame(Game game){
-        return new FirebaseGame(
-                game.getName(),
-                game.getDescription(),
-                game.getRules(),
-                game.getDifficulty(),
-                game.getMinPlayers(),
-                game.getMaxPlayers(),
-                game.getTeams()
-                .stream()
-                .map(FirebaseGameTeam::fromGameTeam)
-                .collect(Collectors.toList())
-        );
-    }
+	public static FirebaseGame fromGame(Game game) {
+		FirebaseGame firebaseGame = new FirebaseGame(
+			game.getId(),
+			game.getName(),
+			game.getDescription(),
+			game.getDifficulty(),
+			game.getMinPlayers(),
+			game.getMaxPlayers()
+		);
 
-    public static Game toGame(FirebaseGame firebaseGame){
-       return new Game(
-                firebaseGame.getId(),
-                firebaseGame.getName(),
-                firebaseGame.getDescription(),
-                firebaseGame.getRules(),
-                firebaseGame.getDifficulty(),
-                firebaseGame.getMinPlayers(),
-                firebaseGame.getMaxPlayers(),
-                firebaseGame.getTeams()
-                        .stream()
-                        .map(FirebaseGameTeam::toGameTeam)
-                        .collect(Collectors.toList())
-        );
-    }
+		firebaseGame.setTeams(
+			game.getTeams()
+				.stream()
+				.map(FirebaseGameTeam::fromGameTeam)
+				.collect(Collectors.toList())
+		);
 
-    public Map<String, Object> toMap() {
-        Map<String, Object> map = new HashMap<>();
-        if (name != null) {
-            map.put("name", name);
-        }
+		return firebaseGame;
+	}
 
-        if (description != null) {
-            map.put("description", description);
-        }
+	public Game toGame() {
+		Game game = new Game(name, description, difficulty, minPlayers, maxPlayers);
 
-        if (rules != null) {
-            map.put("rules", rules);
-        }
+		game.setId(getId());
 
-        map.put("difficulty", difficulty);
+		game.setTeams(
+			getTeams()
+				.stream()
+				.map(FirebaseGameTeam::toGameTeam)
+				.collect(Collectors.toList())
+		);
 
+		return game;
+	}
 
-        map.put("minplayers", minPlayers);
+	public Map<String, Object> toMap() {
+		Map<String, Object> map = new HashMap<>();
+		if (name != null) {
+			map.put("name", name);
+		}
+
+		if (description != null) {
+			map.put("description", description);
+		}
+
+		map.put("difficulty", difficulty);
 
 
-        map.put("maxplayer", maxPlayers);
+		map.put("minplayers", minPlayers);
 
-        map.put("teams", teams.stream().map(FirebaseGameTeam::toMap).collect(Collectors.toList()));
 
-        return map;
-    }
+		map.put("maxplayer", maxPlayers);
 
-    public String getId() {
-        return id;
-    }
+		map.put("teams", teams.stream().map(FirebaseGameTeam::toMap).collect(Collectors.toList()));
 
-    public void setId(String id) {
-        this.id = id;
-    }
+		return map;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getRules() {
-        return rules;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setRules(String rules) {
-        this.rules = rules;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public int getDifficulty() {
-        return difficulty;
-    }
+	public int getDifficulty() {
+		return difficulty;
+	}
 
-    public void setDifficulty(int difficulty) {
-        this.difficulty = difficulty;
-    }
+	public void setDifficulty(int difficulty) {
+		this.difficulty = difficulty;
+	}
 
-    public int getMinPlayers() {
-        return minPlayers;
-    }
+	public int getMinPlayers() {
+		return minPlayers;
+	}
 
-    public void setMinPlayers(int minPlayers) {
-        this.minPlayers = minPlayers;
-    }
+	public void setMinPlayers(int minPlayers) {
+		this.minPlayers = minPlayers;
+	}
 
-    public int getMaxPlayers() {
-        return maxPlayers;
-    }
+	public int getMaxPlayers() {
+		return maxPlayers;
+	}
 
-    public void setMaxPlayers(int maxPlayers) {
-        this.maxPlayers = maxPlayers;
-    }
+	public void setMaxPlayers(int maxPlayers) {
+		this.maxPlayers = maxPlayers;
+	}
 
-    public List<FirebaseGameTeam> getTeams() {
-        return teams;
-    }
+	public List<FirebaseGameTeam> getTeams() {
+		return teams;
+	}
 
-    public void setTeams(List<FirebaseGameTeam> teams) {
-        this.teams = teams;
-    }
+	public void setTeams(List<FirebaseGameTeam> teams) {
+		this.teams = teams;
+	}
 }
