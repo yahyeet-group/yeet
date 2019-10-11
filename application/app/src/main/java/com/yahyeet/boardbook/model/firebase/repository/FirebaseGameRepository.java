@@ -13,6 +13,7 @@ import com.yahyeet.boardbook.model.repository.IGameRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.stream.Collectors;
@@ -101,20 +102,21 @@ public class FirebaseGameRepository implements IGameRepository {
 
 		game.setId(document.getId());
 
+		assert data != null;
 		if (data.containsKey("description")) {
 			game.setDescription((String) data.get("description"));
 		}
 
 		if (data.containsKey("difficulty")) {
-			game.setDifficulty(((Long) data.get("difficulty")).intValue());
+			game.setDifficulty(((Long) Objects.requireNonNull(data.get("difficulty"))).intValue());
 		}
 
 		if (data.containsKey("maxPlayers")) {
-			game.setMaxPlayers(((Long) data.get("maxPlayers")).intValue());
+			game.setMaxPlayers(((Long) Objects.requireNonNull(data.get("maxPlayers"))).intValue());
 		}
 
 		if (data.containsKey("minPlayers")) {
-			game.setMinPlayers(((Long) data.get("minPlayers")).intValue());
+			game.setMinPlayers(((Long) Objects.requireNonNull(data.get("minPlayers"))).intValue());
 		}
 
 		if (data.containsKey("name")) {
@@ -124,6 +126,7 @@ public class FirebaseGameRepository implements IGameRepository {
 		if (data.containsKey("teams")) {
 			List<Map<String, Object>> teams = (List<Map<String, Object>>) data.get("teams");
 
+			assert teams != null;
 			game.setTeams(teams.stream().map(team -> {
 					FirebaseGameTeam firebaseGameTeam = new FirebaseGameTeam();
 
@@ -134,6 +137,7 @@ public class FirebaseGameRepository implements IGameRepository {
 					if (team.containsKey("roles")) {
 						List<Map<String, Object>> roles = (List<Map<String, Object>>) team.get("roles");
 
+						assert roles != null;
 						firebaseGameTeam.setRoles(
 							roles
 								.stream()
@@ -202,7 +206,7 @@ public class FirebaseGameRepository implements IGameRepository {
 				return querySnapshot
 					.getDocuments()
 					.stream()
-					.map(documentSnapshot -> documentToFirebaseGame(documentSnapshot))
+					.map(this::documentToFirebaseGame)
 					.collect(Collectors.toList());
 			} catch (Exception e) {
 				throw new CompletionException(e);
