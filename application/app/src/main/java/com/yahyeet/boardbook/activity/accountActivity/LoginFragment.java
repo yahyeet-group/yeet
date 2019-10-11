@@ -23,8 +23,10 @@ class LoginFragment extends Fragment{
     private View fragmentContainer;
 
     private EditText emailInput;
-    private EditText passInput;
+    private EditText passwordInput;
     private TextView errorText;
+    private TextView emailText;
+    private TextView passwordText;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup view, @Nullable Bundle savedInstanceState) {
@@ -43,6 +45,12 @@ class LoginFragment extends Fragment{
         passInput = fragmentContainer.findViewById(R.id.passLoginInput);
         errorText = fragmentContainer.findViewById(R.id.errorView);
 
+        emailInput = parent.findViewById(R.id.loginEmailInput);
+        passwordInput = parent.findViewById(R.id.loginPasswordInput);
+        errorText = parent.findViewById(R.id.loginErrorText);
+
+        emailText = parent.findViewById(R.id.loginEmailPrompt);
+        passwordText = parent.findViewById(R.id.loginPasswordPrompt);
 
         emailInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -58,7 +66,7 @@ class LoginFragment extends Fragment{
                 hideErrorMessage();
             }
         });
-        passInput.addTextChangedListener(new TextWatcher() {
+        passwordInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -90,32 +98,40 @@ class LoginFragment extends Fragment{
     private void loginAccount() {
         // Remove focus from activity
         emailInput.clearFocus();
-        passInput.clearFocus();
+        passwordInput.clearFocus();
 
-        if (passInput.length() < 6) {
+        if (passwordInput.length() < 6) {
             showErrorMessage();
             return;
         }
 
-        accountManager.loginAccount(emailInput.getText().toString(), passInput.getText().toString());
+        accountManager.loginAccount(emailInput.getText().toString(), passwordInput.getText().toString());
 
 
     }
-
-
-
-
 
     /**
      * Reveals error message on wrong email/password combination
      */
-    public void showErrorMessage() {
+    private void showErrorMessage() {
         errorText.setAlpha(1);
     }
 
-    public void hideErrorMessage() {
+    private void hideErrorMessage() {
         errorText.setAlpha(0);
     }
 
+    /**
+     * Enables or disables all interactive elements of the fragment
+     * @param value enable or disable value
+     */
+    void setFragmentInteraction(Boolean value){
+        emailInput.setEnabled(value);
+        passwordInput.setEnabled(value);
+        loginButton.setEnabled(value);
+
+        emailText.setEnabled(value);
+        passwordText.setEnabled(value);
+    }
 
 }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.yahyeet.boardbook.R;
 
@@ -24,7 +25,11 @@ class RegisterFragment extends Fragment{
 
     private EditText emailInput;
     private EditText passwordInput;
-    private EditText userInput;
+    private EditText usernameInput;
+
+    private TextView emailText;
+    private TextView passwordText;
+    private TextView usernameText;
 
     private Button registerButton;
 
@@ -42,10 +47,15 @@ class RegisterFragment extends Fragment{
     @Override
     public void onStart() {
         super.onStart();
-        emailInput = parent.findViewById(R.id.emailRegisterInput);
-        passwordInput = parent.findViewById(R.id.passwordRegisterInput);
-        userInput = parent.findViewById(R.id.usernameRegisterInput);
+        emailInput = parent.findViewById(R.id.registerEmailInput);
+        passwordInput = parent.findViewById(R.id.registerPasswordInput);
+        usernameInput = parent.findViewById(R.id.registerUsernameInput);
         registerButton = parent.findViewById(R.id.registerButton);
+
+        usernameText = parent.findViewById(R.id.registerUsernameText);
+        emailText = parent.findViewById(R.id.registerEmailText);
+        passwordText = parent.findViewById(R.id.registerPasswordText);
+
 
         registerButton.setOnClickListener(view1 -> registerAccount());
 
@@ -92,10 +102,10 @@ class RegisterFragment extends Fragment{
             public void afterTextChanged(Editable editable) {
 
                 if (!isPasswordValid(passwordInput.getText())) {
-                    parent.findViewById(R.id.passwordErrorView).setAlpha(1);
+                    parent.findViewById(R.id.registerPasswordError).setAlpha(1);
                     passwordValid = false;
                 } else {
-                    parent.findViewById(R.id.passwordErrorView).setAlpha(0);
+                    parent.findViewById(R.id.registerPasswordError).setAlpha(0);
                     passwordValid = true;
                 }
 
@@ -132,7 +142,7 @@ class RegisterFragment extends Fragment{
      * Method makes a new account if the "Make a New Account" button has been tapped
      */
     private void registerAccount() {
-        accountManager.registerAccount(emailInput.getText().toString(), passwordInput.getText().toString(), userInput.getText().toString());
+        accountManager.registerAccount(emailInput.getText().toString(), passwordInput.getText().toString(), usernameInput.getText().toString());
     }
 
 
@@ -144,5 +154,20 @@ class RegisterFragment extends Fragment{
         return password.length() >= 6;
     }
 
+
+    /**
+     * Enables or disables all interactive elements of the fragment
+     * @param value enable or disable value
+     */
+    void setFragmentInteraction(Boolean value){
+        emailInput.setEnabled(value);
+        passwordInput.setEnabled(value);
+        usernameInput.setEnabled(value);
+        registerButton.setEnabled(value);
+
+        usernameText.setEnabled(value);
+        emailText.setEnabled(value);
+        passwordText.setEnabled(value);
+    }
 
 }
