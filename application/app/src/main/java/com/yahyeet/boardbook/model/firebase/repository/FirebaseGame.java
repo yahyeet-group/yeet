@@ -89,10 +89,10 @@ public class FirebaseGame {
 		map.put("difficulty", difficulty);
 
 
-		map.put("minplayers", minPlayers);
+		map.put("minPlayers", minPlayers);
 
 
-		map.put("maxplayer", maxPlayers);
+		map.put("maxPlayers", maxPlayers);
 
 		map.put("teams", teams.stream().map(FirebaseGameTeam::toMap).collect(Collectors.toList()));
 
