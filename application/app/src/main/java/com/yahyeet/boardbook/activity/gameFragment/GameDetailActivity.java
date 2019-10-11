@@ -18,7 +18,7 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
     private TextView gameDescription;
     private TextView gameRules;
     private ImageView gameImage;
-    private RecyclerView teamListView;
+    private RecyclerView teamRecyclerView;
 
 
     @Override
@@ -43,7 +43,7 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
         gameName = findViewById(R.id.gameDetailName);
         gameDescription = findViewById(R.id.gameDetailDescription);
         gameRules = findViewById(R.id.gameDetailRules);
-        teamListView = findViewById(R.id.gameDetailTeamsList);
+        teamRecyclerView = findViewById(R.id.gameDetailRecyclerView);
 
 
 
@@ -52,6 +52,7 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
     protected void onStart() {
         super.onStart();
         gameDetailPresenter.initiateGameDetail();
+        gameDetailPresenter.enableMatchFeed(teamRecyclerView, this);
     }
 
     public void setGameName(String name) {

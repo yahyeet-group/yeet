@@ -26,11 +26,29 @@ public class GameListAdapter extends GameAdapter {
     @Override
     void setupViewElements(View convertView, Game currentItem) {
         TextView textViewName = convertView.findViewById(R.id.gameSeachName);
-        TextView textViewPlayers = convertView.findViewById(R.id.gameListTime);
-
+        TextView textViewDifficulty = convertView.findViewById(R.id.gameDifficulty);
+        TextView textViewPlayers = convertView.findViewById(R.id.gameListMinMaxPlayers);
+        TextView textViewTeams = convertView.findViewById(R.id.gameListTeamAmount);
         textViewName.setText(currentItem.getName());
-        textViewPlayers.setText("20 min");
-        // TODO: Add game time, rating? and difficulty to model
+        textViewDifficulty.setText(getDifficulty(currentItem.getDifficulty()));
+        textViewPlayers
+                .setText(currentItem.getMinPlayers() + " - " + currentItem.getMaxPlayers() + " Players");
+        textViewTeams.setText("0 - " + currentItem.getTeams().size() + " Teams");
+    }
+
+
+    private String getDifficulty(int i){
+        if(i == 1){
+            return "Easy";
+        }
+        else if(i == 2){
+            return "Medium";
+        }
+        else if(i == 3){
+            return "Hard";
+        }
+
+        return "Unknown Difficulty";
     }
 
 
