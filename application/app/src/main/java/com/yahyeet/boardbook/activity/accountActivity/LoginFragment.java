@@ -21,6 +21,7 @@ class LoginFragment extends Fragment{
 
     private IAccountManager accountManager;
     private View fragmentContainer;
+    private Button loginButton;
 
     private EditText emailInput;
     private EditText passwordInput;
@@ -38,19 +39,15 @@ class LoginFragment extends Fragment{
     public void onStart() {
         super.onStart();
 
-        Button loginButton = fragmentContainer.findViewById(R.id.loginButton);
+        loginButton = fragmentContainer.findViewById(R.id.loginButton);
         loginButton.setOnClickListener(view1 -> loginAccount());
 
-        emailInput = fragmentContainer.findViewById(R.id.emailLoginInput);
-        passInput = fragmentContainer.findViewById(R.id.passLoginInput);
-        errorText = fragmentContainer.findViewById(R.id.errorView);
+        emailInput = fragmentContainer.findViewById(R.id.loginEmailInput);
+        passwordInput = fragmentContainer.findViewById(R.id.loginPasswordInput);
+        errorText = fragmentContainer.findViewById(R.id.loginErrorText);
 
-        emailInput = parent.findViewById(R.id.loginEmailInput);
-        passwordInput = parent.findViewById(R.id.loginPasswordInput);
-        errorText = parent.findViewById(R.id.loginErrorText);
-
-        emailText = parent.findViewById(R.id.loginEmailPrompt);
-        passwordText = parent.findViewById(R.id.loginPasswordPrompt);
+        emailText = fragmentContainer.findViewById(R.id.loginEmailPrompt);
+        passwordText = fragmentContainer.findViewById(R.id.loginPasswordPrompt);
 
         emailInput.addTextChangedListener(new TextWatcher() {
             @Override
