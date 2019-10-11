@@ -124,9 +124,9 @@ public class FirebaseGameRepository implements IGameRepository {
 		}
 
 		if (data.containsKey("teams")) {
+			@SuppressWarnings("checked")
 			List<Map<String, Object>> teams = (List<Map<String, Object>>) data.get("teams");
 
-			assert teams != null;
 			game.setTeams(teams.stream().map(team -> {
 					FirebaseGameTeam firebaseGameTeam = new FirebaseGameTeam();
 
@@ -135,9 +135,9 @@ public class FirebaseGameRepository implements IGameRepository {
 					}
 
 					if (team.containsKey("roles")) {
+						@SuppressWarnings("checked")
 						List<Map<String, Object>> roles = (List<Map<String, Object>>) team.get("roles");
 
-						assert roles != null;
 						firebaseGameTeam.setRoles(
 							roles
 								.stream()
