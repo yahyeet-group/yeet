@@ -16,27 +16,29 @@ public class MatchHandler {
         this.matchRepository = matchRepository;
     }
 
-    public CompletableFuture<Match> create(Match match) {
-        return matchRepository.create(match).thenApply((u) -> {
-            notifyListenersOnMatchAdd(u);
-
-            return u;
-        });
-    }
-
     public CompletableFuture<Match> find(String id) {
         return matchRepository.find(id);
     }
 
+    public CompletableFuture<Match> save(Match match) {
+        if (match.getId() == null) {
+            return matchRepository
+              .create(match)
+              .thenApplyAsync(createdMatch -> {
+                  notifyListenersOnMatchAdd(createdMatch);
 
-    public CompletableFuture<Match> update(Match match) {
-        return matchRepository.update(match).thenApply((u) -> {
-            notifyListenersOnMatchUpdate(u);
+                  return createdMatch;
+              });
+        } else {
+            return matchRepository
+              .update(match)
+              .thenApplyAsync(updatedMatch -> {
+                  notifyListenersOnMatchUpdate(updatedMatch);
 
-            return u;
-        });
+                  return updatedMatch;
+              });
+        }
     }
-
 
     public CompletableFuture<Void> remove(Match match) {
         return matchRepository.remove(match).thenApply((v) -> {
