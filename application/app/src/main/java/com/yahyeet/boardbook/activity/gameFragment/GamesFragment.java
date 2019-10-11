@@ -65,7 +65,7 @@ public class GamesFragment extends Fragment implements IGameFragment {
         gameGridView.setColumnWidth(width / 3);
 
 
-        enableGameGrid();
+        enableGameList();
     }
 
     private void setAllViews(){
