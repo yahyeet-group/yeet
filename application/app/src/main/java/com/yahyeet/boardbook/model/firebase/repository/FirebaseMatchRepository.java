@@ -18,131 +18,138 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
 public class FirebaseMatchRepository implements IMatchRepository {
-    private FirebaseFirestore firestore;
+	private FirebaseFirestore firestore;
 
-    public static final String COLLECTION_NAME = "matches";
+	private FirebaseGameRepository firebaseGameRepository;
+	private FirebaseUserRepository firebaseUserRepository;
 
-    public FirebaseMatchRepository(FirebaseFirestore firestore) {
-        this.firestore = firestore;
-    }
+	public static final String COLLECTION_NAME = "matches";
 
-    @Override
-    public CompletableFuture<Match> create(Match match) {
-        if (match.getId() == null) {
-            return CompletableFuture.supplyAsync(() -> {
-                Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
-                        .add(matchToMap(match));
+	public FirebaseMatchRepository(FirebaseFirestore firestore,
+																 FirebaseGameRepository firebaseGameRepository,
+																 FirebaseUserRepository firebaseUserRepository) {
+		this.firestore = firestore;
+		this.firebaseGameRepository = firebaseGameRepository;
+		this.firebaseUserRepository = firebaseUserRepository;
+	}
 
-                try {
-                    DocumentReference documentReference = Tasks.await(task);
+	@Override
+	public CompletableFuture<Match> create(Match match) {
+		if (match.getId() == null) {
+			return CompletableFuture.supplyAsync(() -> {
+				Task<DocumentReference> task = firestore.collection(COLLECTION_NAME)
+					.add(matchToMap(match));
 
-                    return documentReference.getId();
-                } catch (Exception e) {
-                    throw new CompletionException(e);
-                }
-            }).thenCompose(this::find);
-        } else {
-            return CompletableFuture.supplyAsync(() -> {
-                Task<Void> task = firestore.collection(COLLECTION_NAME).document(match.getId()).set(matchToMap(match));
+				try {
+					DocumentReference documentReference = Tasks.await(task);
 
-                try {
-                    Tasks.await(task);
+					return documentReference.getId();
+				} catch (Exception e) {
+					throw new CompletionException(e);
+				}
+			}).thenCompose(this::find);
+		} else {
+			return CompletableFuture.supplyAsync(() -> {
+				Task<Void> task = firestore.collection(COLLECTION_NAME).document(match.getId()).set(matchToMap(match));
 
-                    return match.getId();
-                } catch (Exception e) {
-                    throw new CompletionException(e);
-                }
-            }).thenCompose(this::find);
-        }
-    }
+				try {
+					Tasks.await(task);
 
-    @Override
-    public CompletableFuture<Match> find(String id) {
-        return CompletableFuture.supplyAsync(() -> {
-            Task<DocumentSnapshot> task = firestore.collection(COLLECTION_NAME).document(id).get();
+					return match.getId();
+				} catch (Exception e) {
+					throw new CompletionException(e);
+				}
+			}).thenCompose(this::find);
+		}
+	}
 
-            try {
-                DocumentSnapshot document = Tasks.await(task);
+	@Override
+	public CompletableFuture<Match> find(String id) {
+		return CompletableFuture.supplyAsync(() -> {
+			Task<DocumentSnapshot> task = firestore.collection(COLLECTION_NAME).document(id).get();
 
-                if (document.exists()) {
-                    return documentToMatch(document);
-                }
+			try {
+				DocumentSnapshot document = Tasks.await(task);
 
-                throw new CompletionException(new Exception("Match not found"));
-            } catch (Exception e) {
-                throw new CompletionException(e);
-            }
-        });
-    }
+				if (document.exists()) {
+					return documentToMatch(document);
+				}
 
-    @Override
-    public CompletableFuture<Match> update(Match match) {
-        return CompletableFuture.supplyAsync(() -> {
-            Task<Void> task = firestore.collection(COLLECTION_NAME)
-                    .document(match.getId())
-                    .update(matchToMap(match));
+				throw new CompletionException(new Exception("Match not found"));
+			} catch (Exception e) {
+				throw new CompletionException(e);
+			}
+		});
+	}
 
-            try {
-                Tasks.await(task);
+	@Override
+	public CompletableFuture<Match> update(Match match) {
+		return CompletableFuture.supplyAsync(() -> {
+			Task<Void> task = firestore.collection(COLLECTION_NAME)
+				.document(match.getId())
+				.update(matchToMap(match));
 
-                return match.getId();
-            } catch (Exception e) {
-                throw new CompletionException(e);
-            }
-        }).thenCompose(this::find);
-    }
+			try {
+				Tasks.await(task);
 
-    @Override
-    public CompletableFuture<Void> remove(Match match) {
-        return CompletableFuture.supplyAsync(() -> {
-            Task<Void> task = firestore.collection(COLLECTION_NAME).document(match.getId()).delete();
+				return match.getId();
+			} catch (Exception e) {
+				throw new CompletionException(e);
+			}
+		}).thenCompose(this::find);
+	}
 
-            try {
-                Tasks.await(task);
+	@Override
+	public CompletableFuture<Void> remove(Match match) {
+		return CompletableFuture.supplyAsync(() -> {
+			Task<Void> task = firestore.collection(COLLECTION_NAME).document(match.getId()).delete();
 
-                return null;
-            } catch (Exception e) {
-                throw new CompletionException(e);
-            }
-        });
-    }
+			try {
+				Tasks.await(task);
 
-    @Override
-    public CompletableFuture<List<Match>> all() {
-        return CompletableFuture.supplyAsync(() -> {
-            Task<QuerySnapshot> task = firestore.collection(COLLECTION_NAME).get();
+				return null;
+			} catch (Exception e) {
+				throw new CompletionException(e);
+			}
+		});
+	}
 
-            try {
-                QuerySnapshot querySnapshot = Tasks.await(task);
+	@Override
+	public CompletableFuture<List<Match>> all() {
+		return CompletableFuture.supplyAsync(() -> {
+			Task<QuerySnapshot> task = firestore.collection(COLLECTION_NAME).get();
 
-                List<Match> matches = new ArrayList<>();
-                for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
-                    matches.add(documentToMatch(documentSnapshot));
-                }
+			try {
+				QuerySnapshot querySnapshot = Tasks.await(task);
 
-                return matches;
-            } catch (Exception e) {
-                throw new CompletionException(e);
-            }
-        });
-    }
+				List<Match> matches = new ArrayList<>();
+				for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
+					matches.add(documentToMatch(documentSnapshot));
+				}
 
-    private static Map<String, Object> matchToMap(Match match) {
-        Map<String, Object> matchMap = new HashMap<>();
+				return matches;
+			} catch (Exception e) {
+				throw new CompletionException(e);
+			}
+		});
+	}
 
-        return matchMap;
-    }
+	private static Map<String, Object> matchToMap(Match match) {
+		Map<String, Object> matchMap = new HashMap<>();
 
-    private static Match documentToMatch(DocumentSnapshot document) {
-        Match match = new Match();
+		return matchMap;
+	}
 
-        match.setId(document.getId());
+	private static Match documentToMatch(DocumentSnapshot document) {
+		Match match = new Match();
 
-        return match;
-    }
+		match.setId(document.getId());
 
-    @Override
-    public CompletableFuture<List<Match>> findMatchesByUserId(String id) {
-        return CompletableFuture.completedFuture(new ArrayList<>());
-    }
+		return match;
+	}
+
+	@Override
+	public CompletableFuture<List<Match>> findMatchesByUserId(String id) {
+		return CompletableFuture.completedFuture(new ArrayList<>());
+	}
 }
