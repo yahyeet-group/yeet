@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.yahyeet.boardbook.activity.gameFragment.GameDetailActivity;
+import com.yahyeet.boardbook.activity.GameActivity.GameDetailActivity;
 import com.yahyeet.boardbook.model.entity.Game;
 
 import java.util.List;

@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.yahyeet.boardbook.R;
 
-class LoginFragment extends Fragment{
+public class LoginFragment extends Fragment{
 
     private IAccountManager accountManager;
     private View fragmentContainer;

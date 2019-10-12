@@ -13,6 +13,8 @@ import com.yahyeet.boardbook.presenter.adapter.FriendsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class AddFriendPresenter {
@@ -44,14 +46,6 @@ public class AddFriendPresenter {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		matchRecyclerView.setLayoutManager(layoutManager);
 
-
-		for (int i = 0; i < 30; i++) {
-			userDatabase.add(new User(Integer.toString(i), "Name: " + i));
-
-		}
-
-		all.addAll(userDatabase);
-
 		addFriendsAdapter = new AddFriendsAdapter(userDatabase);
 		matchRecyclerView.setAdapter(addFriendsAdapter);
 	}
@@ -59,11 +53,29 @@ public class AddFriendPresenter {
 	private void initiateAddFriendPresenter() {
 
 		addFriendActivity.disableActivityInteraction();
-		//List<User> friends = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
+		List<User> myFriends = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
+
+		List<User> notMyFriends = new ArrayList<>();
+		//TODO: Rosen help
+		try {
+			notMyFriends = BoardbookSingleton.getInstance().getUserHandler().all().get();
+		} catch (ExecutionException | InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		if(notMyFriends != null && myFriends != null){
+			notMyFriends.removeAll(myFriends);
+			
+		}
+
+
+		userDatabase.addAll(notMyFriends);
+		all.addAll(notMyFriends);
+		
+		addFriendActivity.enableActivityInteraction();
 		//userDatabase.addAll(friends);
 		//all = friends;
-		addFriendActivity.enableActivityInteraction();
-		repopulateMatches();
+
 	}
 
 	public void searchNonFriends(String query) {

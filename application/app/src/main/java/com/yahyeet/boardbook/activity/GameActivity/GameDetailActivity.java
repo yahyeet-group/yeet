@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.activity.gameFragment;
+package com.yahyeet.boardbook.activity.GameActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;

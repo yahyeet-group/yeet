@@ -1,16 +1,12 @@
 package com.yahyeet.boardbook.presenter;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.widget.BaseAdapter;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.FriendsActivity.IFriendFragment;
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.model.handler.UserHandlerListener;
 import com.yahyeet.boardbook.presenter.adapter.FriendsAdapter;
 
 import java.util.ArrayList;
@@ -33,7 +29,7 @@ public class FriendsPresenter {
     /**
      * Makes recyclerView to repopulate its matches with current data
      */
-    public void repopulateMatches() {
+    public void repopulateFriends() {
         friendsAdapter.notifyDataSetChanged();
     }
 
@@ -46,13 +42,15 @@ public class FriendsPresenter {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
         matchRecyclerView.setLayoutManager(layoutManager);
 
-
+        /*
         for (int i = 0; i < 30; i++) {
             userDatabase.add(new User(Integer.toString(i), "Name: " + i));
 
         }
 
         all.addAll(userDatabase);
+        */
+        initiateFriendPresenter();
 
         friendsAdapter = new FriendsAdapter(userDatabase);
         matchRecyclerView.setAdapter(friendsAdapter);
@@ -61,18 +59,22 @@ public class FriendsPresenter {
     private void initiateFriendPresenter() {
 
         friendsFragment.disableFragmentInteraction();
-        //List<User> friends = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
-        //userDatabase.addAll(friends);
-        //all = friends;
+        List<User> friends = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
+
+
+        if(friends != null){
+            userDatabase.addAll(friends);
+            all.addAll(friends);
+        }
+
         friendsFragment.enableFragmentInteraction();
-        repopulateMatches();
     }
 
     public void searchFriends(String query) {
         List<User> temp = findMatchingName(all, query);
         userDatabase.clear();
         userDatabase.addAll(temp);
-        repopulateMatches();
+        repopulateFriends();
 
     }
 

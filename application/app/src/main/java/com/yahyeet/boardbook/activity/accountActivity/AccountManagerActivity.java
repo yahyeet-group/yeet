@@ -32,7 +32,6 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
         registerFragment = new RegisterFragment();
 
 
-
         getSupportFragmentManager().beginTransaction().replace(R.id.accountManagerContainer, loginFragment, "Login").commit();
     }
 
