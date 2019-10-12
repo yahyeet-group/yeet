@@ -1,6 +1,5 @@
 package com.yahyeet.boardbook.activity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +48,6 @@ public class HomeFragment extends Fragment implements IHomeFragment {
      * Orders recyclerView of matches to repopulate itself
      */
     public void repopulateMatchFeed() {
-        homePresenter.repopulateMatches();
+        homePresenter.updateMatchAdapter();
     }
 }

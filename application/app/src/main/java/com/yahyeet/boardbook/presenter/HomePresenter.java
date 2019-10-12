@@ -7,36 +7,73 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IHomeFragment;
 import com.yahyeet.boardbook.model.entity.Match;
+import com.yahyeet.boardbook.model.handler.MatchHandlerListener;
 import com.yahyeet.boardbook.presenter.adapter.MatchAdapter;
 
-public class HomePresenter {
+import java.util.ArrayList;
+import java.util.List;
 
-    private MatchAdapter matchAdapter;
-    // TODO: Remove if never necessary
-    private IHomeFragment homeFragment;
+public class HomePresenter implements MatchHandlerListener {
 
-    public HomePresenter(IHomeFragment homeFragment) {
-        this.homeFragment = homeFragment;
-    }
+	private MatchAdapter matchAdapter;
+	private List<Match> matchDatabase;
 
-    /**
-     * Makes recyclerView to repopulate its matches with current data
-     */
-    public void repopulateMatches() {
-        matchAdapter.notifyDataSetChanged();
-    }
 
-    /**
-     * Creates the necessary structure for populating matches
-     *
-     * @param matchRecyclerView the RecyclerView that will be populated with matches
-     */
-    public void enableMatchFeed(RecyclerView matchRecyclerView, Context viewContext) {
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
-        matchRecyclerView.setLayoutManager(layoutManager);
-        //TODO: Replace with matches from user
-        matchAdapter = new MatchAdapter(null);
-        matchRecyclerView.setAdapter(matchAdapter);
-    }
+	// TODO: Remove if never necessary
+	private IHomeFragment homeFragment;
 
+	public HomePresenter(IHomeFragment homeFragment) {
+		this.homeFragment = homeFragment;
+	}
+
+	/**
+	 * Makes recyclerView to repopulate its matches with current data
+	 */
+	public void updateMatchAdapter() {
+		matchAdapter.notifyDataSetChanged();
+	}
+
+	/**
+	 * Creates the necessary structure for populating matches
+	 *
+	 * @param matchRecyclerView the RecyclerView that will be populated with matches
+	 */
+	public void enableMatchFeed(RecyclerView matchRecyclerView, Context viewContext) {
+
+		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
+		matchRecyclerView.setLayoutManager(layoutManager);
+		//TODO: Replace with matches from user
+		matchDatabase = new ArrayList<>();
+		for (int i = 0; i < 20; i++)
+			matchDatabase.add(new Match());
+		matchAdapter = new MatchAdapter(matchDatabase);
+		matchRecyclerView.setAdapter(matchAdapter);
+	}
+
+	@Override
+	public void onAddMatch(Match match) {
+		matchDatabase.add(match);
+		updateMatchAdapter();
+	}
+
+	@Override
+	public void onUpdateMatch(Match match) {
+		for (int i = 0; i < matchDatabase.size(); i++) {
+			if (matchDatabase.get(i).getId().equals(match.getId())) {
+				matchDatabase.set(i, match);
+			}
+		}
+		updateMatchAdapter();
+	}
+
+	@Override
+	public void onRemoveMatch(Match match) {
+		for (int i = 0; i < matchDatabase.size(); i++) {
+			if (matchDatabase.get(i).getId().equals(match.getId())) {
+				matchDatabase.remove(i);
+				break;
+			}
+		}
+		updateMatchAdapter();
+	}
 }

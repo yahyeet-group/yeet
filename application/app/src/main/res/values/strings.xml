@@ -18,4 +18,23 @@
     <string name="overall_statistics">Overall Statistics</string>
     <string name="winrate">Win Rate</string>
     <string name="games_played">Games Played</string>
+
+    <string name="tempGame">Avalon</string>
+    <string name="tempTeam">as Good</string>
+    <string name="tempRole">(Merlin)</string>
+
+    <string name="searchHint">Search Games</string>
+    <string name="gameLoadingText">Please wait a moment</string>
+
+    <string name="minusSign"> - </string>
+    <string name="space"> </string>
+
+    <string name="players"> Players</string>
+    <string name="teams"> Teams</string>
+
+
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
+
 </resources>
