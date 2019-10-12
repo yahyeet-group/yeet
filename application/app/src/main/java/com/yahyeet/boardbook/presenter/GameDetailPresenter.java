@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.activity.gameFragment.IGameDetailActivity;
+import com.yahyeet.boardbook.activity.GameActivity.IGameDetailActivity;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.presenter.adapter.GameDetailTeamAdapter;
 

@@ -42,18 +42,18 @@ public class FriendsFragment extends Fragment implements IFriendFragment {
 		friendSearch.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+				friendsPresenter.searchFriends(friendSearch.getText().toString());
 			}
 
 			@Override
 			public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-				friendsPresenter.searchFriends(friendSearch.getText().toString());
+
 			}
 
 			@Override
 			public void afterTextChanged(Editable editable) {
-
+				friendsPresenter.searchFriends(friendSearch.getText().toString());
 			}
 		});
 
@@ -87,14 +87,14 @@ public class FriendsFragment extends Fragment implements IFriendFragment {
 
 	@Override
 	public void disableFragmentInteraction() {
-		addFriendbtn.setEnabled(false);
+		//addFriendbtn.setEnabled(false);
 		friendSearch.setEnabled(false);
 	}
 
 	@Override
 	public void enableFragmentInteraction() {
 
-		addFriendbtn.setEnabled(true);
+		//addFriendbtn.setEnabled(true);
 		friendSearch.setEnabled(true);
 	}
 }

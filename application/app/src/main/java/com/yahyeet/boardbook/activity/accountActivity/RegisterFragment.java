@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.yahyeet.boardbook.R;
 
-class RegisterFragment extends Fragment{
+public class RegisterFragment extends Fragment{
 
 
     private IAccountManager accountManager;

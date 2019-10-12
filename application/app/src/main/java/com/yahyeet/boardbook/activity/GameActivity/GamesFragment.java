@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.activity.gameFragment;
+package com.yahyeet.boardbook.activity.GameActivity;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -48,16 +48,17 @@ public class GamesFragment extends Fragment implements IGameFragment {
         searchInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 gamePresenter.searchGames(searchInput.getText().toString());
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                gamePresenter.searchGames(searchInput.getText().toString());
             }
         });
 

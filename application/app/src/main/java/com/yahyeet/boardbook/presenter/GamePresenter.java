@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
 
-import com.yahyeet.boardbook.activity.gameFragment.IGameFragment;
+import com.yahyeet.boardbook.activity.GameActivity.IGameFragment;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.handler.GameHandler;
 import com.yahyeet.boardbook.model.handler.GameHandlerListener;
@@ -31,7 +31,7 @@ public class GamePresenter implements GameHandlerListener {
     private boolean gameGridEnabled;
 
     final private List<Game> gameDatabase = new ArrayList<>();
-    private List<Game> all;
+    private List<Game> all = new ArrayList<>();
 
 
     public GamePresenter(IGameFragment gameFragment) {
@@ -72,8 +72,11 @@ public class GamePresenter implements GameHandlerListener {
 
         gameFragment.disableFragmentInteraction();
         BoardbookSingleton.getInstance().getGameHandler().all().thenAccept(initGames -> {
-            gameDatabase.addAll(initGames);
-            all = initGames;
+            if(initGames != null){
+                gameDatabase.addAll(initGames);
+                all.addAll(initGames);
+            }
+
             uiHandler.post(() -> {
                 gameFragment.enableFragmentInteraction();
                 updateAdapters();
@@ -83,9 +86,9 @@ public class GamePresenter implements GameHandlerListener {
 
     // TODO: Method requires better name
     public void searchGames(String query) {
-        List<Game> temp = findMatchingName(all, query);
         gameDatabase.clear();
-        gameDatabase.addAll(temp);
+        gameDatabase.addAll(findMatchingName(all, query));
+        updateAdapters();
 
         /*BoardbookSingleton.getInstance().getGameHandler().all().thenAccept(games -> {
             gameDatabase.clear();
