@@ -25,14 +25,6 @@ public class ProfileActivity extends AppCompatActivity implements IProfileActivi
 		setContentView(R.layout.activity_profile);
 		profilePresenter = new ProfilePresenter(this);
 		enableMatchFeed();
-
-		//TODO: SET THIS IN ANOTHER WAY CAUSE NULL POINTER
-		tvUsername = findViewById(R.id.tvUsername);
-		tvWinrate = findViewById(R.id.tvWinrate);
-		tvGamesPlayed = findViewById(R.id.tvGamesPlayed);
-		pbWinrate = findViewById(R.id.pbWinrate);
-
-		setDataFields();
 	}
 
 	private void setDataFields() {

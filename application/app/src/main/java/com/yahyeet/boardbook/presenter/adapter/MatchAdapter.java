@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,9 +44,20 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
 	public class HeaderViewHolder extends RecyclerView.ViewHolder {
-		HeaderViewHolder(@NonNull View itemView) {
-			super(itemView);
+		private TextView tvUsername;
+		private TextView tvWinrate;
+		private TextView tvGamesPlayed;
+		private ProgressBar pbWinrate;
+
+
+		HeaderViewHolder(@NonNull View v) {
+			super(v);
 			//Does nothing when clicked on!
+
+			tvUsername = v.findViewById(R.id.tvUsername);
+			tvWinrate = v.findViewById(R.id.tvWinrate);
+			tvGamesPlayed = v.findViewById(R.id.tvGamesPlayed);
+			pbWinrate = v.findViewById(R.id.pbWinrate);
 		}
 	}
 
@@ -109,6 +121,10 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 				//vh.imageView.setImageURL();
 			} else if (holder instanceof HeaderViewHolder) {
 				HeaderViewHolder vh = (HeaderViewHolder) holder;
+				vh.tvUsername.setText("Carl");
+				vh.tvGamesPlayed.setText("20");
+				vh.tvWinrate.setText("30%");
+				vh.pbWinrate.setProgress(30);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
