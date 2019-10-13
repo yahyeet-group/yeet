@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "951849886983-62b7cm1hgj3uert7o680cs8udbjd06ig.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yahyeet.boardbook",
+            "certificate_hash": "ed0d4d324d97ca67c61c423393343db24c4521c3"
+          }
+        },
+        {
           "client_id": "951849886983-jvprr8q3nfk1km7dsih0q6llb7jiaq12.apps.googleusercontent.com",
           "client_type": 3
         }

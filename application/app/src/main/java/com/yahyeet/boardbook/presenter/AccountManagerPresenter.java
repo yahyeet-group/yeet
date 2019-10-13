@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.yahyeet.boardbook.activity.HomeActivity;
 import com.yahyeet.boardbook.activity.accountActivity.AccountManagerActivity;
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.model.util.LoginFailedException;
 
 public class AccountManagerPresenter {
 
@@ -22,7 +23,12 @@ public class AccountManagerPresenter {
         }
     }
 
-    public void loginAccount(String email, String password) {
+    public void loginAccount(String email, String password) throws LoginFailedException {
+
+        if(password.length() <= 6){
+            throw new LoginFailedException("Password needs to be longer than 6 characters");
+        }
+
         accountManagerActivity.disableManagerInteraction();
         BoardbookSingleton.getInstance().getAuthHandler().login(email, password).thenAccept(u -> {
             // access logged in user from "u"

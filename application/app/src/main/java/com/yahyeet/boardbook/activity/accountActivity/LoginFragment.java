@@ -29,12 +29,16 @@ public class LoginFragment extends Fragment{
     private TextView emailText;
     private TextView passwordText;
 
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup view, @Nullable Bundle savedInstanceState) {
         fragmentContainer = view;
         return inflater.inflate(R.layout.fragment_login, view, false);
     }
 
+    /**
+     * Binds buttons, Edittext and TextViews from id to references in class
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -82,45 +86,43 @@ public class LoginFragment extends Fragment{
     }
 
     //TODO: Abstract to superclass, same functionality in login and register
+
+    /**
+     * Saves reference of class inflating the fragment, casts to IAccount manager
+     * @param context is the activity inflating the fragment
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        try {
-            accountManager = (IAccountManager) context;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        accountManager = (IAccountManager) context;
     }
 
+    /**
+     * Attempts to call loginAccount from parent activity
+     */
     private void loginAccount() {
-        // Remove focus from activity
-        emailInput.clearFocus();
-        passwordInput.clearFocus();
-
-        if (passwordInput.length() < 6) {
-            showErrorMessage();
-            return;
-        }
-
         accountManager.loginAccount(emailInput.getText().toString(), passwordInput.getText().toString());
 
 
     }
 
     /**
-     * Reveals error message on wrong email/password combination
+     * Reveals error message
      */
-    private void showErrorMessage() {
+    void showErrorMessage() {
         errorText.setAlpha(1);
     }
 
-    private void hideErrorMessage() {
+    /**
+     * Hides error message
+     */
+    void hideErrorMessage() {
         errorText.setAlpha(0);
     }
 
     /**
      * Enables or disables all interactive elements of the fragment
-     * @param value enable or disable value
+     * @param value to enable or disable elements
      */
     void setFragmentInteraction(Boolean value){
         emailInput.setEnabled(value);
