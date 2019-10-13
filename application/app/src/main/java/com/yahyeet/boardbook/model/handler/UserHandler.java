@@ -45,6 +45,18 @@ public class UserHandler {
 		}
 	}
 
+	public CompletableFuture<User> saveWithId(User user) {
+		return userRepository
+			.create(user)
+			.thenCompose(this::populate)
+			.thenApplyAsync(createdUser -> {
+				notifyListenersOnUserAdd(createdUser);
+
+				return createdUser;
+			});
+
+	}
+
 	public CompletableFuture<User> update(User user) {
 		return userRepository.update(user).thenCompose((u) -> {
 			notifyListenersOnUserUpdate(u);
