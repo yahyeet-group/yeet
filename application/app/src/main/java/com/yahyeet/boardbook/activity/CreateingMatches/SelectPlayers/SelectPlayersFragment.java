@@ -1,5 +1,6 @@
 package com.yahyeet.boardbook.activity.CreateingMatches.SelectPlayers;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -43,14 +44,14 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
         Button ccBtn = v.findViewById(R.id.ccTestingBtn);
 
         cssBtn.setOnClickListener((n) -> {
-            ConstraintLayout layout = v.findViewById(R.id.testingLayout);
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) layout.getLayoutParams();
-            layoutParams.height = 250;
-            layoutParams.width = 250;
-            layout.setLayoutParams(layoutParams);
+            //testView.getLayoutParams().height = 0;
+          //  testView.requestLayout();
+            ObjectAnimator animation = ObjectAnimator.ofFloat(testView, "transformationX", 100f);
+            animation.setDuration(2000);
+            animation.start();
         });
         csbBtn.setOnClickListener((n) -> {
-            testView.getLayoutParams().height = 300;
+            testView.getLayoutParams().height = 400;
             testView.requestLayout();
         });
         ccBtn.setOnClickListener((n) -> {
