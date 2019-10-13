@@ -8,6 +8,7 @@ public class User extends AbstractEntity {
     private List<Match> matches;
 
     public User(String id, String name) {
+        setId(id);
         this.name = name;
     }
 
