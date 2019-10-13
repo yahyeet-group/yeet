@@ -1,5 +1,7 @@
 package com.yahyeet.boardbook.presenter.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.ProfileActivity;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
 
@@ -21,6 +24,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendVi
 
 	private static final String TAG = "FriendsAdapter";
 	private List<User> myDataset;
+	private Context context;
 
 	static class FriendViewHolder extends RecyclerView.ViewHolder {
 
@@ -32,7 +36,6 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendVi
 		FriendViewHolder(View v) {
 			super(v);
 			// Define click listener for the ViewHolder's View.
-			//v.setOnClickListener(v1 -> Log.d(TAG, "Element " + getAdapterPosition() + " clicked."));
 
 
 			friendName = v.findViewById(R.id.friendName);
@@ -43,12 +46,13 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendVi
 	}
 
 
-	public FriendsAdapter(List<User> dataset) {
+	public FriendsAdapter(List<User> dataset, Context context) {
 		if (dataset != null)
 			myDataset = dataset;
 		else {
 			myDataset = new ArrayList<>();
 		}
+		this.context = context;
 	}
 
 	// Creates new view, does not assign data
@@ -70,6 +74,13 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendVi
 
 		holder.friendName.setText(myDataset.get(position).getName());
 		//holder.friendPicture.setImageURI();
+
+		holder.itemView.setOnClickListener(v1 -> {
+			Intent startProfile = new Intent(context, ProfileActivity.class);
+			startProfile.putExtra("UserId", myDataset.get(position).getId());
+			context.startActivity(startProfile);
+		});
+
 	}
 
 	@Override

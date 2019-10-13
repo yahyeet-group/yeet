@@ -8,6 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.HomeActivity;
 import com.yahyeet.boardbook.activity.ProfileActivity;
 import com.yahyeet.boardbook.presenter.AccountManagerPresenter;
 
@@ -45,7 +46,7 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 
 	@Override
 	public void finishAccountManager() {
-		Intent startHome = new Intent(this, ProfileActivity.class);
+		Intent startHome = new Intent(this, HomeActivity.class);
 		startActivity(startHome);
 		finish();
 	}

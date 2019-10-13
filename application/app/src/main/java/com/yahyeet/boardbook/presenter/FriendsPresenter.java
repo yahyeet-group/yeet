@@ -52,7 +52,7 @@ public class FriendsPresenter {
         */
         initiateFriendPresenter();
 
-        friendsAdapter = new FriendsAdapter(userDatabase);
+        friendsAdapter = new FriendsAdapter(userDatabase, viewContext);
         matchRecyclerView.setAdapter(friendsAdapter);
     }
 
@@ -65,6 +65,13 @@ public class FriendsPresenter {
         if(friends != null){
             userDatabase.addAll(friends);
             all.addAll(friends);
+        }
+        else{
+            List<User> matchDatabase = new ArrayList<>();
+            for (int i = 0; i < 20; i++)
+                matchDatabase.add(new User(null, "Vex"));
+            userDatabase.addAll(matchDatabase);
+            all.addAll(matchDatabase);
         }
 
         friendsFragment.enableFragmentInteraction();
