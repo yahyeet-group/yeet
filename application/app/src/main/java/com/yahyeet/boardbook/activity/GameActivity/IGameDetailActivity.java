@@ -8,5 +8,4 @@ public interface IGameDetailActivity {
 
     void setGameRules(String rules);
 
-    void enableGameDetailList();
 }

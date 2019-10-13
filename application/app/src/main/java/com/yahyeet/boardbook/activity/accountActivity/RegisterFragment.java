@@ -44,7 +44,7 @@ public class RegisterFragment extends Fragment {
 	}
 
 	/**
-	 *
+	 *	Binds buttons, Edittext and TextViews from id to references in class
 	 */
 	@Override
 	public void onStart() {
@@ -73,6 +73,7 @@ public class RegisterFragment extends Fragment {
 
 			}
 
+
 			@Override
 			public void afterTextChanged(Editable editable) {
 
@@ -85,7 +86,7 @@ public class RegisterFragment extends Fragment {
 
 				}
 
-				checkRegisterButtonValid();
+				isRegisterButtonValid();
 
 			}
 		});
@@ -111,12 +112,16 @@ public class RegisterFragment extends Fragment {
 					passwordValid = true;
 				}
 
-				checkRegisterButtonValid();
+				isRegisterButtonValid();
 			}
 		});
 	}
 
 	//TODO: Abstract to superclass, same functionality in login and register
+	/**
+	 * Saves reference of class inflating the fragment, casts to IAccount manager
+	 * @param context is the activity inflating the fragment
+	 */
 	@Override
 	public void onAttach(@NonNull Context context) {
 		super.onAttach(context);
@@ -130,28 +135,40 @@ public class RegisterFragment extends Fragment {
 
 
 	/**
-	 * Attempts to call loginAccount from parent activity
+	 * Attempts to call registerAccount from parent activity
 	 */
 	private void registerAccount() {
 		accountManager.registerAccount(emailInput.getText().toString(), passwordInput.getText().toString(), usernameInput.getText().toString());
 	}
 
-	private void checkRegisterButtonValid() {
+	/**
+	 * 	Enables registerButton if email and passwords are correct, otherwise disables it
+	 */
+	private void isRegisterButtonValid() {
 		if (emailVaild && passwordValid) {
 			registerButton.setAlpha(1);
-			registerButton.setClickable(true);
+			registerButton.setEnabled(true);
 
 		} else {
-			registerButton.setClickable(false);
+			registerButton.setEnabled(false);
 			registerButton.setAlpha(0.5f);
 		}
 	}
 
-
+	/**
+	 * Checks if email matches android pattern for valid email
+	 * @param email gets compared against android email pattern
+	 * @return if email is valid or not
+	 */
 	private boolean isEmailValid(CharSequence email) {
 		return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
 	}
 
+	/**
+	 * Checks if password is valid or not
+	 * @param password to be validated
+	 * @return if password is valid or not
+	 */
 	private boolean isPasswordValid(CharSequence password) {
 		return password.length() >= 6;
 	}

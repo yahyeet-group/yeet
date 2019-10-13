@@ -44,7 +44,7 @@ public class GameDetailPresenter {
      *
      * @param teamRecyclerView the RecyclerView that will be populated with teams
      */
-    public void enableMatchFeed(RecyclerView teamRecyclerView, Context viewContext) {
+    public void enableTeamList(RecyclerView teamRecyclerView, Context viewContext) {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
         teamRecyclerView.setLayoutManager(layoutManager);
