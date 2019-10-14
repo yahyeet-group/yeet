@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.Match;
 
 import java.util.ArrayList;
@@ -63,7 +62,7 @@ public class MatchAdapter extends RecyclerView.Adapter<MatchAdapter.MatchViewHol
     public MatchViewHolder onCreateViewHolder(ViewGroup viewGroup,
                                               int viewType) {
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.match_element, viewGroup, false);
+                .inflate(R.layout.element_match, viewGroup, false);
 
         return new MatchViewHolder(v);
     }

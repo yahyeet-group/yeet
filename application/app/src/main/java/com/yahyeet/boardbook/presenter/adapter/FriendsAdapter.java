@@ -1,6 +1,5 @@
 package com.yahyeet.boardbook.presenter.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
 
 import java.util.ArrayList;
@@ -57,7 +55,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendVi
 	public FriendViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View v = LayoutInflater
 			.from(parent.getContext())
-			.inflate(R.layout.friends_element, parent, false);
+			.inflate(R.layout.element_friends, parent, false);
 
 		return new FriendViewHolder(v);
 	}
