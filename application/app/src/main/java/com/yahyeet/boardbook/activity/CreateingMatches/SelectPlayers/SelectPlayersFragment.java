@@ -1,20 +1,17 @@
 package com.yahyeet.boardbook.activity.CreateingMatches.SelectPlayers;
 
-import android.animation.ObjectAnimator;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.presenter.SelectPlayerPresenter;
@@ -36,53 +33,34 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		bindTestButtons();
+		enableMatchFeed();
+	}
+
+	public void enableMatchFeed() {
+		// TODO: Examine how these method calls can get nullPointerException
+		RecyclerView gameRecycler = getView().findViewById(R.id.player_recycle_view);
+
+		// use this setting to improve performance if you know that changes
+		// in content do not change the layout size of the RecyclerView
+		gameRecycler.setHasFixedSize(true);
+		spp.enableGameFeed(gameRecycler, getView().getContext());
 	}
 
 	private void bindTestButtons() {
-		View v = getView();
-		View testView = v.findViewById(R.id.testingLayout);
 
-		Button cssBtn = v.findViewById(R.id.spTestButton);
-		Button editButton = v.findViewById(R.id.spEditButton);
-		Button doneButton = v.findViewById(R.id.spDoneButton);
+
 
 
 		//// SPINNER INIT
-		List<String> spinnerArray =  new ArrayList<String>();
+		List<String> spinnerArray = new ArrayList<String>();
 		spinnerArray.add("Minions Of Mordred");
-		Spinner teamSpinner = v.findViewById(R.id.teamSpinner);
-		ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, spinnerArray);		// Specify the layout to use when the list of choices appears
+	//	Spinner teamSpinner = v.findViewById(R.id.teamSpinner);
+		ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, spinnerArray);    // Specify the layout to use when the list of choices appears
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// Apply the adapter to the spinner
-		teamSpinner.setAdapter(adapter);
+	//	teamSpinner.setAdapter(adapter);
 
-		cssBtn.setOnClickListener((n) -> {
-			testView.getLayoutParams().height = dpFromPx(100);
-			testView.requestLayout();
-		});
-		editButton.setOnClickListener((n) -> {
-			testView.getLayoutParams().height = dpFromPx(250);
-			testView.requestLayout();
-		});
-		doneButton.setOnClickListener((n) -> {
-			System.out.println("YEEEEEEEEEEEEEET!");
-			testView.getLayoutParams().height = dpFromPx(100);
-			testView.getLayoutParams();
-		});
-		/*
-			csbBtn.setOnClickListener((n) -> {
-			testView.getLayoutParams().height = 400;
-			testView.requestLayout();
-			*/
-	/*});
-		ccBtn.setOnClickListener((n) -> {
-			testView.setBackgroundColor(101010);
-		});*/
 	}
 
-	public int dpFromPx(int px) {
-		return (int) (px * getContext().getResources().getDisplayMetrics().density);
-	}
+
 }

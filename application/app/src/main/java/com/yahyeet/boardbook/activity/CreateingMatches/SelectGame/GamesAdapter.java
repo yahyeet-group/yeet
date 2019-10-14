@@ -17,7 +17,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHol
 
     private Game[] myDataset = {};
 
-    static class GamesViewHolder extends RecyclerView.ViewHolder {
+    class GamesViewHolder extends RecyclerView.ViewHolder {
 
         private TextView gameTitle;
         private ImageView gameImage;
