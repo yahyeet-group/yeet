@@ -1,13 +1,13 @@
 package com.yahyeet.boardbook.model.entity;
 
-public class Entity {
+public abstract class AbstractEntity {
     private String id;
 
-    public Entity(String id) {
+    public AbstractEntity(String id) {
         this.id = id;
     }
 
-    public Entity() {
+    public AbstractEntity() {
     }
 
     public String getId() {
