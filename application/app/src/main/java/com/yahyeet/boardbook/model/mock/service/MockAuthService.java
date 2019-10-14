@@ -36,7 +36,7 @@ public class MockAuthService implements IAuthService {
     @Override
     public CompletableFuture<User> signup(String email, String password, String name) {
         return CompletableFuture.supplyAsync(() -> {
-            User user = new User("", name);
+            User user = new User(name);
             AuthenticationUser authUser = new AuthenticationUser(email, password, user);
             mockUserDb.add(authUser);
 
