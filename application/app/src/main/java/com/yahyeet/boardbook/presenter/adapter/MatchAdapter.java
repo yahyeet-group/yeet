@@ -151,7 +151,7 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 	@Override
 	public int getItemViewType(int position) {
-		if (position == 0 && matchOwner == null) {
+		if (position == 0 && matchOwner != null) {
 			return HEADER_VIEW;
 		}
 		return super.getItemViewType(position);

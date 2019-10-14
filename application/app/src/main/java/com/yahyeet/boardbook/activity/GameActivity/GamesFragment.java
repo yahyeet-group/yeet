@@ -106,7 +106,9 @@ public class GamesFragment extends Fragment implements IGameFragment {
         searchInput.setEnabled(false);
         enableList.setEnabled(false);
         enableGrid.setEnabled(false);
-        getView().findViewById(R.id.gameLoadingLayout).setVisibility(View.VISIBLE);
+        View view = getView();
+        if(view != null)
+            getView().findViewById(R.id.gameLoadingLayout).setVisibility(View.VISIBLE);
 
 
     }
