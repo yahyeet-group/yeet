@@ -30,11 +30,11 @@ public class ProfileActivity extends AppCompatActivity implements IProfileActivi
 			if(extras == null) {
 				userId = null;
 			} else {
-				userId = extras.getString("User");
+				userId = extras.getString("UserId");
 			}
 		} else {
 			// TODO: Maybe bad, idk // Vex
-			userId = (String) savedInstanceState.getSerializable("User");
+			userId = (String) savedInstanceState.getSerializable("UserId");
 		}
 
 		profilePresenter = new ProfilePresenter(this, userId);
