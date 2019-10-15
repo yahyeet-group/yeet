@@ -8,13 +8,11 @@ import java.util.concurrent.CompletableFuture;
 public class AuthHandler {
 
     private IAuthService authService;
-    private UserHandler userHandler;
 
     private User loggedInUser;
 
-    public AuthHandler(IAuthService authService, UserHandler userHandler) {
+    public AuthHandler(IAuthService authService) {
         this.authService = authService;
-        this.userHandler = userHandler;
     }
 
     public CompletableFuture<User> login(String email, String password) {
@@ -31,7 +29,7 @@ public class AuthHandler {
     }
 
     public CompletableFuture<User> signup(String email, String password, String name) {
-        return authService.signup(email, password, name).thenCompose(user -> userHandler.save(user)).thenApply(u ->{
+        return authService.signup(email, password, name).thenApply(u ->{
             loggedInUser = u;
 
             return u;
