@@ -3,8 +3,8 @@ package com.yahyeet.boardbook.activity;
 public interface IHomeFragment {
 
 
-    void enableMatchFeed();
+	void enableMatchFeed();
 
-    void repopulateMatchFeed();
+	void repopulateMatchFeed();
 
 }

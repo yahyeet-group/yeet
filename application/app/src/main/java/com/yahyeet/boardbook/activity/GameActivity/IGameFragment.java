@@ -3,8 +3,8 @@ package com.yahyeet.boardbook.activity.GameActivity;
 
 public interface IGameFragment {
 
-    void disableFragmentInteraction();
+	void disableFragmentInteraction();
 
-    void enableFragmentInteraction();
+	void enableFragmentInteraction();
 
 }

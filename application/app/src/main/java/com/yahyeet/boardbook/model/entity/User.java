@@ -1,5 +1,6 @@
 package com.yahyeet.boardbook.model.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User extends AbstractEntity {
@@ -9,6 +10,8 @@ public class User extends AbstractEntity {
 
 	public User(String name) {
 		this.name = name;
+		friends = new ArrayList<>();
+		matches = new ArrayList<>();
 	}
 
 	public User() {
