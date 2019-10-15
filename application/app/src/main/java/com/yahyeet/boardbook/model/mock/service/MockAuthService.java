@@ -47,7 +47,7 @@ public class MockAuthService implements IAuthService {
 
     }
 
-    public class AuthenticationUser {
+    public static class AuthenticationUser {
         public String email;
         public String password;
         public User user;
@@ -63,20 +63,24 @@ public class MockAuthService implements IAuthService {
             matches = new ArrayList<>();
         }
 
+        public String getEmail() {
+            return email;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public User getUser() {
+            return user;
+        }
+
         public List<User> getFriends() {
             return friends;
         }
 
-        public void setFriends(List<User> friends) {
-            this.friends = friends;
-        }
-
         public List<Match> getMatches() {
             return matches;
-        }
-
-        public void setMatches(List<Match> matches) {
-            this.matches = matches;
         }
     }
 }
