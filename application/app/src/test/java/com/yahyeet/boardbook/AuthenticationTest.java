@@ -26,12 +26,13 @@ public class AuthenticationTest {
 			mockAuthService.login("test@test.test", "MyPassword").thenAccept(user -> {
 				Assert.assertEquals("Testificate", user.getName());
 				Assert.assertEquals("id", user.getId());
-				Assert.assertEquals("Testificate", authHandler.getLoggedInUser().getName());
 				Assert.assertEquals("test@test.test", user.getEmail());
 			}).get();
 		} catch (ExecutionException | InterruptedException e) {
 			Assert.fail();
 		}
+
+		Assert.assertEquals("Testificate", authHandler.getLoggedInUser().getName());
 	}
 
 	@Test
