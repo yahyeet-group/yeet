@@ -21,6 +21,7 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 
 	/**
 	 * Calls super and the initiates presenter, fragments and xml items.
+	 *
 	 * @param savedInstanceState sent to super
 	 */
 	@Override
@@ -43,7 +44,7 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 	/**
 	 * Method tries to log into app given valid parameters
 	 *
-	 * @param email of the account trying to log in
+	 * @param email    of the account trying to log in
 	 * @param password of the account trying to log in
 	 */
 	public void loginAccount(String email, String password) {

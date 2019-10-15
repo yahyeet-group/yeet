@@ -63,15 +63,15 @@ public class AddFriendPresenter {
 			e.printStackTrace();
 		}
 
-		if(notMyFriends != null && myFriends != null){
+		if (notMyFriends != null && myFriends != null) {
 			notMyFriends.removeAll(myFriends);
-			
+
 		}
 
 
 		userDatabase.addAll(notMyFriends);
 		all.addAll(notMyFriends);
-		
+
 		addFriendActivity.enableActivityInteraction();
 		//userDatabase.addAll(friends);
 		//all = friends;

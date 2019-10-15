@@ -44,7 +44,7 @@ public class RegisterFragment extends Fragment {
 	}
 
 	/**
-	 *	Binds buttons, Edittext and TextViews from id to references in class
+	 * Binds buttons, Edittext and TextViews from id to references in class
 	 */
 	@Override
 	public void onStart() {
@@ -118,8 +118,10 @@ public class RegisterFragment extends Fragment {
 	}
 
 	//TODO: Abstract to superclass, same functionality in login and register
+
 	/**
 	 * Saves reference of class inflating the fragment, casts to IAccount manager
+	 *
 	 * @param context is the activity inflating the fragment
 	 */
 	@Override
@@ -142,7 +144,7 @@ public class RegisterFragment extends Fragment {
 	}
 
 	/**
-	 * 	Enables registerButton if email and passwords are correct, otherwise disables it
+	 * Enables registerButton if email and passwords are correct, otherwise disables it
 	 */
 	private void isRegisterButtonValid() {
 		if (emailVaild && passwordValid) {
@@ -157,6 +159,7 @@ public class RegisterFragment extends Fragment {
 
 	/**
 	 * Checks if email matches android pattern for valid email
+	 *
 	 * @param email gets compared against android email pattern
 	 * @return if email is valid or not
 	 */
@@ -166,6 +169,7 @@ public class RegisterFragment extends Fragment {
 
 	/**
 	 * Checks if password is valid or not
+	 *
 	 * @param password to be validated
 	 * @return if password is valid or not
 	 */
