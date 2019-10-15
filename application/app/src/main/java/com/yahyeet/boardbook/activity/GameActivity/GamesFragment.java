@@ -69,15 +69,21 @@ public class GamesFragment extends Fragment implements IGameFragment {
         enableGameList();
     }
 
+    /**
+     * Binds id of xml items to references in class
+     */
     private void setAllViews(){
-
         // TODO: Examine how these method calls can get nullPointerException
-        gameListView = getView().findViewById(R.id.gameListView);
-        gameGridView = getView().findViewById(R.id.gameGridView);
-        searchInput = getView().findViewById(R.id.searchInput);
+        View view = getView();
 
-        enableList = getView().findViewById(R.id.gameListDisplayButton);
-        enableGrid = getView().findViewById(R.id.gameGridDisplayButton);
+        if(view != null){
+            gameListView = view.findViewById(R.id.gameListView);
+            gameGridView = view.findViewById(R.id.gameGridView);
+            searchInput = view.findViewById(R.id.searchInput);
+
+            enableList = view.findViewById(R.id.gameListDisplayButton);
+            enableGrid = view.findViewById(R.id.gameGridDisplayButton);
+        }
     }
 
     private DisplayMetrics getScreenMetrics() {
@@ -87,30 +93,32 @@ public class GamesFragment extends Fragment implements IGameFragment {
         return displayMetrics;
     }
 
+    /**
+     * Displays and enables games to show as a list
+     */
     private void enableGameList() {
-        gamePresenter.displayGameList(getView().getContext(), gameListView);
-        gameListView.setVisibility(View.VISIBLE);
-        gameGridView.setVisibility(View.INVISIBLE);
+        if(getView() != null){
+            gamePresenter.displayGameList(getView().getContext(), gameListView);
+            gameListView.setVisibility(View.VISIBLE);
+            gameGridView.setVisibility(View.INVISIBLE);
+        }
     }
 
+    /**
+     * Displays and enables games to show as a grid
+     */
     private void enableGameGrid() {
-        gamePresenter.displayGameGrid(getView().getContext(), gameGridView);
-        gameGridView.setVisibility(View.VISIBLE);
-        gameListView.setVisibility(View.INVISIBLE);
+        if(getView() != null){
+            gamePresenter.displayGameGrid(getView().getContext(), gameGridView);
+            gameGridView.setVisibility(View.VISIBLE);
+            gameListView.setVisibility(View.INVISIBLE);
+        }
     }
 
 
-    @Override
-    public void disableFragmentInteraction() {
-
-        searchInput.setEnabled(false);
-        enableList.setEnabled(false);
-        enableGrid.setEnabled(false);
-        getView().findViewById(R.id.gameLoadingLayout).setVisibility(View.VISIBLE);
-
-
-    }
-
+    /**
+     * Enables all interactive elements of the activity
+     */
     @Override
     public void enableFragmentInteraction() {
 
@@ -122,4 +130,22 @@ public class GamesFragment extends Fragment implements IGameFragment {
             view.findViewById(R.id.gameLoadingLayout).setVisibility(View.INVISIBLE);
 
     }
+
+    /**
+     * Disables all interactive elements of the activity
+     */
+    @Override
+    public void disableFragmentInteraction() {
+
+        searchInput.setEnabled(false);
+        enableList.setEnabled(false);
+        enableGrid.setEnabled(false);
+        View view = getView();
+        if(view != null)
+            view.findViewById(R.id.gameLoadingLayout).setVisibility(View.VISIBLE);
+
+
+    }
+
+
 }
