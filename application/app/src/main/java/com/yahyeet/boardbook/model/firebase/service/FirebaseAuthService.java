@@ -60,7 +60,9 @@ public class FirebaseAuthService implements IAuthService {
                 Log.d(TAG, "createUserWithEmail:success");
                 FirebaseUser firebaseUser = result.getUser();
                 assert firebaseUser != null;
-                return new User(firebaseUser.getUid(), name);
+                User user = new User(name);
+                user.setId(firebaseUser.getUid());
+                return user;
             } catch (Exception e) {
                 throw new CompletionException(e);
             }
