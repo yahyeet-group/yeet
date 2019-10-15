@@ -6,75 +6,89 @@ import com.yahyeet.boardbook.model.repository.IGameRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
 
 public class GameHandler {
 
-    private IGameRepository gameRepository;
-    private List<GameHandlerListener> listeners = new ArrayList<>();
+	private IGameRepository gameRepository;
+	private List<GameHandlerListener> listeners = new ArrayList<>();
 
-    public GameHandler(IGameRepository gameRepository) {
-        this.gameRepository = gameRepository;
-    }
+	public GameHandler(IGameRepository gameRepository) {
+		this.gameRepository = gameRepository;
+	}
 
-    public CompletableFuture<Game> find(String id) {
-        return gameRepository.find(id);
-    }
+	public CompletableFuture<Game> find(String id) {
+		return gameRepository.find(id);
+	}
 
-    public CompletableFuture<Game> save(Game game) {
-        if (game.getId() == null) {
-            return gameRepository
-              .create(game)
-              .thenApplyAsync(createdGame -> {
-                  notifyListenersOnGameAdd(createdGame);
+	public CompletableFuture<Game> save(Game game) {
+		if (game.getId() == null) {
+			return gameRepository
+				.create(game)
+				.thenApplyAsync(createdGame -> {
+					notifyListenersOnGameAdd(createdGame);
 
-                  return createdGame;
-              });
-        } else {
-            return gameRepository
-              .update(game)
-              .thenApplyAsync(updatedGame -> {
-                  notifyListenersOnGameUpdate(updatedGame);
+					return createdGame;
+				});
+		} else {
+			return gameRepository.find(game.getId())
+				.thenCompose(g -> gameRepository
+					.update(game)
+					.thenApplyAsync(updatedGame -> {
+						notifyListenersOnGameUpdate(updatedGame);
 
-                  return updatedGame;
-              });
-        }
-    }
+						return updatedGame;
+					}))
+				.exceptionally(error -> {
+					try {
+						return gameRepository.create(game).thenApply(createdGame -> {
+							notifyListenersOnGameAdd(game);
 
-    public CompletableFuture<Void> remove(Game game) {
-        return gameRepository.remove(game).thenApply((v) -> {
-            notifyListenersOnGameRemove(game);
+							return createdGame;
+						}).get();
+					} catch (InterruptedException | ExecutionException e) {
+						throw new CompletionException(e);
+					}
+				});
+		}
+	}
 
-            return null;
-        });
-    }
+	public CompletableFuture<Void> remove(Game game) {
+		return gameRepository.remove(game).thenApply((v) -> {
+			notifyListenersOnGameRemove(game);
 
-    public CompletableFuture<List<Game>> all() {
-        return gameRepository.all();
-    }
+			return null;
+		});
+	}
 
-    public void addListener(GameHandlerListener listener) {
-        listeners.add(listener);
-    }
+	public CompletableFuture<List<Game>> all() {
+		return gameRepository.all();
+	}
 
-    public void removeListener(GameHandlerListener listener) {
-        listeners.remove(listener);
-    }
+	public void addListener(GameHandlerListener listener) {
+		listeners.add(listener);
+	}
 
-    private void notifyListenersOnGameAdd(Game game) {
-        for (GameHandlerListener listener : listeners) {
-            listener.onAddGame(game);
-        }
-    }
+	public void removeListener(GameHandlerListener listener) {
+		listeners.remove(listener);
+	}
 
-    private void notifyListenersOnGameUpdate(Game game) {
-        for (GameHandlerListener listener : listeners) {
-            listener.onUpdateGame(game);
-        }
-    }
+	private void notifyListenersOnGameAdd(Game game) {
+		for (GameHandlerListener listener : listeners) {
+			listener.onAddGame(game);
+		}
+	}
 
-    private void notifyListenersOnGameRemove(Game game) {
-        for (GameHandlerListener listener : listeners) {
-            listener.onRemoveGame(game);
-        }
-    }
+	private void notifyListenersOnGameUpdate(Game game) {
+		for (GameHandlerListener listener : listeners) {
+			listener.onUpdateGame(game);
+		}
+	}
+
+	private void notifyListenersOnGameRemove(Game game) {
+		for (GameHandlerListener listener : listeners) {
+			listener.onRemoveGame(game);
+		}
+	}
 }

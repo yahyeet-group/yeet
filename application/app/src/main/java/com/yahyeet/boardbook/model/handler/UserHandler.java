@@ -7,6 +7,8 @@ import com.yahyeet.boardbook.model.repository.IUserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class UserHandler {
@@ -35,22 +37,27 @@ public class UserHandler {
 				});
 		} else {
 			return userRepository
-				.update(user)
-				.thenCompose(this::populate)
-				.thenApplyAsync(updatedUser -> {
-					notifyListenersOnUserUpdate(updatedUser);
+				.find(user.getId())
+				.thenCompose(u -> userRepository
+					.update(user)
+					.thenCompose(this::populate)
+					.thenApplyAsync(updatedUser -> {
+						notifyListenersOnUserUpdate(updatedUser);
 
-					return updatedUser;
+						return updatedUser;
+					}))
+				.exceptionally(error -> {
+					try {
+						return userRepository.create(user).thenApply(createdUser -> {
+							notifyListenersOnUserAdd(user);
+
+							return createdUser;
+						}).get();
+					} catch (InterruptedException | ExecutionException e) {
+						throw new CompletionException(e);
+					}
 				});
 		}
-	}
-
-	public CompletableFuture<User> update(User user) {
-		return userRepository.update(user).thenCompose((u) -> {
-			notifyListenersOnUserUpdate(u);
-
-			return this.populate(u);
-		});
 	}
 
 	public CompletableFuture<Void> remove(User user) {

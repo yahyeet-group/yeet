@@ -6,75 +6,89 @@ import com.yahyeet.boardbook.model.repository.IMatchRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
 
 public class MatchHandler {
 
-    private IMatchRepository matchRepository;
-    private List<MatchHandlerListener> listeners = new ArrayList<>();
+	private IMatchRepository matchRepository;
+	private List<MatchHandlerListener> listeners = new ArrayList<>();
 
-    public MatchHandler(IMatchRepository matchRepository) {
-        this.matchRepository = matchRepository;
-    }
+	public MatchHandler(IMatchRepository matchRepository) {
+		this.matchRepository = matchRepository;
+	}
 
-    public CompletableFuture<Match> find(String id) {
-        return matchRepository.find(id);
-    }
+	public CompletableFuture<Match> find(String id) {
+		return matchRepository.find(id);
+	}
 
-    public CompletableFuture<Match> save(Match match) {
-        if (match.getId() == null) {
-            return matchRepository
-              .create(match)
-              .thenApplyAsync(createdMatch -> {
-                  notifyListenersOnMatchAdd(createdMatch);
+	public CompletableFuture<Match> save(Match match) {
+		if (match.getId() == null) {
+			return matchRepository
+				.create(match)
+				.thenApplyAsync(createdMatch -> {
+					notifyListenersOnMatchAdd(createdMatch);
 
-                  return createdMatch;
-              });
-        } else {
-            return matchRepository
-              .update(match)
-              .thenApplyAsync(updatedMatch -> {
-                  notifyListenersOnMatchUpdate(updatedMatch);
+					return createdMatch;
+				});
+		} else {
+			return matchRepository.find(match.getId())
+				.thenCompose(m -> matchRepository
+					.update(match)
+					.thenApplyAsync(updatedMatch -> {
+						notifyListenersOnMatchUpdate(updatedMatch);
 
-                  return updatedMatch;
-              });
-        }
-    }
+						return updatedMatch;
+					}))
+				.exceptionally(error -> {
+					try {
+						return matchRepository.create(match).thenApply(createdGame -> {
+							notifyListenersOnMatchAdd(match);
 
-    public CompletableFuture<Void> remove(Match match) {
-        return matchRepository.remove(match).thenApply((v) -> {
-            notifyListenersOnMatchRemove(match);
+							return createdGame;
+						}).get();
+					} catch (InterruptedException | ExecutionException e) {
+						throw new CompletionException(e);
+					}
+				});
+		}
+	}
 
-            return null;
-        });
-    }
+	public CompletableFuture<Void> remove(Match match) {
+		return matchRepository.remove(match).thenApply((v) -> {
+			notifyListenersOnMatchRemove(match);
 
-    public CompletableFuture<List<Match>> all() {
-        return matchRepository.all();
-    }
+			return null;
+		});
+	}
 
-    public void addListener(MatchHandlerListener listener) {
-        listeners.add(listener);
-    }
+	public CompletableFuture<List<Match>> all() {
+		return matchRepository.all();
+	}
 
-    public void removeListener(MatchHandlerListener listener) {
-        listeners.remove(listener);
-    }
+	public void addListener(MatchHandlerListener listener) {
+		listeners.add(listener);
+	}
 
-    private void notifyListenersOnMatchAdd(Match match) {
-        for (MatchHandlerListener listener : listeners) {
-            listener.onAddMatch(match);
-        }
-    }
+	public void removeListener(MatchHandlerListener listener) {
+		listeners.remove(listener);
+	}
 
-    private void notifyListenersOnMatchUpdate(Match match) {
-        for (MatchHandlerListener listener : listeners) {
-            listener.onUpdateMatch(match);
-        }
-    }
+	private void notifyListenersOnMatchAdd(Match match) {
+		for (MatchHandlerListener listener : listeners) {
+			listener.onAddMatch(match);
+		}
+	}
 
-    private void notifyListenersOnMatchRemove(Match match) {
-        for (MatchHandlerListener listener : listeners) {
-            listener.onRemoveMatch(match);
-        }
-    }
+	private void notifyListenersOnMatchUpdate(Match match) {
+		for (MatchHandlerListener listener : listeners) {
+			listener.onUpdateMatch(match);
+		}
+	}
+
+	private void notifyListenersOnMatchRemove(Match match) {
+		for (MatchHandlerListener listener : listeners) {
+			listener.onRemoveMatch(match);
+		}
+	}
 }
