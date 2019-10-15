@@ -20,7 +20,6 @@ public class AuthHandler {
     public CompletableFuture<User> login(String email, String password) {
         return authService.login(email, password).thenApply(u -> {
             loggedInUser = u;
-
             return u;
         });
     }

@@ -40,7 +40,7 @@ public class AuthenticationTest {
 		authenticationUsers.add(new MockAuthService.AuthenticationUser("test@test.test", "MyPassword", new User("Testificate")));
 
 		try {
-			mockAuthService.login("test@test.test", "MyPassword").thenAccept(user -> {
+			authHandler.login("test@test.test", "MyPassword").thenAccept(user -> {
 				Assert.assertEquals("Testificate", user.getName());
 			}).get();
 		} catch (ExecutionException | InterruptedException e) {
@@ -52,7 +52,7 @@ public class AuthenticationTest {
 	@Test
 	public void register() {
 		try {
-			mockAuthService.signup("prov@prov.prov", "MinKod", "Testare").thenAccept(user -> {
+			authHandler.signup("prov@prov.prov", "MinKod", "Testare").thenAccept(user -> {
 				Assert.assertNotEquals(0, authenticationUsers.size());
 				Assert.assertEquals("Testare", authenticationUsers.get(0).user.getName());
 				Assert.assertEquals("MinKod", authenticationUsers.get(0).password);
