@@ -11,52 +11,37 @@ public class MatchHandler {
 
     private IMatchRepository matchRepository;
     private List<MatchHandlerListener> listeners = new ArrayList<>();
-    private List<Match> matchs = new ArrayList<>();
 
     public MatchHandler(IMatchRepository matchRepository) {
         this.matchRepository = matchRepository;
     }
 
-    public CompletableFuture<Match> create(Match match) {
-        return matchRepository.create(match).thenApply((u) -> {
-            addMatch(u);
-
-            notifyListenersOnMatchAdd(u);
-
-            return u;
-        });
-    }
-
     public CompletableFuture<Match> find(String id) {
-        Match match = findMatch(id);
+        return matchRepository.find(id);
+    }
 
-        if (match == null) {
-            return matchRepository.find(id).thenApply((m -> {
-                addMatch(m);
+    public CompletableFuture<Match> save(Match match) {
+        if (match.getId() == null) {
+            return matchRepository
+              .create(match)
+              .thenApplyAsync(createdMatch -> {
+                  notifyListenersOnMatchAdd(createdMatch);
 
-                return m;
-            }));
+                  return createdMatch;
+              });
+        } else {
+            return matchRepository
+              .update(match)
+              .thenApplyAsync(updatedMatch -> {
+                  notifyListenersOnMatchUpdate(updatedMatch);
+
+                  return updatedMatch;
+              });
         }
-
-        return CompletableFuture.completedFuture(match);
     }
-
-
-    public CompletableFuture<Match> update(Match match) {
-        return matchRepository.update(match).thenApply((u) -> {
-            updateMatch(u);
-
-            notifyListenersOnMatchUpdate(u);
-
-            return u;
-        });
-    }
-
 
     public CompletableFuture<Void> remove(Match match) {
         return matchRepository.remove(match).thenApply((v) -> {
-            removeMatch(match);
-
             notifyListenersOnMatchRemove(match);
 
             return null;
@@ -90,37 +75,6 @@ public class MatchHandler {
     private void notifyListenersOnMatchRemove(Match match) {
         for (MatchHandlerListener listener : listeners) {
             listener.onRemoveMatch(match);
-        }
-    }
-
-    private Match findMatch(String id) {
-        for (Match match : matchs) {
-            if (match.getId().equals(id)) {
-                return match;
-            }
-        }
-
-        return null;
-    }
-
-    private void addMatch(Match match) {
-        matchs.add(match);
-    }
-
-    private void updateMatch(Match match) {
-        for (int index = 0; index < matchs.size(); ++index) {
-            if (match.getId().equals(matchs.get(index).getId())) {
-                matchs.set(index, match);
-            }
-        }
-    }
-
-    private void removeMatch(Match match) {
-        for (int index = 0; index < matchs.size(); ++index) {
-            if (match.getId().equals(matchs.get(index).getId())) {
-                matchs.remove(index);
-                return;
-            }
         }
     }
 }
