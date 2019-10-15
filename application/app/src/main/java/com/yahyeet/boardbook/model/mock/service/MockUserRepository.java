@@ -11,7 +11,7 @@ import java.util.concurrent.CompletionException;
 public class MockUserRepository implements IUserRepository {
 
 
-	public List<User> mockDatabase;
+	public List<User> mockDatabase = new ArrayList<>();
 	public int idCount = 0;
 
 	@Override
@@ -19,6 +19,13 @@ public class MockUserRepository implements IUserRepository {
 		return CompletableFuture.supplyAsync(() -> {
 			entity.setId(Integer.toString(idCount));
 			idCount++;
+
+			if(entity.getFriends() == null)
+				entity.setFriends(new ArrayList<>());
+
+			if(entity.getMatches() == null)
+				entity.setMatches(new ArrayList<>());
+
 			mockDatabase.add(entity);
 			return entity;
 		});

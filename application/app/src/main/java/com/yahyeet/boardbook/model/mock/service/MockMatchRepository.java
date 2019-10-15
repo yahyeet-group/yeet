@@ -11,7 +11,7 @@ import java.util.concurrent.CompletionException;
 
 public class MockMatchRepository implements IMatchRepository {
 
-	public List<Match> mockDatabase;
+	public List<Match> mockDatabase = new ArrayList<>();
 	public int idCount = 0;
 	public MockUserRepository userRepository;
 

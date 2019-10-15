@@ -51,16 +51,11 @@ public class MockAuthService implements IAuthService {
         public String email;
         public String password;
         public User user;
-        public List<User> friends;
-        public List<Match> matches;
 
         public AuthenticationUser(String email, String password, User user) {
             this.email = email;
             this.password = password;
             this.user = user;
-
-            friends = new ArrayList<>();
-            matches = new ArrayList<>();
         }
 
         public String getEmail() {
@@ -76,11 +71,11 @@ public class MockAuthService implements IAuthService {
         }
 
         public List<User> getFriends() {
-            return friends;
+            return user.getFriends();
         }
 
         public List<Match> getMatches() {
-            return matches;
+            return user.getMatches();
         }
     }
 }

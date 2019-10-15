@@ -3,6 +3,7 @@ package com.yahyeet.boardbook.model.mock.service;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.repository.IGameRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -10,7 +11,7 @@ import java.util.concurrent.CompletionException;
 public class MockGameRepository implements IGameRepository {
 
 
-	public List<Game> mockDatabase;
+	public List<Game> mockDatabase = new ArrayList<>();
 	public int idCount = 0;
 
 	@Override
