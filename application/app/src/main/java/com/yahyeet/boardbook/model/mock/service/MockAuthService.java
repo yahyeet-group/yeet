@@ -1,8 +1,10 @@
 package com.yahyeet.boardbook.model.mock.service;
 
+import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.service.IAuthService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -49,11 +51,32 @@ public class MockAuthService implements IAuthService {
         public String email;
         public String password;
         public User user;
+        public List<User> friends;
+        public List<Match> matches;
 
         public AuthenticationUser(String email, String password, User user) {
             this.email = email;
             this.password = password;
             this.user = user;
+
+            friends = new ArrayList<>();
+            matches = new ArrayList<>();
+        }
+
+        public List<User> getFriends() {
+            return friends;
+        }
+
+        public void setFriends(List<User> friends) {
+            this.friends = friends;
+        }
+
+        public List<Match> getMatches() {
+            return matches;
+        }
+
+        public void setMatches(List<Match> matches) {
+            this.matches = matches;
         }
     }
 }

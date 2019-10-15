@@ -1,21 +1,26 @@
 package com.yahyeet.boardbook.model.mock.service;
 
+import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.model.repository.IUserRepository;
+import com.yahyeet.boardbook.model.repository.IMatchRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
-public class MockUserRepository implements IUserRepository {
+public class MockMatchRepository implements IMatchRepository {
 
-
-	public List<User> mockDatabase;
+	public List<Match> mockDatabase;
 	public int idCount = 0;
+	public MockUserRepository userRepository;
+
+	public MockMatchRepository(MockUserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
 	@Override
-	public CompletableFuture<User> create(User entity) {
+	public CompletableFuture<Match> create(Match entity) {
 		return CompletableFuture.supplyAsync(() -> {
 			entity.setId(Integer.toString(idCount));
 			idCount++;
@@ -25,34 +30,34 @@ public class MockUserRepository implements IUserRepository {
 	}
 
 	@Override
-	public CompletableFuture<User> find(String id) {
+	public CompletableFuture<Match> find(String id) {
 		return CompletableFuture.supplyAsync(() -> {
 
-			for (User u : mockDatabase) {
+			for (Match u : mockDatabase) {
 				if (u.getId().equals(id))
 					return u;
 			}
 
-			throw new CompletionException(new Exception("No user found"));
+			throw new CompletionException(new Exception("No Match found"));
 		});
 	}
 
 	@Override
-	public CompletableFuture<User> update(User entity) {
+	public CompletableFuture<Match> update(Match entity) {
 		return CompletableFuture.supplyAsync(() -> {
 
-			for (User u : mockDatabase) {
+			for (Match u : mockDatabase) {
 				if (u.getId().equals(entity.getId())) {
 					u = entity;
 					return u;
 				}
 			}
-			throw new CompletionException(new Exception("Not a user in database"));
+			throw new CompletionException(new Exception("Not a Match in database"));
 		});
 	}
 
 	@Override
-	public CompletableFuture<Void> remove(User entity) {
+	public CompletableFuture<Void> remove(Match entity) {
 		return CompletableFuture.supplyAsync(() -> {
 			for (int i = 0; i < mockDatabase.size(); i++) {
 				if (entity.getId().equals(mockDatabase.get(i).getId())) {
@@ -61,30 +66,32 @@ public class MockUserRepository implements IUserRepository {
 				}
 			}
 
-			throw new CompletionException(new Exception("Not a user in database"));
+			throw new CompletionException(new Exception("Not a Match in database"));
 		});
 	}
 
 	@Override
-	public CompletableFuture<List<User>> all() {
+	public CompletableFuture<List<Match>> all() {
 		return CompletableFuture.supplyAsync(() -> mockDatabase);
 	}
 
 	@Override
-	public CompletableFuture<List<User>> findFriendsByUserId(String id) {
+	public CompletableFuture<List<Match>> findMatchesByUserId(String id) {
 		return CompletableFuture.supplyAsync(() -> {
 			User user = null;
 
-			for (User u : mockDatabase) {
+			for (User u : userRepository.mockDatabase) {
 				if (u.getId().equals(id))
 					user = u;
 			}
 
 			if (user != null) {
-				return new ArrayList<>(user.getFriends());
+				return new ArrayList<>(user.getMatches());
 			}
 
-			throw new CompletionException(new Exception("Id is not a user in database"));
+			throw new CompletionException(new Exception("Id is not a User in database"));
 		});
 	}
+
+
 }
