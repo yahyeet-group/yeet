@@ -7,12 +7,7 @@ public class User extends AbstractEntity {
     private List<User> friends;
     private List<Match> matches;
 
-    public User(String id, String name) {
-        this.name = name;
-    }
-
-
-    public User(String name){
+    public User(String name) {
         this.name = name;
     }
 
