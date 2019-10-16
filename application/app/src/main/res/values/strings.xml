@@ -10,12 +10,14 @@
     <string name="errorLoginText">Wrong Email or Password</string>
     <string name="emailErrorText">Email is not in correct format</string>
     <string name="passwordShortText">Password needs to be more than 6 characters</string>
-
     <string name="home">Home</string>
     <string name="chat">Chat</string>
     <string name="game">Game</string>
     <string name="friends">Friends</string>
     <string name="friend">Friend</string>
+    <string name="overall_statistics">Overall Statistics</string>
+    <string name="winrate">Win Rate</string>
+    <string name="games_played">Games Played</string>
 
     <string name="tempGame">Avalon</string>
     <string name="tempTeam">as Good</string>
@@ -34,5 +36,6 @@
     <string name="easy">Easy</string>
     <string name="medium">Medium</string>
     <string name="hard">Hard</string>
+    <string name="history">History</string>
 
 </resources>

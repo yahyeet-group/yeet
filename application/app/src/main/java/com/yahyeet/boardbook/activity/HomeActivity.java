@@ -16,9 +16,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.FriendsActivity.FriendsFragment;
 import com.yahyeet.boardbook.activity.GameActivity.GamesFragment;
+import com.yahyeet.boardbook.presenter.HomePresenter;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements IHomeActivity{
 
+
+	private HomePresenter homePresenter;
 
 	private BottomNavigationView.OnNavigationItemSelectedListener navListener = menuItem -> {
 		Fragment selectedFragment = null;
@@ -46,6 +49,8 @@ public class HomeActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 
+		homePresenter = new HomePresenter(this);
+
 		BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
 		bottomNav.setOnNavigationItemSelectedListener(navListener);
 
@@ -66,10 +71,11 @@ public class HomeActivity extends AppCompatActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
 			case R.id.profile:
-				Intent startCurrentUserProfile = new Intent();
+				homePresenter.startLoggedInUserProfile();
 				return true;
 			case R.id.logoff:
-
+				homePresenter.logOut();
+				finish();
 				return true;
 			default :
 				return super.onOptionsItemSelected(item);

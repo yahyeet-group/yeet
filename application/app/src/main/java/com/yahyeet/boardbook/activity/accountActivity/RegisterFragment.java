@@ -20,7 +20,7 @@ import com.yahyeet.boardbook.R;
 public class RegisterFragment extends Fragment {
 
 
-	private IAccountManager accountManager;
+	private IAccountFragmentHolder accountManager;
 	private View parent;
 
 	private EditText emailInput;
@@ -128,9 +128,9 @@ public class RegisterFragment extends Fragment {
 	public void onAttach(@NonNull Context context) {
 		super.onAttach(context);
 		try {
-			accountManager = (IAccountManager) context;
+			accountManager = (IAccountFragmentHolder) context;
 		} catch (Exception e) {
-			// TODO: Implement consequences if fragment parent activity does not implement IAccountManager
+			// TODO: Implement consequences if fragment parent activity does not implement IAccountManagerActivity
 			e.printStackTrace();
 		}
 	}
@@ -192,6 +192,9 @@ public class RegisterFragment extends Fragment {
 		usernameText.setEnabled(value);
 		emailText.setEnabled(value);
 		passwordText.setEnabled(value);
+
+		passwordInput.setText("");
+
 	}
 
 }
