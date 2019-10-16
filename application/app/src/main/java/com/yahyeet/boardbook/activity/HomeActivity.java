@@ -1,9 +1,14 @@
 package com.yahyeet.boardbook.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -45,6 +50,30 @@ public class HomeActivity extends AppCompatActivity {
 		bottomNav.setOnNavigationItemSelectedListener(navListener);
 
 		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+
+		Toolbar toolbar = findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.toolbar_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+			case R.id.profile:
+				Intent startCurrentUserProfile = new Intent();
+				return true;
+			case R.id.logoff:
+
+				return true;
+			default :
+				return super.onOptionsItemSelected(item);
+		}
+
+	}
 }
