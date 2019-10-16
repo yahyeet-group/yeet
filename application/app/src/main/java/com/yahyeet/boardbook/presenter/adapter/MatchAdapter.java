@@ -22,7 +22,7 @@ import java.util.List;
 public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private static final String TAG = "MatchAdapter";
-	private static final int HEADER_VIEW = 1;
+	private static final int PROFILE_HEADER_VIEW = 1;
 	private Context context;
 	private List<Match> myDataset;
 
@@ -53,7 +53,6 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 		private TextView tvWinrate;
 		private TextView tvGamesPlayed;
 		private ProgressBar pbWinrate;
-
 
 		HeaderViewHolder(@NonNull View v) {
 			super(v);
@@ -98,7 +97,7 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 		View v;
 
-		if (viewType == HEADER_VIEW) {
+		if (viewType == PROFILE_HEADER_VIEW) {
 			v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.element_profile_header, viewGroup, false);
 			HeaderViewHolder vh = new HeaderViewHolder(v);
 			return vh;
@@ -152,7 +151,7 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 	@Override
 	public int getItemViewType(int position) {
 		if (position == 0 && matchOwner != null) {
-			return HEADER_VIEW;
+			return PROFILE_HEADER_VIEW;
 		}
 		return super.getItemViewType(position);
 	}
