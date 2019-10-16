@@ -56,7 +56,7 @@ public class AddFriendPresenter {
 
 		try {
 			BoardbookSingleton.getInstance().getUserHandler().all().thenAccept(allUsers -> {
-				if(allUsers != null && myFriends != null){
+				if (allUsers != null && myFriends != null) {
 					List<User> notMyFriends = allUsers
 						.stream()
 						.filter(user -> myFriends.stream().noneMatch(friend -> friend.getId().equals(user.getId())))

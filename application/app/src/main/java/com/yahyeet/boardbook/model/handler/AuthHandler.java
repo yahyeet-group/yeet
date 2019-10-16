@@ -31,7 +31,7 @@ public class AuthHandler {
     }
 
     public CompletableFuture<User> signup(String email, String password, String name) {
-        return authService.signup(email, password, name).thenCompose(user -> userHandler.save(user)).thenApply(u ->{
+        return authService.signup(email, password, name).thenCompose(user -> userHandler.saveWithId(user)).thenApply(u ->{
             loggedInUser = u;
 
             return u;

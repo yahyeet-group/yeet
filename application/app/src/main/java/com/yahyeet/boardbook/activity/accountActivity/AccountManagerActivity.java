@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.HomeActivity;
-import com.yahyeet.boardbook.activity.ProfileActivity;
+import com.yahyeet.boardbook.model.util.LoginFailedException;
 import com.yahyeet.boardbook.presenter.AccountManagerPresenter;
 
 public class AccountManagerActivity extends AppCompatActivity implements IAccountManager {
@@ -19,6 +19,11 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 	private RegisterFragment registerFragment;
 	private Button registerSwitchButton;
 
+	/**
+	 * Calls super and the initiates presenter, fragments and xml items.
+	 *
+	 * @param savedInstanceState sent to super
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,14 +41,35 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 		getSupportFragmentManager().beginTransaction().replace(R.id.accountManagerContainer, loginFragment, "Login").commit();
 	}
 
+	/**
+	 * Method tries to log into app given valid parameters
+	 *
+	 * @param email    of the account trying to log in
+	 * @param password of the account trying to log in
+	 */
 	public void loginAccount(String email, String password) {
-		accountManagerPresenter.loginAccount(email, password);
+		try {
+			accountManagerPresenter.loginAccount(email, password);
+		} catch (LoginFailedException e) {
+			//TODO: Implement better exception handling
+			loginFragment.showErrorMessage();
+		}
 	}
 
+	/**
+	 * Method tries to create a new account from parameters and log in with it
+	 *
+	 * @param email    of the new account
+	 * @param password of the new account
+	 * @param username of the new account
+	 */
 	public void registerAccount(String email, String password, String username) {
 		accountManagerPresenter.registerAccount(email, password, username);
 	}
 
+	/**
+	 * Starts the homepage and ends the activity manager.
+	 */
 	@Override
 	public void finishAccountManager() {
 		Intent startHome = new Intent(this, HomeActivity.class);
@@ -59,17 +85,26 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 			super.onBackPressed();
 	}
 
+	/**
+	 * Changes the currently visible fragment to the Login Fragment
+	 */
 	private void showLoginFragment() {
 		registerSwitchButton.setVisibility(View.VISIBLE);
 		getSupportFragmentManager().beginTransaction().replace(R.id.accountManagerContainer, loginFragment, "Login").commit();
 	}
 
+	/**
+	 * Changes the currently visible fragment to the Register Fragment
+	 */
 	private void showRegisterFragment() {
 		registerSwitchButton.setVisibility(View.INVISIBLE);
 		getSupportFragmentManager().beginTransaction().replace(R.id.accountManagerContainer, registerFragment, "Register").commit();
 	}
 
 
+	/**
+	 * Enables all interactive elements of the activity
+	 */
 	@Override
 	public void enableManagerInteraction() {
 
@@ -78,6 +113,9 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 		findViewById(R.id.accountLoadingLayout).setVisibility(View.INVISIBLE);
 	}
 
+	/**
+	 * Disables all interactive elements of the activity
+	 */
 	@Override
 	public void disableManagerInteraction() {
 		disableFragment();
@@ -85,6 +123,9 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 		findViewById(R.id.accountLoadingLayout).setVisibility(View.VISIBLE);
 	}
 
+	/**
+	 * Enables the currently active fragment
+	 */
 	private void enableFragment() {
 		if (registerFragment.equals(getSupportFragmentManager().findFragmentByTag("Register")))
 			registerFragment.setFragmentInteraction(true);
@@ -93,6 +134,9 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 		}
 	}
 
+	/**
+	 * Disables the currently active fragment
+	 */
 	private void disableFragment() {
 		if (registerFragment.equals(getSupportFragmentManager().findFragmentByTag("Register")))
 			registerFragment.setFragmentInteraction(false);
