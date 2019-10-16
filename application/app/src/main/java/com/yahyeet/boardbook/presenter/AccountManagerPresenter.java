@@ -1,22 +1,21 @@
 package com.yahyeet.boardbook.presenter;
 
-import com.yahyeet.boardbook.activity.accountActivity.IAccountManager;
+import com.yahyeet.boardbook.activity.accountActivity.IAccountManagerActivity;
 
-import android.content.Intent;
+import android.os.Looper;
+import android.widget.Toast;
 
-import com.yahyeet.boardbook.activity.HomeActivity;
-import com.yahyeet.boardbook.activity.accountActivity.AccountManagerActivity;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.util.LoginFailedException;
 
 public class AccountManagerPresenter {
 
-	private IAccountManager accountManagerActivity;
+	private IAccountManagerActivity accountManagerActivity;
 
 	// Set true to skip login
 	private Boolean fastPass = false;
 
-	public AccountManagerPresenter(IAccountManager accountManagerActivity) {
+	public AccountManagerPresenter(IAccountManagerActivity accountManagerActivity) {
 		this.accountManagerActivity = accountManagerActivity;
 		if (fastPass) {
 			BoardbookSingleton.getInstance().getAuthHandler().setLoggedInUser(new User("The Almighty Temp User"));
@@ -38,7 +37,11 @@ public class AccountManagerPresenter {
 			// Handle error ("e")
 			// TODO: Make presenter tell view to act upon different exceptions
 			e.printStackTrace();
-			accountManagerActivity.enableManagerInteraction();
+			new android.os.Handler(Looper.getMainLooper()).post(() -> {
+				accountManagerActivity.enableManagerInteraction();
+				accountManagerActivity.toastLoginFailed();
+
+			});
 			return null;
 		});
 
@@ -52,7 +55,10 @@ public class AccountManagerPresenter {
 		}).exceptionally(e -> {
 			// Handle error ("e")
 			// TODO: Make presenter tell view to act upon different exceptions
-			accountManagerActivity.enableManagerInteraction();
+			new android.os.Handler(Looper.getMainLooper()).post(() -> {
+				accountManagerActivity.enableManagerInteraction();
+				accountManagerActivity.toastRegisterFailed();
+			});
 			e.printStackTrace();
 			return null;
 		});
