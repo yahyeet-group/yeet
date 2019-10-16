@@ -80,6 +80,7 @@ public class AddFriendActivity extends AppCompatActivity implements IAddFriendAc
 	public void disableActivityInteraction() {
 		backbtn.setEnabled(false);
 		addFriendSearch.setEnabled(false);
+		findViewById(R.id.addFriendLoadlingLayout).setVisibility(View.VISIBLE);
 
 	}
 
@@ -87,6 +88,7 @@ public class AddFriendActivity extends AppCompatActivity implements IAddFriendAc
 	public void enableActivityInteraction() {
 		backbtn.setEnabled(true);
 		addFriendSearch.setEnabled(true);
+		findViewById(R.id.addFriendLoadlingLayout).setVisibility(View.INVISIBLE);
 
 	}
 }

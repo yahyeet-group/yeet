@@ -20,4 +20,13 @@ public class Match extends AbstractEntity {
     public void setPlayers(List<MatchPlayer> players) {
         this.players = players;
     }
+
+    public MatchPlayer getMatchPlayerByUser(User user){
+        for (MatchPlayer player: players) {
+            if(player.getUser().equals(user)){
+                return player;
+            }
+        }
+        return null;
+    }
 }

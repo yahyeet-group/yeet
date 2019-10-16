@@ -8,6 +8,7 @@ import com.yahyeet.boardbook.model.repository.IGameRepository;
 import com.yahyeet.boardbook.model.repository.IMatchRepository;
 import com.yahyeet.boardbook.model.repository.IUserRepository;
 import com.yahyeet.boardbook.model.service.IAuthService;
+import com.yahyeet.boardbook.model.util.StatisticsUtil;
 
 public final class Boardbook {
 
@@ -16,6 +17,8 @@ public final class Boardbook {
     private UserHandler userHandler;
     private GameHandler gameHandler;
     private MatchHandler matchHandler;
+
+    private StatisticsUtil statisticsUtil;
 
     public Boardbook(IAuthService authService,
                      IUserRepository userRepository,
@@ -26,6 +29,7 @@ public final class Boardbook {
         gameHandler = new GameHandler(gameRepository);
         matchHandler = new MatchHandler(matchRepository);
         authHandler = new AuthHandler(authService, userHandler);
+        statisticsUtil = new StatisticsUtil();
     }
 
     public AuthHandler getAuthHandler() {
@@ -42,5 +46,9 @@ public final class Boardbook {
 
     public MatchHandler getMatchHandler() {
         return matchHandler;
+    }
+
+    public StatisticsUtil getStatisticsUtil() {
+        return statisticsUtil;
     }
 }
