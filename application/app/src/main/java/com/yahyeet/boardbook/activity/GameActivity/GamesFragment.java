@@ -23,101 +23,129 @@ import javax.annotation.Nonnull;
 
 public class GamesFragment extends Fragment implements IGameFragment {
 
-    private GamePresenter gamePresenter;
-    private TextView searchInput;
-    private ListView gameListView;
-    private GridView gameGridView;
-    private Button enableList;
-    private Button enableGrid;
+	private GamePresenter gamePresenter;
+	private TextView searchInput;
+	private ListView gameListView;
+	private GridView gameGridView;
+	private Button enableList;
+	private Button enableGrid;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_game, container, false);
-    }
+		return inflater.inflate(R.layout.fragment_game, container, false);
+	}
 
-    @Override
-    public void onViewCreated(@Nonnull View view, Bundle savedInstanceState) {
-        setAllViews();
+	@Override
+	public void onViewCreated(@Nonnull View view, Bundle savedInstanceState) {
+		setAllViews();
 
-        gamePresenter = new GamePresenter(this);
+		gamePresenter = new GamePresenter(this);
 
-        enableList.setOnClickListener(view1 -> enableGameList());
-        enableGrid.setOnClickListener(view2 -> enableGameGrid());
-        searchInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                gamePresenter.searchGames(searchInput.getText().toString());
-            }
+		enableList.setOnClickListener(view1 -> enableGameList());
+		enableGrid.setOnClickListener(view2 -> enableGameGrid());
+		searchInput.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+				gamePresenter.searchGames(searchInput.getText().toString());
+			}
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+			@Override
+			public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
+			}
 
-            @Override
-            public void afterTextChanged(Editable editable) {
-                gamePresenter.searchGames(searchInput.getText().toString());
-            }
-        });
+			@Override
+			public void afterTextChanged(Editable editable) {
+				gamePresenter.searchGames(searchInput.getText().toString());
+			}
+		});
 
-        int width = getScreenMetrics().widthPixels;
-        gameGridView.setColumnWidth(width / 3);
-
-
-        enableGameList();
-    }
-
-    private void setAllViews(){
-
-        // TODO: Examine how these method calls can get nullPointerException
-        gameListView = getView().findViewById(R.id.gameListView);
-        gameGridView = getView().findViewById(R.id.gameGridView);
-        searchInput = getView().findViewById(R.id.searchInput);
-
-        enableList = getView().findViewById(R.id.gameListDisplayButton);
-        enableGrid = getView().findViewById(R.id.gameGridDisplayButton);
-    }
-
-    private DisplayMetrics getScreenMetrics() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        // TODO: Make sure activity is not null, fragment exists without activity?
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        return displayMetrics;
-    }
-
-    private void enableGameList() {
-        gamePresenter.displayGameList(getView().getContext(), gameListView);
-        gameListView.setVisibility(View.VISIBLE);
-        gameGridView.setVisibility(View.INVISIBLE);
-    }
-
-    private void enableGameGrid() {
-        gamePresenter.displayGameGrid(getView().getContext(), gameGridView);
-        gameGridView.setVisibility(View.VISIBLE);
-        gameListView.setVisibility(View.INVISIBLE);
-    }
+		int width = getScreenMetrics().widthPixels;
+		gameGridView.setColumnWidth(width / 3);
 
 
-    @Override
-    public void disableFragmentInteraction() {
+		enableGameList();
+	}
 
-        searchInput.setEnabled(false);
-        enableList.setEnabled(false);
-        enableGrid.setEnabled(false);
-        getView().findViewById(R.id.gameLoadingLayout).setVisibility(View.VISIBLE);
+	/**
+	 * Binds id of xml items to references in class
+	 */
+	private void setAllViews() {
+		// TODO: Examine how these method calls can get nullPointerException
+		View view = getView();
+
+		if (view != null) {
+			gameListView = view.findViewById(R.id.gameListView);
+			gameGridView = view.findViewById(R.id.gameGridView);
+			searchInput = view.findViewById(R.id.searchInput);
+
+			enableList = view.findViewById(R.id.gameListDisplayButton);
+			enableGrid = view.findViewById(R.id.gameGridDisplayButton);
+		}
+	}
+
+	private DisplayMetrics getScreenMetrics() {
+		DisplayMetrics displayMetrics = new DisplayMetrics();
+		// TODO: Make sure activity is not null, fragment exists without activity?
+		getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+		return displayMetrics;
+	}
+
+	/**
+	 * Displays and enables games to show as a list
+	 */
+	private void enableGameList() {
+		if (getView() != null) {
+			gamePresenter.displayGameList(getView().getContext(), gameListView);
+			gameListView.setVisibility(View.VISIBLE);
+			gameGridView.setVisibility(View.INVISIBLE);
+		}
+	}
+
+	/**
+	 * Displays and enables games to show as a grid
+	 */
+	private void enableGameGrid() {
+		if (getView() != null) {
+			gamePresenter.displayGameGrid(getView().getContext(), gameGridView);
+			gameGridView.setVisibility(View.VISIBLE);
+			gameListView.setVisibility(View.INVISIBLE);
+		}
+	}
 
 
-    }
+	/**
+	 * Enables all interactive elements of the activity
+	 */
+	@Override
+	public void enableFragmentInteraction() {
 
-    @Override
-    public void enableFragmentInteraction() {
+		searchInput.setEnabled(true);
+		enableList.setEnabled(true);
+		enableGrid.setEnabled(true);
+		View view = getView();
+		if (view != null)
+			view.findViewById(R.id.gameLoadingLayout).setVisibility(View.INVISIBLE);
 
-        searchInput.setEnabled(true);
-        enableList.setEnabled(true);
-        enableGrid.setEnabled(true);
-        getView().findViewById(R.id.gameLoadingLayout).setVisibility(View.INVISIBLE);
+	}
 
-    }
+	/**
+	 * Disables all interactive elements of the activity
+	 */
+	@Override
+	public void disableFragmentInteraction() {
+
+		searchInput.setEnabled(false);
+		enableList.setEnabled(false);
+		enableGrid.setEnabled(false);
+		View view = getView();
+		if (view != null)
+			view.findViewById(R.id.gameLoadingLayout).setVisibility(View.VISIBLE);
+
+
+	}
+
+
 }
