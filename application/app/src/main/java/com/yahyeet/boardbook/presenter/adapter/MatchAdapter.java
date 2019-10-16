@@ -20,6 +20,7 @@ import com.yahyeet.boardbook.model.util.StatisticsUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private static final String TAG = "MatchAdapter";
@@ -106,7 +107,7 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 			return vh;
 		}
 
-		v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.match_element, viewGroup, false);
+		v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.element_match, viewGroup, false);
 		MatchViewHolder vh = new MatchViewHolder(v);
 		return vh;
 	}

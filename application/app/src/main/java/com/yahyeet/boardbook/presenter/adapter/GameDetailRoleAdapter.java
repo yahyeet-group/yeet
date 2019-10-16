@@ -1,10 +1,8 @@
 package com.yahyeet.boardbook.presenter.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.model.entity.GameRole;
-import com.yahyeet.boardbook.model.entity.Match;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +49,7 @@ public class GameDetailRoleAdapter extends RecyclerView.Adapter<GameDetailRoleAd
     public RoleViewHolder onCreateViewHolder(ViewGroup viewGroup,
                                                            int viewType) {
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.game_detail_role_element, viewGroup, false);
+                .inflate(R.layout.element_game_detail_role, viewGroup, false);
 
         return new RoleViewHolder(v);
     }

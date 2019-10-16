@@ -10,12 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.model.entity.GameRole;
 import com.yahyeet.boardbook.model.entity.GameTeam;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class GameDetailTeamAdapter extends RecyclerView.Adapter<GameDetailTeamAdapter.GameDetailViewHolder> {
 
@@ -62,7 +60,7 @@ public class GameDetailTeamAdapter extends RecyclerView.Adapter<GameDetailTeamAd
     public GameDetailViewHolder onCreateViewHolder(ViewGroup viewGroup,
                                                    int viewType) {
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.game_detail_team_element, viewGroup, false);
+                .inflate(R.layout.element_game_detail_team, viewGroup, false);
 
         return new GameDetailViewHolder(v);
     }
