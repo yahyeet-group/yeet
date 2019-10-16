@@ -19,13 +19,12 @@ import com.yahyeet.boardbook.R;
 
 public class LoginFragment extends Fragment {
 
-	private IAccountManager accountManager;
+	private IAccountFragmentHolder accountManager;
 	private View fragmentContainer;
 	private Button loginButton;
 
 	private EditText emailInput;
 	private EditText passwordInput;
-	private TextView errorText;
 	private TextView emailText;
 	private TextView passwordText;
 
@@ -48,41 +47,9 @@ public class LoginFragment extends Fragment {
 
 		emailInput = fragmentContainer.findViewById(R.id.loginEmailInput);
 		passwordInput = fragmentContainer.findViewById(R.id.loginPasswordInput);
-		errorText = fragmentContainer.findViewById(R.id.loginErrorText);
 
 		emailText = fragmentContainer.findViewById(R.id.loginEmailPrompt);
 		passwordText = fragmentContainer.findViewById(R.id.loginPasswordPrompt);
-
-		emailInput.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-			}
-
-			@Override
-			public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-			}
-
-			@Override
-			public void afterTextChanged(Editable editable) {
-				hideErrorMessage();
-			}
-		});
-		passwordInput.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-			}
-
-			@Override
-			public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable editable) {
-				hideErrorMessage();
-			}
-		});
 	}
 
 	//TODO: Abstract to superclass, same functionality in login and register
@@ -95,7 +62,7 @@ public class LoginFragment extends Fragment {
 	@Override
 	public void onAttach(@NonNull Context context) {
 		super.onAttach(context);
-		accountManager = (IAccountManager) context;
+		accountManager = (IAccountFragmentHolder) context;
 	}
 
 	/**
@@ -107,19 +74,6 @@ public class LoginFragment extends Fragment {
 
 	}
 
-	/**
-	 * Reveals error message
-	 */
-	void showErrorMessage() {
-		errorText.setAlpha(1);
-	}
-
-	/**
-	 * Hides error message
-	 */
-	void hideErrorMessage() {
-		errorText.setAlpha(0);
-	}
 
 	/**
 	 * Enables or disables all interactive elements of the fragment
@@ -133,6 +87,8 @@ public class LoginFragment extends Fragment {
 
 		emailText.setEnabled(value);
 		passwordText.setEnabled(value);
+
+		passwordInput.setText("");
 	}
 
 }

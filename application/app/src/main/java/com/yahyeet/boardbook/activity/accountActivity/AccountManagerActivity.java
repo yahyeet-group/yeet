@@ -4,16 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.HomeActivity;
-import com.yahyeet.boardbook.activity.ProfileActivity;
 import com.yahyeet.boardbook.model.util.LoginFailedException;
 import com.yahyeet.boardbook.presenter.AccountManagerPresenter;
 
-public class AccountManagerActivity extends AppCompatActivity implements IAccountManager {
+public class AccountManagerActivity extends AppCompatActivity implements IAccountManagerActivity, IAccountFragmentHolder {
 
 	private AccountManagerPresenter accountManagerPresenter;
 	private LoginFragment loginFragment;
@@ -53,7 +53,7 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 			accountManagerPresenter.loginAccount(email, password);
 		} catch (LoginFailedException e) {
 			//TODO: Implement better exception handling
-			loginFragment.showErrorMessage();
+			toastLoginFailed();
 		}
 	}
 
@@ -73,7 +73,7 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 	 */
 	@Override
 	public void finishAccountManager() {
-		Intent startHome = new Intent(this, ProfileActivity.class);
+		Intent startHome = new Intent(this, HomeActivity.class);
 		startActivity(startHome);
 		finish();
 	}
@@ -111,6 +111,18 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 		enableFragment();
 		registerSwitchButton.setEnabled(true);
 		findViewById(R.id.accountLoadingLayout).setVisibility(View.INVISIBLE);
+	}
+
+	@Override
+	public void toastLoginFailed() {
+		Toast toast = Toast.makeText(this, "Login Failed. Please try again later.", Toast.LENGTH_LONG);
+		toast.show();
+	}
+
+	@Override
+	public void toastRegisterFailed() {
+		Toast toast = Toast.makeText(this, "Registration Failed. Please try again later.", Toast.LENGTH_LONG);
+		toast.show();
 	}
 
 	/**
