@@ -54,7 +54,11 @@ class FirebaseGameTeam implements Serializable {
 	}
 
 	GameTeam toGameTeam() {
-		return new GameTeam(name);
+		GameTeam gameTeam = new GameTeam(name);
+
+		gameTeam.setId(id);
+
+		return gameTeam;
 	}
 
 	public String getName() {
