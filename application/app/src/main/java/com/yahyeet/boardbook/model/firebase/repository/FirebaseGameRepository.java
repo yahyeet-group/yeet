@@ -8,6 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.yahyeet.boardbook.model.entity.Game;
+import com.yahyeet.boardbook.model.entity.GameTeam;
 import com.yahyeet.boardbook.model.repository.IGameRepository;
 
 import java.util.ArrayList;
@@ -21,16 +22,31 @@ import java.util.stream.Collectors;
 public class FirebaseGameRepository implements IGameRepository {
 	private FirebaseFirestore firestore;
 
+	private FirebaseGameRoleRepository firebaseGameRoleRepository;
+	private FirebaseGameTeamRepository firebaseGameTeamRepository;
+
 	public static final String COLLECTION_NAME = "games";
 
 	public FirebaseGameRepository(FirebaseFirestore firestore) {
 		this.firestore = firestore;
+		firebaseGameRoleRepository = new FirebaseGameRoleRepository(firestore);
+		firebaseGameTeamRepository = new FirebaseGameTeamRepository(firestore);
 	}
 
 	@Override
 	public CompletableFuture<Game> create(Game game) {
-		return createFirebaseGame(FirebaseGame.fromGame(game)).thenApplyAsync(FirebaseGame::toGame);
-
+		List<CompletableFuture<GameTeam>> completableFutures = game
+			.getTeams()
+			.stream()
+			// TODO: save
+			.map(team -> firebaseGameTeamRepository.create(team))
+			.collect(Collectors.toList());
+		CompletableFuture<Void> allFutures = CompletableFuture.allOf(completableFutures.toArray(new CompletableFuture[0]));
+		return allFutures.thenApply(future -> completableFutures.stream().map(CompletableFuture::join).collect(Collectors.toList()))
+		.thenCompose(gameTeams -> {
+			game.setTeams(gameTeams);
+			return createFirebaseGame(FirebaseGame.fromGame(game));
+		}).thenApplyAsync(FirebaseGame::toGame);
 	}
 
 	@Override
@@ -38,12 +54,10 @@ public class FirebaseGameRepository implements IGameRepository {
 		return findFirebaseGameById(id).thenApplyAsync(FirebaseGame::toGame);
 	}
 
-
 	@Override
 	public CompletableFuture<Game> update(Game game) {
 		return updateFirebaseGame(FirebaseGame.fromGame(game)).thenApplyAsync(FirebaseGame::toGame);
 	}
-
 
 	@Override
 	public CompletableFuture<Void> remove(Game game) {

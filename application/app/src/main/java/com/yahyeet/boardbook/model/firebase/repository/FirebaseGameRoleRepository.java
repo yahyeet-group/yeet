@@ -7,13 +7,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.yahyeet.boardbook.model.entity.GameRole;
+import com.yahyeet.boardbook.model.repository.IGameRoleRepository;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.stream.Collectors;
 
-public class FirebaseGameRoleRepository {
+public class FirebaseGameRoleRepository implements IGameRoleRepository {
 	private FirebaseFirestore firestore;
 
 	public static final String COLLECTION_NAME = "game_roles";
@@ -22,25 +23,29 @@ public class FirebaseGameRoleRepository {
 		this.firestore = firestore;
 	}
 
+	@Override
 	public CompletableFuture<GameRole> create(GameRole gameRoleRole) {
 		return createFirebaseGameRole(FirebaseGameRole.fromGameRole(gameRoleRole)).thenApplyAsync(FirebaseGameRole::toGameRole);
 
 	}
 
+	@Override
 	public CompletableFuture<GameRole> find(String id) {
 		return findFirebaseGameRoleById(id).thenApplyAsync(FirebaseGameRole::toGameRole);
 	}
 
 
+	@Override
 	public CompletableFuture<GameRole> update(GameRole gameRoleRole) {
 		return updateFirebaseGameRole(FirebaseGameRole.fromGameRole(gameRoleRole)).thenApplyAsync(FirebaseGameRole::toGameRole);
 	}
 
-
+	@Override
 	public CompletableFuture<Void> remove(GameRole gameRoleRole) {
 		return removeFirebaseGameRoleById(gameRoleRole.getId());
 	}
 
+	@Override
 	public CompletableFuture<List<GameRole>> all() {
 		return findAllFirebaseGameRoles().thenApplyAsync(firebaseUsers ->
 			firebaseUsers
@@ -49,7 +54,6 @@ public class FirebaseGameRoleRepository {
 				.collect(Collectors.toList())
 		);
 	}
-
 
 	private CompletableFuture<FirebaseGameRole> createFirebaseGameRole(FirebaseGameRole firebaseGameRole) {
 		return CompletableFuture.supplyAsync(() -> {

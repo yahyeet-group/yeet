@@ -7,13 +7,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.yahyeet.boardbook.model.entity.GameTeam;
+import com.yahyeet.boardbook.model.repository.IGameTeamRepository;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.stream.Collectors;
 
-public class FirebaseGameTeamRepository {
+public class FirebaseGameTeamRepository implements IGameTeamRepository {
 	private FirebaseFirestore firestore;
 
 	public static final String COLLECTION_NAME = "game_teams";
@@ -22,25 +23,27 @@ public class FirebaseGameTeamRepository {
 		this.firestore = firestore;
 	}
 
+	@Override
 	public CompletableFuture<GameTeam> create(GameTeam gameTeamRole) {
 		return createFirebaseGameTeam(FirebaseGameTeam.fromGameTeam(gameTeamRole)).thenApplyAsync(FirebaseGameTeam::toGameTeam);
-
 	}
 
+	@Override
 	public CompletableFuture<GameTeam> find(String id) {
 		return findFirebaseGameTeamById(id).thenApplyAsync(FirebaseGameTeam::toGameTeam);
 	}
 
-
+	@Override
 	public CompletableFuture<GameTeam> update(GameTeam gameTeamRole) {
 		return updateFirebaseGameTeam(FirebaseGameTeam.fromGameTeam(gameTeamRole)).thenApplyAsync(FirebaseGameTeam::toGameTeam);
 	}
 
-
+	@Override
 	public CompletableFuture<Void> remove(GameTeam gameTeamRole) {
 		return removeFirebaseGameTeamById(gameTeamRole.getId());
 	}
 
+	@Override
 	public CompletableFuture<List<GameTeam>> all() {
 		return findAllFirebaseGameTeams().thenApplyAsync(firebaseUsers ->
 			firebaseUsers
