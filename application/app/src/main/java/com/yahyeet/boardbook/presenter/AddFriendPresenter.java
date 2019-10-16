@@ -1,20 +1,17 @@
 package com.yahyeet.boardbook.presenter;
 
 import android.content.Context;
+import android.os.Looper;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.FriendsActivity.IAddFriendActivity;
-import com.yahyeet.boardbook.activity.FriendsActivity.IFriendFragment;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.presenter.adapter.AddFriendsAdapter;
-import com.yahyeet.boardbook.presenter.adapter.FriendsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class AddFriendPresenter {
@@ -33,7 +30,7 @@ public class AddFriendPresenter {
 	/**
 	 * Makes recyclerView to repopulate its matches with current data
 	 */
-	public void repopulateMatches() {
+	public void repopulateFriends() {
 		addFriendsAdapter.notifyDataSetChanged();
 	}
 
@@ -46,6 +43,8 @@ public class AddFriendPresenter {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		matchRecyclerView.setLayoutManager(layoutManager);
 
+		initiateAddFriendPresenter();
+
 		addFriendsAdapter = new AddFriendsAdapter(userDatabase);
 		matchRecyclerView.setAdapter(addFriendsAdapter);
 	}
@@ -55,34 +54,35 @@ public class AddFriendPresenter {
 		addFriendActivity.disableActivityInteraction();
 		List<User> myFriends = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
 
-		List<User> notMyFriends = new ArrayList<>();
-		//TODO: Rosen help
 		try {
-			notMyFriends = BoardbookSingleton.getInstance().getUserHandler().all().get();
-		} catch (ExecutionException | InterruptedException e) {
+			BoardbookSingleton.getInstance().getUserHandler().all().thenAccept(allUsers -> {
+				if (allUsers != null && myFriends != null) {
+					List<User> notMyFriends = allUsers
+						.stream()
+						.filter(user -> myFriends.stream().noneMatch(friend -> friend.getId().equals(user.getId())))
+						.collect(Collectors.toList());
+
+					userDatabase.addAll(notMyFriends);
+					all.addAll(notMyFriends);
+
+
+					new android.os.Handler(Looper.getMainLooper()).post(() -> {
+						addFriendActivity.enableActivityInteraction();
+						repopulateFriends();
+					});
+
+				}
+			});
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		if (notMyFriends != null && myFriends != null) {
-			notMyFriends.removeAll(myFriends);
-
-		}
-
-
-		userDatabase.addAll(notMyFriends);
-		all.addAll(notMyFriends);
-
-		addFriendActivity.enableActivityInteraction();
-		//userDatabase.addAll(friends);
-		//all = friends;
-
 	}
 
 	public void searchNonFriends(String query) {
 		List<User> temp = findMatchingName(all, query);
 		userDatabase.clear();
 		userDatabase.addAll(temp);
-		repopulateMatches();
+		repopulateFriends();
 
 	}
 

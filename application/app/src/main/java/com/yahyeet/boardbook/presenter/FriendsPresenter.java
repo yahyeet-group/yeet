@@ -42,25 +42,17 @@ public class FriendsPresenter {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		matchRecyclerView.setLayoutManager(layoutManager);
 
-        /*
-        for (int i = 0; i < 30; i++) {
-            userDatabase.add(new User(Integer.toString(i), "Name: " + i));
-
-        }
-
-        all.addAll(userDatabase);
-        */
 		initiateFriendPresenter();
 
-		friendsAdapter = new FriendsAdapter(userDatabase);
+		friendsAdapter = new FriendsAdapter(userDatabase, viewContext);
 		matchRecyclerView.setAdapter(friendsAdapter);
+
 	}
 
 	private void initiateFriendPresenter() {
 
 		friendsFragment.disableFragmentInteraction();
 		List<User> friends = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
-
 
 		if (friends != null) {
 			userDatabase.addAll(friends);

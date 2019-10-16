@@ -143,9 +143,5 @@ public class GamesFragment extends Fragment implements IGameFragment {
 		View view = getView();
 		if (view != null)
 			view.findViewById(R.id.gameLoadingLayout).setVisibility(View.VISIBLE);
-
-
 	}
-
-
 }
