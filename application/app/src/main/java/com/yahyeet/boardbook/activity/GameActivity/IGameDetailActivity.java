@@ -2,10 +2,10 @@ package com.yahyeet.boardbook.activity.GameActivity;
 
 public interface IGameDetailActivity {
 
-	void setGameName(String name);
+	void setTvGameName(String name);
 
-	void setGameDescription(String description);
+	void setTvGameDescription(String description);
 
-	void setGameRules(String rules);
+	void setTvGameRules(String rules);
 
 }

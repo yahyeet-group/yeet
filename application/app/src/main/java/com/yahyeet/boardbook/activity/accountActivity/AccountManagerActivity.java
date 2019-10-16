@@ -18,7 +18,7 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 	private AccountManagerPresenter accountManagerPresenter;
 	private LoginFragment loginFragment;
 	private RegisterFragment registerFragment;
-	private Button registerSwitchButton;
+	private Button btnRegisterSwitch;
 
 	/**
 	 * Calls super and the initiates presenter, fragments and xml items.
@@ -31,9 +31,9 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 		setContentView(R.layout.activity_account_manager);
 
 		accountManagerPresenter = new AccountManagerPresenter(this);
-		registerSwitchButton = findViewById(R.id.registerSwitchButton);
+		btnRegisterSwitch = findViewById(R.id.registerSwitchButton);
 
-		registerSwitchButton.setOnClickListener(view -> showRegisterFragment());
+		btnRegisterSwitch.setOnClickListener(view -> showRegisterFragment());
 
 		loginFragment = new LoginFragment();
 		registerFragment = new RegisterFragment();
@@ -90,7 +90,7 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 	 * Changes the currently visible fragment to the Login Fragment
 	 */
 	private void showLoginFragment() {
-		registerSwitchButton.setVisibility(View.VISIBLE);
+		btnRegisterSwitch.setVisibility(View.VISIBLE);
 		getSupportFragmentManager().beginTransaction().replace(R.id.accountManagerContainer, loginFragment, "Login").commit();
 	}
 
@@ -98,7 +98,7 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 	 * Changes the currently visible fragment to the Register Fragment
 	 */
 	private void showRegisterFragment() {
-		registerSwitchButton.setVisibility(View.INVISIBLE);
+		btnRegisterSwitch.setVisibility(View.INVISIBLE);
 		getSupportFragmentManager().beginTransaction().replace(R.id.accountManagerContainer, registerFragment, "Register").commit();
 	}
 
@@ -109,7 +109,7 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 	public void enableManagerInteraction() {
 
 		enableFragment();
-		registerSwitchButton.setEnabled(true);
+		btnRegisterSwitch.setEnabled(true);
 		findViewById(R.id.accountLoadingLayout).setVisibility(View.INVISIBLE);
 	}
 
@@ -131,7 +131,7 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 	@Override
 	public void disableManagerInteraction() {
 		disableFragment();
-		registerSwitchButton.setEnabled(false);
+		btnRegisterSwitch.setEnabled(false);
 		findViewById(R.id.accountLoadingLayout).setVisibility(View.VISIBLE);
 	}
 

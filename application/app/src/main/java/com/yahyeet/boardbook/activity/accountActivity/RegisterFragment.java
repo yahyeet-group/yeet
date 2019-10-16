@@ -23,15 +23,15 @@ public class RegisterFragment extends Fragment {
 	private IAccountFragmentHolder accountManager;
 	private View parent;
 
-	private EditText emailInput;
-	private EditText passwordInput;
-	private EditText usernameInput;
+	private EditText etEmail;
+	private EditText etPassword;
+	private EditText etUsername;
 
-	private TextView emailText;
-	private TextView passwordText;
-	private TextView usernameText;
+	private TextView tvEmail;
+	private TextView tvPassword;
+	private TextView tvUsername;
 
-	private Button registerButton;
+	private Button btnRegister;
 
 	private boolean emailVaild = false;
 	private boolean passwordValid = false;
@@ -49,20 +49,20 @@ public class RegisterFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		emailInput = parent.findViewById(R.id.registerEmailInput);
-		passwordInput = parent.findViewById(R.id.registerPasswordInput);
-		usernameInput = parent.findViewById(R.id.registerUsernameInput);
-		registerButton = parent.findViewById(R.id.registerButton);
+		etEmail = parent.findViewById(R.id.registerEmailInput);
+		etPassword = parent.findViewById(R.id.registerPasswordInput);
+		etUsername = parent.findViewById(R.id.registerUsernameInput);
+		btnRegister = parent.findViewById(R.id.registerButton);
 
-		usernameText = parent.findViewById(R.id.registerUsernameText);
-		emailText = parent.findViewById(R.id.registerEmailText);
-		passwordText = parent.findViewById(R.id.registerPasswordText);
-
-
-		registerButton.setOnClickListener(view1 -> registerAccount());
+		tvUsername = parent.findViewById(R.id.registerUsernameText);
+		tvEmail = parent.findViewById(R.id.registerEmailText);
+		tvPassword = parent.findViewById(R.id.registerPasswordText);
 
 
-		emailInput.addTextChangedListener(new TextWatcher() {
+		btnRegister.setOnClickListener(view1 -> registerAccount());
+
+
+		etEmail.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -77,7 +77,7 @@ public class RegisterFragment extends Fragment {
 			@Override
 			public void afterTextChanged(Editable editable) {
 
-				if (!isEmailValid(emailInput.getText())) {
+				if (!isEmailValid(etEmail.getText())) {
 					parent.findViewById(R.id.emailErrorView).setAlpha(1);
 					emailVaild = false;
 				} else {
@@ -90,7 +90,7 @@ public class RegisterFragment extends Fragment {
 
 			}
 		});
-		passwordInput.addTextChangedListener(new TextWatcher() {
+		etPassword.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -104,7 +104,7 @@ public class RegisterFragment extends Fragment {
 			@Override
 			public void afterTextChanged(Editable editable) {
 
-				if (!isPasswordValid(passwordInput.getText())) {
+				if (!isPasswordValid(etPassword.getText())) {
 					parent.findViewById(R.id.registerPasswordError).setAlpha(1);
 					passwordValid = false;
 				} else {
@@ -140,20 +140,20 @@ public class RegisterFragment extends Fragment {
 	 * Attempts to call registerAccount from parent activity
 	 */
 	private void registerAccount() {
-		accountManager.registerAccount(emailInput.getText().toString(), passwordInput.getText().toString(), usernameInput.getText().toString());
+		accountManager.registerAccount(etEmail.getText().toString(), etPassword.getText().toString(), etUsername.getText().toString());
 	}
 
 	/**
-	 * Enables registerButton if email and passwords are correct, otherwise disables it
+	 * Enables btnRegister if email and passwords are correct, otherwise disables it
 	 */
 	private void isRegisterButtonValid() {
 		if (emailVaild && passwordValid) {
-			registerButton.setAlpha(1);
-			registerButton.setEnabled(true);
+			btnRegister.setAlpha(1);
+			btnRegister.setEnabled(true);
 
 		} else {
-			registerButton.setEnabled(false);
-			registerButton.setAlpha(0.5f);
+			btnRegister.setEnabled(false);
+			btnRegister.setAlpha(0.5f);
 		}
 	}
 
@@ -184,16 +184,16 @@ public class RegisterFragment extends Fragment {
 	 * @param value enable or disable value
 	 */
 	void setFragmentInteraction(Boolean value) {
-		emailInput.setEnabled(value);
-		passwordInput.setEnabled(value);
-		usernameInput.setEnabled(value);
-		registerButton.setEnabled(value);
+		etEmail.setEnabled(value);
+		etPassword.setEnabled(value);
+		etUsername.setEnabled(value);
+		btnRegister.setEnabled(value);
 
-		usernameText.setEnabled(value);
-		emailText.setEnabled(value);
-		passwordText.setEnabled(value);
+		tvUsername.setEnabled(value);
+		tvEmail.setEnabled(value);
+		tvPassword.setEnabled(value);
 
-		passwordInput.setText("");
+		etPassword.setText("");
 
 	}
 

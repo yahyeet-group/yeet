@@ -14,9 +14,9 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
 
 
 	private GameDetailPresenter gameDetailPresenter;
-	private TextView gameName;
-	private TextView gameDescription;
-	private TextView gameRules;
+	private TextView tvGameName;
+	private TextView tvGameDescription;
+	private TextView tvGameRules;
 	private ImageView gameImage;
 	private RecyclerView teamRecyclerView;
 
@@ -44,9 +44,9 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
 
 		gameDetailPresenter = new GameDetailPresenter(this, gameID);
 
-		gameName = findViewById(R.id.gameDetailName);
-		gameDescription = findViewById(R.id.gameDetailDescription);
-		gameRules = findViewById(R.id.gameDetailRules);
+		tvGameName = findViewById(R.id.gameDetailName);
+		tvGameDescription = findViewById(R.id.gameDetailDescription);
+		tvGameRules = findViewById(R.id.gameDetailRules);
 		teamRecyclerView = findViewById(R.id.gameDetailRecyclerView);
 
 
@@ -61,16 +61,16 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
 		gameDetailPresenter.enableTeamList(teamRecyclerView, this);
 	}
 
-	public void setGameName(String name) {
-		this.gameName.setText(name);
+	public void setTvGameName(String name) {
+		this.tvGameName.setText(name);
 	}
 
-	public void setGameDescription(String description) {
-		this.gameDescription.setText(description);
+	public void setTvGameDescription(String description) {
+		this.tvGameDescription.setText(description);
 	}
 
-	public void setGameRules(String rules) {
-		this.gameRules.setText(rules);
+	public void setTvGameRules(String rules) {
+		this.tvGameRules.setText(rules);
 	}
 
 

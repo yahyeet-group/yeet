@@ -23,8 +23,7 @@ import javax.annotation.Nonnull;
 public class FriendsFragment extends Fragment implements IFriendFragment {
 
 	private FriendsPresenter friendsPresenter;
-	private ImageButton addFriendbtn;
-	private TextView friendSearch;
+	private TextView tvFriendSearch;
 
 	@Nullable
 	@Override
@@ -39,10 +38,10 @@ public class FriendsFragment extends Fragment implements IFriendFragment {
 
 		friendsPresenter = new FriendsPresenter(this);
 
-		friendSearch.addTextChangedListener(new TextWatcher() {
+		tvFriendSearch.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-				friendsPresenter.searchFriends(friendSearch.getText().toString());
+				friendsPresenter.searchFriends(tvFriendSearch.getText().toString());
 			}
 
 			@Override
@@ -53,7 +52,7 @@ public class FriendsFragment extends Fragment implements IFriendFragment {
 
 			@Override
 			public void afterTextChanged(Editable editable) {
-				friendsPresenter.searchFriends(friendSearch.getText().toString());
+				friendsPresenter.searchFriends(tvFriendSearch.getText().toString());
 			}
 		});
 
@@ -61,7 +60,7 @@ public class FriendsFragment extends Fragment implements IFriendFragment {
 
 	private void setAllViews() {
 
-		friendSearch = getView().findViewById((R.id.friendSearch));
+		tvFriendSearch = getView().findViewById((R.id.friendSearch));
 
 	}
 
@@ -71,7 +70,7 @@ public class FriendsFragment extends Fragment implements IFriendFragment {
 
 		View view = getView();
 
-		addFriendbtn = view.findViewById(R.id.addFriendButton);
+		ImageButton addFriendbtn = view.findViewById(R.id.addFriendButton);
 
 		addFriendbtn.setOnClickListener(view1 -> {
 			Intent intent = new Intent(getContext(), AddFriendActivity.class);
@@ -88,13 +87,13 @@ public class FriendsFragment extends Fragment implements IFriendFragment {
 	@Override
 	public void disableFragmentInteraction() {
 		//addFriendbtn.setEnabled(false);
-		friendSearch.setEnabled(false);
+		tvFriendSearch.setEnabled(false);
 	}
 
 	@Override
 	public void enableFragmentInteraction() {
 
 		//addFriendbtn.setEnabled(true);
-		friendSearch.setEnabled(true);
+		tvFriendSearch.setEnabled(true);
 	}
 }

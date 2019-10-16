@@ -24,11 +24,11 @@ import javax.annotation.Nonnull;
 public class GamesFragment extends Fragment implements IGameFragment {
 
 	private GamePresenter gamePresenter;
-	private TextView searchInput;
+	private TextView tvSearchInput;
 	private ListView gameListView;
 	private GridView gameGridView;
-	private Button enableList;
-	private Button enableGrid;
+	private Button btnEnableList;
+	private Button btnEnableGrid;
 
 	@Nullable
 	@Override
@@ -43,12 +43,12 @@ public class GamesFragment extends Fragment implements IGameFragment {
 
 		gamePresenter = new GamePresenter(this);
 
-		enableList.setOnClickListener(view1 -> enableGameList());
-		enableGrid.setOnClickListener(view2 -> enableGameGrid());
-		searchInput.addTextChangedListener(new TextWatcher() {
+		btnEnableList.setOnClickListener(view1 -> enableGameList());
+		btnEnableGrid.setOnClickListener(view2 -> enableGameGrid());
+		tvSearchInput.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-				gamePresenter.searchGames(searchInput.getText().toString());
+				gamePresenter.searchGames(tvSearchInput.getText().toString());
 			}
 
 			@Override
@@ -58,7 +58,7 @@ public class GamesFragment extends Fragment implements IGameFragment {
 
 			@Override
 			public void afterTextChanged(Editable editable) {
-				gamePresenter.searchGames(searchInput.getText().toString());
+				gamePresenter.searchGames(tvSearchInput.getText().toString());
 			}
 		});
 
@@ -79,10 +79,10 @@ public class GamesFragment extends Fragment implements IGameFragment {
 		if (view != null) {
 			gameListView = view.findViewById(R.id.gameListView);
 			gameGridView = view.findViewById(R.id.gameGridView);
-			searchInput = view.findViewById(R.id.searchInput);
+			tvSearchInput = view.findViewById(R.id.searchInput);
 
-			enableList = view.findViewById(R.id.gameListDisplayButton);
-			enableGrid = view.findViewById(R.id.gameGridDisplayButton);
+			btnEnableList = view.findViewById(R.id.gameListDisplayButton);
+			btnEnableGrid = view.findViewById(R.id.gameGridDisplayButton);
 		}
 	}
 
@@ -122,9 +122,9 @@ public class GamesFragment extends Fragment implements IGameFragment {
 	@Override
 	public void enableFragmentInteraction() {
 
-		searchInput.setEnabled(true);
-		enableList.setEnabled(true);
-		enableGrid.setEnabled(true);
+		tvSearchInput.setEnabled(true);
+		btnEnableList.setEnabled(true);
+		btnEnableGrid.setEnabled(true);
 		View view = getView();
 		if (view != null)
 			view.findViewById(R.id.gameLoadingLayout).setVisibility(View.INVISIBLE);
@@ -137,9 +137,9 @@ public class GamesFragment extends Fragment implements IGameFragment {
 	@Override
 	public void disableFragmentInteraction() {
 
-		searchInput.setEnabled(false);
-		enableList.setEnabled(false);
-		enableGrid.setEnabled(false);
+		tvSearchInput.setEnabled(false);
+		btnEnableList.setEnabled(false);
+		btnEnableGrid.setEnabled(false);
 		View view = getView();
 		if (view != null)
 			view.findViewById(R.id.gameLoadingLayout).setVisibility(View.VISIBLE);

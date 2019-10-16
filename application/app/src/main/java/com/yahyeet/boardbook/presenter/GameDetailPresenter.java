@@ -27,9 +27,9 @@ public class GameDetailPresenter {
 	}
 
 	public void initiateGameDetail() {
-		gameDetailActivity.setGameName(game.getName());
-		gameDetailActivity.setGameDescription(game.getDescription());
-		gameDetailActivity.setGameRules("");
+		gameDetailActivity.setTvGameName(game.getName());
+		gameDetailActivity.setTvGameDescription(game.getDescription());
+		gameDetailActivity.setTvGameRules("");
 	}
 
 	/**

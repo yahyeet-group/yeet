@@ -3,26 +3,21 @@ package com.yahyeet.boardbook.activity.FriendsActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.presenter.AddFriendPresenter;
-import com.yahyeet.boardbook.presenter.FriendsPresenter;
 
 public class AddFriendActivity extends AppCompatActivity implements IAddFriendActivity {
 
 	private AddFriendPresenter addFriendPresenter;
-	private ImageButton backbtn;
-	private TextView addFriendSearch;
+	private ImageButton btnBack;
+	private TextView tvAddFriendSearch;
 
 
 	@Override
@@ -31,10 +26,10 @@ public class AddFriendActivity extends AppCompatActivity implements IAddFriendAc
 		setContentView(R.layout.activity_addfriend);
 
 
-		backbtn = findViewById(R.id.backButton);
-		addFriendSearch = findViewById(R.id.addFriendSearch);
+		btnBack = findViewById(R.id.backButton);
+		tvAddFriendSearch = findViewById(R.id.addFriendSearch);
 
-		backbtn.setOnClickListener(view1 -> {
+		btnBack.setOnClickListener(view1 -> {
 			onBackPressed();
 		});
 	}
@@ -46,7 +41,7 @@ public class AddFriendActivity extends AppCompatActivity implements IAddFriendAc
 		addFriendPresenter = new AddFriendPresenter(this);
 		enableAddFriendList();
 
-		addFriendSearch.addTextChangedListener(new TextWatcher() {
+		tvAddFriendSearch.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -54,7 +49,7 @@ public class AddFriendActivity extends AppCompatActivity implements IAddFriendAc
 
 			@Override
 			public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-				addFriendPresenter.searchNonFriends(addFriendSearch.getText().toString());
+				addFriendPresenter.searchNonFriends(tvAddFriendSearch.getText().toString());
 
 			}
 
@@ -78,16 +73,16 @@ public class AddFriendActivity extends AppCompatActivity implements IAddFriendAc
 
 	@Override
 	public void disableActivityInteraction() {
-		backbtn.setEnabled(false);
-		addFriendSearch.setEnabled(false);
+		btnBack.setEnabled(false);
+		tvAddFriendSearch.setEnabled(false);
 		findViewById(R.id.addFriendLoadlingLayout).setVisibility(View.VISIBLE);
 
 	}
 
 	@Override
 	public void enableActivityInteraction() {
-		backbtn.setEnabled(true);
-		addFriendSearch.setEnabled(true);
+		btnBack.setEnabled(true);
+		tvAddFriendSearch.setEnabled(true);
 		findViewById(R.id.addFriendLoadlingLayout).setVisibility(View.INVISIBLE);
 
 	}
