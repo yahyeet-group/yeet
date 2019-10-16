@@ -126,6 +126,7 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 			} else if (holder instanceof HeaderViewHolder) {
 				HeaderViewHolder vh = (HeaderViewHolder) holder;
 				vh.tvUsername.setText(matchOwner.getName());
+				//TODO: Repalce with information from statistics service
 				vh.tvGamesPlayed.setText("20");
 				vh.tvWinrate.setText("30%");
 				vh.pbWinrate.setProgress(30);
