@@ -10,7 +10,6 @@ import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.presenter.adapter.MatchAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -64,7 +63,7 @@ public class ProfilePresenter {
 
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		matchRecyclerView.setLayoutManager(layoutManager);
-		matchAdapter = new MatchAdapter(viewContext, matchDatabase, user);
+		matchAdapter = new MatchAdapter(viewContext, matchDatabase, user, BoardbookSingleton.getInstance().getStatisticsUtil());
 		matchRecyclerView.setAdapter(matchAdapter);
 	}
 
