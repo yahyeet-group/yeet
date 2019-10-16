@@ -1,12 +1,10 @@
-package com.yahyeet.boardbook.activity.CreateingMatches.SelectPlayers;
+package com.yahyeet.boardbook.activity.CreateingMatches.ConfigureTeams;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,19 +12,20 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.presenter.SelectPlayerPresenter;
+import com.yahyeet.boardbook.activity.CreateingMatches.CreateMatchActivity;
+import com.yahyeet.boardbook.presenter.ConfigureTeamPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectPlayersFragment extends Fragment implements ISelectPlayersFragment {
+public class ConfigureTeamsFragment extends Fragment implements IConfigureTeamsFragment {
 
-	private SelectPlayerPresenter spp;
+	private ConfigureTeamPresenter spp;
 
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		spp = new SelectPlayerPresenter(this);
+		spp = new ConfigureTeamPresenter(this, ((CreateMatchActivity)getActivity()).getCMDH());
 		return inflater.inflate(R.layout.fragment_select_players, container, false);
 
 	}
@@ -44,6 +43,7 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
 		// in content do not change the layout size of the RecyclerView
 		gameRecycler.setHasFixedSize(true);
 		spp.enableGameFeed(gameRecycler, getView().getContext());
+		bindTestButtons();
 	}
 
 	private void bindTestButtons() {

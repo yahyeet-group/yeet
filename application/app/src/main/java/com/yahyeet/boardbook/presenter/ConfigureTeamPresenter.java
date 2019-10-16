@@ -5,25 +5,31 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.activity.CreateingMatches.SelectGame.GamesAdapter;
+import com.yahyeet.boardbook.activity.CreateingMatches.CreateMatchDataHandler;
 import com.yahyeet.boardbook.activity.CreateingMatches.SelectGame.ISelectGameFragment;
-import com.yahyeet.boardbook.activity.CreateingMatches.SelectPlayers.ISelectPlayersFragment;
-import com.yahyeet.boardbook.activity.CreateingMatches.SelectPlayers.PlayerAdapter;
-import com.yahyeet.boardbook.model.entity.Game;
+import com.yahyeet.boardbook.activity.CreateingMatches.ConfigureTeams.IConfigureTeamsFragment;
+import com.yahyeet.boardbook.activity.CreateingMatches.ConfigureTeams.ConfigureTeamAdapter;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
 
-public class SelectPlayerPresenter {
+public class ConfigureTeamPresenter {
 
-    private PlayerAdapter playerAdapter;
+    private ConfigureTeamAdapter playerAdapter;
 
     private ISelectGameFragment selectGameFragment;
 
-    private ISelectPlayersFragment spf;
+    private IConfigureTeamsFragment spf;
 
-    public SelectPlayerPresenter(ISelectPlayersFragment spf){
+    private CreateMatchDataHandler cmdh;
+
+    public ConfigureTeamPresenter(IConfigureTeamsFragment spf, CreateMatchDataHandler cmdh){
 
         this.spf = spf;
+        this.cmdh = cmdh;
+    }
+
+    public void repopulateMatches() {
+        playerAdapter.notifyDataSetChanged();
     }
 
     public void enableGameFeed(RecyclerView playerRecycleView, Context viewContext) {
@@ -31,7 +37,7 @@ public class SelectPlayerPresenter {
         playerRecycleView.setLayoutManager(layoutManager);
         //TODO: Replace with matches from user
         User[] testSet = {new User(), new User()};
-        playerAdapter = new PlayerAdapter(testSet);
+        playerAdapter = new ConfigureTeamAdapter(cmdh);
         playerRecycleView.setAdapter(playerAdapter);
     }
 
