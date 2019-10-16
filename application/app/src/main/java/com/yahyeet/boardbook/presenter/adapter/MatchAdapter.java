@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.model.util.StatisticsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,8 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 	private List<Match> myDataset;
 
 	//TODO: Naming might need to change
-	private User matchOwner;
+	private User user;
+	private StatisticsUtil statisticsUtil;
 
 
 	public MatchAdapter(List<Match> dataset) {
@@ -37,14 +39,15 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 			myDataset = new ArrayList<>();
 	}
 
-	public MatchAdapter(Context context, List<Match> dataset, User user) {
+	public MatchAdapter(Context context, List<Match> dataset, User user, StatisticsUtil statisticsUtil) {
 		if (dataset != null)
 			myDataset = dataset;
 		else
 			myDataset = new ArrayList<>();
 
 		this.context = context;
-		matchOwner = user;
+		this.user = user;
+		this.statisticsUtil = statisticsUtil;
 	}
 
 
@@ -125,11 +128,12 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 				//vh.imageView.setImageURL();
 			} else if (holder instanceof HeaderViewHolder) {
 				HeaderViewHolder vh = (HeaderViewHolder) holder;
-				vh.tvUsername.setText(matchOwner.getName());
-				//TODO: Repalce with information from statistics service
-				vh.tvGamesPlayed.setText("20");
-				vh.tvWinrate.setText("30%");
-				vh.pbWinrate.setProgress(30);
+				vh.tvUsername.setText(user.getName());
+				double stats = statisticsUtil.getWinrateFromMatches(myDataset, user);
+				int percent = (int) (100 * stats);
+				vh.tvGamesPlayed.setText(user.getMatches().size());
+				vh.tvWinrate.setText(percent + "%");
+				vh.pbWinrate.setProgress(percent);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -151,7 +155,7 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 	@Override
 	public int getItemViewType(int position) {
-		if (position == 0 && matchOwner != null) {
+		if (position == 0 && user != null) {
 			return PROFILE_HEADER_VIEW;
 		}
 		return super.getItemViewType(position);
