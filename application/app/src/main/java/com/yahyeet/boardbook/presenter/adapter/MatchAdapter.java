@@ -99,7 +99,7 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 		View v;
 
 		if (viewType == HEADER_VIEW) {
-			v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_header, viewGroup, false);
+			v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.element_profile_header, viewGroup, false);
 			HeaderViewHolder vh = new HeaderViewHolder(v);
 			return vh;
 		}

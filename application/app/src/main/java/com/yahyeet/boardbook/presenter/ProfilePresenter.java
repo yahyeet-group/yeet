@@ -64,10 +64,6 @@ public class ProfilePresenter {
 
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		matchRecyclerView.setLayoutManager(layoutManager);
-		//TODO: Replace with matches from user
-		/*matchDatabase = new ArrayList<>();
-		for (int i = 0; i < 20; i++)
-			matchDatabase.add(new Match());*/
 		matchAdapter = new MatchAdapter(viewContext, matchDatabase, user);
 		matchRecyclerView.setAdapter(matchAdapter);
 	}
