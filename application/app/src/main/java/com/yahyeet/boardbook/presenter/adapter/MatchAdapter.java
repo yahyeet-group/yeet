@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.model.entity.Match;
+import com.yahyeet.boardbook.model.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,9 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 	private Context context;
 	private List<Match> myDataset;
 
+	//TODO: Naming might need to change
+	private User matchOwner;
+
 
 	public MatchAdapter(List<Match> dataset) {
 		if (dataset != null)
@@ -33,13 +37,14 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 			myDataset = new ArrayList<>();
 	}
 
-	public MatchAdapter(Context context, List<Match> dataset) {
+	public MatchAdapter(Context context, List<Match> dataset, User user) {
 		if (dataset != null)
 			myDataset = dataset;
 		else
 			myDataset = new ArrayList<>();
 
 		this.context = context;
+		matchOwner = user;
 	}
 
 
@@ -94,7 +99,7 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 		View v;
 
 		if (viewType == HEADER_VIEW) {
-			v = LayoutInflater.from(context).inflate(R.layout.list_item_header, viewGroup, false);
+			v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_header, viewGroup, false);
 			HeaderViewHolder vh = new HeaderViewHolder(v);
 			return vh;
 		}
@@ -121,7 +126,7 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 				//vh.imageView.setImageURL();
 			} else if (holder instanceof HeaderViewHolder) {
 				HeaderViewHolder vh = (HeaderViewHolder) holder;
-				vh.tvUsername.setText("Carl");
+				vh.tvUsername.setText(matchOwner.getName());
 				vh.tvGamesPlayed.setText("20");
 				vh.tvWinrate.setText("30%");
 				vh.pbWinrate.setProgress(30);
@@ -146,7 +151,7 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 	@Override
 	public int getItemViewType(int position) {
-		if (position == 0) {
+		if (position == 0 && matchOwner != null) {
 			return HEADER_VIEW;
 		}
 		return super.getItemViewType(position);

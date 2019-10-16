@@ -23,7 +23,21 @@ public class ProfileActivity extends AppCompatActivity implements IProfileActivi
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
-		profilePresenter = new ProfilePresenter(this);
+
+		String userId;
+		if (savedInstanceState == null) {
+			Bundle extras = getIntent().getExtras();
+			if(extras == null) {
+				userId = null;
+			} else {
+				userId = extras.getString("UserId");
+			}
+		} else {
+			// TODO: Maybe bad, idk // Vex
+			userId = (String) savedInstanceState.getSerializable("UserId");
+		}
+
+		profilePresenter = new ProfilePresenter(this, userId);
 		enableMatchFeed();
 	}
 

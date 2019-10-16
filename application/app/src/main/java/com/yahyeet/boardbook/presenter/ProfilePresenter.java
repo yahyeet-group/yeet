@@ -7,20 +7,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IProfileActivity;
 import com.yahyeet.boardbook.model.entity.Match;
+import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.presenter.adapter.MatchAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ProfilePresenter {
 
 	private MatchAdapter matchAdapter;
 	private List<Match> matchDatabase;
+	private User user;
 
 	private IProfileActivity profileActivity;
 
-	public ProfilePresenter(IProfileActivity profileActivity) {
+	public ProfilePresenter(IProfileActivity profileActivity, String userId) {
 		this.profileActivity = profileActivity;
+		try {
+			user = BoardbookSingleton.getInstance().getUserHandler().find(userId).get();
+		} catch (ExecutionException | InterruptedException e) {
+			// TODO: What to do here?
+		}
 	}
 
 	public String getLoggedInUserName() {
@@ -57,10 +65,10 @@ public class ProfilePresenter {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		matchRecyclerView.setLayoutManager(layoutManager);
 		//TODO: Replace with matches from user
-		matchDatabase = new ArrayList<>();
+		/*matchDatabase = new ArrayList<>();
 		for (int i = 0; i < 20; i++)
-			matchDatabase.add(new Match());
-		matchAdapter = new MatchAdapter(viewContext, matchDatabase);
+			matchDatabase.add(new Match());*/
+		matchAdapter = new MatchAdapter(viewContext, matchDatabase, user);
 		matchRecyclerView.setAdapter(matchAdapter);
 	}
 
