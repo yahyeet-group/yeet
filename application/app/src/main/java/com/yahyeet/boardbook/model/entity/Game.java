@@ -28,6 +28,13 @@ public class Game extends AbstractEntity {
 	public Game() {
 	}
 
+
+	//Nox has added this in purely for testing purposes
+	public Game(String name, String description){
+		this.name = name;
+		this.description = description;
+	}
+
 	public String getName() {
 		return name;
 	}

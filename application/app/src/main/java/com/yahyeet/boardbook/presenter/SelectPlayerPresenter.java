@@ -10,6 +10,7 @@ import com.yahyeet.boardbook.activity.CreateingMatches.SelectGame.ISelectGameFra
 import com.yahyeet.boardbook.activity.CreateingMatches.SelectPlayers.ISelectPlayersFragment;
 import com.yahyeet.boardbook.activity.CreateingMatches.SelectPlayers.PlayerAdapter;
 import com.yahyeet.boardbook.model.entity.Game;
+import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
 
 public class SelectPlayerPresenter {
@@ -32,5 +33,10 @@ public class SelectPlayerPresenter {
         User[] testSet = {new User(), new User()};
         playerAdapter = new PlayerAdapter(testSet);
         playerRecycleView.setAdapter(playerAdapter);
+    }
+
+    public void finalizeMatch(Match match){
+        //TODO save this match with handlers
+        //TODO change Activity back to home activity
     }
 }
