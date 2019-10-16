@@ -20,75 +20,75 @@ import java.util.stream.Collectors;
 
 public class GamePresenter implements GameHandlerListener {
 
-    // TODO: Help me from this UI thread hell
-    private Handler uiHandler;
+	// TODO: Help me from this UI thread hell
+	private Handler uiHandler;
 
-    private IGameFragment gameFragment;
-    private BaseAdapter listAdapter;
-    private BaseAdapter gridAdapter;
+	private IGameFragment gameFragment;
+	private BaseAdapter listAdapter;
+	private BaseAdapter gridAdapter;
 
-    private boolean gameListEnabled;
-    private boolean gameGridEnabled;
+	private boolean gameListEnabled;
+	private boolean gameGridEnabled;
 
-    final private List<Game> gameDatabase = new ArrayList<>();
-    private List<Game> all = new ArrayList<>();
+	final private List<Game> gameDatabase = new ArrayList<>();
+	private List<Game> all = new ArrayList<>();
 
 
-    public GamePresenter(IGameFragment gameFragment) {
-        this.gameFragment = gameFragment;
-        uiHandler = new android.os.Handler(Looper.getMainLooper());
-        initiateGamePresenter();
+	public GamePresenter(IGameFragment gameFragment) {
+		this.gameFragment = gameFragment;
+		uiHandler = new android.os.Handler(Looper.getMainLooper());
+		initiateGamePresenter();
 
-        GameHandler gameHandler = BoardbookSingleton.getInstance().getGameHandler();
-        gameHandler.addListener(this);
-    }
+		GameHandler gameHandler = BoardbookSingleton.getInstance().getGameHandler();
+		gameHandler.addListener(this);
+	}
 
-    public void displayGameList(Context viewContext, ListView gameListView) {
-        if (listAdapter == null)
-            initiateListAdapter(viewContext, gameListView);
-        gameListEnabled = true;
-        gameGridEnabled = false;
-    }
+	public void displayGameList(Context viewContext, ListView gameListView) {
+		if (listAdapter == null)
+			initiateListAdapter(viewContext, gameListView);
+		gameListEnabled = true;
+		gameGridEnabled = false;
+	}
 
-    public void displayGameGrid(Context viewContext, GridView gameGridView) {
-        if (gridAdapter == null)
-            initiateGridAdapter(viewContext, gameGridView);
-        gameGridEnabled = true;
-        gameListEnabled = false;
-    }
+	public void displayGameGrid(Context viewContext, GridView gameGridView) {
+		if (gridAdapter == null)
+			initiateGridAdapter(viewContext, gameGridView);
+		gameGridEnabled = true;
+		gameListEnabled = false;
+	}
 
-    private void initiateListAdapter(Context viewContext, ListView gameListView) {
-        listAdapter = new GameListAdapter(viewContext, gameDatabase);
-        gameListView.setAdapter(listAdapter);
+	private void initiateListAdapter(Context viewContext, ListView gameListView) {
+		listAdapter = new GameListAdapter(viewContext, gameDatabase);
+		gameListView.setAdapter(listAdapter);
 
-    }
+	}
 
-    private void initiateGridAdapter(Context viewContext, GridView gameGridView) {
-        gridAdapter = new GameGridAdapter(viewContext, gameDatabase);
-        gameGridView.setAdapter(gridAdapter);
-    }
+	private void initiateGridAdapter(Context viewContext, GridView gameGridView) {
+		gridAdapter = new GameGridAdapter(viewContext, gameDatabase);
+		gameGridView.setAdapter(gridAdapter);
+	}
 
-    private void initiateGamePresenter() {
+	private void initiateGamePresenter() {
 
-        gameFragment.disableFragmentInteraction();
-        BoardbookSingleton.getInstance().getGameHandler().all().thenAccept(initGames -> {
-            if(initGames != null){
-                gameDatabase.addAll(initGames);
-                all.addAll(initGames);
-            }
+		gameFragment.disableFragmentInteraction();
+		BoardbookSingleton.getInstance().getGameHandler().all().thenAccept(initGames -> {
+			if (initGames != null) {
+				gameDatabase.addAll(initGames);
+				all.addAll(initGames);
+			}
 
-            uiHandler.post(() -> {
-                gameFragment.enableFragmentInteraction();
-                updateAdapters();
-            });
-        });
-    }
+			uiHandler.post(() -> {
+				gameFragment.enableFragmentInteraction();
+				updateAdapters();
+			});
+		});
+	}
 
-    // TODO: Method requires better name
-    public void searchGames(String query) {
-        gameDatabase.clear();
-        gameDatabase.addAll(findMatchingName(all, query));
-        updateAdapters();
+	// TODO: Method requires better name
+	public void searchGames(String query) {
+		gameDatabase.clear();
+		gameDatabase.addAll(findMatchingName(all, query));
+		updateAdapters();
 
         /*BoardbookSingleton.getInstance().getGameHandler().all().thenAccept(games -> {
             gameDatabase.clear();
@@ -105,56 +105,56 @@ public class GamePresenter implements GameHandlerListener {
             });
 
         });*/
-    }
+	}
 
 
-    private void updateAdapters() {
-        if (gameListEnabled)
-            listAdapter.notifyDataSetChanged();
-        else if (gameGridEnabled)
-            gridAdapter.notifyDataSetChanged();
-    }
+	private void updateAdapters() {
+		if (gameListEnabled)
+			listAdapter.notifyDataSetChanged();
+		else if (gameGridEnabled)
+			gridAdapter.notifyDataSetChanged();
+	}
 
-    // TODO: Write tests for this method
-    private List<Game> findMatchingName(List<Game> games, String query) {
+	// TODO: Write tests for this method
+	private List<Game> findMatchingName(List<Game> games, String query) {
 
-        if (query == null)
-            return games;
+		if (query == null)
+			return games;
 
-        try {
-            return games.stream().filter(game -> game.getName().toLowerCase().contains(query)).collect(Collectors.toList());
-        } catch (NullPointerException e) {
-            //TODO: Alert that a null name object exists
-            return games;
-        }
-    }
+		try {
+			return games.stream().filter(game -> game.getName().toLowerCase().contains(query)).collect(Collectors.toList());
+		} catch (NullPointerException e) {
+			//TODO: Alert that a null name object exists
+			return games;
+		}
+	}
 
-    @Override
-    public void onAddGame(Game game) {
-        gameDatabase.add(game);
-        updateAdapters();
-    }
+	@Override
+	public void onAddGame(Game game) {
+		gameDatabase.add(game);
+		updateAdapters();
+	}
 
-    @Override
-    public void onUpdateGame(Game game) {
-        for (int i = 0; i < gameDatabase.size(); i++) {
-            if (gameDatabase.get(i).getId().equals(game.getId())) {
-                gameDatabase.set(i, game);
-            }
-        }
-        updateAdapters();
-    }
+	@Override
+	public void onUpdateGame(Game game) {
+		for (int i = 0; i < gameDatabase.size(); i++) {
+			if (gameDatabase.get(i).getId().equals(game.getId())) {
+				gameDatabase.set(i, game);
+			}
+		}
+		updateAdapters();
+	}
 
-    @Override
-    public void onRemoveGame(Game game) {
-        for (int i = 0; i < gameDatabase.size(); i++) {
-            if (gameDatabase.get(i).getId().equals(game.getId())) {
-                gameDatabase.remove(i);
-                break;
-            }
-        }
-        updateAdapters();
-    }
+	@Override
+	public void onRemoveGame(Game game) {
+		for (int i = 0; i < gameDatabase.size(); i++) {
+			if (gameDatabase.get(i).getId().equals(game.getId())) {
+				gameDatabase.remove(i);
+				break;
+			}
+		}
+		updateAdapters();
+	}
 
 
 }

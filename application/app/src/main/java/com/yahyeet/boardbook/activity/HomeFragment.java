@@ -17,37 +17,37 @@ import javax.annotation.Nonnull;
 
 public class HomeFragment extends Fragment implements IHomeFragment {
 
-    private HomePresenter homePresenter;
+	private HomePresenter homePresenter;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        homePresenter = new HomePresenter(this);
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
+	@Nullable
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		homePresenter = new HomePresenter(this);
+		return inflater.inflate(R.layout.fragment_home, container, false);
+	}
 
-    @Override
-    public void onViewCreated(@Nonnull View view, Bundle savedInstanceState) {
-        enableMatchFeed();
-    }
+	@Override
+	public void onViewCreated(@Nonnull View view, Bundle savedInstanceState) {
+		enableMatchFeed();
+	}
 
-    /**
-     * Initiates recyclerView of matches in fragment and populates it
-     */
-    public void enableMatchFeed() {
-        // TODO: Examine how these method calls can get nullPointerException
-        RecyclerView matchRecycler = getView().findViewById(R.id.homeMatchRecycler);
+	/**
+	 * Initiates recyclerView of matches in fragment and populates it
+	 */
+	public void enableMatchFeed() {
+		// TODO: Examine how these method calls can get nullPointerException
+		RecyclerView matchRecycler = getView().findViewById(R.id.homeMatchRecycler);
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        matchRecycler.setHasFixedSize(true);
-        homePresenter.enableMatchFeed(matchRecycler, getView().getContext());
-    }
+		// use this setting to improve performance if you know that changes
+		// in content do not change the layout size of the RecyclerView
+		matchRecycler.setHasFixedSize(true);
+		homePresenter.enableMatchFeed(matchRecycler, getView().getContext());
+	}
 
-    /**
-     * Orders recyclerView of matches to repopulate itself
-     */
-    public void repopulateMatchFeed() {
-        homePresenter.updateMatchAdapter();
-    }
+	/**
+	 * Orders recyclerView of matches to repopulate itself
+	 */
+	public void repopulateMatchFeed() {
+		homePresenter.updateMatchAdapter();
+	}
 }

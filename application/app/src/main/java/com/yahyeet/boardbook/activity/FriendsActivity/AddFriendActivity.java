@@ -25,7 +25,6 @@ public class AddFriendActivity extends AppCompatActivity implements IAddFriendAc
 	private TextView addFriendSearch;
 
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
