@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class FirebaseGameRole {
 
+    private String id;
     private String name;
 
     public FirebaseGameRole() {
@@ -25,7 +26,11 @@ public class FirebaseGameRole {
     }
 
     GameRole toGameRole(){
-        return new GameRole(name);
+        GameRole gameRole = new GameRole(name);
+
+        gameRole.setId(id);
+
+        return gameRole;
     }
 
 
@@ -47,5 +52,11 @@ public class FirebaseGameRole {
         this.name = name;
     }
 
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 }

@@ -10,7 +10,7 @@ public class AccountManagerPresenter {
     private AccountManagerActivity accountManagerActivity;
 
     // Set true to skip login
-    private Boolean fastPass = false;
+    private Boolean fastPass = true;
 
     public AccountManagerPresenter(AccountManagerActivity accountManagerActivity){
         this.accountManagerActivity = accountManagerActivity;

@@ -48,7 +48,6 @@ public class FirebaseGameRepository implements IGameRepository {
 	@Override
 	public CompletableFuture<Void> remove(Game game) {
 		return removeFirebaseGameById(game.getId());
-
 	}
 
 	@Override
@@ -122,44 +121,6 @@ public class FirebaseGameRepository implements IGameRepository {
 
 		if (data.containsKey("name")) {
 			game.setName((String) data.get("name"));
-		}
-
-		if (data.containsKey("teams")) {
-			List<Map<String, Object>> teams = (List<Map<String, Object>>) data.get("teams");
-
-			game.setTeams(teams.stream().map(team -> {
-					FirebaseGameTeam firebaseGameTeam = new FirebaseGameTeam();
-
-					if (team.containsKey("name")) {
-						firebaseGameTeam.setName((String) team.get("name"));
-					}
-
-					if (team.containsKey("roles")) {
-						List<Map<String, Object>> roles = (List<Map<String, Object>>) team.get("roles");
-
-						firebaseGameTeam.setRoles(
-							roles
-								.stream()
-								.map(role -> {
-									FirebaseGameRole firebaseGameRole = new FirebaseGameRole();
-
-									if (role.containsKey("name")) {
-										firebaseGameRole.setName((String) role.get("name"));
-									}
-
-									return firebaseGameRole;
-								})
-								.collect(Collectors.toList())
-						);
-					} else {
-						firebaseGameTeam.setRoles(new ArrayList<>());
-					}
-
-					return firebaseGameTeam;
-				}).collect(Collectors.toList())
-			);
-		} else {
-			game.setTeams(new ArrayList<>());
 		}
 
 		return game;

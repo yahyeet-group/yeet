@@ -1,10 +1,9 @@
 package com.yahyeet.boardbook.model.firebase.repository;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
+import com.yahyeet.boardbook.model.entity.AbstractEntity;
 import com.yahyeet.boardbook.model.entity.GameTeam;
 
 import java.io.Serializable;
-import java.security.cert.CollectionCertStoreParameters;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,8 +12,9 @@ import java.util.stream.Collectors;
 
 class FirebaseGameTeam implements Serializable {
 
+	private String id;
 	private String name;
-	private List<FirebaseGameRole> roles;
+	private List<String> roles;
 
 	public FirebaseGameTeam() {
 	}
@@ -31,7 +31,9 @@ class FirebaseGameTeam implements Serializable {
 			map.put("name", name);
 		}
 
-		map.put("roles", roles.stream().map(FirebaseGameRole::toMap).collect(Collectors.toList()));
+		if (roles != null) {
+			map.put("roles", roles);
+		}
 
 		return map;
 	}
@@ -41,9 +43,10 @@ class FirebaseGameTeam implements Serializable {
 		FirebaseGameTeam firebaseGameTeam = new FirebaseGameTeam(gameTeam.getName());
 
 		firebaseGameTeam.setRoles(
-			gameTeam.getRoles()
+			gameTeam
+				.getRoles()
 				.stream()
-				.map(FirebaseGameRole::fromGameRole)
+				.map(AbstractEntity::getId)
 				.collect(Collectors.toList())
 		);
 
@@ -51,15 +54,7 @@ class FirebaseGameTeam implements Serializable {
 	}
 
 	GameTeam toGameTeam() {
-		GameTeam gameTeam = new GameTeam(name);
-
-		gameTeam.setRoles(
-			roles
-				.stream()
-				.map(FirebaseGameRole::toGameRole)
-				.collect(Collectors.toList()));
-
-		return gameTeam;
+		return new GameTeam(name);
 	}
 
 	public String getName() {
@@ -70,11 +65,19 @@ class FirebaseGameTeam implements Serializable {
 		this.name = name;
 	}
 
-	public List<FirebaseGameRole> getRoles() {
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public List<String> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<FirebaseGameRole> roles) {
+	public void setRoles(List<String> roles) {
 		this.roles = roles;
 	}
 }

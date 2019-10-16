@@ -5,8 +5,11 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.yahyeet.boardbook.activity.IHomeFragment;
+import com.yahyeet.boardbook.model.entity.GameRole;
 import com.yahyeet.boardbook.model.entity.Match;
+import com.yahyeet.boardbook.model.firebase.repository.FirebaseGameRoleRepository;
 import com.yahyeet.boardbook.model.handler.MatchHandlerListener;
 import com.yahyeet.boardbook.presenter.adapter.MatchAdapter;
 
@@ -48,6 +51,18 @@ public class HomePresenter implements MatchHandlerListener {
 			matchDatabase.add(new Match());
 		matchAdapter = new MatchAdapter(matchDatabase);
 		matchRecyclerView.setAdapter(matchAdapter);
+		FirebaseGameRoleRepository r = new FirebaseGameRoleRepository(FirebaseFirestore.getInstance());
+
+		GameRole role = new GameRole("Test name");
+
+		r.create(role).thenAccept(ro -> {
+			int a = 4;
+		}).exceptionally(e -> {
+			int a = 4;
+
+			return null;
+		});
+
 	}
 
 	@Override

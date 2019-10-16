@@ -1,5 +1,6 @@
 package com.yahyeet.boardbook.model.firebase.repository;
 
+import com.yahyeet.boardbook.model.entity.AbstractEntity;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.GameRole;
 import com.yahyeet.boardbook.model.entity.GameTeam;
@@ -20,7 +21,7 @@ public class FirebaseGame {
 	private int minPlayers;
 	private int maxPlayers;
 
-	private List<FirebaseGameTeam> teams;
+	private List<String> teams;
 
 	public FirebaseGame() {
 	}
@@ -52,9 +53,10 @@ public class FirebaseGame {
 		);
 
 		firebaseGame.setTeams(
-			game.getTeams()
+			game
+				.getTeams()
 				.stream()
-				.map(FirebaseGameTeam::fromGameTeam)
+				.map(AbstractEntity::getId)
 				.collect(Collectors.toList())
 		);
 
@@ -65,13 +67,6 @@ public class FirebaseGame {
 		Game game = new Game(name, description, difficulty, minPlayers, maxPlayers);
 
 		game.setId(getId());
-
-		game.setTeams(
-			getTeams()
-				.stream()
-				.map(FirebaseGameTeam::toGameTeam)
-				.collect(Collectors.toList())
-		);
 
 		return game;
 	}
@@ -94,7 +89,9 @@ public class FirebaseGame {
 
 		map.put("maxPlayers", maxPlayers);
 
-		map.put("teams", teams.stream().map(FirebaseGameTeam::toMap).collect(Collectors.toList()));
+		if (teams != null) {
+			map.put("teams", teams);
+		}
 
 		return map;
 	}
@@ -147,11 +144,11 @@ public class FirebaseGame {
 		this.maxPlayers = maxPlayers;
 	}
 
-	public List<FirebaseGameTeam> getTeams() {
+	public List<String> getTeams() {
 		return teams;
 	}
 
-	public void setTeams(List<FirebaseGameTeam> teams) {
+	public void setTeams(List<String> teams) {
 		this.teams = teams;
 	}
 }
