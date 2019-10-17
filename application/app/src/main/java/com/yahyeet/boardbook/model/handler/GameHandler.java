@@ -46,6 +46,7 @@ public class GameHandler implements IRepositoryListener<Game> {
 	public CompletableFuture<Game> save(Game game) {
 		CompletableFuture<Game> savedGameFuture = gameRepository.save(game);
 		CompletableFuture<Void> savedGameTeamsAndRolesFuture = savedGameFuture.thenCompose(savedGame -> {
+			game.setId(savedGame.getId());
 			List<CompletableFuture<GameTeam>> savedGameTeamsFuture =
 				game
 					.getTeams()
@@ -53,8 +54,12 @@ public class GameHandler implements IRepositoryListener<Game> {
 					.map(team -> gameTeamRepository.save(team))
 					.collect(Collectors.toList());
 
-			return CompletableFuture.allOf(savedGameTeamsFuture.toArray(new CompletableFuture[0]));
-		}).thenCompose(nothing -> {
+			CompletableFuture<Void> allOfSavedGameTeamsFuture = CompletableFuture.allOf(savedGameTeamsFuture.toArray(new CompletableFuture[0]));
+			return allOfSavedGameTeamsFuture.thenApply(future -> savedGameTeamsFuture.stream().map(CompletableFuture::join).collect(Collectors.toList()));
+		}).thenCompose(savedGameTeams -> {
+			for (int index = 0; index < game.getTeams().size(); ++index) {
+				game.getTeams().get(index).setId(savedGameTeams.get(index).getId());
+			}
 			List<CompletableFuture<GameRole>> allFutureSavedGameRoles = new ArrayList<>();
 
 			game.getTeams().forEach(team -> {
