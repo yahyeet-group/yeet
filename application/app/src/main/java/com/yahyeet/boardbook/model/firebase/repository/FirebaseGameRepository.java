@@ -2,65 +2,78 @@ package com.yahyeet.boardbook.model.firebase.repository;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.yahyeet.boardbook.model.entity.AbstractEntity;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.GameTeam;
 import com.yahyeet.boardbook.model.repository.IGameRepository;
+import com.yahyeet.boardbook.model.repository.IRepositoryListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class FirebaseGameRepository implements IGameRepository {
+
+	private static final String COLLECTION_NAME = "games";
+
 	private FirebaseFirestore firestore;
 
-	private FirebaseGameRoleRepository firebaseGameRoleRepository;
-	private FirebaseGameTeamRepository firebaseGameTeamRepository;
-
-	public static final String COLLECTION_NAME = "games";
+	private Map<String, FirebaseGame> gameCache = new HashMap();
+	private List<IRepositoryListener<Game>> listeners = new ArrayList<>();
 
 	public FirebaseGameRepository(FirebaseFirestore firestore) {
 		this.firestore = firestore;
-		firebaseGameRoleRepository = new FirebaseGameRoleRepository(firestore);
-		firebaseGameTeamRepository = new FirebaseGameTeamRepository(firestore);
 	}
 
 	@Override
-	public CompletableFuture<Game> create(Game game) {
-		List<CompletableFuture<GameTeam>> completableFutures = game
-			.getTeams()
-			.stream()
-			// TODO: save
-			.map(team -> firebaseGameTeamRepository.create(team))
-			.collect(Collectors.toList());
-		CompletableFuture<Void> allFutures = CompletableFuture.allOf(completableFutures.toArray(new CompletableFuture[0]));
-		return allFutures.thenApply(future -> completableFutures.stream().map(CompletableFuture::join).collect(Collectors.toList()))
-		.thenCompose(gameTeams -> {
-			game.setTeams(gameTeams);
-			return createFirebaseGame(FirebaseGame.fromGame(game));
-		}).thenApplyAsync(FirebaseGame::toGame);
+	public CompletableFuture<Game> save(Game game) {
+		if (game.getId() == null) {
+			return createFirebaseGame(FirebaseGame.fromGame(game)).thenApply(firebaseGame -> {
+				gameCache.put(firebaseGame.getId(), firebaseGame);
+
+				return firebaseGame;
+			}).thenApply(FirebaseGame::toGame);
+		} else {
+			return findFirebaseGameById(game.getId()).thenCompose(firebaseGame ->
+				updateFirebaseGame(firebaseGame).thenApply(fbGame -> {
+					gameCache.put(fbGame.getId(), fbGame);
+
+					return fbGame;
+				}).thenApply(FirebaseGame::toGame)
+			).exceptionally(e -> {
+				try {
+					return createFirebaseGame(FirebaseGame.fromGame(game)).thenApply(firebaseGame -> {
+						gameCache.put(firebaseGame.getId(), firebaseGame);
+
+						return firebaseGame;
+					}).thenApply(FirebaseGame::toGame).get();
+				} catch (ExecutionException | InterruptedException error) {
+					throw new CompletionException(error);
+				}
+			});
+		}
 	}
 
 	@Override
 	public CompletableFuture<Game> find(String id) {
-		return findFirebaseGameById(id).thenApplyAsync(FirebaseGame::toGame);
+		return findFirebaseGameById(id).thenApply(FirebaseGame::toGame);
 	}
 
 	@Override
-	public CompletableFuture<Game> update(Game game) {
-		return updateFirebaseGame(FirebaseGame.fromGame(game)).thenApplyAsync(FirebaseGame::toGame);
-	}
-
-	@Override
-	public CompletableFuture<Void> remove(Game game) {
+	public CompletableFuture<Void> delete(Game game) {
 		return removeFirebaseGameById(game.getId());
 	}
 
@@ -74,6 +87,15 @@ public class FirebaseGameRepository implements IGameRepository {
 		);
 	}
 
+	@Override
+	public void addListener(IRepositoryListener<Game> listener) {
+
+	}
+
+	@Override
+	public void removeListener(IRepositoryListener<Game> listener) {
+
+	}
 
 	private CompletableFuture<FirebaseGame> createFirebaseGame(FirebaseGame firebaseGame) {
 		return CompletableFuture.supplyAsync(() -> {
@@ -91,6 +113,11 @@ public class FirebaseGameRepository implements IGameRepository {
 	}
 
 	private CompletableFuture<FirebaseGame> findFirebaseGameById(String id) {
+		FirebaseGame cachedGame = gameCache.get(id);
+		if (cachedGame != null) {
+			return CompletableFuture.completedFuture(cachedGame);
+		}
+
 		return CompletableFuture.supplyAsync(() -> {
 			Task<DocumentSnapshot> task = firestore.collection(COLLECTION_NAME).document(id).get();
 
@@ -98,7 +125,7 @@ public class FirebaseGameRepository implements IGameRepository {
 				DocumentSnapshot document = Tasks.await(task);
 
 				if (document.exists()) {
-					return documentToFirebaseGame(document);
+					return document.toObject(FirebaseGame.class);
 				}
 
 				throw new CompletionException(new Exception("Game not found"));
@@ -106,38 +133,6 @@ public class FirebaseGameRepository implements IGameRepository {
 				throw new CompletionException(e);
 			}
 		});
-	}
-
-	@SuppressWarnings("checked")
-	private FirebaseGame documentToFirebaseGame(DocumentSnapshot document) {
-		Map<String, Object> data = document.getData();
-
-		FirebaseGame game = new FirebaseGame();
-
-		game.setId(document.getId());
-
-		assert data != null;
-		if (data.containsKey("description")) {
-			game.setDescription((String) data.get("description"));
-		}
-
-		if (data.containsKey("difficulty")) {
-			game.setDifficulty(((Long) Objects.requireNonNull(data.get("difficulty"))).intValue());
-		}
-
-		if (data.containsKey("maxPlayers")) {
-			game.setMaxPlayers(((Long) Objects.requireNonNull(data.get("maxPlayers"))).intValue());
-		}
-
-		if (data.containsKey("minPlayers")) {
-			game.setMinPlayers(((Long) Objects.requireNonNull(data.get("minPlayers"))).intValue());
-		}
-
-		if (data.containsKey("name")) {
-			game.setName((String) data.get("name"));
-		}
-
-		return game;
 	}
 
 	private CompletableFuture<Void> removeFirebaseGameById(String id) {
@@ -151,6 +146,10 @@ public class FirebaseGameRepository implements IGameRepository {
 			} catch (Exception e) {
 				throw new CompletionException(e);
 			}
+		}).thenApply(nothing -> {
+			gameCache.remove(id);
+
+			return null;
 		});
 	}
 
@@ -167,6 +166,17 @@ public class FirebaseGameRepository implements IGameRepository {
 			} catch (Exception e) {
 				throw new CompletionException(e);
 			}
+		}).thenApply(id -> {
+			FirebaseGame cachedGame = gameCache.get(firebaseGame.getId());
+			if (cachedGame != null) {
+				cachedGame.setDescription(firebaseGame.getDescription());
+				cachedGame.setDifficulty(firebaseGame.getDifficulty());
+				cachedGame.setMaxPlayers(firebaseGame.getMaxPlayers());
+				cachedGame.setMinPlayers(firebaseGame.getMinPlayers());
+				cachedGame.setName(firebaseGame.getName());
+			}
+
+			return id;
 		}).thenCompose(this::findFirebaseGameById);
 	}
 
@@ -180,7 +190,7 @@ public class FirebaseGameRepository implements IGameRepository {
 				return querySnapshot
 					.getDocuments()
 					.stream()
-					.map(this::documentToFirebaseGame)
+					.map(document -> document.toObject(FirebaseGame.class))
 					.collect(Collectors.toList());
 			} catch (Exception e) {
 				throw new CompletionException(e);
