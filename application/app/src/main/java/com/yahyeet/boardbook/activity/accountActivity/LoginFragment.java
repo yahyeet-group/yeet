@@ -1,32 +1,24 @@
 package com.yahyeet.boardbook.activity.accountActivity;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.yahyeet.boardbook.R;
 
-public class LoginFragment extends Fragment {
+public class LoginFragment extends AccountFragment {
 
-	private IAccountFragmentHolder accountManager;
-	private View fragmentContainer;
 	private Button loginButton;
 
-	private EditText emailInput;
-	private EditText passwordInput;
-	private TextView emailText;
-	private TextView passwordText;
+
+	private TextView tvEmail;
+	private TextView tvPassword;
 
 
 	@Override
@@ -45,34 +37,25 @@ public class LoginFragment extends Fragment {
 		loginButton = fragmentContainer.findViewById(R.id.loginButton);
 		loginButton.setOnClickListener(view1 -> loginAccount());
 
-		emailInput = fragmentContainer.findViewById(R.id.loginEmailInput);
-		passwordInput = fragmentContainer.findViewById(R.id.loginPasswordInput);
+		etEmail = fragmentContainer.findViewById(R.id.loginEmailInput);
+		etPassword = fragmentContainer.findViewById(R.id.loginPasswordInput);
 
-		emailText = fragmentContainer.findViewById(R.id.loginEmailPrompt);
-		passwordText = fragmentContainer.findViewById(R.id.loginPasswordPrompt);
+		tvEmail = fragmentContainer.findViewById(R.id.loginEmailPrompt);
+		tvPassword = fragmentContainer.findViewById(R.id.loginPasswordPrompt);
 	}
 
 	//TODO: Abstract to superclass, same functionality in login and register
 
-	/**
-	 * Saves reference of class inflating the fragment, casts to IAccount manager
-	 *
-	 * @param context is the activity inflating the fragment
-	 */
-	@Override
-	public void onAttach(@NonNull Context context) {
-		super.onAttach(context);
-		accountManager = (IAccountFragmentHolder) context;
-	}
+
 
 	/**
-	 * Attempts to call loginAccount from parent activity
+	 * Attempts to call loginAccount from fragmentContainer activity
 	 */
 	private void loginAccount() {
-		accountManager.loginAccount(emailInput.getText().toString(), passwordInput.getText().toString());
-
-
+		accountManager.loginAccount(etEmail.getText().toString(), etPassword.getText().toString());
 	}
+
+
 
 
 	/**
@@ -81,14 +64,14 @@ public class LoginFragment extends Fragment {
 	 * @param value to enable or disable elements
 	 */
 	void setFragmentInteraction(Boolean value) {
-		emailInput.setEnabled(value);
-		passwordInput.setEnabled(value);
+		etEmail.setEnabled(value);
+		etPassword.setEnabled(value);
 		loginButton.setEnabled(value);
 
-		emailText.setEnabled(value);
-		passwordText.setEnabled(value);
+		tvEmail.setEnabled(value);
+		tvPassword.setEnabled(value);
 
-		passwordInput.setText("");
+		etPassword.setText("");
 	}
 
 }

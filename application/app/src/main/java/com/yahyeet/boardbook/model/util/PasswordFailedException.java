@@ -1,9 +1,9 @@
 package com.yahyeet.boardbook.model.util;
 
-public class LoginFailedException extends Exception {
+public class PasswordFailedException extends Exception {
 	//TODO: Dunno what needs to be written here
 
-	public LoginFailedException(String message) {
+	public PasswordFailedException(String message) {
 		super(message);
 	}
 }

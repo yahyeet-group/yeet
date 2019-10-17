@@ -8,7 +8,8 @@ public interface IAccountManagerActivity {
 
 	void enableManagerInteraction();
 
-	void toastLoginFailed();
+	void loginFailed(Exception e);
 
-	void toastRegisterFailed();
+	void registerFailed(Exception e);
+
 }
