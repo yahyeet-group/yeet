@@ -5,6 +5,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.yahyeet.boardbook.model.Boardbook;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.firebase.repository.FirebaseGameRepository;
+import com.yahyeet.boardbook.model.firebase.repository.FirebaseGameRoleRepository;
+import com.yahyeet.boardbook.model.firebase.repository.FirebaseGameTeamRepository;
+import com.yahyeet.boardbook.model.firebase.repository.FirebaseMatchPlayer;
+import com.yahyeet.boardbook.model.firebase.repository.FirebaseMatchPlayerRepository;
 import com.yahyeet.boardbook.model.firebase.repository.FirebaseMatchRepository;
 import com.yahyeet.boardbook.model.firebase.repository.FirebaseUserRepository;
 import com.yahyeet.boardbook.model.firebase.service.FirebaseAuthService;
@@ -24,11 +28,14 @@ public class BoardbookSingleton {
 		if (instance == null) {
 			FirebaseUserRepository userRepository = new FirebaseUserRepository(FirebaseFirestore.getInstance());
 			FirebaseGameRepository gameRepository = new FirebaseGameRepository(FirebaseFirestore.getInstance());
-			FirebaseMatchRepository matchRepository = new FirebaseMatchRepository(FirebaseFirestore.getInstance(), gameRepository, userRepository);
+			FirebaseMatchRepository matchRepository = new FirebaseMatchRepository(FirebaseFirestore.getInstance());
+			FirebaseGameRoleRepository gameRoleRepository = new FirebaseGameRoleRepository(FirebaseFirestore.getInstance());
+			FirebaseGameTeamRepository gameTeamRepository = new FirebaseGameTeamRepository(FirebaseFirestore.getInstance());
+			FirebaseMatchPlayerRepository matchPlayerRepository = new FirebaseMatchPlayerRepository(FirebaseFirestore.getInstance());
 
-			GameHandler gameHandler = new GameHandler(gameRepository);
-			MatchHandler matchHandler = new MatchHandler(matchRepository);
-			UserHandler userHandler = new UserHandler(userRepository, matchRepository);
+			GameHandler gameHandler = new GameHandler(gameRepository, gameRoleRepository, gameTeamRepository, matchRepository);
+			MatchHandler matchHandler = new MatchHandler(matchRepository, matchPlayerRepository, gameRepository, gameRoleRepository, userRepository);
+			UserHandler userHandler = new UserHandler(userRepository, matchRepository, gameRoleRepository, gameRepository, matchPlayerRepository);
 
 			IAuthService authService = new FirebaseAuthService(FirebaseAuth.getInstance(), userHandler);
 			AuthHandler authHandler = new AuthHandler(authService);
