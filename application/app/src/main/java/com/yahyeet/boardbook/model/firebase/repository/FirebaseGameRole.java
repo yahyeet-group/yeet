@@ -12,24 +12,24 @@ public class FirebaseGameRole {
 
     private String id;
     private String name;
+    private String teamId;
 
     public FirebaseGameRole() {
     }
 
-    FirebaseGameRole(String name) {
+    public FirebaseGameRole(String id, String name, String teamId) {
+        this.id = id;
         this.name = name;
+        this.teamId = teamId;
     }
 
-
     static FirebaseGameRole fromGameRole(GameRole gameRole) {
-        return new FirebaseGameRole(gameRole.getName());
+        return new FirebaseGameRole(gameRole.getId(), gameRole.getName(), gameRole.getTeam().getId());
     }
 
     GameRole toGameRole(){
         GameRole gameRole = new GameRole(name);
-
         gameRole.setId(id);
-
         return gameRole;
     }
 
@@ -39,6 +39,10 @@ public class FirebaseGameRole {
 
         if (name != null) {
             map.put("name", name);
+        }
+
+        if (teamId != null) {
+            map.put("teamId", teamId);
         }
 
         return map;
@@ -58,5 +62,13 @@ public class FirebaseGameRole {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(String teamId) {
+        this.teamId = teamId;
     }
 }

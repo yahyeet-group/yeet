@@ -14,14 +14,15 @@ class FirebaseGameTeam implements Serializable {
 
 	private String id;
 	private String name;
-	private List<String> roles;
+	private String gameId;
 
 	public FirebaseGameTeam() {
 	}
 
-	FirebaseGameTeam(String name) {
+	public FirebaseGameTeam(String id, String name, String gameId) {
+		this.id = id;
 		this.name = name;
-		this.roles = new ArrayList<>();
+		this.gameId = gameId;
 	}
 
 	Map<String, Object> toMap() {
@@ -31,8 +32,8 @@ class FirebaseGameTeam implements Serializable {
 			map.put("name", name);
 		}
 
-		if (roles != null) {
-			map.put("roles", roles);
+		if (gameId != null) {
+			map.put("gameId", gameId);
 		}
 
 		return map;
@@ -40,24 +41,12 @@ class FirebaseGameTeam implements Serializable {
 
 
 	static FirebaseGameTeam fromGameTeam(GameTeam gameTeam) {
-		FirebaseGameTeam firebaseGameTeam = new FirebaseGameTeam(gameTeam.getName());
-
-		firebaseGameTeam.setRoles(
-			gameTeam
-				.getRoles()
-				.stream()
-				.map(AbstractEntity::getId)
-				.collect(Collectors.toList())
-		);
-
-		return firebaseGameTeam;
+		return new FirebaseGameTeam(gameTeam.getId(), gameTeam.getName(), gameTeam.getGame().getId());
 	}
 
 	GameTeam toGameTeam() {
 		GameTeam gameTeam = new GameTeam(name);
-
 		gameTeam.setId(id);
-
 		return gameTeam;
 	}
 
@@ -77,11 +66,11 @@ class FirebaseGameTeam implements Serializable {
 		this.id = id;
 	}
 
-	public List<String> getRoles() {
-		return roles;
+	public String getGameId() {
+		return gameId;
 	}
 
-	public void setRoles(List<String> roles) {
-		this.roles = roles;
+	public void setGameId(String gameId) {
+		this.gameId = gameId;
 	}
 }
