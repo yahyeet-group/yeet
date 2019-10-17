@@ -21,8 +21,6 @@ public abstract class AccountFragment extends Fragment {
 	EditText etEmail;
 	EditText etPassword;
 
-
-
 	/**
 	 * Saves reference of class inflating the fragment, casts to IAccountFragmentHolder
 	 *
@@ -39,11 +37,18 @@ public abstract class AccountFragment extends Fragment {
 		}
 	}
 
-
+	/**
+	 * Method displays error on login edittext
+	 * @param errorText error description
+	 */
 	void emailFailed(String errorText){
 		etEmail.setError(errorText);
 	}
 
+	/**
+	 * Method displays error on password edittext
+	 * @param errorText error description
+	 */
 	void passwordFailed(String errorText){
 		etPassword.setError(errorText);
 	}

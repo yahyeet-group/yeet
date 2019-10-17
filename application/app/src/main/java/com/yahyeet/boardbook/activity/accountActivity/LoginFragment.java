@@ -47,16 +47,12 @@ public class LoginFragment extends AccountFragment {
 		tvError = fragmentContainer.findViewById(R.id.loginError);
 	}
 
-	//TODO: Abstract to superclass, same functionality in login and register
-
-
 	/**
 	 * Attempts to call loginAccount from fragmentContainer activity
 	 */
 	private void loginAccount() {
 		accountManager.loginAccount(etEmail.getText().toString(), etPassword.getText().toString());
 	}
-
 
 	/**
 	 * Displaces exception message
@@ -69,13 +65,13 @@ public class LoginFragment extends AccountFragment {
 	}
 
 	/**
-	 * 	Shows or hides error message
-	 * 	@param display boolean if error gets displayed or not
+	 * Shows or hides error message
+	 *
+	 * @param display boolean if error gets displayed or not
 	 */
 	void displayLoginError(Boolean display) {
 		tvError.setVisibility(display ? View.VISIBLE : View.INVISIBLE);
 	}
-
 
 	/**
 	 * Enables or disables all interactive elements of the fragment
@@ -92,6 +88,4 @@ public class LoginFragment extends AccountFragment {
 
 		etPassword.setText("");
 	}
-
-
 }

@@ -63,18 +63,15 @@ public class GamesFragment extends Fragment implements IGameFragment {
 			}
 		});
 
-		int width = getScreenMetrics().widthPixels;
-		gameGridView.setColumnWidth(width / 3);
-
+		gameGridView.setColumnWidth(getScreenWidth() / 3);
 
 		enableGameList();
 	}
 
 	/**
-	 * Binds id of xml items to references in class
+	 * Binds the IDs of XML items to references in class
 	 */
 	private void setAllViews() {
-		// TODO: Examine how these method calls can get nullPointerException
 		View view = getView();
 
 		if (view != null) {
@@ -88,11 +85,15 @@ public class GamesFragment extends Fragment implements IGameFragment {
 		}
 	}
 
-	private DisplayMetrics getScreenMetrics() {
+	/**
+	 * Finds the width of the screen
+	 * @return width of screen
+	 */
+	private int getScreenWidth() {
 		DisplayMetrics displayMetrics = new DisplayMetrics();
 		// TODO: Make sure activity is not null, fragment exists without activity?
 		getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-		return displayMetrics;
+		return displayMetrics.widthPixels;
 	}
 
 	/**
@@ -117,10 +118,6 @@ public class GamesFragment extends Fragment implements IGameFragment {
 		}
 	}
 
-
-	/**
-	 * Enables all interactive elements of the activity
-	 */
 	@Override
 	public void enableFragmentInteraction() {
 
@@ -133,9 +130,6 @@ public class GamesFragment extends Fragment implements IGameFragment {
 
 	}
 
-	/**
-	 * Disables all interactive elements of the activity
-	 */
 	@Override
 	public void disableFragmentInteraction() {
 
@@ -146,8 +140,6 @@ public class GamesFragment extends Fragment implements IGameFragment {
 		if (view != null)
 			view.findViewById(R.id.gameLoadingLayout).setVisibility(View.VISIBLE);
 	}
-
-
 
 	@Override
 	public void displayLoadingFailed(){

@@ -29,6 +29,7 @@ public class GameDetailPresenter {
 	public void initiateGameDetail() {
 		gameDetailActivity.setGameName(game.getName());
 		gameDetailActivity.setGameDescription(game.getDescription());
+		// TODO: Add rules to games, String field
 		gameDetailActivity.setGameRules("");
 	}
 

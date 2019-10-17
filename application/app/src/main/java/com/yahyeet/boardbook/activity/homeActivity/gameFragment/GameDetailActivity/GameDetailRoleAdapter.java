@@ -14,59 +14,53 @@ import com.yahyeet.boardbook.model.entity.GameRole;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameDetailRoleAdapter extends RecyclerView.Adapter<GameDetailRoleAdapter.RoleViewHolder>{
+public class GameDetailRoleAdapter extends RecyclerView.Adapter<GameDetailRoleAdapter.RoleViewHolder> {
 
-    private List<GameRole> myDataset;
+	private List<GameRole> myDataset;
 
-    static class RoleViewHolder extends RecyclerView.ViewHolder {
+	static class RoleViewHolder extends RecyclerView.ViewHolder {
 
+		TextView roleName;
 
-        TextView roleName;
+		RoleViewHolder(View v) {
+			super(v);
 
-        RoleViewHolder(View v) {
-            super(v);
-
-            roleName = v.findViewById(R.id.gameDetailRoleName);
-        }
-
-
-    }
+			roleName = v.findViewById(R.id.gameDetailRoleName);
+		}
+	}
 
 
-    public GameDetailRoleAdapter(List<GameRole> dataset) {
-        if (dataset != null)
-            myDataset = dataset;
-        else{
-            myDataset = new ArrayList<>();
-        }
+	public GameDetailRoleAdapter(List<GameRole> dataset) {
+		if (dataset != null)
+			myDataset = dataset;
+		else {
+			myDataset = new ArrayList<>();
+		}
+	}
 
+	// Creates new view, does not assign data
+	@NonNull
+	@Override
+	public RoleViewHolder onCreateViewHolder(ViewGroup viewGroup,
+																					 int viewType) {
+		View v = LayoutInflater.from(viewGroup.getContext())
+			.inflate(R.layout.element_game_detail_role, viewGroup, false);
 
-    }
+		return new RoleViewHolder(v);
+	}
 
-    // Creates new view, does not assign data
-    @NonNull
-    @Override
-    public RoleViewHolder onCreateViewHolder(ViewGroup viewGroup,
-                                                           int viewType) {
-        View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.element_game_detail_role, viewGroup, false);
+	// Replace the contents of a view (invoked by the layout manager)
+	// Method that assigns data to the view
+	@Override
+	public void onBindViewHolder(@NonNull GameDetailRoleAdapter.RoleViewHolder holder, int position) {
 
-        return new RoleViewHolder(v);
-    }
+		holder.roleName.setText(myDataset.get(position).getName());
+	}
 
-    // Replace the contents of a view (invoked by the layout manager)
-    // Method that assigns data to the view
-    @Override
-    public void onBindViewHolder(@NonNull GameDetailRoleAdapter.RoleViewHolder holder, int position) {
-
-        holder.roleName.setText(myDataset.get(position).getName());
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return myDataset.size();
-    }
+	@Override
+	public int getItemCount() {
+		return myDataset.size();
+	}
 
 
 }

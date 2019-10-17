@@ -20,11 +20,6 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 	private RegisterFragment registerFragment;
 	private Button registerSwitchButton;
 
-	/**
-	 * Calls super and the initiates presenter, fragments and xml items.
-	 *
-	 * @param savedInstanceState sent to super
-	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,18 +33,12 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 		loginFragment = new LoginFragment();
 		registerFragment = new RegisterFragment();
 
-
 		getSupportFragmentManager().beginTransaction().replace(R.id.accountManagerContainer, loginFragment, "Login").commit();
 	}
 
-	/**
-	 * Method tries to log into app given valid parameters
-	 *
-	 * @param email    of the account trying to log in
-	 * @param password of the account trying to log in
-	 */
-	public void loginAccount(String email, String password) {
 
+	@Override
+	public void loginAccount(String email, String password) {
 		try {
 			loginFragment.displayLoginError(false);
 			accountManagerPresenter.loginAccount(email, password);
@@ -58,13 +47,8 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 		}
 	}
 
-	/**
-	 * Method tries to create a new account from parameters and log in with it
-	 *
-	 * @param email    of the new account
-	 * @param password of the new account
-	 * @param username of the new account
-	 */
+
+	@Override
 	public void registerAccount(String email, String password, String username) {
 		try {
 			accountManagerPresenter.registerAccount(email, password, username);
@@ -73,15 +57,14 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 		}
 	}
 
-	/**
-	 * Starts the homepage and ends the activity manager.
-	 */
+
 	@Override
 	public void finishAccountManager() {
 		Intent startHome = new Intent(this, HomeActivity.class);
 		startActivity(startHome);
 		finish();
 	}
+
 
 	@Override
 	public void onBackPressed() {
@@ -91,10 +74,7 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 			super.onBackPressed();
 	}
 
-	/**
-	 * Handles where exceptions from presenter should be displayed
-	 * @param exception relays where exception message should be displayed
-	 */
+
 	@Override
 	public void loginFailed(Exception exception){
 		if(exception instanceof EmailFailedException)
@@ -108,11 +88,29 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 
 
 	@Override
-	public void registerFailed(Exception e){
-		if(e instanceof EmailFailedException)
-			registerFragment.emailFailed(e.getMessage());
-		else if(e instanceof PasswordFailedException)
-			registerFragment.passwordFailed(e.getMessage());
+	public void registerFailed(Exception exception){
+		if(exception instanceof EmailFailedException)
+			registerFragment.emailFailed(exception.getMessage());
+		else if(exception instanceof PasswordFailedException)
+			registerFragment.passwordFailed(exception.getMessage());
+	}
+
+
+
+	@Override
+	public void enableManagerInteraction() {
+
+		enableFragment();
+		registerSwitchButton.setEnabled(true);
+		findViewById(R.id.accountLoadingLayout).setVisibility(View.INVISIBLE);
+	}
+
+
+	@Override
+	public void disableManagerInteraction() {
+		disableFragment();
+		registerSwitchButton.setEnabled(false);
+		findViewById(R.id.accountLoadingLayout).setVisibility(View.VISIBLE);
 	}
 
 	/**
@@ -129,27 +127,6 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 	private void showRegisterFragment() {
 		registerSwitchButton.setVisibility(View.INVISIBLE);
 		getSupportFragmentManager().beginTransaction().replace(R.id.accountManagerContainer, registerFragment, "Register").commit();
-	}
-
-	/**
-	 * Enables all interactive elements of the activity
-	 */
-	@Override
-	public void enableManagerInteraction() {
-
-		enableFragment();
-		registerSwitchButton.setEnabled(true);
-		findViewById(R.id.accountLoadingLayout).setVisibility(View.INVISIBLE);
-	}
-
-	/**
-	 * Disables all interactive elements of the activity
-	 */
-	@Override
-	public void disableManagerInteraction() {
-		disableFragment();
-		registerSwitchButton.setEnabled(false);
-		findViewById(R.id.accountLoadingLayout).setVisibility(View.VISIBLE);
 	}
 
 	/**

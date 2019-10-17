@@ -18,10 +18,6 @@ import com.yahyeet.boardbook.R;
 
 public class RegisterFragment extends AccountFragment {
 
-
-
-
-
 	private EditText etUser;
 
 	private TextView tvEmail;
@@ -37,9 +33,7 @@ public class RegisterFragment extends AccountFragment {
 		return inflater.inflate(R.layout.fragment_register, view, false);
 	}
 
-	/**
-	 * Binds buttons, Edittext and TextViews from id to references in class
-	 */
+
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -52,10 +46,7 @@ public class RegisterFragment extends AccountFragment {
 		tvEmail = fragmentContainer.findViewById(R.id.registerEmailText);
 		tvPassword = fragmentContainer.findViewById(R.id.registerPasswordText);
 
-
 		registerButton.setOnClickListener(view1 -> registerAccount());
-
-
 
 		etEmail.addTextChangedListener(new EmailWatcher(etEmail, getResources()));
 		etPassword.addTextChangedListener(new PasswordWatcher(etPassword, getResources()));

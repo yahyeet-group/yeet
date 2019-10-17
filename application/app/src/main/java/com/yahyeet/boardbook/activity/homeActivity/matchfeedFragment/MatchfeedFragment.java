@@ -31,11 +31,9 @@ public class MatchfeedFragment extends Fragment implements IMatchfeedFragment {
 		enableMatchFeed();
 	}
 
-	/**
-	 * Initiates recyclerView of matches in fragment and populates it
-	 */
+
 	public void enableMatchFeed() {
-		// TODO: Examine how these method calls can get nullPointerException
+		// TODO: Uppdate to current implementation
 		RecyclerView matchRecycler = getView().findViewById(R.id.homeMatchRecycler);
 
 		// use this setting to improve performance if you know that changes
@@ -44,9 +42,7 @@ public class MatchfeedFragment extends Fragment implements IMatchfeedFragment {
 		matchfeedPresenter.enableMatchFeed(matchRecycler, getView().getContext());
 	}
 
-	/**
-	 * Orders recyclerView of matches to repopulate itself
-	 */
+
 	public void repopulateMatchFeed() {
 		matchfeedPresenter.updateMatchAdapter();
 	}
