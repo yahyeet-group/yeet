@@ -7,5 +7,5 @@ import java.util.concurrent.CompletableFuture;
 
 public interface IMatchPlayerRepository {
 	CompletableFuture<List<MatchPlayer>> findMatchPlayersByMatchId(String id);
-	CompletableFuture<MatchPlayer> findMatchPlayersByUserId(String id);
+	CompletableFuture<List<MatchPlayer>> findMatchPlayersByUserId(String id);
 }
