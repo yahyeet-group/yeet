@@ -7,4 +7,5 @@ public interface IGameFragment {
 
 	void enableFragmentInteraction();
 
+	void displayLoadingFailed();
 }

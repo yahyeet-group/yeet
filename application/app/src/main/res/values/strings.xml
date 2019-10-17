@@ -11,6 +11,7 @@
     <string name="errorLoginText">Wrong Email or Password</string>
     <string name="emailErrorText">Email is not in a correct format</string>
     <string name="passwordErrorText">Password needs to be more than 6 characters</string>
+    <string name="gameLoadErrorText">Games could not be loaded. Please try again later.</string>
 
     <string name="home">Home</string>
     <string name="chat">Chat</string>

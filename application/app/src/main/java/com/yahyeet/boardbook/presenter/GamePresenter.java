@@ -81,6 +81,12 @@ public class GamePresenter implements GameHandlerListener {
 				gameFragment.enableFragmentInteraction();
 				updateAdapters();
 			});
+		}).exceptionally(e -> {
+			uiHandler.post(() -> {
+				gameFragment.displayLoadingFailed();
+				gameFragment.enableFragmentInteraction();
+			});
+			return null;
 		});
 	}
 
@@ -89,22 +95,6 @@ public class GamePresenter implements GameHandlerListener {
 		gameDatabase.clear();
 		gameDatabase.addAll(findMatchingName(all, query));
 		updateAdapters();
-
-        /*BoardbookSingleton.getInstance().getGameHandler().all().thenAccept(games -> {
-            gameDatabase.clear();
-            if (games != null && games.size() > 0) {
-                games = findMatchingName(games, query);
-
-                // Need to keep same object in listAdapter and this class
-                gameDatabase.addAll(games);
-            }
-
-            uiHandler.post(() -> {
-                gameFragment.enableFragmentInteraction();
-                updateAdapters();
-            });
-
-        });*/
 	}
 
 
