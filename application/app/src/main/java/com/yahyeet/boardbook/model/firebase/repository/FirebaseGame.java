@@ -1,16 +1,12 @@
 package com.yahyeet.boardbook.model.firebase.repository;
 
-import com.yahyeet.boardbook.model.entity.AbstractEntity;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.yahyeet.boardbook.model.entity.Game;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-public class FirebaseGame {
-	private String id;
+public class FirebaseGame extends FirebaseEntity<Game> {
 	private String name;
 	private String description;
 	private int difficulty;
@@ -26,7 +22,7 @@ public class FirebaseGame {
 											int difficulty,
 											int minPlayers,
 											int maxPlayers) {
-		this.id = id;
+		super(id);
 		this.name = name;
 		this.description = description;
 		this.difficulty = difficulty;
@@ -35,25 +31,7 @@ public class FirebaseGame {
 
 	}
 
-	public static FirebaseGame fromGame(Game game) {
-		FirebaseGame firebaseGame = new FirebaseGame(
-			game.getId(),
-			game.getName(),
-			game.getDescription(),
-			game.getDifficulty(),
-			game.getMinPlayers(),
-			game.getMaxPlayers()
-		);
-
-		return firebaseGame;
-	}
-
-	public Game toGame() {
-		Game game = new Game(name, description, difficulty, minPlayers, maxPlayers);
-		game.setId(getId());
-		return game;
-	}
-
+	@Override
 	public Map<String, Object> toMap() {
 		Map<String, Object> map = new HashMap<>();
 		if (name != null) {
@@ -73,12 +51,51 @@ public class FirebaseGame {
 		return map;
 	}
 
-	public String getId() {
-		return id;
+	@Override
+	public Game toModelType() {
+		Game game = new Game(name, description, difficulty, minPlayers, maxPlayers);
+		game.setId(getId());
+		return game;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public static FirebaseGame fromModelType(Game game) {
+		FirebaseGame firebaseGame = new FirebaseGame(
+			game.getId(),
+			game.getName(),
+			game.getDescription(),
+			game.getDifficulty(),
+			game.getMinPlayers(),
+			game.getMaxPlayers()
+		);
+
+		return firebaseGame;
+	}
+
+	public static FirebaseGame fromDocument(DocumentSnapshot document) {
+		FirebaseGame firebaseGame = new FirebaseGame();
+		firebaseGame.setId(document.getId());
+
+		if (document.contains("description")) {
+			firebaseGame.setDescription(document.getString("description"));
+		}
+
+		if (document.contains("difficulty")) {
+			firebaseGame.setDifficulty(document.getLong("difficulty").intValue());
+		}
+
+		if (document.contains("maxPlayers")) {
+			firebaseGame.setMaxPlayers(document.getLong("maxPlayers").intValue());
+		}
+
+		if (document.contains("minPlayers")) {
+			firebaseGame.setMinPlayers(document.getLong("minPlayers").intValue());
+		}
+
+		if (document.contains("name")) {
+			firebaseGame.setName(document.getString("name"));
+		}
+
+		return firebaseGame;
 	}
 
 	public String getName() {

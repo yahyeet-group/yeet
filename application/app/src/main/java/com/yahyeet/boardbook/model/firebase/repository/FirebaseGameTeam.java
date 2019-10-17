@@ -1,16 +1,13 @@
 package com.yahyeet.boardbook.model.firebase.repository;
 
-import com.yahyeet.boardbook.model.entity.AbstractEntity;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.yahyeet.boardbook.model.entity.GameTeam;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-class FirebaseGameTeam implements Serializable {
+class FirebaseGameTeam extends FirebaseEntity<GameTeam> {
 
 	private String id;
 	private String name;
@@ -25,7 +22,8 @@ class FirebaseGameTeam implements Serializable {
 		this.gameId = gameId;
 	}
 
-	Map<String, Object> toMap() {
+	@Override
+	public Map<String, Object> toMap() {
 		Map<String, Object> map = new HashMap<>();
 
 		if (name != null) {
@@ -39,15 +37,30 @@ class FirebaseGameTeam implements Serializable {
 		return map;
 	}
 
-
-	static FirebaseGameTeam fromGameTeam(GameTeam gameTeam) {
-		return new FirebaseGameTeam(gameTeam.getId(), gameTeam.getName(), gameTeam.getGame().getId());
-	}
-
-	GameTeam toGameTeam() {
+	@Override
+	public GameTeam toModelType() {
 		GameTeam gameTeam = new GameTeam(name);
 		gameTeam.setId(id);
 		return gameTeam;
+	}
+
+	public static FirebaseGameTeam fromModelType(GameTeam gameTeam) {
+		return new FirebaseGameTeam(gameTeam.getId(), gameTeam.getName(), gameTeam.getGame().getId());
+	}
+
+	public static FirebaseGameTeam fromDocument(DocumentSnapshot document) {
+		FirebaseGameTeam firebaseGameTeam = new FirebaseGameTeam();
+		firebaseGameTeam.setId(document.getId());
+
+		if (document.contains("name")) {
+			firebaseGameTeam.setName(document.getString("name"));
+		}
+
+		if (document.contains("gameId")) {
+			firebaseGameTeam.setGameId(document.getString("gameId"));
+		}
+
+		return firebaseGameTeam;
 	}
 
 	public String getName() {

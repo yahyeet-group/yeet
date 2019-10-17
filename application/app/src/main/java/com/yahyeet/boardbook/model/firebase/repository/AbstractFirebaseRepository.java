@@ -29,28 +29,18 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 		this.firestore = firestore;
 	}
 
+	public abstract FirebaseEntity<TModel> fromModelEntityToFirebaseEntity(TModel entity);
+	public abstract FirebaseEntity<TModel> fromDocumentToFirebaseEntity(DocumentSnapshot document);
 	@Override
 	public CompletableFuture<TModel> save(TModel entity) {
 		if (entity.getId() == null) {
-			return createFirebaseEntity(FirebaseEntity.fromModelType(entity)).thenApply(firebaseEntity -> {
-				cache.put(firebaseEntity.getId(), firebaseEntity);
-
-				return firebaseEntity;
-			}).thenApply(FirebaseEntity::toModelType);
+			return createFirebaseEntity(fromModelEntityToFirebaseEntity(entity)).thenApply(FirebaseEntity::toModelType);
 		} else {
 			return findFirebaseEntityById(entity.getId()).thenCompose(firebaseEntity ->
-				updateFirebaseEntity(firebaseEntity).thenApply(fbEntity -> {
-					cache.put(fbEntity.getId(), fbEntity);
-
-					return fbEntity;
-				}).thenApply(FirebaseEntity::toModelType)
+				updateFirebaseEntity(fromModelEntityToFirebaseEntity(entity)).thenApply(FirebaseEntity::toModelType)
 			).exceptionally(e -> {
 				try {
-					return createFirebaseEntity(FirebaseEntity.fromModelType(entity)).thenApply(firebaseEntity -> {
-						cache.put(firebaseEntity.getId(), firebaseEntity);
-
-						return firebaseEntity;
-					}).thenApply(FirebaseEntity::toModelType).get();
+					return createFirebaseEntity(fromModelEntityToFirebaseEntity(entity)).thenApply(FirebaseEntity::toModelType).get();
 				} catch (ExecutionException | InterruptedException error) {
 					throw new CompletionException(error);
 				}
@@ -92,6 +82,8 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 
 	private CompletableFuture<FirebaseEntity<TModel>> createFirebaseEntity(FirebaseEntity<TModel> firebaseEntity) {
 		return CompletableFuture.supplyAsync(() -> {
+			String collectionName = getCollectionName();
+			Map<String, Object> data = firebaseEntity.toMap();
 			Task<DocumentReference> task = firestore.collection(getCollectionName())
 				.add(firebaseEntity.toMap());
 
@@ -102,7 +94,11 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 			} catch (Exception e) {
 				throw new CompletionException(e);
 			}
-		}).thenCompose(this::findFirebaseEntityById);
+		}).thenCompose(this::findFirebaseEntityById).thenApply(fbEntity -> {
+			cache.put(fbEntity.getId(), fbEntity);
+
+			return fbEntity;
+		});
 	}
 
 	private CompletableFuture<FirebaseEntity<TModel>> findFirebaseEntityById(String id) {
@@ -118,7 +114,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 				DocumentSnapshot document = Tasks.await(task);
 
 				if (document.exists()) {
-					return FirebaseEntity.fromDocument(document);
+					return fromDocumentToFirebaseEntity(document);
 				}
 
 				throw new CompletionException(new Exception("Game not found"));
@@ -160,10 +156,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 				throw new CompletionException(e);
 			}
 		}).thenApply(id -> {
-			FirebaseEntity<TModel> cachedEntity = cache.get(firebaseEntity.getId());
-			if (cachedEntity != null) {
-				cachedEntity.copyFields(firebaseEntity);
-			}
+			cache.put(id, (FirebaseEntity<TModel>) firebaseEntity);
 
 			return id;
 		}).thenCompose(this::findFirebaseEntityById);
@@ -179,7 +172,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 				return querySnapshot
 					.getDocuments()
 					.stream()
-					.map(FirebaseEntity::<TModel>fromDocument)
+					.map(this::fromDocumentToFirebaseEntity)
 					.collect(Collectors.toList());
 			} catch (Exception e) {
 				throw new CompletionException(e);

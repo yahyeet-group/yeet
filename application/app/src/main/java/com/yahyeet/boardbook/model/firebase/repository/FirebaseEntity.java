@@ -5,6 +5,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.yahyeet.boardbook.model.entity.AbstractEntity;
 
 import java.util.Map;
+import java.util.function.Function;
 
 public abstract class FirebaseEntity<T extends AbstractEntity> {
 	private String id;
@@ -14,16 +15,6 @@ public abstract class FirebaseEntity<T extends AbstractEntity> {
 	public abstract Map<String, Object> toMap();
 
 	public abstract T toModelType();
-
-	public abstract void copyFields(FirebaseEntity<T> other);
-
-	public static <T extends AbstractEntity> FirebaseEntity<T> fromModelType(T entity){
-		throw new IllegalStateException("fromModelType has not been set up yet");
-	}
-
-	public static <T extends AbstractEntity> FirebaseEntity<T> fromDocument(DocumentSnapshot document){
-		throw new IllegalStateException("fromDocument has not been set up yet");
-	}
 
 	public FirebaseEntity() {
 	}
