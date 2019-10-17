@@ -24,7 +24,8 @@ public class Game extends AbstractEntity {
 		this.teams = new ArrayList<>();
 	}
 
-	public Game() {
+	public Game(String id) {
+		super(id);
 	}
 
 	public String getName() {
@@ -71,8 +72,9 @@ public class Game extends AbstractEntity {
 		return teams;
 	}
 
-	public void setTeams(List<GameTeam> teams) {
-		this.teams = teams;
+	public void addTeam(GameTeam team) {
+		team.setGame(this);
+		teams.add(team);
 	}
 }
 

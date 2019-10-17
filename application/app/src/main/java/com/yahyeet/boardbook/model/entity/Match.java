@@ -1,23 +1,25 @@
 package com.yahyeet.boardbook.model.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Match extends AbstractEntity {
-    private List<MatchPlayer> players;
+	private List<MatchPlayer> matchPlayers;
 
-    public Match(String id, List<MatchPlayer> players) {
-        super(id);
-        this.players = players;
-    }
+	public Match() {
+		matchPlayers = new ArrayList<>();
+	}
 
-    public Match() {
-    }
+	public Match(String id) {
+		super(id);
+	}
 
-    public List<MatchPlayer> getPlayers() {
-        return players;
-    }
+	public List<MatchPlayer> getMatchPlayers() {
+		return matchPlayers;
+	}
 
-    public void setPlayers(List<MatchPlayer> players) {
-        this.players = players;
-    }
+	public void addMatchPlayer(MatchPlayer matchPlayer) {
+		matchPlayer.setMatch(this);
+		matchPlayers.add(matchPlayer);
+	}
 }

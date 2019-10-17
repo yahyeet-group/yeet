@@ -26,15 +26,15 @@ public class User extends AbstractEntity {
         return friends;
     }
 
-    public void setFriends(List<User> friends) {
-        this.friends = friends;
+    public void addFriend(User friend) {
+        friends.add(friend);
     }
 
     public List<Match> getMatches() {
         return matches;
     }
 
-    public void setMatches(List<Match> matches) {
-        this.matches = matches;
+    public void addMatch(Match match) {
+        matches.add(match);
     }
 }

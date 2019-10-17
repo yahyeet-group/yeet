@@ -6,10 +6,14 @@ import java.util.List;
 public class GameTeam extends AbstractEntity {
     private String name;
     private List<GameRole> roles;
+    private Game game;
 
     public GameTeam(String name) {
         this.name = name;
         roles = new ArrayList<>();
+    }
+
+    public GameTeam() {
     }
 
     public String getName() {
@@ -24,7 +28,16 @@ public class GameTeam extends AbstractEntity {
         return roles;
     }
 
-    public void setRoles(List<GameRole> roles) {
-        this.roles = roles;
+    public void addRole(GameRole role) {
+        role.setTeam(this);
+        roles.add(role);
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }
