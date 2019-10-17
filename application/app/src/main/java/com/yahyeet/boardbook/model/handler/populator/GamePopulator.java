@@ -26,7 +26,7 @@ public class GamePopulator {
 			game.getMinPlayers(),
 			game.getMaxPlayers()
 		);
-		game.setId(game.getId());
+		populatedGame.setId(game.getId());
 
 		CompletableFuture<List<Match>> futureMatches = matchRepository.findMatchesByGameId(game.getId());
 		CompletableFuture<List<GameTeam>> futureTeams = gameTeamRepository.findTeamsByGameId(game.getId());
