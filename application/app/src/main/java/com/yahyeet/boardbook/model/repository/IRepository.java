@@ -8,7 +8,11 @@ public interface IRepository<T> {
 
     CompletableFuture<T> save(T entity);
 
-    CompletableFuture<Void> remove(T entity);
+    CompletableFuture<Void> delete(T entity);
 
     CompletableFuture<List<T>> all();
+
+    void addListener(IRepositoryListener<T> listener);
+
+    void removeListener(IRepositoryListener<T> listener);
 }

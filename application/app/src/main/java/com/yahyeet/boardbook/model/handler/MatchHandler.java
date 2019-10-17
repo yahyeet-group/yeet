@@ -1,69 +1,105 @@
 package com.yahyeet.boardbook.model.handler;
 
 import com.yahyeet.boardbook.model.entity.Match;
+import com.yahyeet.boardbook.model.entity.MatchPlayer;
+import com.yahyeet.boardbook.model.handler.populator.MatchPlayerPopulator;
+import com.yahyeet.boardbook.model.handler.populator.MatchPopulator;
+import com.yahyeet.boardbook.model.repository.IGameRepository;
+import com.yahyeet.boardbook.model.repository.IGameRoleRepository;
+import com.yahyeet.boardbook.model.repository.IMatchPlayerRepository;
 import com.yahyeet.boardbook.model.repository.IMatchRepository;
+import com.yahyeet.boardbook.model.repository.IRepositoryListener;
+import com.yahyeet.boardbook.model.repository.IUserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
-public class MatchHandler {
+public class MatchHandler implements IRepositoryListener<Match> {
 
+	private IMatchPlayerRepository matchPlayerRepository;
 	private IMatchRepository matchRepository;
 	private List<MatchHandlerListener> listeners = new ArrayList<>();
 
-	public MatchHandler(IMatchRepository matchRepository) {
+	MatchPopulator matchPopulator;
+	MatchPlayerPopulator matchPlayerPopulator;
+
+	public MatchHandler(IMatchRepository matchRepository,
+											IMatchPlayerRepository matchPlayerRepository,
+											IGameRepository gameRepository,
+											IGameRoleRepository gameRoleRepository,
+											IUserRepository userRepository) {
+		this.matchPlayerRepository = matchPlayerRepository;
 		this.matchRepository = matchRepository;
+		
+		matchPopulator = new MatchPopulator(gameRepository, matchPlayerRepository);
+		matchPlayerPopulator = new MatchPlayerPopulator(gameRoleRepository, matchRepository, userRepository);
 	}
 
 	public CompletableFuture<Match> find(String id) {
-		return matchRepository.find(id);
+		return matchRepository.find(id).thenCompose(this::populate);
 	}
 
 	public CompletableFuture<Match> save(Match match) {
-		if (match.getId() == null) {
-			return matchRepository
-				.create(match)
-				.thenApplyAsync(createdMatch -> {
-					notifyListenersOnMatchAdd(createdMatch);
+		CompletableFuture<Match> savedMatchFuture = matchRepository.save(match);
+		CompletableFuture<Void> savedMatchPlayersFuture = savedMatchFuture.thenCompose(savedMatch -> {
+			List<CompletableFuture<MatchPlayer>> savedMatchPlayerFutures =
+				match
+					.getMatchPlayers()
+					.stream()
+					.map(matchPlayer -> matchPlayerRepository.save(matchPlayer))
+				.collect(Collectors.toList());
 
-					return createdMatch;
-				});
-		} else {
-			return matchRepository.find(match.getId())
-				.thenCompose(m -> matchRepository
-					.update(match)
-					.thenApplyAsync(updatedMatch -> {
-						notifyListenersOnMatchUpdate(updatedMatch);
-
-						return updatedMatch;
-					}))
-				.exceptionally(error -> {
-					try {
-						return matchRepository.create(match).thenApply(createdGame -> {
-							notifyListenersOnMatchAdd(match);
-
-							return createdGame;
-						}).get();
-					} catch (InterruptedException | ExecutionException e) {
-						throw new CompletionException(e);
-					}
-				});
-		}
-	}
-
-	public CompletableFuture<Void> remove(Match match) {
-		return matchRepository.remove(match).thenApply((v) -> {
-			notifyListenersOnMatchRemove(match);
-
-			return null;
+			return CompletableFuture.allOf(savedMatchPlayerFutures.toArray(new CompletableFuture[0]));
 		});
+
+		return savedMatchFuture
+			.thenCombine(savedMatchPlayersFuture, (savedMatch, nothing) -> savedMatch)
+			.thenCompose(this::populate);
 	}
 
 	public CompletableFuture<List<Match>> all() {
-		return matchRepository.all();
+		return matchRepository.all().thenComposeAsync(matches -> {
+			List<CompletableFuture<Match>> completableFutures = matches
+				.stream()
+				.map(this::populate)
+				.collect(Collectors.toList());
+
+			CompletableFuture<Void> allFutures = CompletableFuture.allOf(
+				completableFutures
+					.toArray(new CompletableFuture[0])
+			);
+			return allFutures.thenApplyAsync(
+				future -> completableFutures
+					.stream()
+					.map(CompletableFuture::join)
+					.collect(Collectors.toList()));
+		});
+	}
+
+	public CompletableFuture<Match> populate(Match match) {
+		AtomicReference<Match> fullyPopulatedMatch = new AtomicReference<>();
+
+		return matchPopulator.populate(match).thenApply(populatedMatch -> {
+			fullyPopulatedMatch.set(populatedMatch);
+
+			return populatedMatch;
+		}).thenCompose(populatedMatch -> {
+			List<CompletableFuture<Void>> allFuturePopulatedMatchPlayers = populatedMatch
+				.getMatchPlayers()
+				.stream()
+				.map(matchPlayer -> matchPlayerPopulator.populate(matchPlayer).<Void>thenCompose(populatedMatchPlayer -> {
+					matchPlayer.setUser(populatedMatchPlayer.getUser());
+					matchPlayer.setMatch(populatedMatchPlayer.getMatch());
+					matchPlayer.setRole(populatedMatchPlayer.getRole());
+
+					return null;
+				})).collect(Collectors.toList());
+
+			return CompletableFuture.allOf(allFuturePopulatedMatchPlayers.toArray(new CompletableFuture[0]));
+		}).thenApply(nothing -> fullyPopulatedMatch.get());
 	}
 
 	public void addListener(MatchHandlerListener listener) {
@@ -90,5 +126,20 @@ public class MatchHandler {
 		for (MatchHandlerListener listener : listeners) {
 			listener.onRemoveMatch(match);
 		}
+	}
+
+	@Override
+	public void onCreate(Match match) {
+		notifyListenersOnMatchAdd(match);
+	}
+
+	@Override
+	public void onUpdate(Match match) {
+		notifyListenersOnMatchUpdate(match);
+	}
+
+	@Override
+	public void onDelete(Match match) {
+		notifyListenersOnMatchRemove(match);
 	}
 }
