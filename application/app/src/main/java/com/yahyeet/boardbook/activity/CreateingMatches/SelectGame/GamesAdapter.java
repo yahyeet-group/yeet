@@ -10,12 +10,18 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.CreateingMatches.CMMasterPresenter;
+import com.yahyeet.boardbook.activity.CreateingMatches.CreateMatchActivity;
 import com.yahyeet.boardbook.model.entity.Game;
+import com.yahyeet.boardbook.presenter.SelectGamePresenter;
 
 
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHolder> {
 
     private Game[] myDataset = {};
+    private SelectGamePresenter sgp;
+    private CMMasterPresenter cmmp;
+
 
     class GamesViewHolder extends RecyclerView.ViewHolder {
 
@@ -39,8 +45,11 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHol
 
     }
 
-    public GamesAdapter(Game[] myDataset) {
+    public GamesAdapter(Game[] myDataset, SelectGamePresenter sgp) {
+        this.sgp = sgp;
         this.myDataset = myDataset;
+        cmmp = sgp.getMasterPresenter();
+
     }
 
 
@@ -57,6 +66,10 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHol
     public void onBindViewHolder(GamesViewHolder holder, int position) {
 
         holder.gameTitle.setText(myDataset[position].getName());
+        holder.itemView.findViewById(R.id.selectGameButton).setOnClickListener((event)->{
+            cmmp.goToSelectPlayers();
+            cmmp.getCmdh().setGame(myDataset[position]);
+        });
 
     }
 

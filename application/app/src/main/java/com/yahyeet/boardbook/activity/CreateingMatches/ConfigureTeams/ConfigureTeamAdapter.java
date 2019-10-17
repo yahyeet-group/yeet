@@ -21,7 +21,6 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 
 	private User[] myDataset = {new User()};
 	private int playeradded = 0;
-	private CreateMatchDataHandler cmdh;
 
 
 	class PlayerViewHolder extends RecyclerView.ViewHolder {
@@ -34,8 +33,7 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 
 	}
 
-	public ConfigureTeamAdapter(CreateMatchDataHandler cmdh) {
-		this.cmdh = cmdh;
+	public ConfigureTeamAdapter() {
 	}
 
 

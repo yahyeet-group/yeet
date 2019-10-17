@@ -25,7 +25,7 @@ public class ConfigureTeamsFragment extends Fragment implements IConfigureTeamsF
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		spp = new ConfigureTeamPresenter(this, ((CreateMatchActivity)getActivity()).getCMDH());
+		spp = new ConfigureTeamPresenter(this);
 		return inflater.inflate(R.layout.fragment_select_players, container, false);
 
 	}

@@ -11,15 +11,19 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.presenter.CreateMatchPresenter;
+import com.yahyeet.boardbook.activity.CreateingMatches.CreateMatchActivity;
+import com.yahyeet.boardbook.presenter.SelectGamePresenter;
 
 public class SelectGameFragment extends Fragment implements ISelectGameFragment {
 
-    private CreateMatchPresenter createMatchPresenter;
+    private SelectGamePresenter selectGamePresenter;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        createMatchPresenter = new CreateMatchPresenter(this);
+        CreateMatchActivity cma = (CreateMatchActivity)getActivity();
+        selectGamePresenter = new SelectGamePresenter(this, cma.getPresenter());
         return inflater.inflate(R.layout.fragment_select_game, container, false);
+
+
     }
 
     @Override
@@ -34,6 +38,8 @@ public class SelectGameFragment extends Fragment implements ISelectGameFragment 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         gameRecycler.setHasFixedSize(true);
-        createMatchPresenter.enableGameFeed(gameRecycler, getView().getContext());
+        selectGamePresenter.enableGameFeed(gameRecycler, getView().getContext());
     }
+
+
 }

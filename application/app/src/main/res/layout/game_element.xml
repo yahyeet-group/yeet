@@ -32,7 +32,7 @@
         android:layout_height="37dp"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="31dp"
-        android:text="Button"
+        android:text="Select"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="307dp" />

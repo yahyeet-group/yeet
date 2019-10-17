@@ -6,27 +6,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.CreateingMatches.ConfigureTeams.ConfigureTeamsFragment;
+import com.yahyeet.boardbook.activity.CreateingMatches.SelectGame.SelectGameFragment;
 
 public class CreateMatchActivity extends AppCompatActivity implements ICreateMatchActivity {
 
-    private CreateMatchDataHandler cmdh;
+ private CMMasterPresenter presenter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_match);
-        cmdh = new CreateMatchDataHandler(this);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_create_match);
+		presenter = new CMMasterPresenter(this);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ConfigureTeamsFragment()).commit();
-    }
+		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SelectGameFragment()).commit();
+	}
 
-    public void finalizeMatch(){
-        //TODO send this either to a presenter or directly to handlers
-        cmdh.finalizeMatch();
-    }
+	public CMMasterPresenter getPresenter(){
+		return presenter;
+	}
 
-    public CreateMatchDataHandler getCMDH(){
-        return cmdh;
-    }
 
 }
