@@ -10,5 +10,7 @@ public interface IAddFriendActivity {
 
 	void enableActivityInteraction();
 
+	void showErrorMessage();
+
 
 }

@@ -54,29 +54,36 @@ public class AddFriendPresenter {
 		addFriendActivity.disableActivityInteraction();
 		List<User> myFriends = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
 
-		try {
-			BoardbookSingleton.getInstance().getUserHandler().all().thenAccept(allUsers -> {
-				if (allUsers != null && myFriends != null) {
-					List<User> notMyFriends = allUsers
-						.stream()
-						.filter(user -> myFriends.stream().noneMatch(friend -> friend.getId().equals(user.getId())))
-						.collect(Collectors.toList());
 
-					userDatabase.addAll(notMyFriends);
-					all.addAll(notMyFriends);
+		BoardbookSingleton.getInstance().getUserHandler().all().thenAccept(allUsers -> {
+			if (allUsers != null && myFriends != null) {
+				List<User> notMyFriends = allUsers
+					.stream()
+					.filter(user -> myFriends.stream().noneMatch(friend -> friend.getId().equals(user.getId())))
+					.collect(Collectors.toList());
+
+				userDatabase.addAll(notMyFriends);
+				all.addAll(notMyFriends);
 
 
-					new android.os.Handler(Looper.getMainLooper()).post(() -> {
-						addFriendActivity.enableActivityInteraction();
-						repopulateFriends();
-					});
+				new android.os.Handler(Looper.getMainLooper()).post(() -> {
+					addFriendActivity.enableActivityInteraction();
+					repopulateFriends();
+				});
 
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			}
+		}).exceptionally(e -> {
+				new android.os.Handler(Looper.getMainLooper()).post(() -> {
+					addFriendActivity.enableActivityInteraction();
+					addFriendActivity.showErrorMessage();
+				});
+				return null;
+			}
+		);
+
+
 	}
+
 
 	public void searchNonFriends(String query) {
 		List<User> temp = findMatchingName(all, query);

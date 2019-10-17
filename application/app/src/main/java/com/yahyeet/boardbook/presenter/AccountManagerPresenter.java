@@ -29,11 +29,11 @@ public class AccountManagerPresenter {
 
 		if (email.isEmpty()) {
 			throw new EmailFailedException("Email can not be empty.");
-		} else if(!emailValid(email)){
+		} else if(emailInvalid(email)){
 			throw new EmailFailedException("Email is not in a correct format");
 		}
 
-		if (!passwordValid(password)) {
+		if (passwordInvalid(password)) {
 			throw new PasswordFailedException("Password needs to be longer than 6 characters");
 		}
 
@@ -46,7 +46,6 @@ public class AccountManagerPresenter {
 
 			e.printStackTrace();
 			new android.os.Handler(Looper.getMainLooper()).post(() -> {
-
 				accountManagerActivity.enableManagerInteraction();
 				//TODO: Weird getCause calls
 				if (e.getCause().getCause() instanceof FirebaseAuthInvalidCredentialsException) {
@@ -64,11 +63,11 @@ public class AccountManagerPresenter {
 
 		if (email.isEmpty()) {
 			throw new EmailFailedException("Email can not be empty.");
-		} else if(!emailValid(email)){
+		} else if(emailInvalid(email)){
 			throw new EmailFailedException("Email is not in a correct format");
 		}
 
-		if (!passwordValid(password)) {
+		if (passwordInvalid(password)) {
 			throw new PasswordFailedException("Password needs to be longer than 6 characters");
 		}
 
@@ -103,8 +102,8 @@ public class AccountManagerPresenter {
 	 * @param email gets compared against android email pattern
 	 * @return if email is valid or not
 	 */
-	private boolean emailValid(CharSequence email) {
-		return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+	private boolean emailInvalid(CharSequence email) {
+		return !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
 	}
 
 	/**
@@ -113,8 +112,8 @@ public class AccountManagerPresenter {
 	 * @param password to be validated
 	 * @return if password is valid or not
 	 */
-	private boolean passwordValid(CharSequence password) {
-		return password.length() >= 6;
+	private boolean passwordInvalid(CharSequence password) {
+		return password.length() < 6;
 	}
 
 }
