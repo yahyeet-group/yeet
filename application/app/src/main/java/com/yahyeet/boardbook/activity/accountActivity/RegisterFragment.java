@@ -106,7 +106,7 @@ public class RegisterFragment extends AccountFragment {
 		@Override
 		public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 			if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailText.getText()).matches()) {
-				emailText.setError(res.getString(R.string.emailErrorText));
+				emailText.setError(res.getString(R.string.emailFormatError));
 			}
 		}
 
@@ -138,7 +138,7 @@ public class RegisterFragment extends AccountFragment {
 			if (passwordText.getText().toString().length() <= 6 &&
 				!passwordText.getText().toString().isEmpty()) {
 
-				passwordText.setError(res.getString(R.string.passwordErrorText));
+				passwordText.setError(res.getString(R.string.passwordLengthError));
 			}
 		}
 

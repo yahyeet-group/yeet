@@ -8,9 +8,9 @@
     <string name="emailHint">email@mail.com</string>
     <string name="passHint">Password</string>
 
-    <string name="errorLoginText">Wrong Email or Password</string>
-    <string name="emailErrorText">Email is not in a correct format</string>
-    <string name="passwordErrorText">Password needs to be more than 6 characters</string>
+    <string name="loginInvalidAccountError">Wrong Email or Password</string>
+    <string name="emailFormatError">Email is not in a correct format</string>
+    <string name="passwordLengthError">Password needs to be more than 6 characters</string>
     <string name="gameLoadErrorText">Games could not be loaded. Please try again later.</string>
     <string name="addFriendError">Users could not be loaded. Please try again later.</string>
 

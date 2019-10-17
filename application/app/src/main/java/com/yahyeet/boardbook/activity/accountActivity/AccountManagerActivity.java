@@ -51,6 +51,7 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 	public void loginAccount(String email, String password) {
 
 		try {
+			loginFragment.displayLoginError(false);
 			accountManagerPresenter.loginAccount(email, password);
 		} catch (EmailFailedException | PasswordFailedException e) {
 			loginFailed(e);
@@ -90,12 +91,19 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 			super.onBackPressed();
 	}
 
+	/**
+	 * Handles where exceptions from presenter should be displayed
+	 * @param exception relays where exception message should be displayed
+	 */
 	@Override
-	public void loginFailed(Exception e){
-		if(e instanceof EmailFailedException)
-			loginFragment.emailFailed(e.getMessage());
-		else if(e instanceof PasswordFailedException)
-			loginFragment.passwordFailed(e.getMessage());
+	public void loginFailed(Exception exception){
+		if(exception instanceof EmailFailedException)
+			loginFragment.emailFailed(exception.getMessage());
+		else if(exception instanceof PasswordFailedException)
+			loginFragment.passwordFailed(exception.getMessage());
+		else{
+			loginFragment.displayLoginError(exception);
+		}
 	}
 
 

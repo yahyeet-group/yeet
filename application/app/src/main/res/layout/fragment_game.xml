@@ -100,7 +100,7 @@
         android:layout_marginTop="256dp"
         android:text="@string/gameLoadErrorText"
         android:textAlignment="center"
-        android:textColor="#E70303"
+        android:textColor="@color/colorError"
         android:textSize="30sp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"

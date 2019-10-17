@@ -29,6 +29,21 @@
         app:layout_constraintBottom_toTopOf="@+id/loginPasswordInput"
         app:layout_constraintStart_toStartOf="@+id/loginPasswordInput" />
 
+    <TextView
+        android:id="@+id/loginError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:lines="1"
+        android:text="@string/loginInvalidAccountError"
+        android:textAlignment="center"
+        android:textColor="@color/colorError"
+        android:textSize="30sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/loginPasswordInput"
+        app:layout_constraintStart_toStartOf="@+id/loginPasswordInput"
+        app:layout_constraintTop_toBottomOf="@+id/loginPasswordInput" />
+
     <EditText
         android:id="@+id/loginPasswordInput"
         android:layout_width="283dp"

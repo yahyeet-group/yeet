@@ -1,6 +1,7 @@
 package com.yahyeet.boardbook.activity.accountActivity;
 
 import android.os.Bundle;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ public class LoginFragment extends AccountFragment {
 
 	private TextView tvEmail;
 	private TextView tvPassword;
+	private TextView tvError;
 
 
 	@Override
@@ -42,10 +44,10 @@ public class LoginFragment extends AccountFragment {
 
 		tvEmail = fragmentContainer.findViewById(R.id.loginEmailPrompt);
 		tvPassword = fragmentContainer.findViewById(R.id.loginPasswordPrompt);
+		tvError = fragmentContainer.findViewById(R.id.loginError);
 	}
 
 	//TODO: Abstract to superclass, same functionality in login and register
-
 
 
 	/**
@@ -56,6 +58,23 @@ public class LoginFragment extends AccountFragment {
 	}
 
 
+	/**
+	 * Displaces exception message
+	 *
+	 * @param exception holder of error message to be displayed
+	 */
+	void displayLoginError(Exception exception) {
+		tvError.setVisibility(View.VISIBLE);
+		tvError.setText(exception.getMessage());
+	}
+
+	/**
+	 * 	Shows or hides error message
+	 * 	@param display boolean if error gets displayed or not
+	 */
+	void displayLoginError(Boolean display) {
+		tvError.setVisibility(display ? View.VISIBLE : View.INVISIBLE);
+	}
 
 
 	/**
@@ -73,5 +92,6 @@ public class LoginFragment extends AccountFragment {
 
 		etPassword.setText("");
 	}
+
 
 }

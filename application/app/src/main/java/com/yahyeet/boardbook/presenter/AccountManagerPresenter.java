@@ -10,6 +10,8 @@ import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.util.EmailFailedException;
 import com.yahyeet.boardbook.model.util.PasswordFailedException;
 
+import java.util.concurrent.CompletionException;
+
 public class AccountManagerPresenter {
 
 	private IAccountManagerActivity accountManagerActivity;
@@ -49,7 +51,7 @@ public class AccountManagerPresenter {
 				accountManagerActivity.enableManagerInteraction();
 				//TODO: Weird getCause calls
 				if (e.getCause().getCause() instanceof FirebaseAuthInvalidCredentialsException) {
-					accountManagerActivity.loginFailed(new EmailFailedException("Incorrect email or password"));
+					accountManagerActivity.loginFailed(new Exception("Incorrect email or password"));
 				}
 
 
