@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,9 +14,6 @@ import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.CreateingMatches.CreateMatchActivity;
 import com.yahyeet.boardbook.presenter.ConfigureTeamPresenter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ConfigureTeamsFragment extends Fragment implements IConfigureTeamsFragment {
 
 	private ConfigureTeamPresenter spp;
@@ -25,8 +21,9 @@ public class ConfigureTeamsFragment extends Fragment implements IConfigureTeamsF
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		spp = new ConfigureTeamPresenter(this);
-		return inflater.inflate(R.layout.fragment_select_players, container, false);
+		CreateMatchActivity cma = (CreateMatchActivity)getActivity();
+		spp = new ConfigureTeamPresenter(this, cma.getPresenter());
+		return inflater.inflate(R.layout.fragment_configure_teams, container, false);
 
 	}
 
@@ -36,31 +33,12 @@ public class ConfigureTeamsFragment extends Fragment implements IConfigureTeamsF
 	}
 
 	public void enableMatchFeed() {
-		// TODO: Examine how these method calls can get nullPointerException
-		RecyclerView gameRecycler = getView().findViewById(R.id.player_recycle_view);
-
-		// use this setting to improve performance if you know that changes
-		// in content do not change the layout size of the RecyclerView
+		RecyclerView gameRecycler = getView().findViewById(R.id.configureTeamsRecyleView);
 		gameRecycler.setHasFixedSize(true);
 		spp.enableGameFeed(gameRecycler, getView().getContext());
-		bindTestButtons();
 	}
 
-	private void bindTestButtons() {
 
-
-
-
-		//// SPINNER INIT
-		List<String> spinnerArray = new ArrayList<String>();
-		spinnerArray.add("Minions Of Mordred");
-	//	Spinner teamSpinner = v.findViewById(R.id.teamSpinner);
-		ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, spinnerArray);    // Specify the layout to use when the list of choices appears
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		// Apply the adapter to the spinner
-	//	teamSpinner.setAdapter(adapter);
-
-	}
 
 
 }

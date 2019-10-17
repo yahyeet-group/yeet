@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.CreateingMatches.CMMasterPresenter;
+import com.yahyeet.boardbook.activity.CreateingMatches.ConfigureTeams.ConfigureTeamsFragment;
 import com.yahyeet.boardbook.activity.CreateingMatches.SelectGame.ISelectGameFragment;
 import com.yahyeet.boardbook.activity.CreateingMatches.ConfigureTeams.IConfigureTeamsFragment;
 import com.yahyeet.boardbook.activity.CreateingMatches.ConfigureTeams.ConfigureTeamAdapter;
@@ -15,12 +16,13 @@ public class ConfigureTeamPresenter {
 
     private ConfigureTeamAdapter playerAdapter;
 
-    private ISelectGameFragment selectGameFragment;
+    private IConfigureTeamsFragment configureTeamsFragment;
 
     private CMMasterPresenter masterPresenter;
 
 
-    public ConfigureTeamPresenter(CMMasterPresenter cm){
+    public ConfigureTeamPresenter(ConfigureTeamsFragment ctf,CMMasterPresenter cm){
+        this.configureTeamsFragment = ctf;
         this.masterPresenter = cm;
     }
 

@@ -22,8 +22,6 @@ public class SelectGameFragment extends Fragment implements ISelectGameFragment 
         CreateMatchActivity cma = (CreateMatchActivity)getActivity();
         selectGamePresenter = new SelectGamePresenter(this, cma.getPresenter());
         return inflater.inflate(R.layout.fragment_select_game, container, false);
-
-
     }
 
     @Override
@@ -33,7 +31,7 @@ public class SelectGameFragment extends Fragment implements ISelectGameFragment 
 
     public void enableMatchFeed() {
         // TODO: Examine how these method calls can get nullPointerException
-        RecyclerView gameRecycler = getView().findViewById(R.id.games_recycle_view);
+        RecyclerView gameRecycler = getView().findViewById(R.id.gamesRecycleView);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
