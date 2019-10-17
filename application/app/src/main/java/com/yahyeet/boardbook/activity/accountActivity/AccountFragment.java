@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.yahyeet.boardbook.R;
 
-public class AccountFragment extends Fragment {
+public abstract class AccountFragment extends Fragment {
 
 	IAccountFragmentHolder accountManager;
 	View fragmentContainer;
