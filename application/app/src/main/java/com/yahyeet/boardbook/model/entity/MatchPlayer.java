@@ -37,7 +37,7 @@ public class MatchPlayer extends AbstractEntity {
         this.match = match;
     }
 
-    public boolean isWin() {
+    public boolean getWin() {
         return win;
     }
 
