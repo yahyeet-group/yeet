@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.activity.FriendsActivity;
+package com.yahyeet.boardbook.activity.homeActivity.friendsFragment;
 
 import android.content.Intent;
 import android.os.Bundle;

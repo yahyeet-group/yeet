@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.activity.GameActivity;
+package com.yahyeet.boardbook.activity.homeActivity.gameFragment;
 
 import android.os.Bundle;
 import android.text.Editable;

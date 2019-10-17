@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.activity;
+package com.yahyeet.boardbook.activity.homeActivity.matchfeedFragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,18 +11,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.presenter.HomeFragmentPresenter;
+import com.yahyeet.boardbook.presenter.MatchfeedPresenter;
 
 import javax.annotation.Nonnull;
 
-public class HomeFragment extends Fragment implements IHomeFragment {
+public class MatchfeedFragment extends Fragment implements IMatchfeedFragment {
 
-	private HomeFragmentPresenter homeFragmentPresenter;
+	private MatchfeedPresenter matchfeedPresenter;
 
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		homeFragmentPresenter = new HomeFragmentPresenter(this);
+		matchfeedPresenter = new MatchfeedPresenter(this);
 		return inflater.inflate(R.layout.fragment_home, container, false);
 	}
 
@@ -41,13 +41,13 @@ public class HomeFragment extends Fragment implements IHomeFragment {
 		// use this setting to improve performance if you know that changes
 		// in content do not change the layout size of the RecyclerView
 		matchRecycler.setHasFixedSize(true);
-		homeFragmentPresenter.enableMatchFeed(matchRecycler, getView().getContext());
+		matchfeedPresenter.enableMatchFeed(matchRecycler, getView().getContext());
 	}
 
 	/**
 	 * Orders recyclerView of matches to repopulate itself
 	 */
 	public void repopulateMatchFeed() {
-		homeFragmentPresenter.updateMatchAdapter();
+		matchfeedPresenter.updateMatchAdapter();
 	}
 }

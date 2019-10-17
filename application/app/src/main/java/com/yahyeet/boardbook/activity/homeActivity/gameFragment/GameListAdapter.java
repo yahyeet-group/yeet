@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.presenter.adapter;
+package com.yahyeet.boardbook.activity.homeActivity.gameFragment;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -31,8 +31,7 @@ public class GameListAdapter extends GameAdapter {
         TextView textViewTeams = convertView.findViewById(R.id.gameListTeamAmount);
         textViewName.setText(currentItem.getName());
         textViewDifficulty.setText(getDifficulty(currentItem.getDifficulty()));
-        textViewPlayers
-                .setText(currentItem.getMinPlayers() + " - " + currentItem.getMaxPlayers() + " Players");
+        textViewPlayers.setText(currentItem.getMinPlayers() + " - " + currentItem.getMaxPlayers() + " Players");
         textViewTeams.setText("0 - " + currentItem.getTeams().size() + " Teams");
     }
 

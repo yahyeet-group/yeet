@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.presenter.adapter;
+package com.yahyeet.boardbook.activity.homeActivity.gameFragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.yahyeet.boardbook.activity.GameActivity.GameDetailActivity;
+import com.yahyeet.boardbook.activity.homeActivity.gameFragment.GameDetailActivity.GameDetailActivity;
 import com.yahyeet.boardbook.model.entity.Game;
 
 import java.util.List;

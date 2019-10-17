@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.activity.FriendsActivity;
+package com.yahyeet.boardbook.activity.homeActivity.friendsFragment;
 
 public interface IFriendFragment {
 

@@ -5,9 +5,9 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.activity.FriendsActivity.IFriendFragment;
+import com.yahyeet.boardbook.activity.homeActivity.friendsFragment.IFriendFragment;
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.presenter.adapter.FriendsAdapter;
+import com.yahyeet.boardbook.activity.homeActivity.friendsFragment.FriendsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

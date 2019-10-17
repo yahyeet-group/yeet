@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.presenter.adapter;
+package com.yahyeet.boardbook.activity.homeActivity.friendsFragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.activity.ProfileActivity;
+import com.yahyeet.boardbook.activity.profileActivity.ProfileActivity;
 import com.yahyeet.boardbook.model.entity.User;
 
 import java.util.ArrayList;

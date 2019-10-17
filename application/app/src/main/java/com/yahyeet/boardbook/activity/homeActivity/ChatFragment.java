@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.activity;
+package com.yahyeet.boardbook.activity.homeActivity;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

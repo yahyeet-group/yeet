@@ -5,17 +5,17 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.activity.IProfileActivity;
+import com.yahyeet.boardbook.activity.homeActivity.matchfeedFragment.MatchfeedAdapter;
+import com.yahyeet.boardbook.activity.profileActivity.IProfileActivity;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.presenter.adapter.MatchAdapter;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class ProfilePresenter {
 
-	private MatchAdapter matchAdapter;
+	private MatchfeedAdapter matchfeedAdapter;
 	private List<Match> matchDatabase;
 	private User user;
 
@@ -51,7 +51,7 @@ public class ProfilePresenter {
 	 * Makes recyclerView to repopulate its matches with current data
 	 */
 	public void updateMatchAdapter() {
-		matchAdapter.notifyDataSetChanged();
+		matchfeedAdapter.notifyDataSetChanged();
 	}
 
 	/**
@@ -63,8 +63,8 @@ public class ProfilePresenter {
 
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		matchRecyclerView.setLayoutManager(layoutManager);
-		matchAdapter = new MatchAdapter(viewContext, matchDatabase, user, BoardbookSingleton.getInstance().getStatisticsUtil());
-		matchRecyclerView.setAdapter(matchAdapter);
+		matchfeedAdapter = new MatchfeedAdapter(viewContext, matchDatabase, user, BoardbookSingleton.getInstance().getStatisticsUtil());
+		matchRecyclerView.setAdapter(matchfeedAdapter);
 	}
 
 }

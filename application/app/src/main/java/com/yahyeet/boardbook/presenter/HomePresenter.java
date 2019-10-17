@@ -3,8 +3,8 @@ package com.yahyeet.boardbook.presenter;
 import android.content.Context;
 import android.content.Intent;
 
-import com.yahyeet.boardbook.activity.IHomeActivity;
-import com.yahyeet.boardbook.activity.ProfileActivity;
+import com.yahyeet.boardbook.activity.homeActivity.IHomeActivity;
+import com.yahyeet.boardbook.activity.profileActivity.ProfileActivity;
 import com.yahyeet.boardbook.activity.accountActivity.AccountManagerActivity;
 
 public class HomePresenter {

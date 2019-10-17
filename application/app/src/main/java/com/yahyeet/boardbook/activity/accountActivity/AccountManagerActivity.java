@@ -8,7 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.activity.HomeActivity;
+import com.yahyeet.boardbook.activity.homeActivity.HomeActivity;
 import com.yahyeet.boardbook.model.util.EmailFailedException;
 import com.yahyeet.boardbook.model.util.PasswordFailedException;
 import com.yahyeet.boardbook.presenter.AccountManagerPresenter;

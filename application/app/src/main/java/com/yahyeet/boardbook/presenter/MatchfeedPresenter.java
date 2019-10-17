@@ -5,24 +5,24 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.activity.IHomeFragment;
+import com.yahyeet.boardbook.activity.homeActivity.matchfeedFragment.MatchfeedAdapter;
+import com.yahyeet.boardbook.activity.homeActivity.matchfeedFragment.IMatchfeedFragment;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.handler.MatchHandlerListener;
-import com.yahyeet.boardbook.presenter.adapter.MatchAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragmentPresenter implements MatchHandlerListener {
+public class MatchfeedPresenter implements MatchHandlerListener {
 
-	private MatchAdapter matchAdapter;
+	private MatchfeedAdapter matchfeedAdapter;
 	private List<Match> matchDatabase;
 
 
 	// TODO: Remove if never necessary
-	private IHomeFragment homeFragment;
+	private IMatchfeedFragment homeFragment;
 
-	public HomeFragmentPresenter(IHomeFragment homeFragment) {
+	public MatchfeedPresenter(IMatchfeedFragment homeFragment) {
 		this.homeFragment = homeFragment;
 	}
 
@@ -30,7 +30,7 @@ public class HomeFragmentPresenter implements MatchHandlerListener {
 	 * Makes recyclerView to repopulate its matches with current data
 	 */
 	public void updateMatchAdapter() {
-		matchAdapter.notifyDataSetChanged();
+		matchfeedAdapter.notifyDataSetChanged();
 	}
 
 	/**
@@ -46,8 +46,8 @@ public class HomeFragmentPresenter implements MatchHandlerListener {
 		matchDatabase = new ArrayList<>();
 		for (int i = 0; i < 20; i++)
 			matchDatabase.add(new Match());
-		matchAdapter = new MatchAdapter(matchDatabase);
-		matchRecyclerView.setAdapter(matchAdapter);
+		matchfeedAdapter = new MatchfeedAdapter(matchDatabase);
+		matchRecyclerView.setAdapter(matchfeedAdapter);
 	}
 
 	@Override

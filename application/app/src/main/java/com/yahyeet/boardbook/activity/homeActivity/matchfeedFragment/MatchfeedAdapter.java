@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.presenter.adapter;
+package com.yahyeet.boardbook.activity.homeActivity.matchfeedFragment;
 
 import android.content.Context;
 import android.util.Log;
@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-	private static final String TAG = "MatchAdapter";
+	private static final String TAG = "MatchfeedAdapter";
 	private static final int PROFILE_HEADER_VIEW = 1;
 	private Context context;
 	private List<Match> myDataset;
@@ -33,14 +33,14 @@ public class MatchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 	private StatisticsUtil statisticsUtil;
 
 
-	public MatchAdapter(List<Match> dataset) {
+	public MatchfeedAdapter(List<Match> dataset) {
 		if (dataset != null)
 			myDataset = dataset;
 		else
 			myDataset = new ArrayList<>();
 	}
 
-	public MatchAdapter(Context context, List<Match> dataset, User user, StatisticsUtil statisticsUtil) {
+	public MatchfeedAdapter(Context context, List<Match> dataset, User user, StatisticsUtil statisticsUtil) {
 		if (dataset != null)
 			myDataset = dataset;
 		else

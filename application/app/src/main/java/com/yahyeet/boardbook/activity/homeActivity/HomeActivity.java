@@ -1,10 +1,9 @@
-package com.yahyeet.boardbook.activity;
+package com.yahyeet.boardbook.activity.homeActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,11 +13,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.activity.FriendsActivity.FriendsFragment;
-import com.yahyeet.boardbook.activity.GameActivity.GamesFragment;
+import com.yahyeet.boardbook.activity.homeActivity.friendsFragment.FriendsFragment;
+import com.yahyeet.boardbook.activity.homeActivity.gameFragment.GamesFragment;
+import com.yahyeet.boardbook.activity.homeActivity.matchfeedFragment.MatchfeedFragment;
 import com.yahyeet.boardbook.presenter.HomePresenter;
 
-public class HomeActivity extends AppCompatActivity implements IHomeActivity{
+public class HomeActivity extends AppCompatActivity implements IHomeActivity {
 
 
 	private HomePresenter homePresenter;
@@ -28,7 +28,7 @@ public class HomeActivity extends AppCompatActivity implements IHomeActivity{
 
 		switch (menuItem.getItemId()) {
 			case R.id.nav_home:
-				selectedFragment = new HomeFragment();
+				selectedFragment = new MatchfeedFragment();
 				break;
 			case R.id.nav_game:
 				selectedFragment = new GamesFragment();
@@ -54,7 +54,7 @@ public class HomeActivity extends AppCompatActivity implements IHomeActivity{
 		BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
 		bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MatchfeedFragment()).commit();
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);

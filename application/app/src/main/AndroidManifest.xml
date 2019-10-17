@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.FriendsActivity.AddFriendActivity" />
-        <activity android:name=".activity.GameActivity.GameDetailActivity"></activity>
+        <activity android:name=".activity.homeActivity.friendsFragment.AddFriendActivity" />
+        <activity android:name=".activity.homeActivity.gameFragment.GameDetailActivity.GameDetailActivity"></activity>
         <activity android:name=".activity.accountActivity.AccountManagerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,10 +18,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.HomeActivity"
+            android:name=".activity.homeActivity.HomeActivity"
             android:label="@string/app_name">
         </activity>
-        <activity android:name=".activity.ProfileActivity" android:label="@string/app_name"></activity>
+        <activity android:name=".activity.profileActivity.ProfileActivity" android:label="@string/app_name"></activity>
     </application>
 
 </manifest>

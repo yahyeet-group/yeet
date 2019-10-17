@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.activity;
+package com.yahyeet.boardbook.activity.profileActivity;
 
 import android.os.Bundle;
 import android.widget.ProgressBar;
@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.profileActivity.IProfileActivity;
 import com.yahyeet.boardbook.presenter.ProfilePresenter;
 
 public class ProfileActivity extends AppCompatActivity implements IProfileActivity {
