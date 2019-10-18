@@ -7,8 +7,8 @@ import java.util.List;
 
 public class User extends AbstractEntity {
     private String name;
-    private List<User> friends;
-    private List<Match> matches;
+    private List<User> friends = new ArrayList<>();
+    private List<Match> matches = new ArrayList<>();
 
     public User(String name) {
         this.name = name;

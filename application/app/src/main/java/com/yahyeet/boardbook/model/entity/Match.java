@@ -2,9 +2,10 @@ package com.yahyeet.boardbook.model.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Match extends AbstractEntity {
-	private List<MatchPlayer> matchPlayers;
+	private List<MatchPlayer> matchPlayers = new ArrayList<>();
 	private Game game;
 
 	public Match() {
@@ -13,7 +14,6 @@ public class Match extends AbstractEntity {
 
 	public Match(String id) {
 		super(id);
-		matchPlayers = new ArrayList<>();
 	}
 
 	public List<MatchPlayer> getMatchPlayers() {
@@ -33,11 +33,12 @@ public class Match extends AbstractEntity {
 		this.game = game;
 	}
 
-    public MatchPlayer getMatchPlayerByUser(User user){
-     return matchPlayers
-			 .stream()
-			 .filter(matchPlayer -> matchPlayer.getUser().getId().equals(user.getId()))
-			 .findFirst()
-			 .get();
-    }
+	public MatchPlayer getMatchPlayerByUser(User user) {
+		Optional<MatchPlayer> optionalMatchPlayer = matchPlayers
+			.stream()
+			.filter(matchPlayer -> matchPlayer.getUser().getId().equals(user.getId()))
+			.findFirst();
+
+		return optionalMatchPlayer.orElse(null);
+	}
 }

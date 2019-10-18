@@ -9,8 +9,8 @@ public class Game extends AbstractEntity {
 	private int minPlayers;
 	private int maxPlayers;
 	private int difficulty;
-	private List<GameTeam> teams;
-	private List<Match> matches;
+	private List<GameTeam> teams = new ArrayList<>();
+	private List<Match> matches = new ArrayList<>();
 
 	public Game(String name,
 							String description,
@@ -22,8 +22,6 @@ public class Game extends AbstractEntity {
 		this.difficulty = difficulty;
 		this.minPlayers = minPlayers;
 		this.maxPlayers = maxPlayers;
-		teams = new ArrayList<>();
-		matches = new ArrayList<>();
 	}
 
 	public Game(String id) {

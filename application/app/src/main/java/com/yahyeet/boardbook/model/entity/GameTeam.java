@@ -5,12 +5,11 @@ import java.util.List;
 
 public class GameTeam extends AbstractEntity {
     private String name;
-    private List<GameRole> roles;
+    private List<GameRole> roles = new ArrayList<>();
     private Game game;
 
     public GameTeam(String name) {
         this.name = name;
-        roles = new ArrayList<>();
     }
 
     public GameTeam() {
