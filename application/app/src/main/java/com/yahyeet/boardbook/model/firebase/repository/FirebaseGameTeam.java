@@ -1,65 +1,65 @@
 package com.yahyeet.boardbook.model.firebase.repository;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.yahyeet.boardbook.model.entity.GameTeam;
 
-import java.io.Serializable;
-import java.security.cert.CollectionCertStoreParameters;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-class FirebaseGameTeam implements Serializable {
+class FirebaseGameTeam extends AbstractFirebaseEntity<GameTeam> {
 
+	private String id;
 	private String name;
-	private List<FirebaseGameRole> roles;
+	private String gameId;
 
 	public FirebaseGameTeam() {
 	}
 
-	FirebaseGameTeam(String name) {
+	public FirebaseGameTeam(String id, String name, String gameId) {
+		this.id = id;
 		this.name = name;
-		this.roles = new ArrayList<>();
+		this.gameId = gameId;
 	}
 
-	Map<String, Object> toMap() {
+	@Override
+	public Map<String, Object> toMap() {
 		Map<String, Object> map = new HashMap<>();
 
 		if (name != null) {
 			map.put("name", name);
 		}
 
-		map.put("roles", roles.stream().map(FirebaseGameRole::toMap).collect(Collectors.toList()));
+		if (gameId != null) {
+			map.put("gameId", gameId);
+		}
 
 		return map;
 	}
 
-
-	static FirebaseGameTeam fromGameTeam(GameTeam gameTeam) {
-		FirebaseGameTeam firebaseGameTeam = new FirebaseGameTeam(gameTeam.getName());
-
-		firebaseGameTeam.setRoles(
-			gameTeam.getRoles()
-				.stream()
-				.map(FirebaseGameRole::fromGameRole)
-				.collect(Collectors.toList())
-		);
-
-		return firebaseGameTeam;
+	@Override
+	public GameTeam toModelType() {
+		GameTeam gameTeam = new GameTeam(name);
+		gameTeam.setId(id);
+		return gameTeam;
 	}
 
-	GameTeam toGameTeam() {
-		GameTeam gameTeam = new GameTeam(name);
+	public static FirebaseGameTeam fromModelType(GameTeam gameTeam) {
+		return new FirebaseGameTeam(gameTeam.getId(), gameTeam.getName(), gameTeam.getGame().getId());
+	}
 
-		gameTeam.setRoles(
-			roles
-				.stream()
-				.map(FirebaseGameRole::toGameRole)
-				.collect(Collectors.toList()));
+	public static FirebaseGameTeam fromDocument(DocumentSnapshot document) {
+		FirebaseGameTeam firebaseGameTeam = new FirebaseGameTeam();
+		firebaseGameTeam.setId(document.getId());
 
-		return gameTeam;
+		if (document.contains("name")) {
+			firebaseGameTeam.setName(document.getString("name"));
+		}
+
+		if (document.contains("gameId")) {
+			firebaseGameTeam.setGameId(document.getString("gameId"));
+		}
+
+		return firebaseGameTeam;
 	}
 
 	public String getName() {
@@ -70,11 +70,19 @@ class FirebaseGameTeam implements Serializable {
 		this.name = name;
 	}
 
-	public List<FirebaseGameRole> getRoles() {
-		return roles;
+	public String getId() {
+		return id;
 	}
 
-	public void setRoles(List<FirebaseGameRole> roles) {
-		this.roles = roles;
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getGameId() {
+		return gameId;
+	}
+
+	public void setGameId(String gameId) {
+		this.gameId = gameId;
 	}
 }

@@ -11,7 +11,6 @@ import com.yahyeet.boardbook.model.util.EmailFailedException;
 import com.yahyeet.boardbook.model.util.PasswordFailedException;
 
 public class AccountManagerPresenter {
-
 	private IAccountManagerActivity accountManagerActivity;
 
 	// Set true to skip login
@@ -115,5 +114,4 @@ public class AccountManagerPresenter {
 	private boolean passwordInvalid(CharSequence password) {
 		return password.length() < 6;
 	}
-
 }
