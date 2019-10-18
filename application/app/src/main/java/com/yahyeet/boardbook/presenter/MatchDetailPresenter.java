@@ -1,6 +1,7 @@
 package com.yahyeet.boardbook.presenter;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -60,13 +61,13 @@ public class MatchDetailPresenter {
 	 * @param matchplayerRecyclerView view that will receive new adapter
 	 * @param viewContext structure of current view
 	 */
-	public void enableMatchplayerAdapter(RecyclerView matchplayerRecyclerView, Context viewContext) {
+	public void enableMatchplayerAdapter(RecyclerView matchplayerRecyclerView, Context viewContext, Resources resources) {
 
 		RecyclerView.LayoutManager layoutManager = new GridLayoutManager(viewContext, 2);
 
 		matchplayerRecyclerView.setLayoutManager(layoutManager);
 
-		matchPlayerAdapter = new MatchPlayerAdapter(match.getPlayers());
+		matchPlayerAdapter = new MatchPlayerAdapter(match.getPlayers(), resources);
 		matchplayerRecyclerView.setAdapter(matchPlayerAdapter);
 	}
 	

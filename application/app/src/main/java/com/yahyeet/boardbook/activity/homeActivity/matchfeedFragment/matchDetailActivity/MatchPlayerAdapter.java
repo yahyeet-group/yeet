@@ -8,6 +8,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
@@ -19,6 +20,7 @@ import java.util.List;
 public class MatchPlayerAdapter extends RecyclerView.Adapter<MatchPlayerAdapter.MatchPlayerViewHolder>{
 
 	private List<MatchPlayer> matchPlayers;
+	private Resources resources;
 
 	static class MatchPlayerViewHolder extends RecyclerView.ViewHolder {
 
@@ -26,23 +28,25 @@ public class MatchPlayerAdapter extends RecyclerView.Adapter<MatchPlayerAdapter.
 		// TODO Replace this area with match class as a custom view object
 		private TextView tvPlayerName;
 		private TextView tvTeam;
-		private CheckBox cbWin;
+		private ConstraintLayout constraintLayout;
 
 
 		MatchPlayerViewHolder(View v) {
 			super(v);
 			tvPlayerName = v.findViewById(R.id.tvMatchPlayerName);
 			tvTeam = v.findViewById(R.id.tvMatchPlayerInfo);
-			cbWin = v.findViewById(R.id.cbMatchWin);
+			constraintLayout = v.findViewById(R.id.matchPlayerLayout);
 		}
 	}
 
-	public MatchPlayerAdapter(List<MatchPlayer> dataset) {
+	public MatchPlayerAdapter(List<MatchPlayer> dataset, Resources resources) {
 		if (dataset != null)
 			matchPlayers = dataset;
 		else {
 			matchPlayers = new ArrayList<>();
 		}
+
+		this.resources = resources;
 
 	}
 
@@ -82,11 +86,14 @@ public class MatchPlayerAdapter extends RecyclerView.Adapter<MatchPlayerAdapter.
 		}
 
 		if(current.isWin()){
-			holder.cbWin.setChecked(current.isWin());
-			holder.cbWin.setText("Won");
+			holder
+				.constraintLayout
+				.setBackgroundColor(resources.getColor(R.color.colorMatchWon, null));
 		}
 		else{
-			holder.cbWin.setText("Lost");
+			holder
+				.constraintLayout
+				.setBackgroundColor(resources.getColor(R.color.colorError, null));
 		}
 
 

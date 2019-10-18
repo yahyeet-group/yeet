@@ -55,6 +55,6 @@ public class MatchDetailActivity extends AppCompatActivity implements IMatchDeta
 	protected void onStart() {
 		super.onStart();
 		matchDetailPresenter.initiateGameDetail();
-		matchDetailPresenter.enableMatchplayerAdapter(rvMatchPlayers, this);
+		matchDetailPresenter.enableMatchplayerAdapter(rvMatchPlayers, this, getResources());
 	}
 }
