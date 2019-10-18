@@ -97,6 +97,7 @@ public class MatchHandler implements IRepositoryListener<Match> {
 					matchPlayer.setUser(populatedMatchPlayer.getUser());
 					matchPlayer.setMatch(populatedMatchPlayer.getMatch());
 					matchPlayer.setRole(populatedMatchPlayer.getRole());
+					matchPlayer.setTeam(populatedMatchPlayer.getTeam());
 
 					return null;
 				})).collect(Collectors.toList());
