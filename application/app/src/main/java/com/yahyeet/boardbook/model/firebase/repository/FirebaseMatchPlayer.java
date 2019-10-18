@@ -11,16 +11,18 @@ public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
 	private boolean win;
 	private String playerId;
 	private String roleId;
+	private String teamId;
 	private String matchId;
 
 	public FirebaseMatchPlayer() {
 	}
 
-	public FirebaseMatchPlayer(String id, boolean win, String playerId, String roleId, String matchId) {
+	public FirebaseMatchPlayer(String id, boolean win, String playerId, String roleId, String teamId, String matchId) {
 		this.id = id;
 		this.win = win;
 		this.playerId = playerId;
 		this.roleId = roleId;
+		this.teamId = teamId;
 		this.matchId = matchId;
 	}
 
@@ -30,15 +32,19 @@ public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
 
 		if (matchId != null) {
 			map.put("matchId", matchId);
+		} else {
+			throw new IllegalArgumentException("Match id must be set");
 		}
 
 		if (playerId != null) {
 			map.put("playerId", playerId);
+		} else {
+			throw new IllegalArgumentException("Player id must be set");
 		}
 
-		if (roleId != null) {
-			map.put("roleId", roleId);
-		}
+		map.put("roleId", roleId);
+
+		map.put("teamId", teamId);
 
 		map.put("win", win);
 
@@ -55,7 +61,8 @@ public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
 			matchPlayer.getId(),
 			matchPlayer.getWin(),
 			matchPlayer.getUser().getId(),
-			matchPlayer.getRole().getId(),
+			matchPlayer.getTeam() != null ? matchPlayer.getTeam().getId() : null,
+			matchPlayer.getRole() != null ? matchPlayer.getRole().getId() : null,
 			matchPlayer.getMatch().getId()
 		);
 	}
@@ -74,6 +81,10 @@ public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
 
 		if (document.contains("roleId")) {
 			firebaseMatchPlayer.setRoleId(document.getString("roleId"));
+		}
+
+		if (document.contains("teamId")) {
+			firebaseMatchPlayer.setTeamId(document.getString("teamId"));
 		}
 
 		if (document.contains("win")) {
@@ -121,5 +132,13 @@ public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
 
 	public void setMatchId(String matchId) {
 		this.matchId = matchId;
+	}
+
+	public String getTeamId() {
+		return teamId;
+	}
+
+	public void setTeamId(String teamId) {
+		this.teamId = teamId;
 	}
 }
