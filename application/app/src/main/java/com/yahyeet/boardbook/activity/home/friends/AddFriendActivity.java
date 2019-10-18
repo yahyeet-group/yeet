@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.presenter.AddFriendPresenter;
+import com.yahyeet.boardbook.presenter.friends.addfriends.AddFriendPresenter;
 
 public class AddFriendActivity extends AppCompatActivity implements IAddFriendActivity {
 

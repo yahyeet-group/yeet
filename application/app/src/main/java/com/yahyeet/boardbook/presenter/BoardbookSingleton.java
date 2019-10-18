@@ -34,8 +34,8 @@ public class BoardbookSingleton {
 			FirebaseMatchPlayerRepository matchPlayerRepository = new FirebaseMatchPlayerRepository(FirebaseFirestore.getInstance());
 
 			GameHandler gameHandler = new GameHandler(gameRepository, gameRoleRepository, gameTeamRepository, matchRepository);
-			MatchHandler matchHandler = new MatchHandler(matchRepository, matchPlayerRepository, gameRepository, gameRoleRepository, userRepository);
-			UserHandler userHandler = new UserHandler(userRepository, matchRepository, gameRoleRepository, gameRepository, matchPlayerRepository);
+			MatchHandler matchHandler = new MatchHandler(matchRepository, matchPlayerRepository, gameRepository, gameRoleRepository, gameTeamRepository, userRepository);
+			UserHandler userHandler = new UserHandler(userRepository, matchRepository, gameRoleRepository, gameTeamRepository, gameRepository, matchPlayerRepository);
 
 			IAuthService authService = new FirebaseAuthService(FirebaseAuth.getInstance(), userHandler);
 			AuthHandler authHandler = new AuthHandler(authService);

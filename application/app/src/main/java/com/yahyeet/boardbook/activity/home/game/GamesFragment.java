@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.presenter.GamePresenter;
+import com.yahyeet.boardbook.presenter.game.GamePresenter;
 
 import javax.annotation.Nonnull;
 

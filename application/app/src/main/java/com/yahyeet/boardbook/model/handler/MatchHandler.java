@@ -6,6 +6,7 @@ import com.yahyeet.boardbook.model.handler.populator.MatchPlayerPopulator;
 import com.yahyeet.boardbook.model.handler.populator.MatchPopulator;
 import com.yahyeet.boardbook.model.repository.IGameRepository;
 import com.yahyeet.boardbook.model.repository.IGameRoleRepository;
+import com.yahyeet.boardbook.model.repository.IGameTeamRepository;
 import com.yahyeet.boardbook.model.repository.IMatchPlayerRepository;
 import com.yahyeet.boardbook.model.repository.IMatchRepository;
 import com.yahyeet.boardbook.model.repository.IRepositoryListener;
@@ -30,12 +31,13 @@ public class MatchHandler implements IRepositoryListener<Match> {
 											IMatchPlayerRepository matchPlayerRepository,
 											IGameRepository gameRepository,
 											IGameRoleRepository gameRoleRepository,
+											IGameTeamRepository gameTeamRepository,
 											IUserRepository userRepository) {
 		this.matchPlayerRepository = matchPlayerRepository;
 		this.matchRepository = matchRepository;
 
 		matchPopulator = new MatchPopulator(gameRepository, matchPlayerRepository);
-		matchPlayerPopulator = new MatchPlayerPopulator(gameRoleRepository, matchRepository, userRepository);
+		matchPlayerPopulator = new MatchPlayerPopulator(gameRoleRepository, gameTeamRepository, matchRepository, userRepository);
 	}
 
 	public CompletableFuture<Match> find(String id) {
