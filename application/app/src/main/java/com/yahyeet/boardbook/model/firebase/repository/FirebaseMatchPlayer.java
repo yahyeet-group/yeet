@@ -1,6 +1,12 @@
 package com.yahyeet.boardbook.model.firebase.repository;
 
-public class FirebaseMatchPlayer {
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.yahyeet.boardbook.model.entity.MatchPlayer;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class FirebaseMatchPlayer extends FirebaseEntity<MatchPlayer> {
 	private String id;
 	private boolean win;
 	private String playerId;
@@ -16,6 +22,65 @@ public class FirebaseMatchPlayer {
 		this.playerId = playerId;
 		this.roleId = roleId;
 		this.matchId = matchId;
+	}
+
+	@Override
+	public Map<String, Object> toMap() {
+		Map<String, Object> map = new HashMap<>();
+
+		if (matchId != null) {
+			map.put("matchId", matchId);
+		}
+
+		if (playerId != null) {
+			map.put("playerId", playerId);
+		}
+
+		if (roleId != null) {
+			map.put("roleId", roleId);
+		}
+
+		map.put("win", win);
+
+		return map;
+	}
+
+	@Override
+	public MatchPlayer toModelType() {
+		return new MatchPlayer(id);
+	}
+
+	public static FirebaseMatchPlayer fromModelType(MatchPlayer matchPlayer) {
+		return new FirebaseMatchPlayer(
+			matchPlayer.getId(),
+			matchPlayer.getWin(),
+			matchPlayer.getUser().getId(),
+			matchPlayer.getRole().getId(),
+			matchPlayer.getMatch().getId()
+		);
+	}
+
+	public static FirebaseMatchPlayer fromDocument(DocumentSnapshot document) {
+		FirebaseMatchPlayer firebaseMatchPlayer = new FirebaseMatchPlayer();
+		firebaseMatchPlayer.setId(document.getId());
+
+		if (document.contains("matchId")) {
+			firebaseMatchPlayer.setMatchId(document.getString("matchId"));
+		}
+
+		if (document.contains("playerId")) {
+			firebaseMatchPlayer.setPlayerId(document.getString("playerId"));
+		}
+
+		if (document.contains("roleId")) {
+			firebaseMatchPlayer.setRoleId(document.getString("roleId"));
+		}
+
+		if (document.contains("win")) {
+			firebaseMatchPlayer.setWin(document.getBoolean("win"));
+		}
+
+		return firebaseMatchPlayer;
 	}
 
 	public String getId() {

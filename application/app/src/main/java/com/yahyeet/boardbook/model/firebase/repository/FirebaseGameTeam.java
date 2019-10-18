@@ -3,7 +3,6 @@ package com.yahyeet.boardbook.model.firebase.repository;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.yahyeet.boardbook.model.entity.GameTeam;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 

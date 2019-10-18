@@ -6,7 +6,11 @@ public class MatchPlayer extends AbstractEntity {
     private Match match;
     private boolean win;
 
-    public MatchPlayer(boolean win) {
+    public MatchPlayer(User user, GameRole role, Match match, boolean win) {
+        this.user = user;
+        this.role = role;
+        this.match = match;
+        this.win = win;
     }
 
     public MatchPlayer(String id) {

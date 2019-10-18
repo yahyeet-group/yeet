@@ -1,54 +1,70 @@
 package com.yahyeet.boardbook.model.firebase.repository;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import com.yahyeet.boardbook.model.entity.User;
 
 import java.util.HashMap;
 import java.util.Map;
 
-class FirebaseUser {
-    private String id;
-    private String name;
+class FirebaseUser extends FirebaseEntity<User> {
+	private String id;
+	private String name;
 
-    public FirebaseUser() {}
+	public FirebaseUser() {
+	}
 
-    public FirebaseUser(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+	public FirebaseUser(String id, String name) {
+		this.id = id;
+		this.name = name;
+	}
 
-    public String getId() {
-        return id;
-    }
+	@Override
+	public Map<String, Object> toMap() {
+		Map<String, Object> data = new HashMap<>();
 
-    public void setId(String id) {
-        this.id = id;
-    }
+		if (name != null) {
+			data.put("name", name);
+		}
 
-    public String getName() {
-        return name;
-    }
+		return data;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	@Override
+	public User toModelType() {
+		User user = new User(name);
+		user.setId(getId());
+		return user;
+	}
 
-    public Map<String, Object> toMap() {
-        Map<String, Object> data = new HashMap<>();
+	public static FirebaseUser fromModelType(User user) {
+		return new FirebaseUser(user.getId(), user.getName());
+	}
 
-        if (name != null) {
-            data.put("name", name);
-        }
+	public static FirebaseUser fromDocument(DocumentSnapshot document) {
+		FirebaseUser firebaseUser = new FirebaseUser();
+		firebaseUser.setId(document.getId());
 
-        return data;
-    }
+		if (document.contains("name")) {
+			firebaseUser.setName(document.getString("name"));
+		}
 
-    public static FirebaseUser fromUser(User user) {
-        return new FirebaseUser(user.getId(), user.getName());
-    }
+		return firebaseUser;
+	}
 
-    public User toUser() {
-        User user = new User(name);
-        user.setId(getId());
-        return user;
-    }
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }
