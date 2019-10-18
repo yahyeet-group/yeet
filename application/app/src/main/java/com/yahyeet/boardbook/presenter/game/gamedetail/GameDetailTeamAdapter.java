@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.activity.home.game.gamedetail;
+package com.yahyeet.boardbook.presenter.game.gamedetail;
 
 import android.view.LayoutInflater;
 import android.view.View;

@@ -14,7 +14,7 @@ public class BoardbookSingleton {
 	private BoardbookSingleton() {
 	}
 
-	static Boardbook getInstance() {
+	public static Boardbook getInstance() {
 		if (instance == null) {
 
 			FirebaseUserRepository userRepository = new FirebaseUserRepository(FirebaseFirestore.getInstance());
