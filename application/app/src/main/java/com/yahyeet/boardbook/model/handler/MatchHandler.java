@@ -92,7 +92,7 @@ public class MatchHandler implements IRepositoryListener<Match> {
 			List<CompletableFuture<Void>> allFuturePopulatedMatchPlayers = populatedMatch
 				.getMatchPlayers()
 				.stream()
-				.map(matchPlayer -> matchPlayerPopulator.populate(matchPlayer).<Void>thenCompose(populatedMatchPlayer -> {
+				.map(matchPlayer -> matchPlayerPopulator.populate(matchPlayer).<Void>thenApply(populatedMatchPlayer -> {
 					matchPlayer.setUser(populatedMatchPlayer.getUser());
 					matchPlayer.setMatch(populatedMatchPlayer.getMatch());
 					matchPlayer.setRole(populatedMatchPlayer.getRole());
