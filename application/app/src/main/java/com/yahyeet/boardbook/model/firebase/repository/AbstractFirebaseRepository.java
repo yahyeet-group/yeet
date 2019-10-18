@@ -107,7 +107,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 	}
 
 	public CompletableFuture<Void> afterSave(TModel entity, AbstractFirebaseEntity<TModel> savedEntity) {
-		return null;
+		return CompletableFuture.completedFuture(null);
 	}
 
 	public abstract String getCollectionName();
