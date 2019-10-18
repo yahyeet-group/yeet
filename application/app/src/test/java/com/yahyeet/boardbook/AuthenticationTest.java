@@ -4,8 +4,8 @@ import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.handler.AuthHandler;
 import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.model.mock.service.MockAuthService;
-import com.yahyeet.boardbook.model.mock.service.MockMatchRepository;
-import com.yahyeet.boardbook.model.mock.service.MockUserRepository;
+import com.yahyeet.boardbook.model.mock.repository.MockMatchRepository;
+import com.yahyeet.boardbook.model.mock.repository.MockUserRepository;
 
 import org.junit.After;
 import org.junit.Assert;
