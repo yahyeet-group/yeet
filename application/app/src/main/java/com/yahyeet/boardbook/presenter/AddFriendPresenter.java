@@ -6,9 +6,9 @@ import android.os.Looper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.activity.homeActivity.friendsFragment.IAddFriendActivity;
+import com.yahyeet.boardbook.activity.home.friends.IAddFriendActivity;
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.activity.homeActivity.friendsFragment.AddFriendsAdapter;
+import com.yahyeet.boardbook.activity.home.friends.AddFriendsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

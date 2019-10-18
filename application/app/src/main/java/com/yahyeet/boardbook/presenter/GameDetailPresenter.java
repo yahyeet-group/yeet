@@ -5,9 +5,9 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.activity.homeActivity.gameFragment.GameDetailActivity.IGameDetailActivity;
+import com.yahyeet.boardbook.activity.home.game.gamedetail.IGameDetailActivity;
 import com.yahyeet.boardbook.model.entity.Game;
-import com.yahyeet.boardbook.activity.homeActivity.gameFragment.GameDetailActivity.GameDetailTeamAdapter;
+import com.yahyeet.boardbook.activity.home.game.gamedetail.GameDetailTeamAdapter;
 
 import java.util.concurrent.ExecutionException;
 

@@ -2,15 +2,13 @@ package com.yahyeet.boardbook.presenter;
 
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.yahyeet.boardbook.activity.accountActivity.IAccountManagerActivity;
+import com.yahyeet.boardbook.activity.account.IAccountManagerActivity;
 
 import android.os.Looper;
 
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.util.EmailFailedException;
 import com.yahyeet.boardbook.model.util.PasswordFailedException;
-
-import java.util.concurrent.CompletionException;
 
 public class AccountManagerPresenter {
 

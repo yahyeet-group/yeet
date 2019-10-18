@@ -5,8 +5,8 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.activity.homeActivity.matchfeedFragment.MatchfeedAdapter;
-import com.yahyeet.boardbook.activity.homeActivity.matchfeedFragment.IMatchfeedFragment;
+import com.yahyeet.boardbook.activity.home.matchfeed.MatchfeedAdapter;
+import com.yahyeet.boardbook.activity.home.matchfeed.IMatchfeedFragment;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.handler.MatchHandlerListener;
 
