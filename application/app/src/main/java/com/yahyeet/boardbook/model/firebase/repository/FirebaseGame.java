@@ -1,26 +1,17 @@
 package com.yahyeet.boardbook.model.firebase.repository;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.yahyeet.boardbook.model.entity.Game;
-import com.yahyeet.boardbook.model.entity.GameRole;
-import com.yahyeet.boardbook.model.entity.GameTeam;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-public class FirebaseGame {
-
-	private String id;
+public class FirebaseGame extends AbstractFirebaseEntity<Game> {
 	private String name;
 	private String description;
-
 	private int difficulty;
 	private int minPlayers;
 	private int maxPlayers;
-
-	private List<FirebaseGameTeam> teams;
 
 	public FirebaseGame() {
 	}
@@ -31,51 +22,16 @@ public class FirebaseGame {
 											int difficulty,
 											int minPlayers,
 											int maxPlayers) {
-		this.id = id;
+		super(id);
 		this.name = name;
 		this.description = description;
 		this.difficulty = difficulty;
 		this.minPlayers = minPlayers;
 		this.maxPlayers = maxPlayers;
-		this.teams = new ArrayList<>();
 
 	}
 
-	public static FirebaseGame fromGame(Game game) {
-		FirebaseGame firebaseGame = new FirebaseGame(
-			game.getId(),
-			game.getName(),
-			game.getDescription(),
-			game.getDifficulty(),
-			game.getMinPlayers(),
-			game.getMaxPlayers()
-		);
-
-		firebaseGame.setTeams(
-			game.getTeams()
-				.stream()
-				.map(FirebaseGameTeam::fromGameTeam)
-				.collect(Collectors.toList())
-		);
-
-		return firebaseGame;
-	}
-
-	public Game toGame() {
-		Game game = new Game(name, description, difficulty, minPlayers, maxPlayers);
-
-		game.setId(getId());
-
-		game.setTeams(
-			getTeams()
-				.stream()
-				.map(FirebaseGameTeam::toGameTeam)
-				.collect(Collectors.toList())
-		);
-
-		return game;
-	}
-
+	@Override
 	public Map<String, Object> toMap() {
 		Map<String, Object> map = new HashMap<>();
 		if (name != null) {
@@ -88,23 +44,58 @@ public class FirebaseGame {
 
 		map.put("difficulty", difficulty);
 
-
 		map.put("minPlayers", minPlayers);
 
-
 		map.put("maxPlayers", maxPlayers);
-
-		map.put("teams", teams.stream().map(FirebaseGameTeam::toMap).collect(Collectors.toList()));
 
 		return map;
 	}
 
-	public String getId() {
-		return id;
+	@Override
+	public Game toModelType() {
+		Game game = new Game(name, description, difficulty, minPlayers, maxPlayers);
+		game.setId(getId());
+		return game;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public static FirebaseGame fromModelType(Game game) {
+		FirebaseGame firebaseGame = new FirebaseGame(
+			game.getId(),
+			game.getName(),
+			game.getDescription(),
+			game.getDifficulty(),
+			game.getMinPlayers(),
+			game.getMaxPlayers()
+		);
+
+		return firebaseGame;
+	}
+
+	public static FirebaseGame fromDocument(DocumentSnapshot document) {
+		FirebaseGame firebaseGame = new FirebaseGame();
+		firebaseGame.setId(document.getId());
+
+		if (document.contains("description")) {
+			firebaseGame.setDescription(document.getString("description"));
+		}
+
+		if (document.contains("difficulty")) {
+			firebaseGame.setDifficulty(document.getLong("difficulty").intValue());
+		}
+
+		if (document.contains("maxPlayers")) {
+			firebaseGame.setMaxPlayers(document.getLong("maxPlayers").intValue());
+		}
+
+		if (document.contains("minPlayers")) {
+			firebaseGame.setMinPlayers(document.getLong("minPlayers").intValue());
+		}
+
+		if (document.contains("name")) {
+			firebaseGame.setName(document.getString("name"));
+		}
+
+		return firebaseGame;
 	}
 
 	public String getName() {
@@ -145,13 +136,5 @@ public class FirebaseGame {
 
 	public void setMaxPlayers(int maxPlayers) {
 		this.maxPlayers = maxPlayers;
-	}
-
-	public List<FirebaseGameTeam> getTeams() {
-		return teams;
-	}
-
-	public void setTeams(List<FirebaseGameTeam> teams) {
-		this.teams = teams;
 	}
 }

@@ -5,41 +5,41 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.yahyeet.boardbook.model.entity.Match;
-import com.yahyeet.boardbook.model.repository.IMatchRepository;
+import com.yahyeet.boardbook.model.entity.GameRole;
+import com.yahyeet.boardbook.model.repository.IGameRoleRepository;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.stream.Collectors;
 
-public class FirebaseMatchRepository extends AbstractFirebaseRepository<Match> implements IMatchRepository {
-	public FirebaseMatchRepository(FirebaseFirestore firestore) {
+public class FirebaseGameRoleRepository extends AbstractFirebaseRepository<GameRole> implements IGameRoleRepository {
+	public FirebaseGameRoleRepository(FirebaseFirestore firestore) {
 		super(firestore);
 	}
 
 	@Override
-	public AbstractFirebaseEntity<Match> fromModelEntityToFirebaseEntity(Match entity) {
-		return FirebaseMatch.fromModelType(entity);
+	public AbstractFirebaseEntity<GameRole> fromModelEntityToFirebaseEntity(GameRole entity) {
+		return FirebaseGameRole.fromModelType(entity);
 	}
 
 	@Override
-	public AbstractFirebaseEntity<Match> fromDocumentToFirebaseEntity(DocumentSnapshot document) {
-		return FirebaseMatch.fromDocument(document);
+	public AbstractFirebaseEntity<GameRole> fromDocumentToFirebaseEntity(DocumentSnapshot document) {
+		return FirebaseGameRole.fromDocument(document);
 	}
 
 	@Override
 	public String getCollectionName() {
-		return "matches";
+		return "game_roles";
 	}
 
 	@Override
-	public CompletableFuture<List<Match>> findMatchesByGameId(String id) {
+	public CompletableFuture<List<GameRole>> findRolesByTeamId(String id) {
 		return CompletableFuture.supplyAsync(() -> {
 			Task<QuerySnapshot> task =
 				getFirestore()
 					.collection(getCollectionName())
-					.whereEqualTo("gameId", id)
+					.whereEqualTo("teamId", id)
 					.get();
 
 			try {
@@ -53,12 +53,12 @@ public class FirebaseMatchRepository extends AbstractFirebaseRepository<Match> i
 			} catch (Exception e) {
 				throw new CompletionException(e);
 			}
-		}).thenApply(firebaseMatches -> {
-			firebaseMatches.forEach(firebaseMatch -> {
-				getCache().put(firebaseMatch.getId(), firebaseMatch);
+		}).thenApply(firebaseGameRoles -> {
+			firebaseGameRoles.forEach(firebaseGameRole -> {
+				getCache().put(firebaseGameRole.getId(), firebaseGameRole);
 			});
 
-			return firebaseMatches
+			return firebaseGameRoles
 				.stream()
 				.map(AbstractFirebaseEntity::toModelType)
 				.collect(Collectors.toList());
