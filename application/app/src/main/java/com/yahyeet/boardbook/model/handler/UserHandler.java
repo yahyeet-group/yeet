@@ -8,6 +8,7 @@ import com.yahyeet.boardbook.model.handler.populator.MatchPopulator;
 import com.yahyeet.boardbook.model.handler.populator.UserPopulator;
 import com.yahyeet.boardbook.model.repository.IGameRepository;
 import com.yahyeet.boardbook.model.repository.IGameRoleRepository;
+import com.yahyeet.boardbook.model.repository.IGameTeamRepository;
 import com.yahyeet.boardbook.model.repository.IMatchPlayerRepository;
 import com.yahyeet.boardbook.model.repository.IMatchRepository;
 import com.yahyeet.boardbook.model.repository.IRepositoryListener;
@@ -32,10 +33,11 @@ public class UserHandler implements IRepositoryListener<User> {
 	public UserHandler(IUserRepository userRepository,
 										 IMatchRepository matchRepository,
 										 IGameRoleRepository gameRoleRepository,
+										 IGameTeamRepository gameTeamRepository,
 										 IGameRepository gameRepository,
 										 IMatchPlayerRepository matchPlayerRepository) {
 		this.userRepository = userRepository;
-		matchPlayerPopulator = new MatchPlayerPopulator(gameRoleRepository, matchRepository, userRepository);
+		matchPlayerPopulator = new MatchPlayerPopulator(gameRoleRepository, gameTeamRepository, matchRepository, userRepository);
 		matchPopulator = new MatchPopulator(gameRepository, matchPlayerRepository);
 		userPopulator = new UserPopulator(matchPlayerRepository, matchRepository, userRepository);
 	}
