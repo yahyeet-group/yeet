@@ -23,8 +23,8 @@ public class MatchHandler implements IRepositoryListener<Match> {
 	private IMatchRepository matchRepository;
 	private List<MatchHandlerListener> listeners = new ArrayList<>();
 
-	MatchPopulator matchPopulator;
-	MatchPlayerPopulator matchPlayerPopulator;
+	private MatchPopulator matchPopulator;
+	private MatchPlayerPopulator matchPlayerPopulator;
 
 	public MatchHandler(IMatchRepository matchRepository,
 											IMatchPlayerRepository matchPlayerRepository,
@@ -33,7 +33,7 @@ public class MatchHandler implements IRepositoryListener<Match> {
 											IUserRepository userRepository) {
 		this.matchPlayerRepository = matchPlayerRepository;
 		this.matchRepository = matchRepository;
-		
+
 		matchPopulator = new MatchPopulator(gameRepository, matchPlayerRepository);
 		matchPlayerPopulator = new MatchPlayerPopulator(gameRoleRepository, matchRepository, userRepository);
 	}
@@ -50,7 +50,7 @@ public class MatchHandler implements IRepositoryListener<Match> {
 					.getMatchPlayers()
 					.stream()
 					.map(matchPlayer -> matchPlayerRepository.save(matchPlayer))
-				.collect(Collectors.toList());
+					.collect(Collectors.toList());
 
 			return CompletableFuture.allOf(savedMatchPlayerFutures.toArray(new CompletableFuture[0]));
 		});

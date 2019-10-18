@@ -12,9 +12,9 @@ import com.yahyeet.boardbook.model.repository.IUserRepository;
 import java.util.concurrent.CompletableFuture;
 
 public class MatchPlayerPopulator {
-	IGameRoleRepository gameRoleRepository;
-	IMatchRepository matchRepository;
-	IUserRepository userRepository;
+	private IGameRoleRepository gameRoleRepository;
+	private IMatchRepository matchRepository;
+	private IUserRepository userRepository;
 
 	public MatchPlayerPopulator(IGameRoleRepository gameRoleRepository, IMatchRepository matchRepository, IUserRepository userRepository) {
 		this.gameRoleRepository = gameRoleRepository;

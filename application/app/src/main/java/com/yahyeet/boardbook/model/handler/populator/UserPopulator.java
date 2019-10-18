@@ -12,9 +12,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class UserPopulator {
-	IMatchPlayerRepository matchPlayerRepository;
-	IMatchRepository matchRepository;
-	IUserRepository userRepository;
+	private IMatchPlayerRepository matchPlayerRepository;
+	private IMatchRepository matchRepository;
+	private IUserRepository userRepository;
 
 	public UserPopulator(IMatchPlayerRepository matchPlayerRepository, IMatchRepository matchRepository, IUserRepository userRepository) {
 		this.matchPlayerRepository = matchPlayerRepository;

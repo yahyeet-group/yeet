@@ -12,6 +12,8 @@ public final class Boardbook {
 	private GameHandler gameHandler;
 	private MatchHandler matchHandler;
 
+	private StatisticsUtil statisticsUtil;
+
 	public Boardbook(AuthHandler authHandler,
 									 UserHandler userHandler,
 									 GameHandler gameHandler,
@@ -21,25 +23,26 @@ public final class Boardbook {
 		this.gameHandler = gameHandler;
 		this.matchHandler = matchHandler;
 		this.authHandler = authHandler;
+		statisticsUtil = new StatisticsUtil();
 	}
-  
-    public AuthHandler getAuthHandler() {
-        return authHandler;
-    }
 
-    public UserHandler getUserHandler() {
-        return userHandler;
-    }
+	public AuthHandler getAuthHandler() {
+		return authHandler;
+	}
 
-    public GameHandler getGameHandler() {
-        return gameHandler;
-    }
+	public UserHandler getUserHandler() {
+		return userHandler;
+	}
 
-    public MatchHandler getMatchHandler() {
-        return matchHandler;
-    }
+	public GameHandler getGameHandler() {
+		return gameHandler;
+	}
 
-    public StatisticsUtil getStatisticsUtil() {
-        return statisticsUtil;
-    }
+	public MatchHandler getMatchHandler() {
+		return matchHandler;
+	}
+
+	public StatisticsUtil getStatisticsUtil() {
+		return statisticsUtil;
+	}
 }

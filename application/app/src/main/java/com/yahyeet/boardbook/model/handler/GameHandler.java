@@ -24,8 +24,8 @@ public class GameHandler implements IRepositoryListener<Game> {
 	private IGameTeamRepository gameTeamRepository;
 	private List<GameHandlerListener> listeners = new ArrayList<>();
 
-	GamePopulator gamePopulator;
-	GameTeamPopulator gameTeamPopulator;
+	private GamePopulator gamePopulator;
+	private GameTeamPopulator gameTeamPopulator;
 
 	public GameHandler(IGameRepository gameRepository,
 										 IGameRoleRepository gameRoleRepository,

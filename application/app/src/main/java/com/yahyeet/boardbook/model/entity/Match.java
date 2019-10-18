@@ -34,6 +34,10 @@ public class Match extends AbstractEntity {
 	}
 
     public MatchPlayer getMatchPlayerByUser(User user){
-     return matchPlayer.stream().filter(matchPlayer -> matchPlayer.getUser().getId().equals(user.getId())).findFirst().get();
+     return matchPlayers
+			 .stream()
+			 .filter(matchPlayer -> matchPlayer.getUser().getId().equals(user.getId()))
+			 .findFirst()
+			 .get();
     }
 }

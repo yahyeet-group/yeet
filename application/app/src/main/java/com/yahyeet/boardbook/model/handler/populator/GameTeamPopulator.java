@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class GameTeamPopulator {
-	IGameRepository gameRepository;
-	IGameRoleRepository gameRoleRepository;
+	private IGameRepository gameRepository;
+	private IGameRoleRepository gameRoleRepository;
 
 	public GameTeamPopulator(IGameRepository gameRepository, IGameRoleRepository gameRoleRepository) {
 		this.gameRepository = gameRepository;

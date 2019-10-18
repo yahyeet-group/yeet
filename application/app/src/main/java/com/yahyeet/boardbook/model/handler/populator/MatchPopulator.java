@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class MatchPopulator {
-	IGameRepository gameRepository;
-	IMatchPlayerRepository matchPlayerRepository;
+	private IGameRepository gameRepository;
+	private IMatchPlayerRepository matchPlayerRepository;
 
 	public MatchPopulator(IGameRepository gameRepository, IMatchPlayerRepository matchPlayerRepository) {
 		this.gameRepository = gameRepository;
