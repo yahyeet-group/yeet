@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
-	private String id;
 	private boolean win;
 	private String playerId;
 	private String roleId;
@@ -18,7 +17,7 @@ public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
 	}
 
 	public FirebaseMatchPlayer(String id, boolean win, String playerId, String roleId, String teamId, String matchId) {
-		this.id = id;
+		super(id);
 		this.win = win;
 		this.playerId = playerId;
 		this.roleId = roleId;
@@ -92,14 +91,6 @@ public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
 		}
 
 		return firebaseMatchPlayer;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public boolean isWin() {

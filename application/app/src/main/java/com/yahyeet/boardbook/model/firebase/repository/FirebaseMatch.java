@@ -7,14 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FirebaseMatch extends AbstractFirebaseEntity<Match> {
-	private String id;
 	private String gameId;
 
 	public FirebaseMatch() {
 	}
 
 	public FirebaseMatch(String id, String gameId) {
-		this.id = id;
+		super(id);
 		this.gameId = gameId;
 	}
 
@@ -47,14 +46,6 @@ public class FirebaseMatch extends AbstractFirebaseEntity<Match> {
 		}
 
 		return firebaseMatch;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getGameId() {
