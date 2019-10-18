@@ -7,12 +7,12 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
 
-import com.yahyeet.boardbook.activity.GameActivity.IGameFragment;
+import com.yahyeet.boardbook.activity.home.game.IGameFragment;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.handler.GameHandler;
 import com.yahyeet.boardbook.model.handler.GameHandlerListener;
-import com.yahyeet.boardbook.presenter.adapter.GameGridAdapter;
-import com.yahyeet.boardbook.presenter.adapter.GameListAdapter;
+import com.yahyeet.boardbook.activity.home.game.GameGridAdapter;
+import com.yahyeet.boardbook.activity.home.game.GameListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +81,12 @@ public class GamePresenter implements GameHandlerListener {
 				gameFragment.enableFragmentInteraction();
 				updateAdapters();
 			});
+		}).exceptionally(e -> {
+			uiHandler.post(() -> {
+				gameFragment.displayLoadingFailed();
+				gameFragment.enableFragmentInteraction();
+			});
+			return null;
 		});
 	}
 
@@ -89,22 +95,6 @@ public class GamePresenter implements GameHandlerListener {
 		gameDatabase.clear();
 		gameDatabase.addAll(findMatchingName(all, query));
 		updateAdapters();
-
-        /*BoardbookSingleton.getInstance().getGameHandler().all().thenAccept(games -> {
-            gameDatabase.clear();
-            if (games != null && games.size() > 0) {
-                games = findMatchingName(games, query);
-
-                // Need to keep same object in listAdapter and this class
-                gameDatabase.addAll(games);
-            }
-
-            uiHandler.post(() -> {
-                gameFragment.enableFragmentInteraction();
-                updateAdapters();
-            });
-
-        });*/
 	}
 
 

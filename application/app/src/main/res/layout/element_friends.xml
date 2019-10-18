@@ -19,6 +19,8 @@
         android:id="@+id/friendName"
         android:layout_width="149dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:text="@string/friend"
         app:layout_constraintStart_toEndOf="@+id/friendPicture"
         app:layout_constraintTop_toTopOf="parent" />

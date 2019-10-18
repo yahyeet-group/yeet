@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.accountActivity.RegisterFragment">
+    tools:context=".activity.account.RegisterFragment">
 
     <Button
         android:id="@+id/registerButton"
         android:layout_width="174dp"
         android:layout_height="82dp"
-        android:layout_marginStart="52dp"
+        android:layout_marginStart="56dp"
         android:layout_marginTop="64dp"
-        android:alpha="0.5"
+        android:alpha="1"
         android:background="@drawable/custom_button"
         android:clickable="false"
         android:text="@string/newAcc"
@@ -89,7 +89,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:alpha="0"
-        android:text="@string/passwordShortText"
+        android:text="@string/passwordLengthError"
         android:textColor="#F10101"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/registerPasswordInput"
@@ -100,7 +100,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:alpha="0"
-        android:text="@string/emailErrorText"
+        android:text="@string/emailFormatError"
         android:textColor="#F10101"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/registerEmailInput"

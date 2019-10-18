@@ -25,12 +25,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/friendSearch" />
 
-    <EditText style="@style/editTextEntry"
+    <EditText
         android:id="@+id/friendSearch"
+        style="@style/editTextEntry"
         android:layout_width="289dp"
         android:layout_height="44dp"
         android:layout_marginTop="60dp"
         android:hint="Search Friends"
+        app:layout_constraintEnd_toStartOf="@+id/addFriendButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

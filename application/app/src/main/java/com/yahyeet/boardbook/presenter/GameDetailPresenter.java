@@ -5,9 +5,9 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.activity.GameActivity.IGameDetailActivity;
+import com.yahyeet.boardbook.activity.home.game.gamedetail.IGameDetailActivity;
 import com.yahyeet.boardbook.model.entity.Game;
-import com.yahyeet.boardbook.presenter.adapter.GameDetailTeamAdapter;
+import com.yahyeet.boardbook.activity.home.game.gamedetail.GameDetailTeamAdapter;
 
 import java.util.concurrent.ExecutionException;
 
@@ -29,6 +29,7 @@ public class GameDetailPresenter {
 	public void initiateGameDetail() {
 		gameDetailActivity.setGameName(game.getName());
 		gameDetailActivity.setGameDescription(game.getDescription());
+		// TODO: Add rules to games, String field
 		gameDetailActivity.setGameRules("");
 	}
 

@@ -1,12 +1,14 @@
 package com.yahyeet.boardbook.presenter;
 
-import com.yahyeet.boardbook.activity.accountActivity.IAccountManagerActivity;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.yahyeet.boardbook.activity.account.IAccountManagerActivity;
 
 import android.os.Looper;
-import android.widget.Toast;
 
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.model.util.LoginFailedException;
+import com.yahyeet.boardbook.model.util.EmailFailedException;
+import com.yahyeet.boardbook.model.util.PasswordFailedException;
 
 public class AccountManagerPresenter {
 
@@ -23,23 +25,33 @@ public class AccountManagerPresenter {
 		}
 	}
 
-	public void loginAccount(String email, String password) throws LoginFailedException {
+	public void loginAccount(String email, String password) throws EmailFailedException, PasswordFailedException {
 
-		if (password.length() <= 6) {
-			throw new LoginFailedException("Password needs to be longer than 6 characters");
+		if (email.isEmpty()) {
+			throw new EmailFailedException("Email can not be empty.");
+		} else if(emailInvalid(email)){
+			throw new EmailFailedException("Email is not in a correct format");
+		}
+
+		if (passwordInvalid(password)) {
+			throw new PasswordFailedException("Password needs to be longer than 6 characters");
 		}
 
 		accountManagerActivity.disableManagerInteraction();
 		BoardbookSingleton.getInstance().getAuthHandler().login(email, password).thenAccept(u -> {
-			// access logged in user from "u"
+
 			finishAccountManager();
+
 		}).exceptionally(e -> {
-			// Handle error ("e")
-			// TODO: Make presenter tell view to act upon different exceptions
+
 			e.printStackTrace();
 			new android.os.Handler(Looper.getMainLooper()).post(() -> {
 				accountManagerActivity.enableManagerInteraction();
-				accountManagerActivity.toastLoginFailed();
+				//TODO: Weird getCause calls
+				if (e.getCause().getCause() instanceof FirebaseAuthInvalidCredentialsException) {
+					accountManagerActivity.loginFailed(new Exception("Incorrect email or password"));
+				}
+
 
 			});
 			return null;
@@ -47,7 +59,19 @@ public class AccountManagerPresenter {
 
 	}
 
-	public void registerAccount(String email, String password, String username) {
+	public void registerAccount(String email, String password, String username) throws EmailFailedException, PasswordFailedException {
+
+		if (email.isEmpty()) {
+			throw new EmailFailedException("Email can not be empty.");
+		} else if(emailInvalid(email)){
+			throw new EmailFailedException("Email is not in a correct format");
+		}
+
+		if (passwordInvalid(password)) {
+			throw new PasswordFailedException("Password needs to be longer than 6 characters");
+		}
+
+
 		accountManagerActivity.disableManagerInteraction();
 		BoardbookSingleton.getInstance().getAuthHandler().signup(email, password, username).thenAccept(u -> {
 			// access logged in user from "u"
@@ -57,7 +81,11 @@ public class AccountManagerPresenter {
 			// TODO: Make presenter tell view to act upon different exceptions
 			new android.os.Handler(Looper.getMainLooper()).post(() -> {
 				accountManagerActivity.enableManagerInteraction();
-				accountManagerActivity.toastRegisterFailed();
+				if (e.getCause().getCause() instanceof FirebaseAuthUserCollisionException) {
+					accountManagerActivity.registerFailed(new EmailFailedException(e.getCause().getCause().getMessage()));
+					//TODO: Hardcoded knowing it will go 2 ways deep, fix in repositories
+				}
+
 			});
 			e.printStackTrace();
 			return null;
@@ -66,6 +94,26 @@ public class AccountManagerPresenter {
 
 	private void finishAccountManager() {
 		accountManagerActivity.finishAccountManager();
+	}
+
+	/**
+	 * Checks if email matches android pattern for valid email
+	 *
+	 * @param email gets compared against android email pattern
+	 * @return if email is valid or not
+	 */
+	private boolean emailInvalid(CharSequence email) {
+		return !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+	}
+
+	/**
+	 * Checks if password is valid or not
+	 *
+	 * @param password to be validated
+	 * @return if password is valid or not
+	 */
+	private boolean passwordInvalid(CharSequence password) {
+		return password.length() < 6;
 	}
 
 }
