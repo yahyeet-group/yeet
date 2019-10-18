@@ -60,7 +60,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 			).exceptionally(e -> {
 				try {
 					CompletableFuture<AbstractFirebaseEntity<TModel>> futureFirebaseEntity =
-						createFirebaseEntity(fromModelEntityToFirebaseEntity(entity));
+						createFirebaseEntityWithId(fromModelEntityToFirebaseEntity(entity));
 
 					CompletableFuture<Void> futureOnSave = futureFirebaseEntity
 						.thenCompose(fbEntity -> afterSave(entity, fbEntity));
@@ -114,8 +114,6 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 
 	private CompletableFuture<AbstractFirebaseEntity<TModel>> createFirebaseEntity(AbstractFirebaseEntity<TModel> firebaseEntity) {
 		return CompletableFuture.supplyAsync(() -> {
-			String collectionName = getCollectionName();
-			Map<String, Object> data = firebaseEntity.toMap();
 			Task<DocumentReference> task = firestore.collection(getCollectionName())
 				.add(firebaseEntity.toMap());
 
@@ -123,6 +121,25 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 				DocumentReference documentReference = Tasks.await(task);
 
 				return documentReference.getId();
+			} catch (Exception e) {
+				throw new CompletionException(e);
+			}
+		}).thenCompose(this::findFirebaseEntityById).thenApply(fbEntity -> {
+			cache.put(fbEntity.getId(), fbEntity);
+
+			return fbEntity;
+		});
+	}
+
+	private CompletableFuture<AbstractFirebaseEntity<TModel>> createFirebaseEntityWithId(AbstractFirebaseEntity<TModel> firebaseEntity) {
+		return CompletableFuture.supplyAsync(() -> {
+			Task<Void> task = firestore.collection(getCollectionName())
+				.document(firebaseEntity.getId()).set(firebaseEntity.toMap());
+
+			try {
+				Tasks.await(task);
+
+				return firebaseEntity.getId();
 			} catch (Exception e) {
 				throw new CompletionException(e);
 			}
