@@ -8,7 +8,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import com.yahyeet.boardbook.model.repository.IMatchPlayerRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -20,12 +19,12 @@ public class FirebaseMatchPlayerRepository extends AbstractFirebaseRepository<Ma
 	}
 
 	@Override
-	public FirebaseEntity<MatchPlayer> fromModelEntityToFirebaseEntity(MatchPlayer entity) {
+	public AbstractFirebaseEntity<MatchPlayer> fromModelEntityToFirebaseEntity(MatchPlayer entity) {
 		return FirebaseMatchPlayer.fromModelType(entity);
 	}
 
 	@Override
-	public FirebaseEntity<MatchPlayer> fromDocumentToFirebaseEntity(DocumentSnapshot document) {
+	public AbstractFirebaseEntity<MatchPlayer> fromDocumentToFirebaseEntity(DocumentSnapshot document) {
 		return FirebaseMatchPlayer.fromDocument(document);
 	}
 
@@ -61,7 +60,7 @@ public class FirebaseMatchPlayerRepository extends AbstractFirebaseRepository<Ma
 
 			return firebaseMatchPlayers
 				.stream()
-				.map(FirebaseEntity::toModelType)
+				.map(AbstractFirebaseEntity::toModelType)
 				.collect(Collectors.toList());
 		});
 	}
@@ -93,7 +92,7 @@ public class FirebaseMatchPlayerRepository extends AbstractFirebaseRepository<Ma
 
 			return firebaseMatchPlayers
 				.stream()
-				.map(FirebaseEntity::toModelType)
+				.map(AbstractFirebaseEntity::toModelType)
 				.collect(Collectors.toList());
 		});
 	}

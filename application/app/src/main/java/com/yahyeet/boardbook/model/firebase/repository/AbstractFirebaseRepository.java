@@ -22,21 +22,21 @@ import java.util.stream.Collectors;
 public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> implements IRepository<TModel> {
 	private FirebaseFirestore firestore;
 
-	private Map<String, FirebaseEntity<TModel>> cache = new HashMap();
+	private Map<String, AbstractFirebaseEntity<TModel>> cache = new HashMap();
 	private List<IRepositoryListener<TModel>> listeners = new ArrayList<>();
 
 	public AbstractFirebaseRepository(FirebaseFirestore firestore) {
 		this.firestore = firestore;
 	}
 
-	public abstract FirebaseEntity<TModel> fromModelEntityToFirebaseEntity(TModel entity);
+	public abstract AbstractFirebaseEntity<TModel> fromModelEntityToFirebaseEntity(TModel entity);
 
-	public abstract FirebaseEntity<TModel> fromDocumentToFirebaseEntity(DocumentSnapshot document);
+	public abstract AbstractFirebaseEntity<TModel> fromDocumentToFirebaseEntity(DocumentSnapshot document);
 
 	@Override
 	public CompletableFuture<TModel> save(TModel entity) {
 		if (entity.getId() == null) {
-			CompletableFuture<FirebaseEntity<TModel>> futureFirebaseEntity =
+			CompletableFuture<AbstractFirebaseEntity<TModel>> futureFirebaseEntity =
 				createFirebaseEntity(fromModelEntityToFirebaseEntity(entity));
 
 			CompletableFuture<Void> futureOnSave = futureFirebaseEntity
@@ -44,10 +44,10 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 
 			return futureFirebaseEntity
 				.thenCombine(futureOnSave, ((firebaseEntity, nothing) -> firebaseEntity))
-				.thenApply(FirebaseEntity::toModelType);
+				.thenApply(AbstractFirebaseEntity::toModelType);
 		} else {
 			return findFirebaseEntityById(entity.getId()).thenCompose(firebaseEntity -> {
-					CompletableFuture<FirebaseEntity<TModel>> futureFirebaseEntity =
+					CompletableFuture<AbstractFirebaseEntity<TModel>> futureFirebaseEntity =
 						updateFirebaseEntity(fromModelEntityToFirebaseEntity(entity));
 
 					CompletableFuture<Void> futureOnSave = futureFirebaseEntity
@@ -55,11 +55,11 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 
 					return futureFirebaseEntity
 						.thenCombine(futureOnSave, ((fbEntity, nothing) -> fbEntity))
-						.thenApply(FirebaseEntity::toModelType);
+						.thenApply(AbstractFirebaseEntity::toModelType);
 				}
 			).exceptionally(e -> {
 				try {
-					CompletableFuture<FirebaseEntity<TModel>> futureFirebaseEntity =
+					CompletableFuture<AbstractFirebaseEntity<TModel>> futureFirebaseEntity =
 						createFirebaseEntity(fromModelEntityToFirebaseEntity(entity));
 
 					CompletableFuture<Void> futureOnSave = futureFirebaseEntity
@@ -67,7 +67,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 
 					return futureFirebaseEntity
 						.thenCombine(futureOnSave, ((fbEntity, nothing) -> fbEntity))
-						.thenApply(FirebaseEntity::toModelType)
+						.thenApply(AbstractFirebaseEntity::toModelType)
 						.get();
 				} catch (ExecutionException | InterruptedException error) {
 					throw new CompletionException(error);
@@ -78,7 +78,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 
 	@Override
 	public CompletableFuture<TModel> find(String id) {
-		return findFirebaseEntityById(id).thenApply(FirebaseEntity::toModelType);
+		return findFirebaseEntityById(id).thenApply(AbstractFirebaseEntity::toModelType);
 	}
 
 	@Override
@@ -106,13 +106,13 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 
 	}
 
-	public CompletableFuture<Void> afterSave(TModel entity, FirebaseEntity<TModel> savedEntity) {
+	public CompletableFuture<Void> afterSave(TModel entity, AbstractFirebaseEntity<TModel> savedEntity) {
 		return null;
 	}
 
 	public abstract String getCollectionName();
 
-	private CompletableFuture<FirebaseEntity<TModel>> createFirebaseEntity(FirebaseEntity<TModel> firebaseEntity) {
+	private CompletableFuture<AbstractFirebaseEntity<TModel>> createFirebaseEntity(AbstractFirebaseEntity<TModel> firebaseEntity) {
 		return CompletableFuture.supplyAsync(() -> {
 			String collectionName = getCollectionName();
 			Map<String, Object> data = firebaseEntity.toMap();
@@ -133,8 +133,8 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 		});
 	}
 
-	private CompletableFuture<FirebaseEntity<TModel>> findFirebaseEntityById(String id) {
-		FirebaseEntity<TModel> cachedEntity = cache.get(id);
+	private CompletableFuture<AbstractFirebaseEntity<TModel>> findFirebaseEntityById(String id) {
+		AbstractFirebaseEntity<TModel> cachedEntity = cache.get(id);
 		if (cachedEntity != null) {
 			return CompletableFuture.completedFuture(cachedEntity);
 		}
@@ -174,7 +174,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 		});
 	}
 
-	private CompletableFuture<FirebaseEntity<TModel>> updateFirebaseEntity(FirebaseEntity firebaseEntity) {
+	private CompletableFuture<AbstractFirebaseEntity<TModel>> updateFirebaseEntity(AbstractFirebaseEntity firebaseEntity) {
 		return CompletableFuture.supplyAsync(() -> {
 			Task<Void> task = firestore.collection(getCollectionName())
 				.document(firebaseEntity.getId())
@@ -188,13 +188,13 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 				throw new CompletionException(e);
 			}
 		}).thenApply(id -> {
-			cache.put(id, (FirebaseEntity<TModel>) firebaseEntity);
+			cache.put(id, (AbstractFirebaseEntity<TModel>) firebaseEntity);
 
 			return id;
 		}).thenCompose(this::findFirebaseEntityById);
 	}
 
-	private CompletableFuture<List<FirebaseEntity<TModel>>> findAllFirebaseEntities() {
+	private CompletableFuture<List<AbstractFirebaseEntity<TModel>>> findAllFirebaseEntities() {
 		return CompletableFuture.supplyAsync(() -> {
 			Task<QuerySnapshot> task = firestore.collection(getCollectionName()).get();
 
@@ -216,7 +216,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 		return firestore;
 	}
 
-	protected Map<String, FirebaseEntity<TModel>> getCache() {
+	protected Map<String, AbstractFirebaseEntity<TModel>> getCache() {
 		return cache;
 	}
 }

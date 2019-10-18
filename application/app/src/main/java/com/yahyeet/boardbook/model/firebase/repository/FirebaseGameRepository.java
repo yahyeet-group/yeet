@@ -11,12 +11,12 @@ public class FirebaseGameRepository extends AbstractFirebaseRepository<Game> imp
 	}
 
 	@Override
-	public FirebaseEntity<Game> fromModelEntityToFirebaseEntity(Game entity) {
+	public AbstractFirebaseEntity<Game> fromModelEntityToFirebaseEntity(Game entity) {
 		return FirebaseGame.fromModelType(entity);
 	}
 
 	@Override
-	public FirebaseEntity<Game> fromDocumentToFirebaseEntity(DocumentSnapshot document) {
+	public AbstractFirebaseEntity<Game> fromDocumentToFirebaseEntity(DocumentSnapshot document) {
 		return FirebaseGame.fromDocument(document);
 	}
 

@@ -23,12 +23,12 @@ public class FirebaseUserRepository extends AbstractFirebaseRepository<User> imp
 	}
 
 	@Override
-	public FirebaseEntity<User> fromModelEntityToFirebaseEntity(User entity) {
+	public AbstractFirebaseEntity<User> fromModelEntityToFirebaseEntity(User entity) {
 		return FirebaseUser.fromModelType(entity);
 	}
 
 	@Override
-	public FirebaseEntity<User> fromDocumentToFirebaseEntity(DocumentSnapshot document) {
+	public AbstractFirebaseEntity<User> fromDocumentToFirebaseEntity(DocumentSnapshot document) {
 		return FirebaseUser.fromDocument(document);
 	}
 
@@ -105,7 +105,7 @@ public class FirebaseUserRepository extends AbstractFirebaseRepository<User> imp
 	}
 
 	@Override
-	public CompletableFuture<Void> afterSave(User entity, FirebaseEntity<User> savedEntity) {
+	public CompletableFuture<Void> afterSave(User entity, AbstractFirebaseEntity<User> savedEntity) {
 		return findFriendsByUserId(savedEntity.getId()).thenApply(friends ->
 			friends
 				.stream()

@@ -8,7 +8,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.repository.IMatchRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -20,12 +19,12 @@ public class FirebaseMatchRepository extends AbstractFirebaseRepository<Match> i
 	}
 
 	@Override
-	public FirebaseEntity<Match> fromModelEntityToFirebaseEntity(Match entity) {
+	public AbstractFirebaseEntity<Match> fromModelEntityToFirebaseEntity(Match entity) {
 		return FirebaseMatch.fromModelType(entity);
 	}
 
 	@Override
-	public FirebaseEntity<Match> fromDocumentToFirebaseEntity(DocumentSnapshot document) {
+	public AbstractFirebaseEntity<Match> fromDocumentToFirebaseEntity(DocumentSnapshot document) {
 		return FirebaseMatch.fromDocument(document);
 	}
 
@@ -61,7 +60,7 @@ public class FirebaseMatchRepository extends AbstractFirebaseRepository<Match> i
 
 			return firebaseMatches
 				.stream()
-				.map(FirebaseEntity::toModelType)
+				.map(AbstractFirebaseEntity::toModelType)
 				.collect(Collectors.toList());
 		});
 	}

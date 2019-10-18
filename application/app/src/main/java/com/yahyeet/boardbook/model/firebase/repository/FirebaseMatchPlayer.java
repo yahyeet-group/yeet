@@ -6,7 +6,7 @@ import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FirebaseMatchPlayer extends FirebaseEntity<MatchPlayer> {
+public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
 	private String id;
 	private boolean win;
 	private String playerId;

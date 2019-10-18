@@ -1,13 +1,12 @@
 package com.yahyeet.boardbook.model.firebase.repository;
 
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import com.yahyeet.boardbook.model.entity.User;
 
 import java.util.HashMap;
 import java.util.Map;
 
-class FirebaseUser extends FirebaseEntity<User> {
+class FirebaseUser extends AbstractFirebaseEntity<User> {
 	private String id;
 	private String name;
 

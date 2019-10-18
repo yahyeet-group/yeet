@@ -8,7 +8,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.yahyeet.boardbook.model.entity.GameRole;
 import com.yahyeet.boardbook.model.repository.IGameRoleRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -20,12 +19,12 @@ public class FirebaseGameRoleRepository extends AbstractFirebaseRepository<GameR
 	}
 
 	@Override
-	public FirebaseEntity<GameRole> fromModelEntityToFirebaseEntity(GameRole entity) {
+	public AbstractFirebaseEntity<GameRole> fromModelEntityToFirebaseEntity(GameRole entity) {
 		return FirebaseGameRole.fromModelType(entity);
 	}
 
 	@Override
-	public FirebaseEntity<GameRole> fromDocumentToFirebaseEntity(DocumentSnapshot document) {
+	public AbstractFirebaseEntity<GameRole> fromDocumentToFirebaseEntity(DocumentSnapshot document) {
 		return FirebaseGameRole.fromDocument(document);
 	}
 
@@ -61,7 +60,7 @@ public class FirebaseGameRoleRepository extends AbstractFirebaseRepository<GameR
 
 			return firebaseGameRoles
 				.stream()
-				.map(FirebaseEntity::toModelType)
+				.map(AbstractFirebaseEntity::toModelType)
 				.collect(Collectors.toList());
 		});
 	}

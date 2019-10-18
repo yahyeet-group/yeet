@@ -7,7 +7,7 @@ import com.yahyeet.boardbook.model.entity.AbstractEntity;
 import java.util.Map;
 import java.util.function.Function;
 
-public abstract class FirebaseEntity<T extends AbstractEntity> {
+public abstract class AbstractFirebaseEntity<T extends AbstractEntity> {
 	private String id;
 	private Timestamp createdAt;
 	private Timestamp updatedAt;
@@ -16,10 +16,10 @@ public abstract class FirebaseEntity<T extends AbstractEntity> {
 
 	public abstract T toModelType();
 
-	public FirebaseEntity() {
+	public AbstractFirebaseEntity() {
 	}
 
-	public FirebaseEntity(String id) {
+	public AbstractFirebaseEntity(String id) {
 		this.id = id;
 	}
 

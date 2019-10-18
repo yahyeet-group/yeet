@@ -7,7 +7,7 @@ import com.yahyeet.boardbook.model.entity.GameTeam;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FirebaseGameRole extends FirebaseEntity<GameRole> {
+public class FirebaseGameRole extends AbstractFirebaseEntity<GameRole> {
     private String id;
     private String name;
     private String teamId;

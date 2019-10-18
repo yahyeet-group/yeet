@@ -6,7 +6,7 @@ import com.yahyeet.boardbook.model.entity.Game;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FirebaseGame extends FirebaseEntity<Game> {
+public class FirebaseGame extends AbstractFirebaseEntity<Game> {
 	private String name;
 	private String description;
 	private int difficulty;
