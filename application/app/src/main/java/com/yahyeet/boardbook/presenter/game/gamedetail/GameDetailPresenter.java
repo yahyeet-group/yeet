@@ -7,15 +7,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.home.game.gamedetail.IGameDetailActivity;
 import com.yahyeet.boardbook.model.entity.Game;
-import com.yahyeet.boardbook.presenter.game.gamedetail.GameDetailTeamAdapter;
+import com.yahyeet.boardbook.model.entity.GameRole;
+import com.yahyeet.boardbook.model.entity.GameTeam;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class GameDetailPresenter {
 
 	private IGameDetailActivity gameDetailActivity;
-	private GameDetailTeamAdapter teamAdapter;
+	private GameDetailAdapter teamAdapter;
 	private Game game;
 
 	public GameDetailPresenter(IGameDetailActivity gameDetailActivity, String gameID) {
@@ -51,7 +54,13 @@ public class GameDetailPresenter {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		teamRecyclerView.setLayoutManager(layoutManager);
 
-		teamAdapter = new GameDetailTeamAdapter(game.getTeams());
+		List<List<GameRole>> allTeamRoleLists = new ArrayList<>();
+
+		for(GameTeam team : game.getTeams()){
+			allTeamRoleLists.add(team.getRoles());
+		}
+
+		teamAdapter = new GameDetailAdapter(game.getTeams(), allTeamRoleLists);
 		teamRecyclerView.setAdapter(teamAdapter);
 	}
 }
