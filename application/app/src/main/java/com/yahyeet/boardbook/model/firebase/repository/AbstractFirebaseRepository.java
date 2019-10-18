@@ -30,17 +30,45 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 	}
 
 	public abstract FirebaseEntity<TModel> fromModelEntityToFirebaseEntity(TModel entity);
+
 	public abstract FirebaseEntity<TModel> fromDocumentToFirebaseEntity(DocumentSnapshot document);
+
 	@Override
 	public CompletableFuture<TModel> save(TModel entity) {
 		if (entity.getId() == null) {
-			return createFirebaseEntity(fromModelEntityToFirebaseEntity(entity)).thenApply(FirebaseEntity::toModelType);
+			CompletableFuture<FirebaseEntity<TModel>> futureFirebaseEntity =
+				createFirebaseEntity(fromModelEntityToFirebaseEntity(entity));
+
+			CompletableFuture<Void> futureOnSave = futureFirebaseEntity
+				.thenCompose(firebaseEntity -> afterSave(entity, firebaseEntity));
+
+			return futureFirebaseEntity
+				.thenCombine(futureOnSave, ((firebaseEntity, nothing) -> firebaseEntity))
+				.thenApply(FirebaseEntity::toModelType);
 		} else {
-			return findFirebaseEntityById(entity.getId()).thenCompose(firebaseEntity ->
-				updateFirebaseEntity(fromModelEntityToFirebaseEntity(entity)).thenApply(FirebaseEntity::toModelType)
+			return findFirebaseEntityById(entity.getId()).thenCompose(firebaseEntity -> {
+					CompletableFuture<FirebaseEntity<TModel>> futureFirebaseEntity =
+						updateFirebaseEntity(fromModelEntityToFirebaseEntity(entity));
+
+					CompletableFuture<Void> futureOnSave = futureFirebaseEntity
+						.thenCompose(fbEntity -> afterSave(entity, fbEntity));
+
+					return futureFirebaseEntity
+						.thenCombine(futureOnSave, ((fbEntity, nothing) -> fbEntity))
+						.thenApply(FirebaseEntity::toModelType);
+				}
 			).exceptionally(e -> {
 				try {
-					return createFirebaseEntity(fromModelEntityToFirebaseEntity(entity)).thenApply(FirebaseEntity::toModelType).get();
+					CompletableFuture<FirebaseEntity<TModel>> futureFirebaseEntity =
+						createFirebaseEntity(fromModelEntityToFirebaseEntity(entity));
+
+					CompletableFuture<Void> futureOnSave = futureFirebaseEntity
+						.thenCompose(fbEntity -> afterSave(entity, fbEntity));
+
+					return futureFirebaseEntity
+						.thenCombine(futureOnSave, ((fbEntity, nothing) -> fbEntity))
+						.thenApply(FirebaseEntity::toModelType)
+						.get();
 				} catch (ExecutionException | InterruptedException error) {
 					throw new CompletionException(error);
 				}
@@ -76,6 +104,10 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 	@Override
 	public void removeListener(IRepositoryListener<TModel> listener) {
 
+	}
+
+	public CompletableFuture<Void> afterSave(TModel entity, FirebaseEntity<TModel> savedEntity) {
+		return null;
 	}
 
 	public abstract String getCollectionName();
@@ -178,5 +210,13 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 				throw new CompletionException(e);
 			}
 		});
+	}
+
+	protected FirebaseFirestore getFirestore() {
+		return firestore;
+	}
+
+	protected Map<String, FirebaseEntity<TModel>> getCache() {
+		return cache;
 	}
 }
