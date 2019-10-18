@@ -149,7 +149,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 					return fromDocumentToFirebaseEntity(document);
 				}
 
-				throw new CompletionException(new Exception("Game not found"));
+				throw new CompletionException(new Exception("Entity not found"));
 			} catch (Exception e) {
 				throw new CompletionException(e);
 			}

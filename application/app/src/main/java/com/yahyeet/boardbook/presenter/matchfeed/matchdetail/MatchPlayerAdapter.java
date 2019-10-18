@@ -1,10 +1,9 @@
-package com.yahyeet.boardbook.activity.homeActivity.matchfeedFragment.matchDetailActivity;
+package com.yahyeet.boardbook.presenter.matchfeed.matchdetail;
 
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -67,7 +66,6 @@ public class MatchPlayerAdapter extends RecyclerView.Adapter<MatchPlayerAdapter.
 
 		holder.tvPlayerName.setText(current.getUser().getName());
 
-		/*
 		if(current.getRole() != null &&
 			current.getRole().getTeam() != null){
 			//TODO: Add in strings.xml
@@ -82,8 +80,6 @@ public class MatchPlayerAdapter extends RecyclerView.Adapter<MatchPlayerAdapter.
 		else{
 			holder.tvTeam.setText("");
 		}
-
-		*/
 
 		if(current.getWin()){
 			holder

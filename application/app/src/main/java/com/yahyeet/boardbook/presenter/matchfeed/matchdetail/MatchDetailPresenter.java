@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.presenter;
+package com.yahyeet.boardbook.presenter.matchfeed.matchdetail;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.home.matchfeed.matchdetail.IMatchDetailActivity;
-import com.yahyeet.boardbook.activity.homeActivity.matchfeedFragment.matchDetailActivity.MatchPlayerAdapter;
+import com.yahyeet.boardbook.presenter.BoardbookSingleton;
+import com.yahyeet.boardbook.presenter.matchfeed.matchdetail.MatchPlayerAdapter;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.GameRole;
 import com.yahyeet.boardbook.model.entity.GameTeam;

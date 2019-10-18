@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.presenter.MatchDetailPresenter;
+import com.yahyeet.boardbook.presenter.matchfeed.matchdetail.MatchDetailPresenter;
 
 public class MatchDetailActivity extends AppCompatActivity implements IMatchDetailActivity {
 
