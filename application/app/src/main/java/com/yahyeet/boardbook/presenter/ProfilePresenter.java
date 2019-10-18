@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.activity.home.matchfeed.MatchfeedAdapter;
+import com.yahyeet.boardbook.presenter.matchfeed.MatchfeedAdapter;
 import com.yahyeet.boardbook.activity.profile.IProfileActivity;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;

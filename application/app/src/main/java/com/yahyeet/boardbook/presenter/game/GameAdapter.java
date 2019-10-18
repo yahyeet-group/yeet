@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.activity.home.game;
+package com.yahyeet.boardbook.presenter.game;
 
 import android.content.Context;
 import android.content.Intent;

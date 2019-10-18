@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.presenter.MatchfeedPresenter;
+import com.yahyeet.boardbook.presenter.matchfeed.MatchfeedPresenter;
 
 import javax.annotation.Nonnull;
 
