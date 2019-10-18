@@ -1,6 +1,7 @@
 package com.yahyeet.boardbook.model.firebase.repository;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.GameTeam;
 
 import java.util.HashMap;
@@ -38,6 +39,7 @@ class FirebaseGameTeam extends AbstractFirebaseEntity<GameTeam> {
 	public GameTeam toModelType() {
 		GameTeam gameTeam = new GameTeam(name);
 		gameTeam.setId(getId());
+		gameTeam.setGame(new Game(gameId));
 		return gameTeam;
 	}
 

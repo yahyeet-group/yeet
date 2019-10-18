@@ -1,6 +1,7 @@
 package com.yahyeet.boardbook.model.firebase.repository;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.Match;
 
 import java.util.HashMap;
@@ -30,7 +31,11 @@ public class FirebaseMatch extends AbstractFirebaseEntity<Match> {
 
 	@Override
 	public Match toModelType() {
-		return new Match(id);
+		Match match = new Match(getId());
+
+		match.setGame(new Game(gameId));
+
+		return match;
 	}
 
 	public static FirebaseMatch fromModelType(Match match) {

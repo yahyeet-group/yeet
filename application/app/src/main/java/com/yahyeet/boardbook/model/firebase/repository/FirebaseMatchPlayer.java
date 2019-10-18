@@ -1,7 +1,11 @@
 package com.yahyeet.boardbook.model.firebase.repository;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.yahyeet.boardbook.model.entity.GameRole;
+import com.yahyeet.boardbook.model.entity.GameTeam;
+import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.MatchPlayer;
+import com.yahyeet.boardbook.model.entity.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +56,26 @@ public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
 
 	@Override
 	public MatchPlayer toModelType() {
-		return new MatchPlayer(id);
+		MatchPlayer matchPlayer = new MatchPlayer(getId());
+		matchPlayer.setMatch(new Match(matchId));
+
+		User user = new User();
+		user.setId(playerId);
+		matchPlayer.setUser(user);
+
+		if (teamId != null) {
+			GameTeam gameTeam = new GameTeam();
+			gameTeam.setId(teamId);
+			matchPlayer.setTeam(gameTeam);
+		}
+
+		if (roleId != null) {
+			GameRole gameRole = new GameRole();
+			gameRole.setId(roleId);
+			matchPlayer.setRole(gameRole);
+		}
+
+		return matchPlayer;
 	}
 
 	public static FirebaseMatchPlayer fromModelType(MatchPlayer matchPlayer) {
