@@ -16,7 +16,6 @@ public class Match extends AbstractEntity {
 		matchPlayers = new ArrayList<>();
 	}
 
-
 	public List<MatchPlayer> getMatchPlayers() {
 		return matchPlayers;
 	}
@@ -33,4 +32,8 @@ public class Match extends AbstractEntity {
 	public void setGame(Game game) {
 		this.game = game;
 	}
+
+    public MatchPlayer getMatchPlayerByUser(User user){
+     return matchPlayer.stream().filter(matchPlayer -> matchPlayer.getUser().getId().equals(user.getId())).findFirst().get();
+    }
 }

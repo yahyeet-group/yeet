@@ -1,5 +1,8 @@
 package com.yahyeet.boardbook.model.entity;
 
+import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class User extends AbstractEntity {

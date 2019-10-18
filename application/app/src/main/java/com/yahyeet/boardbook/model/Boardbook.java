@@ -4,11 +4,10 @@ import com.yahyeet.boardbook.model.handler.AuthHandler;
 import com.yahyeet.boardbook.model.handler.GameHandler;
 import com.yahyeet.boardbook.model.handler.MatchHandler;
 import com.yahyeet.boardbook.model.handler.UserHandler;
+import com.yahyeet.boardbook.model.util.StatisticsUtil;
 
 public final class Boardbook {
-
 	private AuthHandler authHandler;
-
 	private UserHandler userHandler;
 	private GameHandler gameHandler;
 	private MatchHandler matchHandler;
@@ -23,20 +22,24 @@ public final class Boardbook {
 		this.matchHandler = matchHandler;
 		this.authHandler = authHandler;
 	}
+  
+    public AuthHandler getAuthHandler() {
+        return authHandler;
+    }
 
-	public AuthHandler getAuthHandler() {
-		return authHandler;
-	}
+    public UserHandler getUserHandler() {
+        return userHandler;
+    }
 
-	public UserHandler getUserHandler() {
-		return userHandler;
-	}
+    public GameHandler getGameHandler() {
+        return gameHandler;
+    }
 
-	public GameHandler getGameHandler() {
-		return gameHandler;
-	}
+    public MatchHandler getMatchHandler() {
+        return matchHandler;
+    }
 
-	public MatchHandler getMatchHandler() {
-		return matchHandler;
-	}
+    public StatisticsUtil getStatisticsUtil() {
+        return statisticsUtil;
+    }
 }

@@ -6,6 +6,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorError">@color/colorError</item>
+    </style>
+
+    <style name="editTextEntry" >
+        <item name="android:layout_gravity">left</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:lines">1</item>
+        <item name="android:singleLine">true</item>
     </style>
 
 </resources>
