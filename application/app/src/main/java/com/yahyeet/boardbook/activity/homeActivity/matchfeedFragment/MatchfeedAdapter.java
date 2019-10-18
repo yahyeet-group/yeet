@@ -1,6 +1,7 @@
 package com.yahyeet.boardbook.activity.homeActivity.matchfeedFragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.homeActivity.gameFragment.GameDetailActivity.GameDetailActivity;
+import com.yahyeet.boardbook.activity.homeActivity.matchfeedFragment.matchDetailActivity.MatchDetailActivity;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.util.StatisticsUtil;
+import com.yahyeet.boardbook.presenter.MatchDetailPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,25 +30,27 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	private static final String TAG = "MatchfeedAdapter";
 	private static final int PROFILE_HEADER_VIEW = 1;
 	private Context context;
-	private List<Match> myDataset;
+	private List<Match> matches;
 
 	//TODO: Naming might need to change
 	private User user;
 	private StatisticsUtil statisticsUtil;
 
 
-	public MatchfeedAdapter(List<Match> dataset) {
+	public MatchfeedAdapter(Context context, List<Match> dataset) {
 		if (dataset != null)
-			myDataset = dataset;
+			matches = dataset;
 		else
-			myDataset = new ArrayList<>();
+			matches = new ArrayList<>();
+
+		this.context = context;
 	}
 
 	public MatchfeedAdapter(Context context, List<Match> dataset, User user, StatisticsUtil statisticsUtil) {
 		if (dataset != null)
-			myDataset = dataset;
+			matches = dataset;
 		else
-			myDataset = new ArrayList<>();
+			matches = new ArrayList<>();
 
 		this.context = context;
 		this.user = user;
@@ -126,11 +132,18 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				vh.playersText.setText("6 Players");
 				vh.dateText.setText("Some Date");
 				vh.roleText.setText("(" + "Merlin" + ")");
+
+				vh.itemView.setOnClickListener(view -> {
+					Intent intent = new Intent(context, MatchDetailActivity.class);
+					intent.putExtra("Match", matches.get(position).getId());
+					context.startActivity(intent);
+				});
+
 				//vh.imageView.setImageURL();
 			} else if (holder instanceof HeaderViewHolder) {
 				HeaderViewHolder vh = (HeaderViewHolder) holder;
 				vh.tvUsername.setText(user.getName());
-				double stats = statisticsUtil.getWinrateFromMatches(myDataset, user);
+				double stats = statisticsUtil.getWinrateFromMatches(matches, user);
 				int percent = (int) (100 * stats);
 				vh.tvGamesPlayed.setText(user.getMatches().size());
 				vh.tvWinrate.setText(percent + "%");
@@ -143,15 +156,15 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 	@Override
 	public int getItemCount() {
-		if (myDataset == null) {
+		if (matches == null) {
 			return 0;
 		}
 
-		if (myDataset.size() == 0) {
+		if (matches.size() == 0) {
 			return 1;
 		}
 
-		return myDataset.size() + 1;
+		return matches.size() + 1;
 	}
 
 	@Override

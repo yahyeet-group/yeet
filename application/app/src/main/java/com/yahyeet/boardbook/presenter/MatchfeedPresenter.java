@@ -46,7 +46,7 @@ public class MatchfeedPresenter implements MatchHandlerListener {
 		matchDatabase = new ArrayList<>();
 		for (int i = 0; i < 20; i++)
 			matchDatabase.add(new Match());
-		matchfeedAdapter = new MatchfeedAdapter(matchDatabase);
+		matchfeedAdapter = new MatchfeedAdapter(viewContext, matchDatabase);
 		matchRecyclerView.setAdapter(matchfeedAdapter);
 	}
 

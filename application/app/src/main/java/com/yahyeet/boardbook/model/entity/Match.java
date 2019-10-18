@@ -4,10 +4,12 @@ import java.util.List;
 
 public class Match extends AbstractEntity {
     private List<MatchPlayer> players;
+    private Game game;
 
-    public Match(String id, List<MatchPlayer> players) {
+    public Match(String id, List<MatchPlayer> players, Game game) {
         super(id);
         this.players = players;
+        this.game = game;
     }
 
     public Match() {
@@ -28,5 +30,9 @@ public class Match extends AbstractEntity {
             }
         }
         return null;
+    }
+
+    public Game getGame() {
+        return game;
     }
 }

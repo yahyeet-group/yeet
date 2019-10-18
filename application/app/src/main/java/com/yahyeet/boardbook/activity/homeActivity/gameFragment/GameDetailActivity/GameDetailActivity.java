@@ -20,11 +20,7 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
 	private ImageView gameImage;
 	private RecyclerView teamRecyclerView;
 
-	/**
-	 * Binds xml items and creates new presenter
-	 *
-	 * @param savedInstanceState sent to super
-	 */
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
