@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.presenter.GameDetailPresenter;
+import com.yahyeet.boardbook.presenter.game.gamedetail.GameDetailPresenter;
 
 public class GameDetailActivity extends AppCompatActivity implements IGameDetailActivity {
 

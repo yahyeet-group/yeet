@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.activity.home.matchfeed;
+package com.yahyeet.boardbook.presenter.matchfeed;
 
 import android.content.Context;
 import android.util.Log;

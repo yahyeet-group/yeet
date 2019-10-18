@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.activity.home.friends;
+package com.yahyeet.boardbook.presenter.friends.addfriends;
 
 import android.view.LayoutInflater;
 import android.view.View;

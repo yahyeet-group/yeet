@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.presenter;
+package com.yahyeet.boardbook.presenter.game;
 
 import android.content.Context;
 import android.os.Handler;
@@ -11,8 +11,7 @@ import com.yahyeet.boardbook.activity.home.game.IGameFragment;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.handler.GameHandler;
 import com.yahyeet.boardbook.model.handler.GameHandlerListener;
-import com.yahyeet.boardbook.activity.home.game.GameGridAdapter;
-import com.yahyeet.boardbook.activity.home.game.GameListAdapter;
+import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
 import java.util.ArrayList;
 import java.util.List;
