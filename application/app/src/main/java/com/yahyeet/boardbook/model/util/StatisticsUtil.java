@@ -14,7 +14,7 @@ public class StatisticsUtil {
 
 		for (Match match : matches) {
 			MatchPlayer mp = match.getMatchPlayerByUser(user);
-			if(mp != null && mp.isWin()){
+			if(mp != null && mp.getWin()){
 				numberOfWins++;
 			}
 		}

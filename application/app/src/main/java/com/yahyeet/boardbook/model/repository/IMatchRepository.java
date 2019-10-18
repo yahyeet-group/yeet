@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public interface IMatchRepository extends IRepository<Match> {
-    CompletableFuture<List<Match>> findMatchesByUserId(String id);
+    CompletableFuture<List<Match>> findMatchesByGameId(String id);
 }
