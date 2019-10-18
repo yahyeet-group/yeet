@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.presenter.FriendsPresenter;
+import com.yahyeet.boardbook.presenter.friends.FriendsPresenter;
 
 import javax.annotation.Nonnull;
 

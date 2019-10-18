@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.activity.home.friends;
+package com.yahyeet.boardbook.presenter.friends;
 
 import android.content.Context;
 import android.content.Intent;
