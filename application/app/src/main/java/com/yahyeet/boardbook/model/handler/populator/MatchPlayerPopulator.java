@@ -23,7 +23,7 @@ public class MatchPlayerPopulator {
 	}
 
 	public CompletableFuture<MatchPlayer> populate(MatchPlayer matchPlayer) {
-		MatchPlayer populatedMatchPlayer = new MatchPlayer(matchPlayer.getWin());
+		MatchPlayer populatedMatchPlayer = new MatchPlayer(null, null, null, matchPlayer.getWin());
 		populatedMatchPlayer.setId(matchPlayer.getId());
 
 		CompletableFuture<GameRole> futureGameRole = gameRoleRepository.find(matchPlayer.getRole().getId());
