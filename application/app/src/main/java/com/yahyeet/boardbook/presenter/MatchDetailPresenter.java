@@ -4,10 +4,9 @@ import android.content.Context;
 import android.content.res.Resources;
 
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.activity.homeActivity.matchfeedFragment.matchDetailActivity.IMatchDetailActivity;
+import com.yahyeet.boardbook.activity.home.matchfeed.matchdetail.IMatchDetailActivity;
 import com.yahyeet.boardbook.activity.homeActivity.matchfeedFragment.matchDetailActivity.MatchPlayerAdapter;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.GameRole;
@@ -16,9 +15,6 @@ import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import com.yahyeet.boardbook.model.entity.User;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class MatchDetailPresenter {
 
@@ -34,14 +30,40 @@ public class MatchDetailPresenter {
 			// TODO: What to do here?
 		}*/
 
-		List<MatchPlayer> playerList = new ArrayList<>();
-		playerList.add(new MatchPlayer("", new User("Vex"), new GameRole("Morganna"), new GameTeam("Evil"), true));
-		playerList.add(new MatchPlayer("", new User("Nox"), new GameRole("Merlin"), new GameTeam("Good"), false));
-		playerList.add(new MatchPlayer("", new User("Håll"), null, new GameTeam("Good"), false));
-		playerList.add(new MatchPlayer("", new User("Rosen"), new GameRole("Servant of Merlin"), null, false));
+
 		Game game = new Game("Avalonian", "", 0, 0, 0);
 
-		match = new Match("", playerList, game);
+		GameTeam team1 = new GameTeam("Evil");
+		team1.addRole(new GameRole("Morganna"));
+		team1.addRole(new GameRole("Mordred"));
+
+		game.addTeam(team1);
+
+		GameTeam team2 = new GameTeam("Good");
+		team2.addRole(new GameRole("Merlin"));
+		team2.addRole(new GameRole("Servant of Merlin"));
+
+		game.addTeam(team2);
+
+		BoardbookSingleton.getInstance().getGameHandler().save(game).thenCompose(savedGame -> {
+			User liUser = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
+
+			MatchPlayer player1 = new MatchPlayer(liUser, savedGame.getTeams().get(0).getRoles().get(0), null, true);
+			MatchPlayer player2 = new MatchPlayer(liUser, savedGame.getTeams().get(1).getRoles().get(0), null, false);
+
+			Match newMatch = new Match();
+			newMatch.setGame(savedGame);
+			newMatch.addMatchPlayer(player1);
+			newMatch.addMatchPlayer(player2);
+
+			return BoardbookSingleton.getInstance().getMatchHandler().save(match);
+		}).thenAccept(createdMatch -> {
+			match = createdMatch;
+		}).exceptionally(e -> {
+			e.printStackTrace();
+			return null;
+		});
+
 
 	}
 
@@ -63,11 +85,11 @@ public class MatchDetailPresenter {
 	 */
 	public void enableMatchplayerAdapter(RecyclerView matchplayerRecyclerView, Context viewContext, Resources resources) {
 
-		RecyclerView.LayoutManager layoutManager = new GridLayoutManager(viewContext, 2);
+		RecyclerView.LayoutManager layoutManager = new GridLayoutManager(viewContext, 1);
 
 		matchplayerRecyclerView.setLayoutManager(layoutManager);
 
-		matchPlayerAdapter = new MatchPlayerAdapter(match.getPlayers(), resources);
+		matchPlayerAdapter = new MatchPlayerAdapter(match.getMatchPlayers(), resources);
 		matchplayerRecyclerView.setAdapter(matchPlayerAdapter);
 	}
 	

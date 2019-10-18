@@ -1,51 +1,91 @@
 package com.yahyeet.boardbook.model.firebase.repository;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.yahyeet.boardbook.model.entity.GameRole;
 import com.yahyeet.boardbook.model.entity.GameTeam;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class FirebaseGameRole {
+public class FirebaseGameRole extends AbstractFirebaseEntity<GameRole> {
+	private String id;
+	private String name;
+	private String teamId;
 
-    private String name;
+	public FirebaseGameRole() {
+	}
 
-    public FirebaseGameRole() {
-    }
+	public FirebaseGameRole(String id, String name, String teamId) {
+		this.id = id;
+		this.name = name;
+		this.teamId = teamId;
+	}
 
-    FirebaseGameRole(String name) {
-        this.name = name;
-    }
+	@Override
+	public Map<String, Object> toMap() {
+		Map<String, Object> map = new HashMap<>();
 
+		if (name != null) {
+			map.put("name", name);
+		}
 
-    static FirebaseGameRole fromGameRole(GameRole gameRole) {
-        return new FirebaseGameRole(gameRole.getName());
-    }
+		if (teamId != null) {
+			map.put("teamId", teamId);
+		}
 
-    GameRole toGameRole(){
-        return new GameRole(name);
-    }
+		return map;
+	}
 
+	@Override
+	public GameRole toModelType() {
+		GameRole gameRole = new GameRole(name);
+		gameRole.setId(id);
+		GameTeam gameTeam = new GameTeam();
+		gameTeam.setId(teamId);
+		gameRole.setTeam(gameTeam);
+		return gameRole;
+	}
 
-    Map<String, Object> toMap() {
-        Map<String, Object> map = new HashMap<>();
+	public static FirebaseGameRole fromModelType(GameRole gameRole) {
+		return new FirebaseGameRole(gameRole.getId(), gameRole.getName(), gameRole.getTeam().getId());
+	}
 
-        if (name != null) {
-            map.put("name", name);
-        }
+	public static FirebaseGameRole fromDocument(DocumentSnapshot document) {
+		FirebaseGameRole firebaseGameRole = new FirebaseGameRole();
+		firebaseGameRole.setId(document.getId());
 
-        return map;
-    }
+		if (document.contains("name")) {
+			firebaseGameRole.setName(document.getString("name"));
+		}
 
-    public String getName() {
-        return name;
-    }
+		if (document.contains("teamId")) {
+			firebaseGameRole.setTeamId(document.getString("teamId"));
+		}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+		return firebaseGameRole;
+	}
 
+	public String getName() {
+		return name;
+	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getTeamId() {
+		return teamId;
+	}
+
+	public void setTeamId(String teamId) {
+		this.teamId = teamId;
+	}
 }

@@ -1,38 +1,44 @@
 package com.yahyeet.boardbook.model.entity;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Match extends AbstractEntity {
-    private List<MatchPlayer> players;
-    private Game game;
+	private List<MatchPlayer> matchPlayers = new ArrayList<>();
+	private Game game;
 
-    public Match(String id, List<MatchPlayer> players, Game game) {
-        super(id);
-        this.players = players;
-        this.game = game;
-    }
+	public Match() {
+		matchPlayers = new ArrayList<>();
+	}
 
-    public Match() {
-    }
+	public Match(String id) {
+		super(id);
+	}
 
-    public List<MatchPlayer> getPlayers() {
-        return players;
-    }
+	public List<MatchPlayer> getMatchPlayers() {
+		return matchPlayers;
+	}
 
-    public void setPlayers(List<MatchPlayer> players) {
-        this.players = players;
-    }
+	public void addMatchPlayer(MatchPlayer matchPlayer) {
+		matchPlayer.setMatch(this);
+		matchPlayers.add(matchPlayer);
+	}
 
-    public MatchPlayer getMatchPlayerByUser(User user){
-        for (MatchPlayer player: players) {
-            if(player.getUser().equals(user)){
-                return player;
-            }
-        }
-        return null;
-    }
+	public Game getGame() {
+		return game;
+	}
 
-    public Game getGame() {
-        return game;
-    }
+	public void setGame(Game game) {
+		this.game = game;
+	}
+
+	public MatchPlayer getMatchPlayerByUser(User user) {
+		Optional<MatchPlayer> optionalMatchPlayer = matchPlayers
+			.stream()
+			.filter(matchPlayer -> matchPlayer.getUser().getId().equals(user.getId()))
+			.findFirst();
+
+		return optionalMatchPlayer.orElse(null);
+	}
 }

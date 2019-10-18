@@ -24,15 +24,15 @@ public class StatisticsUtilTest {
 		user.setId("hej");
 		StatisticsUtil stat = new StatisticsUtil();
 
-		List<Match> matches = new ArrayList<>();
-		List<MatchPlayer> matchPlayers = new ArrayList<>();
-		matchPlayers.add(new MatchPlayer("<3", user, new GameRole("he"), new GameTeam("sh"), false));
-		matches.add(new Match("i", matchPlayers));
-		matchPlayers = new ArrayList<>();
-		matchPlayers.add(new MatchPlayer("<3", user, new GameRole("he"), new GameTeam("sh"), true));
-		matches.add(new Match("i", matchPlayers));
+		Match lostMatch = new Match();
+		lostMatch.addMatchPlayer(new MatchPlayer(user, new GameRole("he"), null, false));
+		user.addMatch(lostMatch);
 
-		double d = stat.getWinrateFromMatches(matches, user);
+		Match wonMatch = new Match();
+		wonMatch.addMatchPlayer(new MatchPlayer(user, new GameRole("he"), null, true));
+		user.addMatch(wonMatch);
+
+		double d = stat.getWinrateFromMatches(user.getMatches(), user);
 
 		assertEquals(0.5, d);
 	}
@@ -43,11 +43,9 @@ public class StatisticsUtilTest {
 		user.setId("hej");
 		StatisticsUtil stat = new StatisticsUtil();
 
-		List<Match> matches = new ArrayList<>();
-		List<MatchPlayer> matchPlayers = new ArrayList<>();
-		matches.add(new Match("i", matchPlayers));
+		user.addMatch(new Match("i"));
 
-		double d = stat.getWinrateFromMatches(matches, user);
+		double d = stat.getWinrateFromMatches(user.getMatches(), user);
 
 		assertEquals(0.0, d);
 	}

@@ -7,12 +7,12 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
 
-import com.yahyeet.boardbook.activity.homeActivity.gameFragment.IGameFragment;
+import com.yahyeet.boardbook.activity.home.game.IGameFragment;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.handler.GameHandler;
 import com.yahyeet.boardbook.model.handler.GameHandlerListener;
-import com.yahyeet.boardbook.activity.homeActivity.gameFragment.GameGridAdapter;
-import com.yahyeet.boardbook.activity.homeActivity.gameFragment.GameListAdapter;
+import com.yahyeet.boardbook.activity.home.game.GameGridAdapter;
+import com.yahyeet.boardbook.activity.home.game.GameListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
