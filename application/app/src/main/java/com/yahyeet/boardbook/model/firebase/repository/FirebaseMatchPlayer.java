@@ -60,8 +60,8 @@ public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
 			matchPlayer.getId(),
 			matchPlayer.getWin(),
 			matchPlayer.getUser().getId(),
-			matchPlayer.getTeam() != null ? matchPlayer.getTeam().getId() : null,
 			matchPlayer.getRole() != null ? matchPlayer.getRole().getId() : null,
+			matchPlayer.getTeam() != null ? matchPlayer.getTeam().getId() : null,
 			matchPlayer.getMatch().getId()
 		);
 	}
