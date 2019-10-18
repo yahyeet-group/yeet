@@ -107,7 +107,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 	}
 
 	public CompletableFuture<Void> afterSave(TModel entity, AbstractFirebaseEntity<TModel> savedEntity) {
-		return null;
+		return CompletableFuture.completedFuture(null);
 	}
 
 	public abstract String getCollectionName();
@@ -166,7 +166,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 					return fromDocumentToFirebaseEntity(document);
 				}
 
-				throw new CompletionException(new Exception("Game not found"));
+				throw new CompletionException(new Exception("Entity not found"));
 			} catch (Exception e) {
 				throw new CompletionException(e);
 			}

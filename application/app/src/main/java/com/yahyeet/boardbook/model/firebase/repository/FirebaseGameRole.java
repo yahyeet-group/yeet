@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FirebaseGameRole extends AbstractFirebaseEntity<GameRole> {
-	private String id;
 	private String name;
 	private String teamId;
 
@@ -16,7 +15,7 @@ public class FirebaseGameRole extends AbstractFirebaseEntity<GameRole> {
 	}
 
 	public FirebaseGameRole(String id, String name, String teamId) {
-		this.id = id;
+		super(id);
 		this.name = name;
 		this.teamId = teamId;
 	}
@@ -39,7 +38,7 @@ public class FirebaseGameRole extends AbstractFirebaseEntity<GameRole> {
 	@Override
 	public GameRole toModelType() {
 		GameRole gameRole = new GameRole(name);
-		gameRole.setId(id);
+		gameRole.setId(getId());
 		GameTeam gameTeam = new GameTeam();
 		gameTeam.setId(teamId);
 		gameRole.setTeam(gameTeam);
@@ -71,14 +70,6 @@ public class FirebaseGameRole extends AbstractFirebaseEntity<GameRole> {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getTeamId() {

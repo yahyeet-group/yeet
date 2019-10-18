@@ -7,14 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 class FirebaseUser extends AbstractFirebaseEntity<User> {
-	private String id;
 	private String name;
 
 	public FirebaseUser() {
 	}
 
 	public FirebaseUser(String id, String name) {
-		this.id = id;
+		super(id);
 		this.name = name;
 	}
 
@@ -49,14 +48,6 @@ class FirebaseUser extends AbstractFirebaseEntity<User> {
 		}
 
 		return firebaseUser;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getName() {
