@@ -12,7 +12,7 @@ public abstract class AbstractFirebaseEntity<T extends AbstractEntity> {
 	private Timestamp createdAt;
 	private Timestamp updatedAt;
 
-	public abstract Map<String, Object> IatoMap();
+	public abstract Map<String, Object> toMap();
 
 	public abstract T toModelType();
 
