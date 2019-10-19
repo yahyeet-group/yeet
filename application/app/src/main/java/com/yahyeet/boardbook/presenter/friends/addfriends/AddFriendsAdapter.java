@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +58,6 @@ public class AddFriendsAdapter extends RecyclerView.Adapter<AddFriendsAdapter.Ad
 	public void onBindViewHolder(@NonNull AddFriendsViewHolder holder, int position) {
 
 		holder.userName.setText(allUsers.get(position).getName());
-		//holder.userPicture.setImageURI();
 
 
 	}

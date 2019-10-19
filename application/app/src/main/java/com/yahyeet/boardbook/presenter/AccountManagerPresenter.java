@@ -50,6 +50,8 @@ public class AccountManagerPresenter {
 				if (e.getCause().getCause() instanceof FirebaseAuthInvalidCredentialsException) {
 					accountManagerActivity.loginFailed(new Exception("Incorrect email or password"));
 				}
+				else
+					accountManagerActivity.loginFailed(new Exception("Account not found"));
 
 
 			});
