@@ -25,9 +25,7 @@ public class AuthenticationTest {
 	public void initTest() {
 		authenticationUsers = new ArrayList<>();
 		mockAuthService = new MockAuthService(authenticationUsers);
-		MockUserRepository mockUserRepository = new MockUserRepository();
-		UserHandler userHandler = new UserHandler(mockUserRepository, new MockMatchRepository(mockUserRepository));
-		authHandler = new AuthHandler(mockAuthService, userHandler);
+		authHandler = new AuthHandler(mockAuthService);
 	}
 
 	@After
