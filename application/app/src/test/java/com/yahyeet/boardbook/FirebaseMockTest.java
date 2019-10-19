@@ -52,9 +52,9 @@ public class FirebaseMockTest {
 
         boardbook = new Boardbook(
                 new AuthHandler(authService),
-                new UserHandler(userRepository, matchRepository, roleRepository, gameRepository, playerRepository),
+                new UserHandler(userRepository, matchRepository, roleRepository, teamRepository,gameRepository, playerRepository),
                 new GameHandler(gameRepository, roleRepository, teamRepository, matchRepository),
-                new MatchHandler(matchRepository, playerRepository, gameRepository, roleRepository, userRepository)
+                new MatchHandler(matchRepository, playerRepository, gameRepository, roleRepository, teamRepository, userRepository)
         );
 
     }
