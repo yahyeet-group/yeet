@@ -49,12 +49,16 @@ public class MatchDetailActivity extends AppCompatActivity implements IMatchDeta
 		tvName.setText(name);
 	}
 
-	/**
-	 * Initiates activity and enables team list
-	 */
-	protected void onStart() {
-		super.onStart();
-		matchDetailPresenter.initiateGameDetail();
+	// Weird that presenter tells activity to send its information back to presenter
+	// Neccessary because activity cant send info before presenter has its match from database
+	@Override
+	public void initiateMatchDetailList(){
 		matchDetailPresenter.enableMatchplayerAdapter(rvMatchPlayers, this, getResources());
 	}
+
+
+
+
+
+
 }
