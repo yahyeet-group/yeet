@@ -3,9 +3,11 @@ package com.yahyeet.boardbook.presenter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.yahyeet.boardbook.model.Boardbook;
+import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.firebase.repository.FirebaseGameRepository;
 import com.yahyeet.boardbook.model.firebase.repository.FirebaseGameRoleRepository;
 import com.yahyeet.boardbook.model.firebase.repository.FirebaseGameTeamRepository;
+import com.yahyeet.boardbook.model.firebase.repository.FirebaseMatchPlayer;
 import com.yahyeet.boardbook.model.firebase.repository.FirebaseMatchPlayerRepository;
 import com.yahyeet.boardbook.model.firebase.repository.FirebaseMatchRepository;
 import com.yahyeet.boardbook.model.firebase.repository.FirebaseUserRepository;
@@ -18,7 +20,6 @@ import com.yahyeet.boardbook.model.service.IAuthService;
 
 public class BoardbookSingleton {
 	private static Boardbook instance;
-	private static final String FIREBASE_COLLECTION_PREFIX = "";
 
 	private BoardbookSingleton() {
 	}
@@ -26,17 +27,11 @@ public class BoardbookSingleton {
 	public static Boardbook getInstance() {
 		if (instance == null) {
 			FirebaseUserRepository userRepository = new FirebaseUserRepository(FirebaseFirestore.getInstance());
-			userRepository.setCollectionNamePrefix(FIREBASE_COLLECTION_PREFIX);
 			FirebaseGameRepository gameRepository = new FirebaseGameRepository(FirebaseFirestore.getInstance());
-			gameRepository.setCollectionNamePrefix(FIREBASE_COLLECTION_PREFIX);
 			FirebaseMatchRepository matchRepository = new FirebaseMatchRepository(FirebaseFirestore.getInstance());
-			matchRepository.setCollectionNamePrefix(FIREBASE_COLLECTION_PREFIX);
 			FirebaseGameRoleRepository gameRoleRepository = new FirebaseGameRoleRepository(FirebaseFirestore.getInstance());
-			gameRoleRepository.setCollectionNamePrefix(FIREBASE_COLLECTION_PREFIX);
 			FirebaseGameTeamRepository gameTeamRepository = new FirebaseGameTeamRepository(FirebaseFirestore.getInstance());
-			gameTeamRepository.setCollectionNamePrefix(FIREBASE_COLLECTION_PREFIX);
 			FirebaseMatchPlayerRepository matchPlayerRepository = new FirebaseMatchPlayerRepository(FirebaseFirestore.getInstance());
-			matchPlayerRepository.setCollectionNamePrefix(FIREBASE_COLLECTION_PREFIX);
 
 			GameHandler gameHandler = new GameHandler(gameRepository, gameRoleRepository, gameTeamRepository, matchRepository);
 			MatchHandler matchHandler = new MatchHandler(matchRepository, matchPlayerRepository, gameRepository, gameRoleRepository, gameTeamRepository, userRepository);
