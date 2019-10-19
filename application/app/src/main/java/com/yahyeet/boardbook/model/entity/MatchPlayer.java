@@ -3,13 +3,14 @@ package com.yahyeet.boardbook.model.entity;
 public class MatchPlayer extends AbstractEntity {
     private User user;
     private GameRole role;
+    private GameTeam team;
     private Match match;
     private boolean win;
 
-    public MatchPlayer(User user, GameRole role, Match match, boolean win) {
+    public MatchPlayer(User user, GameRole role, GameTeam team, boolean win) {
         this.user = user;
         this.role = role;
-        this.match = match;
+        this.team = team;
         this.win = win;
     }
 
@@ -47,5 +48,13 @@ public class MatchPlayer extends AbstractEntity {
 
     public void setWin(boolean win) {
         this.win = win;
+    }
+
+    public GameTeam getTeam() {
+        return team;
+    }
+
+    public void setTeam(GameTeam team) {
+        this.team = team;
     }
 }

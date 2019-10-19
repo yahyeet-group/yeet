@@ -1,26 +1,31 @@
 package com.yahyeet.boardbook.model.firebase.repository;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.yahyeet.boardbook.model.entity.GameRole;
+import com.yahyeet.boardbook.model.entity.GameTeam;
+import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.MatchPlayer;
+import com.yahyeet.boardbook.model.entity.User;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
-	private String id;
 	private boolean win;
 	private String playerId;
 	private String roleId;
+	private String teamId;
 	private String matchId;
 
 	public FirebaseMatchPlayer() {
 	}
 
-	public FirebaseMatchPlayer(String id, boolean win, String playerId, String roleId, String matchId) {
-		this.id = id;
+	public FirebaseMatchPlayer(String id, boolean win, String playerId, String roleId, String teamId, String matchId) {
+		super(id);
 		this.win = win;
 		this.playerId = playerId;
 		this.roleId = roleId;
+		this.teamId = teamId;
 		this.matchId = matchId;
 	}
 
@@ -30,15 +35,19 @@ public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
 
 		if (matchId != null) {
 			map.put("matchId", matchId);
+		} else {
+			throw new IllegalArgumentException("Match id must be set");
 		}
 
 		if (playerId != null) {
 			map.put("playerId", playerId);
+		} else {
+			throw new IllegalArgumentException("Player id must be set");
 		}
 
-		if (roleId != null) {
-			map.put("roleId", roleId);
-		}
+		map.put("roleId", roleId);
+
+		map.put("teamId", teamId);
 
 		map.put("win", win);
 
@@ -47,7 +56,26 @@ public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
 
 	@Override
 	public MatchPlayer toModelType() {
-		return new MatchPlayer(id);
+		MatchPlayer matchPlayer = new MatchPlayer(getId());
+		matchPlayer.setMatch(new Match(matchId));
+
+		User user = new User();
+		user.setId(playerId);
+		matchPlayer.setUser(user);
+
+		if (teamId != null) {
+			GameTeam gameTeam = new GameTeam();
+			gameTeam.setId(teamId);
+			matchPlayer.setTeam(gameTeam);
+		}
+
+		if (roleId != null) {
+			GameRole gameRole = new GameRole();
+			gameRole.setId(roleId);
+			matchPlayer.setRole(gameRole);
+		}
+
+		return matchPlayer;
 	}
 
 	public static FirebaseMatchPlayer fromModelType(MatchPlayer matchPlayer) {
@@ -55,7 +83,8 @@ public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
 			matchPlayer.getId(),
 			matchPlayer.getWin(),
 			matchPlayer.getUser().getId(),
-			matchPlayer.getRole().getId(),
+			matchPlayer.getRole() != null ? matchPlayer.getRole().getId() : null,
+			matchPlayer.getTeam() != null ? matchPlayer.getTeam().getId() : null,
 			matchPlayer.getMatch().getId()
 		);
 	}
@@ -76,19 +105,15 @@ public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
 			firebaseMatchPlayer.setRoleId(document.getString("roleId"));
 		}
 
+		if (document.contains("teamId")) {
+			firebaseMatchPlayer.setTeamId(document.getString("teamId"));
+		}
+
 		if (document.contains("win")) {
 			firebaseMatchPlayer.setWin(document.getBoolean("win"));
 		}
 
 		return firebaseMatchPlayer;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public boolean isWin() {
@@ -121,5 +146,13 @@ public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
 
 	public void setMatchId(String matchId) {
 		this.matchId = matchId;
+	}
+
+	public String getTeamId() {
+		return teamId;
+	}
+
+	public void setTeamId(String teamId) {
+		this.teamId = teamId;
 	}
 }

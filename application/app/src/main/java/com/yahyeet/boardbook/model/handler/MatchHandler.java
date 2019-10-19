@@ -6,6 +6,7 @@ import com.yahyeet.boardbook.model.handler.populator.MatchPlayerPopulator;
 import com.yahyeet.boardbook.model.handler.populator.MatchPopulator;
 import com.yahyeet.boardbook.model.repository.IGameRepository;
 import com.yahyeet.boardbook.model.repository.IGameRoleRepository;
+import com.yahyeet.boardbook.model.repository.IGameTeamRepository;
 import com.yahyeet.boardbook.model.repository.IMatchPlayerRepository;
 import com.yahyeet.boardbook.model.repository.IMatchRepository;
 import com.yahyeet.boardbook.model.repository.IRepositoryListener;
@@ -30,12 +31,13 @@ public class MatchHandler implements IRepositoryListener<Match> {
 											IMatchPlayerRepository matchPlayerRepository,
 											IGameRepository gameRepository,
 											IGameRoleRepository gameRoleRepository,
+											IGameTeamRepository gameTeamRepository,
 											IUserRepository userRepository) {
 		this.matchPlayerRepository = matchPlayerRepository;
 		this.matchRepository = matchRepository;
 
 		matchPopulator = new MatchPopulator(gameRepository, matchPlayerRepository);
-		matchPlayerPopulator = new MatchPlayerPopulator(gameRoleRepository, matchRepository, userRepository);
+		matchPlayerPopulator = new MatchPlayerPopulator(gameRoleRepository, gameTeamRepository, matchRepository, userRepository);
 	}
 
 	public CompletableFuture<Match> find(String id) {
@@ -45,6 +47,7 @@ public class MatchHandler implements IRepositoryListener<Match> {
 	public CompletableFuture<Match> save(Match match) {
 		CompletableFuture<Match> savedMatchFuture = matchRepository.save(match);
 		CompletableFuture<Void> savedMatchPlayersFuture = savedMatchFuture.thenCompose(savedMatch -> {
+			match.setId(savedMatch.getId());
 			List<CompletableFuture<MatchPlayer>> savedMatchPlayerFutures =
 				match
 					.getMatchPlayers()
@@ -90,10 +93,11 @@ public class MatchHandler implements IRepositoryListener<Match> {
 			List<CompletableFuture<Void>> allFuturePopulatedMatchPlayers = populatedMatch
 				.getMatchPlayers()
 				.stream()
-				.map(matchPlayer -> matchPlayerPopulator.populate(matchPlayer).<Void>thenCompose(populatedMatchPlayer -> {
+				.map(matchPlayer -> matchPlayerPopulator.populate(matchPlayer).<Void>thenApply(populatedMatchPlayer -> {
 					matchPlayer.setUser(populatedMatchPlayer.getUser());
 					matchPlayer.setMatch(populatedMatchPlayer.getMatch());
 					matchPlayer.setRole(populatedMatchPlayer.getRole());
+					matchPlayer.setTeam(populatedMatchPlayer.getTeam());
 
 					return null;
 				})).collect(Collectors.toList());

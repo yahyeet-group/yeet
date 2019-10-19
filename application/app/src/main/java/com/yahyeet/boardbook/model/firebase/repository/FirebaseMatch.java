@@ -1,20 +1,20 @@
 package com.yahyeet.boardbook.model.firebase.repository;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.Match;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class FirebaseMatch extends AbstractFirebaseEntity<Match> {
-	private String id;
 	private String gameId;
 
 	public FirebaseMatch() {
 	}
 
 	public FirebaseMatch(String id, String gameId) {
-		this.id = id;
+		super(id);
 		this.gameId = gameId;
 	}
 
@@ -31,7 +31,11 @@ public class FirebaseMatch extends AbstractFirebaseEntity<Match> {
 
 	@Override
 	public Match toModelType() {
-		return new Match(id);
+		Match match = new Match(getId());
+
+		match.setGame(new Game(gameId));
+
+		return match;
 	}
 
 	public static FirebaseMatch fromModelType(Match match) {
@@ -47,14 +51,6 @@ public class FirebaseMatch extends AbstractFirebaseEntity<Match> {
 		}
 
 		return firebaseMatch;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getGameId() {

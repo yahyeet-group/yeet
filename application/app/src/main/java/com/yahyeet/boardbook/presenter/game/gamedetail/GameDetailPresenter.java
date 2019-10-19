@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.presenter;
+package com.yahyeet.boardbook.presenter.game.gamedetail;
 
 import android.content.Context;
 
@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.home.game.gamedetail.IGameDetailActivity;
 import com.yahyeet.boardbook.model.entity.Game;
-import com.yahyeet.boardbook.activity.home.game.gamedetail.GameDetailTeamAdapter;
+import com.yahyeet.boardbook.presenter.game.gamedetail.GameDetailTeamAdapter;
+import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
 import java.util.concurrent.ExecutionException;
 
