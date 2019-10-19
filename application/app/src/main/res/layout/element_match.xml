@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="96dp"
     android:layout_marginStart="0dp"
+    android:background="@color/colorBackground"
     android:gravity="center_vertical">
 
     <TextView
@@ -14,8 +15,9 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="@stringtem"
+        android:text="@string/teams"
         android:textSize="24sp"
+        android:textColor="@color/colorText"
         app:layout_constraintStart_toEndOf="@+id/matchGameImage"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Winner" />
@@ -27,6 +29,7 @@
         android:layout_marginStart="8dp"
         android:text="@string/tempTeam"
         android:textSize="18sp"
+        android:textColor="@color/colorText"
         app:layout_constraintStart_toEndOf="@+id/matchGameName"
         app:layout_constraintTop_toBottomOf="@+id/matchWinLost"
         tools:text="as Good" />
@@ -38,6 +41,7 @@
         android:layout_marginStart="4dp"
         android:text="@string/tempRole"
         android:textSize="18sp"
+        android:textColor="@color/colorText"
         app:layout_constraintStart_toEndOf="@+id/matchTeamName"
         app:layout_constraintTop_toTopOf="@+id/matchTeamName"
         tools:text="(Merlin)" />
@@ -58,6 +62,7 @@
         android:layout_height="wrap_content"
         android:text="@string/tempGame"
         android:textSize="18sp"
+        android:textColor="@color/colorText"
         app:layout_constraintStart_toStartOf="@+id/matchWinLost"
         app:layout_constraintTop_toBottomOf="@+id/matchWinLost" />
 
@@ -67,6 +72,7 @@
         android:layout_height="18dp"
         android:layout_marginTop="16dp"
         android:text="Players: 20 st"
+        android:textColor="@color/colorText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

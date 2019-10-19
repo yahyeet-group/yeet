@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/colorBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,6 +18,7 @@
             android:layout_marginStart="31dp"
             android:layout_marginTop="70dp"
             android:text="@string/username"
+            android:textColor="@color/colorText"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +49,7 @@
             android:layout_marginTop="24dp"
             android:text="@string/overall_statistics"
             android:textSize="30sp"
+            android:textColor="@color/colorText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,6 +61,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="80dp"
             android:text="@string/winrate"
+            android:textColor="@color/colorText"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/View" />
@@ -69,6 +73,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="148dp"
             android:text="@string/games_played"
+            android:textColor="@color/colorText"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/View" />
@@ -89,6 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
             android:text="@string/winrate"
+            android:textColor="@color/colorText"
             app:layout_constraintStart_toStartOf="@+id/pbWinrate"
             app:layout_constraintTop_toBottomOf="@+id/pbWinrate" />
 
@@ -99,6 +105,7 @@
             android:layout_marginStart="44dp"
             android:layout_marginTop="7dp"
             android:text="@string/games_played"
+            android:textColor="@color/colorText"
             app:layout_constraintStart_toEndOf="@+id/textView7"
             app:layout_constraintTop_toTopOf="@+id/textView7" />
 
@@ -108,6 +115,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/history"
+            android:textColor="@color/colorText"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
