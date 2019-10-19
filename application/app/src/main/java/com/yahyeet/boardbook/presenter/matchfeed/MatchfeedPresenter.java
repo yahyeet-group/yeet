@@ -5,7 +5,8 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.presenter.matchfeed.MatchfeedAdapter;
+import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.activity.home.matchfeed.IMatchfeedFragment;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.handler.MatchHandlerListener;
@@ -16,14 +17,14 @@ import java.util.List;
 public class MatchfeedPresenter implements MatchHandlerListener {
 
 	private MatchfeedAdapter matchfeedAdapter;
-	private List<Match> matchDatabase;
+	private List<Match> matchDatabase = new ArrayList<>();
 
 
 	// TODO: Remove if never necessary
-	private IMatchfeedFragment homeFragment;
+	private IMatchfeedFragment matchfeedFragment;
 
-	public MatchfeedPresenter(IMatchfeedFragment homeFragment) {
-		this.homeFragment = homeFragment;
+	public MatchfeedPresenter(IMatchfeedFragment matchfeedFragment) {
+		this.matchfeedFragment = matchfeedFragment;
 	}
 
 	/**
@@ -40,14 +41,29 @@ public class MatchfeedPresenter implements MatchHandlerListener {
 	 */
 	public void enableMatchFeed(RecyclerView matchRecyclerView, Context viewContext) {
 
+		User loggedIn = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
+
+		matchDatabase.addAll(loggedIn.getMatches());
+
+
+		// TODO: This code breaks everything and needs to be reimplemented
+		/*CompletableFuture.allOf(loggedIn
+			.getFriends()
+			.stream()
+			.map(friend -> BoardbookSingleton.getInstance().getUserHandler()
+				.find(friend.getId()).thenApply(populatedFriend -> {
+					matchDatabase.addAll(populatedFriend.getMatches());
+					return null;
+				})).toArray(CompletableFuture[]::new)).thenAccept(nothing -> {
+			// Now all are added
+
+		});*/
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		matchRecyclerView.setLayoutManager(layoutManager);
-		//TODO: Replace with matches from user
-		matchDatabase = new ArrayList<>();
-		for (int i = 0; i < 20; i++)
-			matchDatabase.add(new Match());
-		matchfeedAdapter = new MatchfeedAdapter(matchDatabase);
+		matchfeedAdapter = new MatchfeedAdapter(viewContext, matchDatabase);
 		matchRecyclerView.setAdapter(matchfeedAdapter);
+
+
 	}
 
 	@Override
