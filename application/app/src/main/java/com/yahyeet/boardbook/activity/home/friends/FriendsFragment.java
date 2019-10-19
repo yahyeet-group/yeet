@@ -30,15 +30,15 @@ public class FriendsFragment extends Fragment implements IFriendFragment {
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		friendsPresenter = new FriendsPresenter(this);
+
+
 		return inflater.inflate(R.layout.fragment_friends, container, false);
 	}
 
 	@Override
 	public void onViewCreated(@Nonnull View view, Bundle savedInstanceState) {
 		setAllViews();
-
 		friendsPresenter = new FriendsPresenter(this);
-
 		friendSearch.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -57,26 +57,29 @@ public class FriendsFragment extends Fragment implements IFriendFragment {
 			}
 		});
 
+
+		enableFriendList();
 	}
 
 	private void setAllViews() {
 
-		friendSearch = getView().findViewById((R.id.friendSearch));
-
-	}
-
-	public void onStart() {
-		super.onStart();
-		enableFriendList();
-
 		View view = getView();
 
+		friendSearch = view.findViewById((R.id.friendSearch));
 		addFriendbtn = view.findViewById(R.id.addFriendButton);
 
 		addFriendbtn.setOnClickListener(view1 -> {
 			Intent intent = new Intent(getContext(), AddFriendActivity.class);
 			startActivity(intent);
 		});
+
+	}
+
+	public void onStart() {
+		super.onStart();
+
+
+
 	}
 
 	@Override
@@ -87,14 +90,14 @@ public class FriendsFragment extends Fragment implements IFriendFragment {
 
 	@Override
 	public void disableFragmentInteraction() {
-		//addFriendbtn.setEnabled(false);
+		addFriendbtn.setEnabled(false);
 		friendSearch.setEnabled(false);
 	}
 
 	@Override
 	public void enableFragmentInteraction() {
 
-		//addFriendbtn.setEnabled(true);
+		addFriendbtn.setEnabled(true);
 		friendSearch.setEnabled(true);
 	}
 }
