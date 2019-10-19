@@ -8,17 +8,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.home.matchfeed.matchdetail.IMatchDetailActivity;
-import com.yahyeet.boardbook.model.handler.MatchHandlerListener;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
-import com.yahyeet.boardbook.presenter.matchfeed.matchdetail.MatchPlayerAdapter;
-import com.yahyeet.boardbook.model.entity.Game;
-import com.yahyeet.boardbook.model.entity.GameRole;
-import com.yahyeet.boardbook.model.entity.GameTeam;
 import com.yahyeet.boardbook.model.entity.Match;
-import com.yahyeet.boardbook.model.entity.MatchPlayer;
-import com.yahyeet.boardbook.model.entity.User;
 
-import java.util.concurrent.ExecutionException;
 
 
 public class MatchDetailPresenter {
