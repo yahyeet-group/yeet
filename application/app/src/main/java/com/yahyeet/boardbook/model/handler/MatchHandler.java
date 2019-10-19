@@ -47,7 +47,6 @@ public class MatchHandler implements IRepositoryListener<Match> {
 	public CompletableFuture<Match> save(Match match) {
 		CompletableFuture<Match> savedMatchFuture = matchRepository.save(match);
 		CompletableFuture<Void> savedMatchPlayersFuture = savedMatchFuture.thenCompose(savedMatch -> {
-			match.setId(savedMatch.getId());
 			List<CompletableFuture<MatchPlayer>> savedMatchPlayerFutures =
 				match
 					.getMatchPlayers()
