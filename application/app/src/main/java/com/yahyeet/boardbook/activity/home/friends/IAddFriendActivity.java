@@ -2,7 +2,6 @@ package com.yahyeet.boardbook.activity.home.friends;
 
 public interface IAddFriendActivity {
 
-	void addFriend();
 
 	void enableAddFriendList();
 
@@ -11,6 +10,8 @@ public interface IAddFriendActivity {
 	void enableActivityInteraction();
 
 	void showErrorMessage();
+
+	void finishAddFriendActivity();
 
 
 }

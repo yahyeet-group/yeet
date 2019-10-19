@@ -64,11 +64,6 @@ public class AddFriendActivity extends AppCompatActivity implements IAddFriendAc
 	}
 
 	@Override
-	public void addFriend() {
-
-	}
-
-	@Override
 	public void disableActivityInteraction() {
 		tvAddFriendSearch.setEnabled(false);
 		findViewById(R.id.addFriendLoadlingLayout).setVisibility(View.VISIBLE);
@@ -85,5 +80,10 @@ public class AddFriendActivity extends AppCompatActivity implements IAddFriendAc
 	@Override
 	public void showErrorMessage() {
 		tvError.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void finishAddFriendActivity() {
+		finish();
 	}
 }

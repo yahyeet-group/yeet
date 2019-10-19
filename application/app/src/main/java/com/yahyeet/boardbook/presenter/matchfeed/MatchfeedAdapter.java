@@ -112,7 +112,6 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			HeaderViewHolder vh = new HeaderViewHolder(v);
 			return vh;
 		}
-
 		v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.element_match, viewGroup, false);
 		MatchViewHolder vh = new MatchViewHolder(v);
 		return vh;
@@ -126,7 +125,6 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 		try {
 			if (holder instanceof MatchViewHolder) {
-
 				MatchPlayer currentMatchPlayer = matches
 					.get(position)
 					.getMatchPlayerByUser(BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser());
@@ -174,9 +172,8 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			return 0;
 		}
 
-		if (matches.size() == 0) {
-			return 1;
-		}
+		if(user == null)
+			return matches.size();
 
 		return matches.size() + 1;
 	}
