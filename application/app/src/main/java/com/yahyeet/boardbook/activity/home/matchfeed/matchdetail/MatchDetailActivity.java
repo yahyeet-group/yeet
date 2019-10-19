@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.yahyeet.boardbook.R;
@@ -18,6 +20,7 @@ public class MatchDetailActivity extends AppCompatActivity implements IMatchDeta
 
 	private TextView tvName;
 	private RecyclerView rvMatchPlayers;
+	private ProgressBar pbLoading;
 
 
 	@Override
@@ -40,6 +43,7 @@ public class MatchDetailActivity extends AppCompatActivity implements IMatchDeta
 
 		tvName = findViewById(R.id.tvMatchDetailName);
 		rvMatchPlayers = findViewById(R.id.rvMatchDetail);
+		pbLoading = findViewById(R.id.matchDetailLoading);
 
 		matchDetailPresenter = new MatchDetailPresenter(this, matchID);
 	}
@@ -54,6 +58,16 @@ public class MatchDetailActivity extends AppCompatActivity implements IMatchDeta
 	@Override
 	public void initiateMatchDetailList(){
 		matchDetailPresenter.enableMatchplayerAdapter(rvMatchPlayers, this, getResources());
+	}
+
+	@Override
+	public void enableLoading(){
+		pbLoading.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void disableLoading(){
+		pbLoading.setVisibility(View.INVISIBLE);
 	}
 
 

@@ -69,7 +69,7 @@ public class MatchPlayerAdapter extends RecyclerView.Adapter<MatchPlayerAdapter.
 		if(current.getRole() != null &&
 			current.getRole().getTeam() != null){
 			//TODO: Add in strings.xml
-			holder.tvTeam.setText("Played in" + current.getTeam().getName() + " ("  + current.getRole().getName()  + ")");
+			holder.tvTeam.setText("Played in " + current.getTeam().getName() + " ("  + current.getRole().getName()  + ")");
 		}
 		else if(current.getTeam() != null){
 			holder.tvTeam.setText("Played in " + current.getTeam().getName());

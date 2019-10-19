@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.home.matchfeed.matchdetail.MatchDetailActivity;
 import com.yahyeet.boardbook.model.entity.Match;
+import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.util.StatisticsUtil;
+import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,11 +78,11 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	public class MatchViewHolder extends RecyclerView.ViewHolder {
 
 		// TODO Replace this area with match class as a custom view object
-		private TextView winLossText;
-		private TextView gameText;
-		private TextView roleText;
-		private TextView playersText;
-		private TextView dateText;
+		private TextView tvWinLost;
+		private TextView tvGameName;
+		private TextView tvRoleName;
+		private TextView tvTeamName;
+		private TextView tvPlayerAmount;
 		private ImageView imageView;
 
 
@@ -89,12 +91,12 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			// Define click listener for the ViewHolder's View.
 			v.setOnClickListener(v1 -> Log.d(TAG, "Element " + getAdapterPosition() + " clicked."));
 
-			winLossText = v.findViewById(R.id.winLossView);
-			gameText = v.findViewById(R.id.gameView);
-			roleText = v.findViewById(R.id.roleView);
-			dateText = v.findViewById(R.id.dateView);
-			playersText = v.findViewById(R.id.playersView);
-			imageView = v.findViewById(R.id.gameImageView);
+			tvWinLost = v.findViewById(R.id.matchWinLost);
+			tvGameName = v.findViewById(R.id.matchGameName);
+			tvRoleName = v.findViewById(R.id.matchRoleName);
+			tvTeamName  = v.findViewById(R.id.matchTeamName);
+			tvPlayerAmount = v.findViewById(R.id.matchPlayerAmount);
+			imageView = v.findViewById(R.id.matchGameImage);
 		}
 	}
 
@@ -124,12 +126,26 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 		try {
 			if (holder instanceof MatchViewHolder) {
+
+				MatchPlayer currentMatchPlayer = matches
+					.get(position)
+					.getMatchPlayerByUser(BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser());
+
 				MatchViewHolder vh = (MatchViewHolder) holder;
-				vh.winLossText.setText("Winner");
-				vh.gameText.setText("Avalon?");
-				vh.playersText.setText("6 Players");
-				vh.dateText.setText("Some Date");
-				vh.roleText.setText("(" + "Merlin" + ")");
+				vh.tvWinLost.setText(currentMatchPlayer.getWin() ? "Winner" : "Looser");
+				vh.tvGameName.setText(matches.get(position).getGame().getName());
+				vh.tvPlayerAmount.setText(matches.get(position).getMatchPlayers().size() + " Players");
+
+				if(currentMatchPlayer.getTeam().getName() != null){
+					vh.tvTeamName.setText("In " + currentMatchPlayer.getTeam());
+					if(currentMatchPlayer.getRole().getName() != null)
+						vh.tvRoleName.setText("(" + currentMatchPlayer.getRole() + ")");
+				} else if(currentMatchPlayer.getTeam().getName() == null && currentMatchPlayer.getRole().getName() != null){
+					vh.tvTeamName.setText("as " + currentMatchPlayer.getRole().getName());
+					vh.tvRoleName.setText("");
+				}
+
+
 
 				vh.itemView.setOnClickListener(view -> {
 					Intent intent = new Intent(context, MatchDetailActivity.class);

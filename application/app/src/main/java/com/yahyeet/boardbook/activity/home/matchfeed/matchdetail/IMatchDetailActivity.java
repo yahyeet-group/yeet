@@ -5,4 +5,8 @@ public interface IMatchDetailActivity {
 	void setGameName(String name);
 
 	void initiateMatchDetailList();
+
+	void enableLoading();
+
+	void disableLoading();
 }

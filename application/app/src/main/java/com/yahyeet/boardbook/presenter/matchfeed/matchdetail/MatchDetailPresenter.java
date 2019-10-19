@@ -31,12 +31,14 @@ public class MatchDetailPresenter {
 		this.matchDetailActivity = matchDetailActivity;
 
 
+		matchDetailActivity.enableLoading();
 		BoardbookSingleton.getInstance().getMatchHandler().find(matchID).thenAccept(foundMatch -> {
 			match = foundMatch;
 
 			new android.os.Handler(Looper.getMainLooper()).post(() -> {
 				initiateGameDetail();
 				matchDetailActivity.initiateMatchDetailList();
+				matchDetailActivity.disableLoading();
 			});
 
 		}).exceptionally(e -> {

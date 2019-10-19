@@ -23,7 +23,7 @@ public class MatchfeedFragment extends Fragment implements IMatchfeedFragment {
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		matchfeedPresenter = new MatchfeedPresenter(this);
-		return inflater.inflate(R.layout.fragment_home, container, false);
+		return inflater.inflate(R.layout.fragment_matchfeed, container, false);
 	}
 
 	@Override
