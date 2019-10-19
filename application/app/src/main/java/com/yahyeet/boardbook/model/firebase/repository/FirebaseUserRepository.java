@@ -42,7 +42,7 @@ public class FirebaseUserRepository extends AbstractFirebaseRepository<User> imp
 		CompletableFuture<List<User>> friendsPartOne = CompletableFuture.supplyAsync(() -> {
 			Task<QuerySnapshot> task =
 				getFirestore()
-					.collection(getCollectionName())
+					.collection(getFriendsCollectionName())
 					.whereEqualTo("a", id)
 					.get();
 
@@ -71,7 +71,7 @@ public class FirebaseUserRepository extends AbstractFirebaseRepository<User> imp
 		CompletableFuture<List<User>> friendsPartTwo = CompletableFuture.supplyAsync(() -> {
 			Task<QuerySnapshot> task =
 				getFirestore()
-					.collection(getCollectionName())
+					.collection(getFriendsCollectionName())
 					.whereEqualTo("b", id)
 					.get();
 
@@ -106,24 +106,25 @@ public class FirebaseUserRepository extends AbstractFirebaseRepository<User> imp
 
 	@Override
 	public CompletableFuture<Void> afterSave(User entity, AbstractFirebaseEntity<User> savedEntity) {
-		return findFriendsByUserId(savedEntity.getId()).thenApply(friends ->
-			friends
+		return findFriendsByUserId(savedEntity.getId()).thenApply(remoteFriends ->
+			entity
+				.getFriends()
 				.stream()
-				.filter(friend ->
-					entity
-						.getFriends()
+				.filter(localFriend ->
+					remoteFriends
 						.stream()
-						.noneMatch(localFriend ->
-							localFriend.getId().equals(friend.getId())
-						))
-				.collect(Collectors.toList())).thenCompose(addedFriends -> {
-			List<CompletableFuture<Void>> addedFriendsFuture = addedFriends
-				.stream()
-				.map(addedFriend -> addFriend(entity.getId(), addedFriend.getId()))
-				.collect(Collectors.toList());
+						.noneMatch(remoteFriend -> remoteFriend.equals(localFriend))
+				)
+				.collect(Collectors.toList()
+				))
+			.thenCompose(addedFriends -> {
+				List<CompletableFuture<Void>> addedFriendsFuture = addedFriends
+					.stream()
+					.map(addedFriend -> addFriend(entity.getId(), addedFriend.getId()))
+					.collect(Collectors.toList());
 
-			return CompletableFuture.allOf(addedFriends.toArray(new CompletableFuture[0]));
-		});
+				return CompletableFuture.allOf(addedFriendsFuture.toArray(new CompletableFuture[0]));
+			});
 	}
 
 	private CompletableFuture<Void> addFriend(String leftId, String rightId) {
@@ -131,7 +132,7 @@ public class FirebaseUserRepository extends AbstractFirebaseRepository<User> imp
 			Map<String, Object> data = new HashMap<>();
 			data.put("a", leftId);
 			data.put("b", rightId);
-			Task<DocumentReference> task = getFirestore().collection(getCollectionName()).add(data);
+			Task<DocumentReference> task = getFirestore().collection(getFriendsCollectionName()).add(data);
 
 			try {
 				Tasks.await(task);
@@ -141,5 +142,9 @@ public class FirebaseUserRepository extends AbstractFirebaseRepository<User> imp
 				throw new CompletionException(e);
 			}
 		});
+	}
+
+	private String getFriendsCollectionName() {
+		return getCollectionNamePrefix() + "_friends_user_to_user";
 	}
 }

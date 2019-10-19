@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> implements IRepository<TModel> {
 	private FirebaseFirestore firestore;
+	private String collectionNamePrefix = "";
 
 	private Map<String, AbstractFirebaseEntity<TModel>> cache = new HashMap();
 	private List<IRepositoryListener<TModel>> listeners = new ArrayList<>();
@@ -110,11 +111,15 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 		return CompletableFuture.completedFuture(null);
 	}
 
+	private String getFullCollectionName() {
+		return collectionNamePrefix + "_" + getCollectionName();
+	}
+
 	public abstract String getCollectionName();
 
 	private CompletableFuture<AbstractFirebaseEntity<TModel>> createFirebaseEntity(AbstractFirebaseEntity<TModel> firebaseEntity) {
 		return CompletableFuture.supplyAsync(() -> {
-			Task<DocumentReference> task = firestore.collection(getCollectionName())
+			Task<DocumentReference> task = firestore.collection(getFullCollectionName())
 				.add(firebaseEntity.toMap());
 
 			try {
@@ -133,7 +138,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 
 	private CompletableFuture<AbstractFirebaseEntity<TModel>> createFirebaseEntityWithId(AbstractFirebaseEntity<TModel> firebaseEntity) {
 		return CompletableFuture.supplyAsync(() -> {
-			Task<Void> task = firestore.collection(getCollectionName())
+			Task<Void> task = firestore.collection(getFullCollectionName())
 				.document(firebaseEntity.getId()).set(firebaseEntity.toMap());
 
 			try {
@@ -157,7 +162,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 		}
 
 		return CompletableFuture.supplyAsync(() -> {
-			Task<DocumentSnapshot> task = firestore.collection(getCollectionName()).document(id).get();
+			Task<DocumentSnapshot> task = firestore.collection(getFullCollectionName()).document(id).get();
 
 			try {
 				DocumentSnapshot document = Tasks.await(task);
@@ -175,7 +180,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 
 	private CompletableFuture<Void> removeFirebaseEntityById(String id) {
 		return CompletableFuture.supplyAsync(() -> {
-			Task<Void> task = firestore.collection(getCollectionName()).document(id).delete();
+			Task<Void> task = firestore.collection(getFullCollectionName()).document(id).delete();
 
 			try {
 				Tasks.await(task);
@@ -191,9 +196,9 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 		});
 	}
 
-	private CompletableFuture<AbstractFirebaseEntity<TModel>> updateFirebaseEntity(AbstractFirebaseEntity firebaseEntity) {
+	private CompletableFuture<AbstractFirebaseEntity<TModel>> updateFirebaseEntity(AbstractFirebaseEntity<TModel> firebaseEntity) {
 		return CompletableFuture.supplyAsync(() -> {
-			Task<Void> task = firestore.collection(getCollectionName())
+			Task<Void> task = firestore.collection(getFullCollectionName())
 				.document(firebaseEntity.getId())
 				.update(firebaseEntity.toMap());
 
@@ -205,7 +210,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 				throw new CompletionException(e);
 			}
 		}).thenApply(id -> {
-			cache.put(id, (AbstractFirebaseEntity<TModel>) firebaseEntity);
+			cache.put(id, firebaseEntity);
 
 			return id;
 		}).thenCompose(this::findFirebaseEntityById);
@@ -213,7 +218,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 
 	private CompletableFuture<List<AbstractFirebaseEntity<TModel>>> findAllFirebaseEntities() {
 		return CompletableFuture.supplyAsync(() -> {
-			Task<QuerySnapshot> task = firestore.collection(getCollectionName()).get();
+			Task<QuerySnapshot> task = firestore.collection(getFullCollectionName()).get();
 
 			try {
 				QuerySnapshot querySnapshot = Tasks.await(task);
@@ -227,6 +232,14 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 				throw new CompletionException(e);
 			}
 		});
+	}
+
+	public void setCollectionNamePrefix(String collectionNamePrefix) {
+		this.collectionNamePrefix = collectionNamePrefix;
+	}
+
+	public String getCollectionNamePrefix() {
+		return collectionNamePrefix;
 	}
 
 	protected FirebaseFirestore getFirestore() {
