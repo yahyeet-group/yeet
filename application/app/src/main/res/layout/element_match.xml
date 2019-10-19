@@ -9,41 +9,41 @@
     android:gravity="center_vertical">
 
     <TextView
-        android:id="@+id/winLossView"
+        android:id="@+id/matchWinLost"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="@stringtem"
         android:textSize="24sp"
-        app:layout_constraintStart_toEndOf="@+id/gameImageView"
+        app:layout_constraintStart_toEndOf="@+id/matchGameImage"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Winner" />
 
     <TextView
-        android:id="@+id/teamView"
+        android:id="@+id/matchTeamName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="@string/tempTeam"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/gameView"
-        app:layout_constraintTop_toBottomOf="@+id/winLossView"
+        app:layout_constraintStart_toEndOf="@+id/matchGameName"
+        app:layout_constraintTop_toBottomOf="@+id/matchWinLost"
         tools:text="as Good" />
 
     <TextView
-        android:id="@+id/roleView"
+        android:id="@+id/matchRoleName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:text="@string/tempRole"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/teamView"
-        app:layout_constraintTop_toTopOf="@+id/teamView"
+        app:layout_constraintStart_toEndOf="@+id/matchTeamName"
+        app:layout_constraintTop_toTopOf="@+id/matchTeamName"
         tools:text="(Merlin)" />
 
     <ImageView
-        android:id="@+id/gameImageView"
+        android:id="@+id/matchGameImage"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginTop="16dp"
@@ -53,32 +53,20 @@
         app:srcCompat="@color/colorPrimary" />
 
     <TextView
-        android:id="@+id/gameView"
+        android:id="@+id/matchGameName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/tempGame"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/winLossView"
-        app:layout_constraintTop_toBottomOf="@+id/winLossView" />
+        app:layout_constraintStart_toStartOf="@+id/matchWinLost"
+        app:layout_constraintTop_toBottomOf="@+id/matchWinLost" />
 
     <TextView
-        android:id="@+id/dateView"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="500dp"
-        android:text="date: 10/10/2019"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/playersView"
+        android:id="@+id/matchPlayerAmount"
         android:layout_width="91dp"
         android:layout_height="18dp"
         android:layout_marginTop="16dp"
         android:text="Players: 20 st"
-        app:layout_constraintStart_toStartOf="@+id/dateView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

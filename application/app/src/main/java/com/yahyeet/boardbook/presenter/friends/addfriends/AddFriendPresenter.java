@@ -45,7 +45,7 @@ public class AddFriendPresenter {
 
 		initiateAddFriendPresenter();
 
-		addFriendsAdapter = new AddFriendsAdapter(userDatabase);
+		addFriendsAdapter = new AddFriendsAdapter(userDatabase, addFriendActivity);
 		matchRecyclerView.setAdapter(addFriendsAdapter);
 	}
 
@@ -57,6 +57,9 @@ public class AddFriendPresenter {
 
 		BoardbookSingleton.getInstance().getUserHandler().all().thenAccept(allUsers -> {
 			if (allUsers != null && myFriends != null) {
+
+				allUsers.remove(BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser());
+
 				List<User> notMyFriends = allUsers
 					.stream()
 					.filter(user -> myFriends.stream().noneMatch(friend -> friend.getId().equals(user.getId())))

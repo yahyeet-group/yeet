@@ -10,10 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.home.friends.AddFriendActivity" />
+        <activity android:name=".activity.home.matchfeed.matchdetail.MatchDetailActivity" />
         <activity android:name=".activity.home.game.gamedetail.GameDetailActivity"></activity>
         <activity android:name=".activity.account.AccountManagerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

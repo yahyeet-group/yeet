@@ -1,6 +1,7 @@
 package com.yahyeet.boardbook.presenter.matchfeed;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.home.matchfeed.matchdetail.MatchDetailActivity;
 import com.yahyeet.boardbook.model.entity.Match;
+import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.util.StatisticsUtil;
+import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,25 +30,27 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	private static final String TAG = "MatchfeedAdapter";
 	private static final int PROFILE_HEADER_VIEW = 1;
 	private Context context;
-	private List<Match> myDataset;
+	private List<Match> matches;
 
 	//TODO: Naming might need to change
 	private User user;
 	private StatisticsUtil statisticsUtil;
 
 
-	public MatchfeedAdapter(List<Match> dataset) {
+	public MatchfeedAdapter(Context context, List<Match> dataset) {
 		if (dataset != null)
-			myDataset = dataset;
+			matches = dataset;
 		else
-			myDataset = new ArrayList<>();
+			matches = new ArrayList<>();
+
+		this.context = context;
 	}
 
 	public MatchfeedAdapter(Context context, List<Match> dataset, User user, StatisticsUtil statisticsUtil) {
 		if (dataset != null)
-			myDataset = dataset;
+			matches = dataset;
 		else
-			myDataset = new ArrayList<>();
+			matches = new ArrayList<>();
 
 		this.context = context;
 		this.user = user;
@@ -72,11 +78,11 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	public class MatchViewHolder extends RecyclerView.ViewHolder {
 
 		// TODO Replace this area with match class as a custom view object
-		private TextView winLossText;
-		private TextView gameText;
-		private TextView roleText;
-		private TextView playersText;
-		private TextView dateText;
+		private TextView tvWinLost;
+		private TextView tvGameName;
+		private TextView tvRoleName;
+		private TextView tvTeamName;
+		private TextView tvPlayerAmount;
 		private ImageView imageView;
 
 
@@ -85,12 +91,12 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			// Define click listener for the ViewHolder's View.
 			v.setOnClickListener(v1 -> Log.d(TAG, "Element " + getAdapterPosition() + " clicked."));
 
-			winLossText = v.findViewById(R.id.winLossView);
-			gameText = v.findViewById(R.id.gameView);
-			roleText = v.findViewById(R.id.roleView);
-			dateText = v.findViewById(R.id.dateView);
-			playersText = v.findViewById(R.id.playersView);
-			imageView = v.findViewById(R.id.gameImageView);
+			tvWinLost = v.findViewById(R.id.matchWinLost);
+			tvGameName = v.findViewById(R.id.matchGameName);
+			tvRoleName = v.findViewById(R.id.matchRoleName);
+			tvTeamName  = v.findViewById(R.id.matchTeamName);
+			tvPlayerAmount = v.findViewById(R.id.matchPlayerAmount);
+			imageView = v.findViewById(R.id.matchGameImage);
 		}
 	}
 
@@ -106,7 +112,6 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			HeaderViewHolder vh = new HeaderViewHolder(v);
 			return vh;
 		}
-
 		v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.element_match, viewGroup, false);
 		MatchViewHolder vh = new MatchViewHolder(v);
 		return vh;
@@ -120,17 +125,37 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 		try {
 			if (holder instanceof MatchViewHolder) {
+				MatchPlayer currentMatchPlayer = matches
+					.get(position)
+					.getMatchPlayerByUser(BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser());
+
 				MatchViewHolder vh = (MatchViewHolder) holder;
-				vh.winLossText.setText("Winner");
-				vh.gameText.setText("Avalon?");
-				vh.playersText.setText("6 Players");
-				vh.dateText.setText("Some Date");
-				vh.roleText.setText("(" + "Merlin" + ")");
+				vh.tvWinLost.setText(currentMatchPlayer.getWin() ? "Winner" : "Looser");
+				vh.tvGameName.setText(matches.get(position).getGame().getName());
+				vh.tvPlayerAmount.setText(matches.get(position).getMatchPlayers().size() + " Players");
+
+				if(currentMatchPlayer.getTeam().getName() != null){
+					vh.tvTeamName.setText("In " + currentMatchPlayer.getTeam());
+					if(currentMatchPlayer.getRole().getName() != null)
+						vh.tvRoleName.setText("(" + currentMatchPlayer.getRole() + ")");
+				} else if(currentMatchPlayer.getTeam().getName() == null && currentMatchPlayer.getRole().getName() != null){
+					vh.tvTeamName.setText("as " + currentMatchPlayer.getRole().getName());
+					vh.tvRoleName.setText("");
+				}
+
+
+
+				vh.itemView.setOnClickListener(view -> {
+					Intent intent = new Intent(context, MatchDetailActivity.class);
+					intent.putExtra("Match", matches.get(position).getId());
+					context.startActivity(intent);
+				});
+
 				//vh.imageView.setImageURL();
 			} else if (holder instanceof HeaderViewHolder) {
 				HeaderViewHolder vh = (HeaderViewHolder) holder;
 				vh.tvUsername.setText(user.getName());
-				double stats = statisticsUtil.getWinrateFromMatches(myDataset, user);
+				double stats = statisticsUtil.getWinrateFromMatches(matches, user);
 				int percent = (int) (100 * stats);
 				vh.tvGamesPlayed.setText(user.getMatches().size());
 				vh.tvWinrate.setText(percent + "%");
@@ -143,15 +168,14 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 	@Override
 	public int getItemCount() {
-		if (myDataset == null) {
+		if (matches == null) {
 			return 0;
 		}
 
-		if (myDataset.size() == 0) {
-			return 1;
-		}
+		if(user == null)
+			return matches.size();
 
-		return myDataset.size() + 1;
+		return matches.size() + 1;
 	}
 
 	@Override
