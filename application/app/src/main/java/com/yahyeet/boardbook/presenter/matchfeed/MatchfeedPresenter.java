@@ -26,23 +26,6 @@ public class MatchfeedPresenter implements MatchHandlerListener {
 
 	public MatchfeedPresenter(IMatchfeedFragment matchfeedFragment) {
 		this.matchfeedFragment = matchfeedFragment;
-
-		User loggedIn = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
-
-		matchDatabase.addAll(loggedIn.getMatches());
-
-		CompletableFuture.allOf(loggedIn
-			.getFriends()
-			.stream()
-			.map(friend -> BoardbookSingleton.getInstance().getUserHandler()
-				.find(friend.getId()).thenApply(populatedFriend -> {
-					matchDatabase.addAll(populatedFriend.getMatches());
-					return null;
-				})).toArray(CompletableFuture[]::new)).thenAccept(nothing -> {
-			// Now all are added
-			matchfeedFragment.enableMatchFeed();
-		});
-
 	}
 
 	/**
@@ -59,10 +42,29 @@ public class MatchfeedPresenter implements MatchHandlerListener {
 	 */
 	public void enableMatchFeed(RecyclerView matchRecyclerView, Context viewContext) {
 
+		User loggedIn = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
+
+		matchDatabase.addAll(loggedIn.getMatches());
+
+
+		// TODO: This code breaks everything and needs to be reimplemented
+		/*CompletableFuture.allOf(loggedIn
+			.getFriends()
+			.stream()
+			.map(friend -> BoardbookSingleton.getInstance().getUserHandler()
+				.find(friend.getId()).thenApply(populatedFriend -> {
+					matchDatabase.addAll(populatedFriend.getMatches());
+					return null;
+				})).toArray(CompletableFuture[]::new)).thenAccept(nothing -> {
+			// Now all are added
+
+		});*/
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		matchRecyclerView.setLayoutManager(layoutManager);
 		matchfeedAdapter = new MatchfeedAdapter(viewContext, matchDatabase);
 		matchRecyclerView.setAdapter(matchfeedAdapter);
+
+
 	}
 
 	@Override
