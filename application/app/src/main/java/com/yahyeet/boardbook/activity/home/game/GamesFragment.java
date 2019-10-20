@@ -8,13 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.presenter.game.GamePresenter;
@@ -26,8 +25,7 @@ public class GamesFragment extends Fragment implements IGameFragment {
 	private GamePresenter gamePresenter;
 	private TextView tvSearch;
 	private TextView tvLoadError;
-	private ListView gameListView;
-	private GridView gameGridView;
+	private RecyclerView rvGame;
 	private Button btnEnableList;
 	private Button btnEnableGrid;
 
@@ -42,14 +40,14 @@ public class GamesFragment extends Fragment implements IGameFragment {
 	public void onViewCreated(@Nonnull View view, Bundle savedInstanceState) {
 		setAllViews();
 
-		gamePresenter = new GamePresenter(this);
+		gamePresenter = new GamePresenter(this, getView().getContext());
 
 		btnEnableList.setOnClickListener(view1 -> enableGameList());
 		btnEnableGrid.setOnClickListener(view2 -> enableGameGrid());
 		tvSearch.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-				gamePresenter.searchGames(tvSearch.getText().toString());
+				//gamePresenter.searchGames(tvSearch.getText().toString());
 			}
 
 			@Override
@@ -63,8 +61,6 @@ public class GamesFragment extends Fragment implements IGameFragment {
 			}
 		});
 
-		gameGridView.setColumnWidth(getScreenWidth() / 3);
-
 		enableGameList();
 	}
 
@@ -75,8 +71,7 @@ public class GamesFragment extends Fragment implements IGameFragment {
 		View view = getView();
 
 		if (view != null) {
-			gameListView = view.findViewById(R.id.gameListView);
-			gameGridView = view.findViewById(R.id.gameGridView);
+			rvGame = view.findViewById(R.id.gameRecyclerView);
 			tvSearch = view.findViewById(R.id.searchInput);
 			tvLoadError = view.findViewById(R.id.gameErrorText);
 
@@ -85,25 +80,13 @@ public class GamesFragment extends Fragment implements IGameFragment {
 		}
 	}
 
-	/**
-	 * Finds the width of the screen
-	 * @return width of screen
-	 */
-	private int getScreenWidth() {
-		DisplayMetrics displayMetrics = new DisplayMetrics();
-		// TODO: Make sure activity is not null, fragment exists without activity?
-		getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-		return displayMetrics.widthPixels;
-	}
 
 	/**
 	 * Displays and enables games to show as a list
 	 */
 	private void enableGameList() {
 		if (getView() != null) {
-			gamePresenter.displayGameList(getView().getContext(), gameListView);
-			gameListView.setVisibility(View.VISIBLE);
-			gameGridView.setVisibility(View.INVISIBLE);
+			gamePresenter.displayGameList(rvGame);
 		}
 	}
 
@@ -112,9 +95,7 @@ public class GamesFragment extends Fragment implements IGameFragment {
 	 */
 	private void enableGameGrid() {
 		if (getView() != null) {
-			gamePresenter.displayGameGrid(getView().getContext(), gameGridView);
-			gameGridView.setVisibility(View.VISIBLE);
-			gameListView.setVisibility(View.INVISIBLE);
+			gamePresenter.displayGameGrid(rvGame);
 		}
 	}
 

@@ -21,7 +21,6 @@ public class FriendsPresenter {
 	private IFriendFragment friendsFragment;
 
 	final private List<User> userDatabase = new ArrayList<>();
-	private List<User> all = new ArrayList<>();
 
 	public FriendsPresenter(IFriendFragment friendsFragment) {
 		this.friendsFragment = friendsFragment;
@@ -37,51 +36,29 @@ public class FriendsPresenter {
 	/**
 	 * Creates the necessary structure for populating matches
 	 *
-	 * @param matchRecyclerView the RecyclerView that will be populated with matches
+	 * @param friendsRecyclerView the RecyclerView that will be populated with matches
 	 */
-	public void enableFriendsList(RecyclerView matchRecyclerView, Context viewContext) {
+	public void enableFriendsList(RecyclerView friendsRecyclerView, Context viewContext) {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
-		matchRecyclerView.setLayoutManager(layoutManager);
+		friendsRecyclerView.setLayoutManager(layoutManager);
 
 		initiateFriendPresenter();
 
 		friendsAdapter = new FriendsAdapter(userDatabase, viewContext);
-		matchRecyclerView.setAdapter(friendsAdapter);
+		friendsRecyclerView.setAdapter(friendsAdapter);
 
 	}
 
 	private void initiateFriendPresenter() {
-
-		friendsFragment.disableFragmentInteraction();
 		List<User> friends = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
 
 		if (friends != null) {
 			userDatabase.addAll(friends);
-			all.addAll(friends);
 		}
-
-		friendsFragment.enableFragmentInteraction();
 	}
 
 	public void searchFriends(String query) {
-		List<User> temp = findMatchingName(all, query);
-		userDatabase.clear();
-		userDatabase.addAll(temp);
-		repopulateFriends();
-
+		friendsAdapter.getFilter().filter(query);
 	}
-
-	private List<User> findMatchingName(List<User> users, String query) {
-
-		if (query == null)
-			return users;
-
-		if (users == null) {
-			return new ArrayList<>();
-		}
-
-		return users.stream().filter(user -> user.getName().toLowerCase().contains(query)).collect(Collectors.toList());
-	}
-
 
 }

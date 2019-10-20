@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,7 +22,8 @@ import java.util.List;
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendViewHolder> {
 
 	private static final String TAG = "FriendsAdapter";
-	private List<User> myDataset;
+	private List<User> dataset;
+	private List<User> allFriends;
 	private Context context;
 
 	static class FriendViewHolder extends RecyclerView.ViewHolder {
@@ -45,10 +47,13 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendVi
 
 
 	public FriendsAdapter(List<User> dataset, Context context) {
-		if (dataset != null)
-			myDataset = dataset;
+		if (dataset != null){
+			this.dataset = dataset;
+			allFriends = new ArrayList<>(dataset);
+		}
 		else {
-			myDataset = new ArrayList<>();
+			this.dataset = new ArrayList<>();
+			allFriends = new ArrayList<>();
 		}
 		this.context = context;
 	}
@@ -70,12 +75,12 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendVi
 	public void onBindViewHolder(FriendViewHolder holder, int position) {
 
 
-		holder.friendName.setText(myDataset.get(position).getName());
+		holder.friendName.setText(dataset.get(position).getName());
 		//holder.friendPicture.setImageURI();
 
 		holder.itemView.setOnClickListener(v1 -> {
 			Intent startProfile = new Intent(context, ProfileActivity.class);
-			startProfile.putExtra("UserId", myDataset.get(position).getId());
+			startProfile.putExtra("UserId", dataset.get(position).getId());
 			context.startActivity(startProfile);
 		});
 
@@ -83,6 +88,41 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendVi
 
 	@Override
 	public int getItemCount() {
-		return myDataset.size();
+		return dataset.size();
 	}
+
+	public Filter getFilter() {
+		return playerFilter;
+	}
+
+	private Filter playerFilter = new Filter() {
+		@Override
+		protected FilterResults performFiltering(CharSequence constraint) {
+			List<User> filteredList = new ArrayList<>();
+			if (constraint == null || constraint.length() == 0) {
+				filteredList.addAll(allFriends);
+			} else {
+				String filterPattern = constraint.toString().toLowerCase().trim();
+
+				for (User user : allFriends) {
+					if (user.getName().toLowerCase().contains(filterPattern)) {
+						filteredList.add(user);
+					}
+
+				}
+			}
+
+			FilterResults results = new FilterResults();
+			results.values = filteredList;
+
+			return results;
+		}
+
+		@Override
+		protected void publishResults(CharSequence constraint, FilterResults results) {
+			dataset.clear();
+			dataset.addAll((List) results.values);
+			notifyDataSetChanged();
+		}
+	};
 }

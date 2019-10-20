@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.model.entity.Game;
 
@@ -14,19 +16,37 @@ import java.util.List;
 public class GameGridAdapter extends GameAdapter {
 
 
-    public GameGridAdapter(Context context, List<Game> gameList) {
-        super(context, gameList);
+    public GameGridAdapter(List<Game> dataset, List<Game> allGames, Context context) {
+        super(dataset, allGames, context);
+    }
+
+    static class GameGridViewHolder extends GameViewHolder {
+
+        // TODO Replace this area with match class as a custom view object
+        TextView textViewName;
+
+        GameGridViewHolder(View v) {
+            super(v);
+            // Define click listener for the ViewHolder's View.
+            textViewName = v.findViewById(R.id.gameGridName);
+
+        }
+    }
+
+    @NonNull
+    @Override
+    public GameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater
+          .from(parent.getContext())
+          .inflate(R.layout.element_game_grid, parent, false);
+        return new GameGridViewHolder(v);
     }
 
     @Override
-    View getInflatedView(ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.element_game_grid, parent, false);
-    }
+    public void onBindViewHolder(@NonNull GameViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
 
-    @Override
-    void setupViewElements(View convertView, Game currentItem) {
-        TextView textViewName = convertView.findViewById(R.id.gameGridName);
-
-        textViewName.setText(currentItem.getName());
+        GameGridViewHolder gameGridViewHolder = (GameGridViewHolder) holder;
+        gameGridViewHolder.textViewName.setText(dataset.get(position).getName());
     }
 }

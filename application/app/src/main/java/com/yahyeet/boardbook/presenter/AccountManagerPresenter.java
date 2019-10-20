@@ -6,15 +6,20 @@ import com.yahyeet.boardbook.activity.account.IAccountManagerActivity;
 
 import android.os.Looper;
 
+import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.util.EmailFailedException;
 import com.yahyeet.boardbook.model.util.PasswordFailedException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class AccountManagerPresenter {
 	private IAccountManagerActivity accountManagerActivity;
 
 	// Set true to skip login
-	private Boolean fastPass = false;
+	private Boolean fastPass = true;
 
 	public AccountManagerPresenter(IAccountManagerActivity accountManagerActivity) {
 		this.accountManagerActivity = accountManagerActivity;
@@ -28,7 +33,7 @@ public class AccountManagerPresenter {
 
 		if (email.isEmpty()) {
 			throw new EmailFailedException("Email can not be empty.");
-		} else if(emailInvalid(email)){
+		} else if (emailInvalid(email)) {
 			throw new EmailFailedException("Email is not in a correct format");
 		}
 
@@ -49,8 +54,7 @@ public class AccountManagerPresenter {
 				//TODO: Weird getCause calls
 				if (e.getCause().getCause() instanceof FirebaseAuthInvalidCredentialsException) {
 					accountManagerActivity.loginFailed(new Exception("Incorrect email or password"));
-				}
-				else
+				} else
 					accountManagerActivity.loginFailed(new Exception("Account not found"));
 
 
@@ -64,7 +68,7 @@ public class AccountManagerPresenter {
 
 		if (email.isEmpty()) {
 			throw new EmailFailedException("Email can not be empty.");
-		} else if(emailInvalid(email)){
+		} else if (emailInvalid(email)) {
 			throw new EmailFailedException("Email is not in a correct format");
 		}
 
