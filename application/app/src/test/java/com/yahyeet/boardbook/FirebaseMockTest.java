@@ -1,6 +1,7 @@
 package com.yahyeet.boardbook;
 
 import com.yahyeet.boardbook.model.Boardbook;
+import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.handler.AuthHandler;
@@ -66,7 +67,8 @@ public class FirebaseMockTest {
         User user = new User("TestUser");
 
         User friend = new User("Friendly");
-        Match match = new Match();
+        Game game = new Game("Avalon", "Cool game", 1, 2, 3);
+        Match match = new Match(game);
 
         user.getFriends().add(friend);
         user.getMatches().add(match);

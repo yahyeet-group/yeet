@@ -8,8 +8,9 @@ public class Match extends AbstractEntity {
 	private List<MatchPlayer> matchPlayers = new ArrayList<>();
 	private Game game;
 
-	public Match() {
+	public Match(Game game) {
 		matchPlayers = new ArrayList<>();
+		this.game = game;
 	}
 
 	public Match(String id) {
