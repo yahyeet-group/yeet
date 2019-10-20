@@ -51,7 +51,7 @@ public class AddFriendPresenter {
 
 	private void initiateAddFriendPresenter() {
 
-		addFriendActivity.disableActivityInteraction();
+		addFriendActivity.disableViewInteraction();
 		List<User> myFriends = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
 
 
@@ -70,15 +70,15 @@ public class AddFriendPresenter {
 
 
 				new android.os.Handler(Looper.getMainLooper()).post(() -> {
-					addFriendActivity.enableActivityInteraction();
+					addFriendActivity.enableViewInteraction();
 					repopulateFriends();
 				});
 
 			}
 		}).exceptionally(e -> {
 				new android.os.Handler(Looper.getMainLooper()).post(() -> {
-					addFriendActivity.enableActivityInteraction();
-					addFriendActivity.showErrorMessage();
+					addFriendActivity.enableViewInteraction();
+					addFriendActivity.displayLoadingFailed();
 				});
 				return null;
 			}

@@ -48,6 +48,7 @@ public class MatchfeedPresenter implements MatchHandlerListener {
 
 
 		// TODO: This code breaks everything and needs to be reimplemented
+		// TODO: If implemented then IMatchfeedFragment needs to extend IFutureIntractable
 		/*CompletableFuture.allOf(loggedIn
 			.getFriends()
 			.stream()

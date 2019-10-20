@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +14,7 @@ import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.matchcreation.CreateMatchActivity;
 import com.yahyeet.boardbook.presenter.matchcreation.configureteams.ConfigureTeamPresenter;
 
-public class ConfigureTeamsFragment extends Fragment implements IConfigureTeamsFragment {
+public class ConfigureTeamsFragment extends Fragment implements IConfigureTeamsFragment{
 
 	private ConfigureTeamPresenter spp;
 
@@ -43,8 +42,4 @@ public class ConfigureTeamsFragment extends Fragment implements IConfigureTeamsF
 		});
 
 	}
-
-
-
-
 }

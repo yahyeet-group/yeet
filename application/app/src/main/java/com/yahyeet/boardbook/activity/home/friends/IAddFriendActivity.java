@@ -1,15 +1,16 @@
 package com.yahyeet.boardbook.activity.home.friends;
 
-public interface IAddFriendActivity {
+
+public interface IAddFriendActivity  {
 
 
 	void enableAddFriendList();
 
-	void disableActivityInteraction();
+	void disableViewInteraction();
 
-	void enableActivityInteraction();
+	void enableViewInteraction();
 
-	void showErrorMessage();
+	void displayLoadingFailed();
 
 	void finishAddFriendActivity();
 

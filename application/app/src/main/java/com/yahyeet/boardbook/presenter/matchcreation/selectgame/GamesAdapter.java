@@ -18,7 +18,7 @@ import java.util.List;
 
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHolder> {
 
-    private List<Game> myDataset;
+    private List<Game> dataset;
     private SelectGamePresenter sgp;
     private CMMasterPresenter cmmp;
 
@@ -40,9 +40,9 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHol
         }
     }
 
-    public GamesAdapter(List<Game> myDataset, SelectGamePresenter sgp) {
+    public GamesAdapter(List<Game> dataset, SelectGamePresenter sgp) {
         this.sgp = sgp;
-        this.myDataset = myDataset;
+        this.dataset = dataset;
         cmmp = sgp.getMasterPresenter();
 
     }
@@ -60,18 +60,19 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHol
     @Override
     public void onBindViewHolder(GamesViewHolder holder, int position) {
 
-        holder.gameTitle.setText(myDataset.get(position).getName());
+        holder.gameTitle.setText(dataset.get(position).getName());
         holder.itemView.findViewById(R.id.selectGameButton).setOnClickListener((event)->{
             cmmp.goToSelectPlayers();
-            cmmp.getCmdh().setGame(myDataset.get(position));
-            System.out.println(myDataset.get(position).getTeams().get(0).getRoles().get(0).getName());
+            cmmp.getCmdh().setGame(dataset.get(position));
+            // Not working if actually implemented
+            //System.out.println(dataset.get(position).getTeams().get(0).getRoles().get(0).getName());
         });
 
     }
 
     @Override
     public int getItemCount() {
-        return myDataset.size();
+        return dataset.size();
     }
 
 }

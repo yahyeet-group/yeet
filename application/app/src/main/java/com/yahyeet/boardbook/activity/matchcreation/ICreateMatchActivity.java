@@ -8,4 +8,6 @@ public interface ICreateMatchActivity {
 
 	void goToSelectPlayers();
 
+	void finalizeMatchCreation();
+
 }

@@ -9,6 +9,7 @@ import com.yahyeet.boardbook.activity.matchcreation.selectgame.SelectGameFragmen
 import com.yahyeet.boardbook.activity.matchcreation.selectplayers.SelectPlayersFragment;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.MatchPlayer;
+import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
 public class CMMasterPresenter {
 
@@ -42,6 +43,14 @@ public class CMMasterPresenter {
 			finalMatch.addMatchPlayer(mp);
 		}
 		System.out.println();
-		//TODO here do big save to FireBase Desu
+		BoardbookSingleton.getInstance().getMatchHandler()
+			.save(finalMatch)
+			.thenAccept(u -> activity.finalizeMatchCreation())
+			.exceptionally(e -> {
+
+				// TODO: Handle firebase not able to save match, dunno what to do exactly
+				e.printStackTrace();
+				return null;
+		});
 	}
 }

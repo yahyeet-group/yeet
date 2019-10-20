@@ -5,38 +5,37 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.model.entity.GameRole;
-import com.yahyeet.boardbook.model.entity.GameTeam;
+import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 import com.yahyeet.boardbook.activity.matchcreation.selectgame.ISelectGameFragment;
-import com.yahyeet.boardbook.model.entity.Game;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectGamePresenter {
+public class SelectGamePresenter  {
 
 	private GamesAdapter gamesAdapter;
 
 	private ISelectGameFragment selectGameFragment;
-
 	private CMMasterPresenter masterPresenter;
 
+
 	public SelectGamePresenter(ISelectGameFragment selectGameFragment, CMMasterPresenter cm) {
+
 		this.selectGameFragment = selectGameFragment;
 		this.masterPresenter = cm;
 
+
 	}
 
-	public void repopulateMatches() {
+	public void updateAdapter() {
 		gamesAdapter.notifyDataSetChanged();
 	}
 
 	public void enableGameFeed(RecyclerView gameRecycleView, Context viewContext) {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		gameRecycleView.setLayoutManager(layoutManager);
-		//TODO: Replace with matches from user
-		Game testGame = new Game("Avalon", "Cool Game", 3, 5, 10);
+		/*Game testGame = new Game("Avalon", "Cool Game", 3, 5, 10);
 		GameTeam mom = new GameTeam();
 		mom.setName("Minions of Mordred");
 		GameRole mordred = new GameRole();
@@ -58,12 +57,16 @@ public class SelectGamePresenter {
 
 
 		List<Game> testSet = new ArrayList<>();
-		testSet.add(testGame);
-		gamesAdapter = new GamesAdapter(testSet, this);
+		testSet.add(testGame);*/
+
+
+
+
 		gameRecycleView.setAdapter(gamesAdapter);
 	}
 
 	public CMMasterPresenter getMasterPresenter(){
 		return masterPresenter;
 	}
+
 }

@@ -52,7 +52,6 @@ public class FriendsPresenter {
 
 	private void initiateFriendPresenter() {
 
-		friendsFragment.disableFragmentInteraction();
 		List<User> friends = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
 
 		if (friends != null) {
@@ -60,7 +59,6 @@ public class FriendsPresenter {
 			all.addAll(friends);
 		}
 
-		friendsFragment.enableFragmentInteraction();
 	}
 
 	public void searchFriends(String query) {

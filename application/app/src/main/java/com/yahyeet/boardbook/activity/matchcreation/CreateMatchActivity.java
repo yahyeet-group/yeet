@@ -57,6 +57,11 @@ public class CreateMatchActivity extends AppCompatActivity implements ICreateMat
 	}
 
 	@Override
+	public void finalizeMatchCreation() {
+		finish();
+	}
+
+	@Override
 	public void goToSelectGame() {
 		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectGameFragment, "Game").commit();
 	}

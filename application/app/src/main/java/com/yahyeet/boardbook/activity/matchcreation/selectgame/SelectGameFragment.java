@@ -14,7 +14,7 @@ import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.matchcreation.CreateMatchActivity;
 import com.yahyeet.boardbook.presenter.matchcreation.selectgame.SelectGamePresenter;
 
-public class SelectGameFragment extends Fragment implements ISelectGameFragment {
+public class SelectGameFragment extends Fragment implements ISelectGameFragment{
 
     private SelectGamePresenter selectGamePresenter;
 
@@ -38,6 +38,5 @@ public class SelectGameFragment extends Fragment implements ISelectGameFragment 
         gameRecycler.setHasFixedSize(true);
         selectGamePresenter.enableGameFeed(gameRecycler, getView().getContext());
     }
-
 
 }

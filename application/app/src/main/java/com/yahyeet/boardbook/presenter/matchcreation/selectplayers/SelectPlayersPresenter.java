@@ -10,7 +10,7 @@ import com.yahyeet.boardbook.activity.matchcreation.selectplayers.SelectPlayersF
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SelectPlayersPresenter {
@@ -18,6 +18,7 @@ public class SelectPlayersPresenter {
 	private CMMasterPresenter masterPresenter;
 	private SelectPlayersFragment spf;
 	private PlayerAdapter playerAdapter;
+	private List<User> database = new ArrayList<>();
 
 	public SelectPlayersPresenter(SelectPlayersFragment spf, CMMasterPresenter cma) {
 		this.masterPresenter = cma;
@@ -33,8 +34,7 @@ public class SelectPlayersPresenter {
 	public void enableGameFeed(RecyclerView gameRecycleView, Context viewContext) {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		gameRecycleView.setLayoutManager(layoutManager);
-		//TODO: Replace with real users
-
+/*
 		List<User> testSet = new LinkedList<>();
 		User testUser = new User();
 		testUser.setName("Jaan Karm");
@@ -47,8 +47,8 @@ public class SelectPlayersPresenter {
 		testSet.add(testUser3);
 		User testUser4 = new User();
 		testUser4.setName("Daniel the Man");
-		testSet.add(testUser4);
-		playerAdapter = new PlayerAdapter(testSet, this);
+		testSet.add(testUser4);*/
+
 		gameRecycleView.setAdapter(playerAdapter);
 	}
 
@@ -71,5 +71,4 @@ public class SelectPlayersPresenter {
 			}
 		});
 	}
-
 }

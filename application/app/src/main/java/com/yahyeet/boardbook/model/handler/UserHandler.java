@@ -1,7 +1,7 @@
 package com.yahyeet.boardbook.model.handler;
 
+import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.Match;
-import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.handler.populator.MatchPlayerPopulator;
 import com.yahyeet.boardbook.model.handler.populator.MatchPopulator;
@@ -17,12 +17,10 @@ import com.yahyeet.boardbook.model.repository.IUserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public class UserHandler implements IRepositoryListener<User> {
+public class UserHandler  implements IRepositoryListener<User> {
 	private IUserRepository userRepository;
 	private List<UserHandlerListener> listeners = new ArrayList<>();
 

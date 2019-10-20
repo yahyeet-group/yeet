@@ -119,7 +119,7 @@ public class GamesFragment extends Fragment implements IGameFragment {
 	}
 
 	@Override
-	public void enableFragmentInteraction() {
+	public void enableViewInteraction() {
 
 		tvSearch.setEnabled(true);
 		btnEnableList.setEnabled(true);
@@ -131,7 +131,7 @@ public class GamesFragment extends Fragment implements IGameFragment {
 	}
 
 	@Override
-	public void disableFragmentInteraction() {
+	public void disableViewInteraction() {
 
 		tvSearch.setEnabled(false);
 		btnEnableList.setEnabled(false);

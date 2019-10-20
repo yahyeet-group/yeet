@@ -49,5 +49,4 @@ public class SelectPlayersFragment extends Fragment implements ISelectGameFragme
 		SearchView searchView = getView().findViewById(R.id.searchPlayers);
 		selectPlayersPresenter.enableSearchBar(searchView);
 	}
-
 }
