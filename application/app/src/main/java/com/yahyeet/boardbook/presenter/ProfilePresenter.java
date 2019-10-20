@@ -5,18 +5,21 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yahyeet.boardbook.model.handler.GameHandler;
+import com.yahyeet.boardbook.model.handler.MatchHandler;
 import com.yahyeet.boardbook.presenter.matchfeed.MatchfeedAdapter;
 import com.yahyeet.boardbook.activity.profile.IProfileActivity;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class ProfilePresenter {
 
 	private MatchfeedAdapter matchfeedAdapter;
-	private List<Match> matchDatabase;
+	private List<Match> matchDatabase = new ArrayList<>();
 	private User user;
 
 	private IProfileActivity profileActivity;
@@ -25,26 +28,10 @@ public class ProfilePresenter {
 		this.profileActivity = profileActivity;
 		try {
 			user = BoardbookSingleton.getInstance().getUserHandler().find(userId).get();
+			matchDatabase.addAll(user.getMatches());
 		} catch (ExecutionException | InterruptedException e) {
 			// TODO: What to do here?
 		}
-	}
-
-	public String getLoggedInUserName() {
-		return BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getName();
-	}
-
-
-	public String getGamesPlayedForLoggedInUser() {
-		return "45";
-	}
-
-	public double getWinrateQuotaForLoggedInUser() {
-		return 0.45;
-	}
-
-	public String getWinratePercentageForLoggedInUser() {
-		return "40" + "%";
 	}
 
 	/**

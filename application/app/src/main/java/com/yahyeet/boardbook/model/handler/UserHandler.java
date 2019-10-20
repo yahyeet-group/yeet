@@ -17,12 +17,10 @@ import com.yahyeet.boardbook.model.repository.IUserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public class UserHandler implements IRepositoryListener<User> {
+public class UserHandler extends EntityHandler<User> implements IRepositoryListener<User> {
 	private IUserRepository userRepository;
 	private List<UserHandlerListener> listeners = new ArrayList<>();
 

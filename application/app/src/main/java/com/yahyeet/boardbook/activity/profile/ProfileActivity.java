@@ -41,13 +41,6 @@ public class ProfileActivity extends AppCompatActivity implements IProfileActivi
 		enableMatchFeed();
 	}
 
-	private void setDataFields() {
-		tvUsername.setText(profilePresenter.getLoggedInUserName());
-		tvWinrate.setText(profilePresenter.getWinratePercentageForLoggedInUser());
-		tvGamesPlayed.setText(profilePresenter.getGamesPlayedForLoggedInUser());
-		pbWinrate.setProgress((int) Math.round(profilePresenter.getWinrateQuotaForLoggedInUser() * 100));
-	}
-
 	/**
 	 * Initiates recyclerView of matches in activity and populates it
 	 */
@@ -60,4 +53,5 @@ public class ProfileActivity extends AppCompatActivity implements IProfileActivi
 		matchRecycler.setHasFixedSize(true);
 		profilePresenter.enableMatchFeed(matchRecycler, getBaseContext());
 	}
+
 }

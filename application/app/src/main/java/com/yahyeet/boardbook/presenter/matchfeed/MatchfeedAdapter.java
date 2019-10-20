@@ -109,12 +109,10 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 		if (viewType == PROFILE_HEADER_VIEW) {
 			v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.element_profile_header, viewGroup, false);
-			HeaderViewHolder vh = new HeaderViewHolder(v);
-			return vh;
+			return new HeaderViewHolder(v);
 		}
 		v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.element_match, viewGroup, false);
-		MatchViewHolder vh = new MatchViewHolder(v);
-		return vh;
+		return new MatchViewHolder(v);
 	}
 
 	// Replace the contents of a view (invoked by the layout manager)

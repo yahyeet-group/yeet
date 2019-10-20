@@ -18,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public class MatchHandler implements IRepositoryListener<Match> {
+public class MatchHandler extends EntityHandler<Match> implements IRepositoryListener<Match> {
 
 	private IMatchPlayerRepository matchPlayerRepository;
 	private IMatchRepository matchRepository;

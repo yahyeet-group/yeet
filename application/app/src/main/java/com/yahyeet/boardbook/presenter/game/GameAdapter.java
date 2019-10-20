@@ -2,93 +2,177 @@ package com.yahyeet.boardbook.presenter.game;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Filter;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.home.game.gamedetail.GameDetailActivity;
 import com.yahyeet.boardbook.model.entity.Game;
+import com.yahyeet.boardbook.presenter.AbstractAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder> {
+public class GameAdapter extends AbstractAdapter<Game> {
 
 	private static final String TAG = "GameAdapter";
 
-	List<Game> dataset;
-	private List<Game> allGames;
 	private Context context;
 
-	static abstract class GameViewHolder extends RecyclerView.ViewHolder {
 
-		GameViewHolder(View v) {
+	private static final int GAME_LIST = 0;
+	private static final int GAME_GRID = 1;
+
+
+	private DisplayType displayType;
+
+
+	static class GameListViewHolder extends RecyclerView.ViewHolder {
+
+		TextView textViewName;
+		TextView textViewDifficulty;
+		TextView textViewPlayers;
+		TextView textViewTeams;
+
+
+		GameListViewHolder(View v) {
 			super(v);
+			// Define click listener for the ViewHolder's View.
+			textViewName = v.findViewById(R.id.gameSeachName);
+			textViewDifficulty = v.findViewById(R.id.gameDifficulty);
+			textViewPlayers = v.findViewById(R.id.gameListMinMaxPlayers);
+			textViewTeams = v.findViewById(R.id.gameListTeamAmount);
+
+		}
+	}
+
+	static class GameGridViewHolder extends RecyclerView.ViewHolder {
+
+		// TODO Replace this area with match class as a custom view object
+		TextView textViewName;
+
+		GameGridViewHolder(View v) {
+			super(v);
+			// Define click listener for the ViewHolder's View.
+			textViewName = v.findViewById(R.id.gameGridName);
+
 		}
 	}
 
 
+	public GameAdapter(List<Game> database, Context context, DisplayType displayType) {
+		super(database);
+		this.context = context;
+		this.displayType = displayType;
+	}
+
+
+	@NonNull
 	@Override
-	public void onBindViewHolder(@NonNull GameViewHolder holder, int position) {
+	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		View v;
+
+		if (viewType == GAME_LIST) {
+			v = LayoutInflater
+				.from(parent.getContext())
+				.inflate(R.layout.element_game_list, parent, false);
+			return new GameListViewHolder(v);
+		}
+		v = LayoutInflater
+			.from(parent.getContext())
+			.inflate(R.layout.element_game_grid, parent, false);
+		return new GameGridViewHolder(v);
+
+	}
+
+	@Override
+	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 		holder.itemView.setOnClickListener(view -> {
 			Intent intent = new Intent(context, GameDetailActivity.class);
-			intent.putExtra("Game", dataset.get(position).getId());
+			intent.putExtra("Game", getDatabase().get(position).getId());
 			context.startActivity(intent);
 		});
-	}
+		List<Game> database = getDatabase();
 
-	public GameAdapter(List<Game> dataset, List<Game> allGames, Context context) {
-		if (dataset != null){
-			this.dataset = dataset;
-			this.allGames = allGames;
+		if (holder instanceof GameListViewHolder) {
+			GameListViewHolder gameGridViewHolder = (GameListViewHolder) holder;
+
+			gameGridViewHolder.textViewName.setText(database.get(position).getName());
+			gameGridViewHolder.textViewDifficulty.setText(getDifficulty(database.get(position).getDifficulty()));
+			gameGridViewHolder.textViewPlayers.setText(database.get(position).getMinPlayers() + " - " + database.get(position).getMaxPlayers() + " Players");
+			gameGridViewHolder.textViewTeams.setText("0 - " + database.get(position).getTeams().size() + " Teams");
+
+		} else if (holder instanceof GameGridViewHolder) {
+
+			GameGridViewHolder gameGridViewHolder = (GameGridViewHolder) holder;
+
+			gameGridViewHolder.textViewName.setText(database.get(position).getName());
 		}
-		else {
-			this.dataset = new ArrayList<>();
-			this.allGames = new ArrayList<>();
-		}
-		this.context = context;
+
+
 	}
 
 
 	@Override
-	public int getItemCount() {
-		return dataset.size();
+	public int getItemViewType(int position) {
+		if (displayType == DisplayType.LIST)
+			return GAME_LIST;
+		else if (displayType == DisplayType.GRID)
+			return GAME_GRID;
+		else
+			return super.getItemViewType(position);
 	}
 
-	public Filter getFilter() {
-		return playerFilter;
-	}
 
-	private Filter playerFilter = new Filter() {
-		@Override
-		protected FilterResults performFiltering(CharSequence constraint) {
-			List<Game> filteredList = new ArrayList<>();
-			if (constraint == null || constraint.length() == 0) {
-				filteredList.addAll(allGames);
-			} else {
-				String filterPattern = constraint.toString().toLowerCase().trim();
+	@Override
+	protected Filter createNewFilter() {
+		return new Filter() {
+			@Override
+			protected FilterResults performFiltering(CharSequence constraint) {
+				List<Game> filteredList = new ArrayList<>();
+				if (constraint == null || constraint.length() == 0) {
+					filteredList.addAll(getAllEntities());
+				} else {
+					String filterPattern = constraint.toString().toLowerCase().trim();
 
-				for (Game game : allGames) {
-					if (game.getName().toLowerCase().contains(filterPattern)) {
-						filteredList.add(game);
+					for (Game game : getAllEntities()) {
+						if (game.getName().toLowerCase().contains(filterPattern)) {
+							filteredList.add(game);
+						}
+
 					}
-
 				}
+
+				FilterResults results = new FilterResults();
+				results.values = filteredList;
+
+				return results;
 			}
 
-			FilterResults results = new FilterResults();
-			results.values = filteredList;
+			@Override
+			protected void publishResults(CharSequence constraint, FilterResults results) {
+				getDatabase().clear();
+				getDatabase().addAll((List) results.values);
+				notifyDataSetChanged();
+			}
+		};
+	}
 
-			return results;
-		}
 
-		@Override
-		protected void publishResults(CharSequence constraint, FilterResults results) {
-			dataset.clear();
-			dataset.addAll((List) results.values);
-			notifyDataSetChanged();
+	private String getDifficulty(int i) {
+		if (i == 1) {
+			return "Easy";
+		} else if (i == 2) {
+			return "Medium";
+		} else if (i == 3) {
+			return "Hard";
 		}
-	};
+		return "Unknown Difficulty";
+	}
 }
