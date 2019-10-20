@@ -47,6 +47,12 @@ public class UserHandler implements IRepositoryListener<User> {
 	}
 
 	public CompletableFuture<User> save(User user) {
+		for (User friend : user.getFriends()) {
+			if (friend.getId() == null) {
+				throw new IllegalArgumentException("Cannot add friends that have no id");
+			}
+		}
+
 		return userRepository.save(user).thenCompose(this::populate);
 	}
 

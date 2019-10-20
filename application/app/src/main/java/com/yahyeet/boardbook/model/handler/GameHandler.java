@@ -44,6 +44,21 @@ public class GameHandler implements IRepositoryListener<Game> {
 	}
 
 	public CompletableFuture<Game> save(Game game) {
+		if (game.getTeams() != null) {
+			for (GameTeam team : game.getTeams()) {
+				if (team.getGame() == null) {
+					throw new IllegalArgumentException("Cannot create a team without a game");
+				}
+				if (team.getRoles() != null) {
+					for (GameRole role : team.getRoles()) {
+						if (role.getTeam() == null) {
+							throw new IllegalArgumentException("Cannot create a role without a team");
+						}
+					}
+				}
+			}
+		}
+
 		CompletableFuture<Game> savedGameFuture = gameRepository.save(game);
 		CompletableFuture<Void> savedGameTeamsAndRolesFuture = savedGameFuture.thenCompose(savedGame -> {
 			game.setId(savedGame.getId());
