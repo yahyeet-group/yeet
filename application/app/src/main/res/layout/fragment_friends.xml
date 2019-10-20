@@ -32,7 +32,7 @@
         android:id="@+id/friendsRecycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/friendSearch" />
@@ -42,10 +42,10 @@
         style="@style/editTextEntry"
         android:layout_width="289dp"
         android:layout_height="44dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:hint="Search Friends"
-        android:textColorHint="@color/colorText"
         android:textColor="@color/colorText"
+        android:textColorHint="@color/colorText"
         app:layout_constraintEnd_toStartOf="@+id/addFriendButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
