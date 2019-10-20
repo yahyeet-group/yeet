@@ -13,6 +13,9 @@ import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 import com.yahyeet.boardbook.presenter.matchcreation.selectplayers.PlayerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ConfigureTeamPresenter {
 
 	private ConfigureTeamAdapter configureTeamAdapter;
@@ -46,14 +49,16 @@ public class ConfigureTeamPresenter {
 	}
 
 	public void finalizeMatch() {
+		List<MatchPlayer> players = new ArrayList<>();
 		for (int i = 0; i < playerRecycleView.getAdapter().getItemCount(); i++) {
 
 			ConfigureTeamAdapter.PlayerViewHolder holder = (ConfigureTeamAdapter.PlayerViewHolder) playerRecycleView.findViewHolderForAdapterPosition(i);
-			Spinner teamSpinner = holder.getSpinners()[0];
-			Spinner roleSpinner = holder.getSpinners()[1];
-
-			
+			players.add(holder.getMatchPlayer());
 		}
+
+		masterPresenter.getCmdh().addPlayer(players);
+		masterPresenter.finalizeMatch();
+
 	}
 
 }

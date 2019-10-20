@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +38,9 @@ public class ConfigureTeamsFragment extends Fragment implements IConfigureTeamsF
 		gameRecycler.setHasFixedSize(true);
 		spp.enableGameFeed(gameRecycler, getView().getContext());
 
+		getView().findViewById(R.id.matchDone).setOnClickListener(event -> {
+			spp.finalizeMatch();
+		});
 
 	}
 

@@ -41,7 +41,7 @@ public class CMMasterPresenter {
 		for (MatchPlayer mp : cmdh.getPlayers()){
 			finalMatch.addMatchPlayer(mp);
 		}
-
+		System.out.println();
 		//TODO here do big save to FireBase Desu
 	}
 }

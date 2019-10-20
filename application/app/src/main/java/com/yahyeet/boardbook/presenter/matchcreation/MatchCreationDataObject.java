@@ -60,6 +60,10 @@ public class MatchCreationDataObject {
 		players.add(mp);
 	}
 
+	public void addPlayer(List<MatchPlayer> mpl){
+		players.addAll(mpl);
+	}
+
 	public List<MatchPlayer> getPlayers(){
 		return players;
 	}

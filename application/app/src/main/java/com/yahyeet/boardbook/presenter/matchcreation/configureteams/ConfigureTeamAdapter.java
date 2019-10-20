@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.matchcreation.HelperFunctions;
+import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.GameRole;
 import com.yahyeet.boardbook.model.entity.GameTeam;
+import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import com.yahyeet.boardbook.model.entity.User;
 
 import java.util.ArrayList;
@@ -30,15 +32,29 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 
 		private Spinner teamSpinner;
 		private Spinner roleSpinner;
+		private User user;
+
 
 		PlayerViewHolder(View v) {
 			super(v);
 
 		}
 
-		public Spinner[] getSpinners(){
-			Spinner[] spinners = {teamSpinner, roleSpinner};
-			return spinners;
+		public MatchPlayer getMatchPlayer() {
+			Game game = ctp.getMasterPresenter().getCmdh().getGame();
+			GameTeam gameTeam = null;
+			GameRole gameRole = null;
+
+
+			if (teamSpinner.getSelectedItemPosition() != 0) {
+				gameTeam = game.getTeams().get(teamSpinner.getSelectedItemPosition() - 1);
+			}
+
+			if(roleSpinner.getSelectedItemPosition() != 0 && gameTeam != null){
+				gameRole = gameTeam.getRoles().get(roleSpinner.getSelectedItemPosition() -1);
+			}
+
+			return new MatchPlayer(user, gameRole, gameTeam, true);
 		}
 
 	}
@@ -72,6 +88,8 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 	@Override
 	public void onBindViewHolder(ConfigureTeamAdapter.PlayerViewHolder holder, int position) {
 
+		holder.user = myDataset.get(position);
+
 		View v = holder.itemView;
 		//Minimize on start
 		v.getLayoutParams().height = HelperFunctions.dpFromPx(250, holder.itemView.getContext());
@@ -98,7 +116,6 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 		teamSpinner.setAdapter(teamAdapter);
 
 
-
 		Spinner roleSpinner = v.findViewById(R.id.roleSpinner);
 
 		teamSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -108,7 +125,7 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 					roleSpinner.setEnabled(false);
 					return;
 				}
-				setRolesByTeam(ctp.getMasterPresenter().getCmdh().getGame().getTeams().get(position), holder.itemView, roleSpinner);
+				setRolesByTeam(ctp.getMasterPresenter().getCmdh().getGame().getTeams().get(position -1), holder.itemView, roleSpinner);
 				roleSpinner.setEnabled(true);
 
 			}
@@ -146,7 +163,7 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 
 	}
 
-	private void finalizeMatch(){
+	private void finalizeMatch() {
 
 	}
 
