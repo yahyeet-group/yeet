@@ -13,10 +13,12 @@ import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 import com.yahyeet.boardbook.model.entity.Game;
 
+import java.util.List;
+
 
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHolder> {
 
-    private Game[] myDataset = {};
+    private List<Game> myDataset;
     private SelectGamePresenter sgp;
     private CMMasterPresenter cmmp;
 
@@ -38,7 +40,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHol
         }
     }
 
-    public GamesAdapter(Game[] myDataset, SelectGamePresenter sgp) {
+    public GamesAdapter(List<Game> myDataset, SelectGamePresenter sgp) {
         this.sgp = sgp;
         this.myDataset = myDataset;
         cmmp = sgp.getMasterPresenter();
@@ -58,17 +60,18 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHol
     @Override
     public void onBindViewHolder(GamesViewHolder holder, int position) {
 
-        holder.gameTitle.setText(myDataset[position].getName());
+        holder.gameTitle.setText(myDataset.get(position).getName());
         holder.itemView.findViewById(R.id.selectGameButton).setOnClickListener((event)->{
             cmmp.goToSelectPlayers();
-            cmmp.getCmdh().setGame(myDataset[position]);
+            cmmp.getCmdh().setGame(myDataset.get(position));
+            System.out.println(myDataset.get(position).getTeams().get(0).getRoles().get(0).getName());
         });
 
     }
 
     @Override
     public int getItemCount() {
-        return myDataset.length;
+        return myDataset.size();
     }
 
 }

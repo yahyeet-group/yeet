@@ -5,9 +5,14 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yahyeet.boardbook.model.entity.GameRole;
+import com.yahyeet.boardbook.model.entity.GameTeam;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 import com.yahyeet.boardbook.activity.matchcreation.selectgame.ISelectGameFragment;
 import com.yahyeet.boardbook.model.entity.Game;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelectGamePresenter {
 
@@ -31,8 +36,29 @@ public class SelectGamePresenter {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		gameRecycleView.setLayoutManager(layoutManager);
 		//TODO: Replace with matches from user
-		Game[] testSet = {new Game("Avalon", "Cool Game that is cool")};
-		testSet[0].getName();
+		Game testGame = new Game("Avalon", "Cool Game", 3, 5, 10);
+		GameTeam mom = new GameTeam();
+		mom.setName("Minions of Mordred");
+		GameRole mordred = new GameRole();
+		mordred.setName("Mordred");
+		GameRole minion = new GameRole();
+		minion.setName("Minion of Mordred");
+		mom.addRole(mordred);
+		mom.addRole(minion);
+		testGame.addTeam(mom);
+		GameTeam som = new GameTeam();
+		som.setName("Servants of Merlin");
+		GameRole merlin = new GameRole();
+		merlin.setName("Merlin");
+		GameRole servant = new GameRole();
+		servant.setName("Servant of Merlin");
+		som.addRole(merlin);
+		som.addRole(servant);
+		testGame.addTeam(som);
+
+
+		List<Game> testSet = new ArrayList<>();
+		testSet.add(testGame);
 		gamesAdapter = new GamesAdapter(testSet, this);
 		gameRecycleView.setAdapter(gamesAdapter);
 	}

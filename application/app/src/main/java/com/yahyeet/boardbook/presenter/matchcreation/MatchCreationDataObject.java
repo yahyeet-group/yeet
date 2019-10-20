@@ -48,6 +48,10 @@ public class MatchCreationDataObject {
 		players.add(mp);
 	}
 
+	public void addPlayer(User user , Boolean win){
+		MatchPlayer mp = new MatchPlayer(user, null, null, win);
+	}
+
 	public List<MatchPlayer> getPlayers(){
 		return players;
 	}

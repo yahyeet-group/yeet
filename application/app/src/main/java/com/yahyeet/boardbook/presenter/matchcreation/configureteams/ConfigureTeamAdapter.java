@@ -25,7 +25,6 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 	private List<User> myDataset = new ArrayList<>();
 	private ConfigureTeamPresenter ctp;
 
-	private List<String> teamArray;
 
 	class PlayerViewHolder extends RecyclerView.ViewHolder {
 
@@ -37,11 +36,16 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 
 	}
 
+	public List<String> teamArray = new ArrayList<>();
+
 	public ConfigureTeamAdapter(ConfigureTeamPresenter ctp) {
 		this.ctp = ctp;
 		myDataset.addAll(ctp.getMasterPresenter().getCmdh().getSelectedPlayers());
 
 		List<GameTeam> teams = new ArrayList<>(ctp.getMasterPresenter().getCmdh().getGame().getTeams());
+		GameTeam teamNull = new GameTeam();
+		teamNull.setName("No Team");
+		teams.add(0, teamNull);
 		for (GameTeam gameTeam : teams) {
 			teamArray.add(gameTeam.getName());
 		}
@@ -86,9 +90,28 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 		teamAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		teamSpinner.setAdapter(teamAdapter);
 
-		teamSpinner.setOnItemClickListener((parent, view, position1, id) ->
-			setRolesByTeam(ctp.getMasterPresenter().getCmdh().getGame().getTeams().get(position1), holder.itemView));
 
+
+		Spinner roleSpinner = v.findViewById(R.id.roleSpinner);
+
+		teamSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				int testpos = position -1;
+				if (teamArray.get(position).equals("No Team")) {
+					roleSpinner.setEnabled(false);
+					return;
+				}
+				setRolesByTeam(ctp.getMasterPresenter().getCmdh().getGame().getTeams().get(position), holder.itemView, roleSpinner);
+				roleSpinner.setEnabled(true);
+
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				roleSpinner.setEnabled(false);
+			}
+		});
 
 	}
 
@@ -98,11 +121,13 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 		return myDataset.size();
 	}
 
-	private List<GameRole> setRolesByTeam(GameTeam team, View v){
-		Spinner roleSpinner = v.findViewById(R.id.roleSpinner);
+	private List<GameRole> setRolesByTeam(GameTeam team, View v, Spinner roleSpinner) {
 		List<GameRole> roles = new ArrayList<>(team.getRoles());
 		List<String> rolesString = new ArrayList<>();
-		for(GameRole role : roles){
+		GameRole nullRole = new GameRole();
+		nullRole.setName("No Role");
+		roles.add(0, nullRole);
+		for (GameRole role : roles) {
 			rolesString.add(role.getName());
 		}
 		ArrayAdapter<String> roleAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item, rolesString);    // Specify the layout to use when the list of choices appears
