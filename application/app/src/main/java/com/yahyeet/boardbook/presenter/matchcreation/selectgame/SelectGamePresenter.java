@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 import com.yahyeet.boardbook.activity.matchcreation.selectgame.ISelectGameFragment;
@@ -15,6 +16,7 @@ import java.util.List;
 public class SelectGamePresenter  {
 
 	private GamesAdapter gamesAdapter;
+	private List<Game> dataset;
 
 	private ISelectGameFragment selectGameFragment;
 	private CMMasterPresenter masterPresenter;
@@ -61,7 +63,7 @@ public class SelectGamePresenter  {
 
 
 
-
+		gamesAdapter = new GamesAdapter(dataset, this);
 		gameRecycleView.setAdapter(gamesAdapter);
 	}
 

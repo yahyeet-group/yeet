@@ -49,6 +49,7 @@ public class SelectPlayersPresenter {
 		testUser4.setName("Daniel the Man");
 		testSet.add(testUser4);*/
 
+		playerAdapter = new PlayerAdapter(database, this);
 		gameRecycleView.setAdapter(playerAdapter);
 	}
 
