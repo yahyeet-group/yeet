@@ -82,6 +82,7 @@ public class LoginFragment extends AccountFragment {
 		etPassword.setEnabled(value);
 		loginButton.setEnabled(value);
 
+
 		tvEmail.setEnabled(value);
 		tvPassword.setEnabled(value);
 

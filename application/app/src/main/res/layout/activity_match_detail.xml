@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.homeActivity.matchfeedFragment.matchDetailActivity.MatchDetailActivity">
+    android:background="@color/colorBackground"
+    tools:context=".activity.home.matchfeed.matchdetail.MatchDetailActivity">
 
     <ProgressBar
         android:id="@+id/matchDetailLoading"
@@ -42,6 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:textSize="24sp"
+        android:textColor="@color/colorText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
