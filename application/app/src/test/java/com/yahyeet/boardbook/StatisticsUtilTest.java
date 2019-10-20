@@ -1,5 +1,6 @@
 package com.yahyeet.boardbook;
 
+import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.GameRole;
 import com.yahyeet.boardbook.model.entity.GameTeam;
 import com.yahyeet.boardbook.model.entity.Match;
@@ -23,12 +24,12 @@ public class StatisticsUtilTest {
 		User user = new User();
 		user.setId("hej");
 		StatisticsUtil stat = new StatisticsUtil();
-
-		Match lostMatch = new Match();
+		Game game = new Game("Avalon", "Cool game", 1,2,3);
+		Match lostMatch = new Match(game);
 		lostMatch.addMatchPlayer(new MatchPlayer(user, new GameRole("he"), null, false));
 		user.addMatch(lostMatch);
 
-		Match wonMatch = new Match();
+		Match wonMatch = new Match(game);
 		wonMatch.addMatchPlayer(new MatchPlayer(user, new GameRole("he"), null, true));
 		user.addMatch(wonMatch);
 
