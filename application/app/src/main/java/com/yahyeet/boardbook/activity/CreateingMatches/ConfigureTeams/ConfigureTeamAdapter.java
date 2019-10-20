@@ -66,17 +66,25 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 			v.requestLayout();
 		});
 		doneButton.setOnClickListener((n) -> {
-			System.out.println("YEEEEEEEEEEEEEET!");
 			v.getLayoutParams().height = HelperFunctions.dpFromPx(100, holder.itemView.getContext());
 			v.requestLayout();
 		});
 
+
+		//// Spinner stuffs
 		Spinner teamSpinner = v.findViewById(R.id.teamSpinner);
-		List<String> spinnerArray = new ArrayList<String>();
-		spinnerArray.add("Minions Of Mordred");
-		ArrayAdapter<String> adapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item, spinnerArray);    // Specify the layout to use when the list of choices appears
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		teamSpinner.setAdapter(adapter);
+		List<String> teamArray = new ArrayList<>();
+		//teamArray.addAll(ctp.getMasterPresenter().getCmdh().getGame().getTeams());
+		ArrayAdapter<String> teamAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item, teamArray);    // Specify the layout to use when the list of choices appears
+		teamAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		teamSpinner.setAdapter(teamAdapter);
+
+		Spinner roleSpinner = v.findViewById(R.id.roleSpinner);
+		List<String> roleArray = new ArrayList<>();
+		roleArray.add("Minions Of Mordred");
+		ArrayAdapter<String> roleAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item, roleArray);    // Specify the layout to use when the list of choices appears
+		roleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		teamSpinner.setAdapter(roleAdapter);
 	}
 
 
