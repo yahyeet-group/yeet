@@ -32,7 +32,6 @@ public class GameAdapter extends AbstractAdapter<Game> {
 
 	private DisplayType displayType;
 
-
 	static class GameListViewHolder extends RecyclerView.ViewHolder {
 
 		TextView textViewName;
@@ -93,12 +92,15 @@ public class GameAdapter extends AbstractAdapter<Game> {
 
 	@Override
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+		List<Game> database = getDatabase();
+
 		holder.itemView.setOnClickListener(view -> {
 			Intent intent = new Intent(context, GameDetailActivity.class);
-			intent.putExtra("Game", getDatabase().get(position).getId());
+			intent.putExtra("Game", database.get(position).getId());
 			context.startActivity(intent);
 		});
-		List<Game> database = getDatabase();
+
+
 
 		if (holder instanceof GameListViewHolder) {
 			GameListViewHolder gameGridViewHolder = (GameListViewHolder) holder;
@@ -129,6 +131,9 @@ public class GameAdapter extends AbstractAdapter<Game> {
 			return super.getItemViewType(position);
 	}
 
+	public void setDisplayType(DisplayType displayType) {
+		this.displayType = displayType;
+	}
 
 	@Override
 	protected Filter createNewFilter() {

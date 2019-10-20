@@ -3,7 +3,6 @@ package com.yahyeet.boardbook.activity.home.game;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +60,7 @@ public class GamesFragment extends Fragment implements IGameFragment {
 			}
 		});
 
-		enableGameList();
+		gamePresenter.bindAdapterToView(rvGame);
 	}
 
 	/**

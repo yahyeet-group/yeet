@@ -1,9 +1,6 @@
 package com.yahyeet.boardbook.presenter.game;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
-import android.widget.Adapter;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,9 +13,6 @@ import com.yahyeet.boardbook.model.handler.GameHandlerListener;
 import com.yahyeet.boardbook.presenter.AdapterPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class GamePresenter extends AdapterPresenter<Game, GameHandler> implements GameHandlerListener {
 
 
@@ -27,8 +21,6 @@ public class GamePresenter extends AdapterPresenter<Game, GameHandler> implement
 	private RecyclerView.LayoutManager gridLayoutManager;
 
 	private DisplayType currentDisplayType;
-	private GameAdapter listAdapter;
-	private GameAdapter gridAdapter;
 
 	public GamePresenter(IGameFragment gameFragment, Context viewContext) {
 		super(gameFragment);
@@ -41,31 +33,32 @@ public class GamePresenter extends AdapterPresenter<Game, GameHandler> implement
 		pullAllDataToDatabase(gameHandler);
 		gameHandler.addListener(this);
 
-		listAdapter = new GameAdapter(getDatabase(), viewContext, DisplayType.LIST);
-		gridAdapter = new GameAdapter(getDatabase(), viewContext, DisplayType.GRID);
+
 
 		setLayoutManagers(viewContext);
-		setAdapter(listAdapter);
+		setAdapter(new GameAdapter(getDatabase(), viewContext, DisplayType.LIST));
 
+	}
 
+	public void bindAdapterToView(RecyclerView recyclerView){
+		recyclerView.setLayoutManager(listLayoutManager);
+		recyclerView.setAdapter(getAdapter());
 	}
 
 	public void displayGameList(RecyclerView recyclerView) {
-		recyclerView.setLayoutManager(listLayoutManager);
-
 		currentDisplayType = DisplayType.LIST;
-		updateAdapters();
 
-		recyclerView.setAdapter(getAdapter());
+		recyclerView.setLayoutManager(listLayoutManager);
+		updateGameAdapter();
+		notifyAdapter();
 	}
 
 	public void displayGameGrid(RecyclerView recyclerView) {
-		recyclerView.setLayoutManager(gridLayoutManager);
-
 		currentDisplayType = DisplayType.GRID;
-		updateAdapters();
 
-		recyclerView.setAdapter(getAdapter());
+		recyclerView.setLayoutManager(gridLayoutManager);
+		updateGameAdapter();
+		notifyAdapter();
 	}
 
 	private void setLayoutManagers(Context viewContext){
@@ -73,46 +66,23 @@ public class GamePresenter extends AdapterPresenter<Game, GameHandler> implement
 		gridLayoutManager = new GridLayoutManager(viewContext, 3);
 	}
 
-	/*private void initiateGamePresenter() {
-
-		gameFragment.disableViewInteraction();
-		BoardbookSingleton.getInstance().getGameHandler().all().thenAccept(initiatedGames -> {
-			if (initiatedGames != null) {
-				gameDatabase.addAll(initiatedGames);
-			}
-
-			uiHandler.post(() -> {
-				gameFragment.enableViewInteraction();
-				updateAdapters();
-			});
-		}).exceptionally(e -> {
-			uiHandler.post(() -> {
-				gameFragment.displayLoadingFailed();
-				gameFragment.enableViewInteraction();
-			});
-			return null;
-		});
-	}*/
-
-	// TODO: Method requires better name
 	public void searchGames(String query) {
 		getAdapter().getFilter().filter(query);
 	}
 
 
-	private void updateAdapters() {
-		if(currentDisplayType == DisplayType.LIST)
-			setAdapter(listAdapter);
-		else
-			setAdapter(gridAdapter);
+	private void updateGameAdapter(){
+		((GameAdapter) getAdapter()).setDisplayType(currentDisplayType);
+	}
 
+	private void notifyAdapter() {
 		getAdapter().notifyDataSetChanged();
 	}
 
 	@Override
 	public void onAddGame(Game game) {
 		getDatabase().add(game);
-		updateAdapters();
+		notifyAdapter();
 	}
 
 	@Override
@@ -122,7 +92,7 @@ public class GamePresenter extends AdapterPresenter<Game, GameHandler> implement
 				getDatabase().set(i, game);
 			}
 		}
-		updateAdapters();
+		notifyAdapter();
 	}
 
 	@Override
@@ -133,7 +103,7 @@ public class GamePresenter extends AdapterPresenter<Game, GameHandler> implement
 				break;
 			}
 		}
-		updateAdapters();
+		notifyAdapter();
 	}
 
 
