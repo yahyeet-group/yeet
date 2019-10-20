@@ -64,11 +64,9 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
 		holder.actionButton.setOnClickListener(event -> {
 			System.out.println(holder.actionButton.getText().toString().toLowerCase());
 			if (holder.actionButton.getText().toString().toLowerCase().equals("add")) {
-				System.out.println("Ill add this now");
 				holder.actionButton.setText("Remove");
 				cmmp.getCmdh().addSelectedPlayer(dataset.get(position));
 			}else {
-				System.out.println("Ill remove this now");
 				holder.actionButton.setText("Add");
 				cmmp.getCmdh().removeSelectedPlayer(dataset.get(position));
 			}
