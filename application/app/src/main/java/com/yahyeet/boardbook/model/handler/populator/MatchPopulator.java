@@ -19,16 +19,20 @@ public class MatchPopulator {
 	}
 
 	public CompletableFuture<Match> populate(Match match) {
-		Match populatedMatch = new Match(match.getId());
+		if(match.getGame() != null){
+			Match populatedMatch = new Match(match.getId());
 
-		CompletableFuture<Game> futureGame = gameRepository.find(match.getGame().getId());
-		CompletableFuture<List<MatchPlayer>> futureMatchPlayers = matchPlayerRepository.findMatchPlayersByMatchId(populatedMatch.getId());
+			CompletableFuture<Game> futureGame = gameRepository.find(match.getGame().getId());
+			CompletableFuture<List<MatchPlayer>> futureMatchPlayers = matchPlayerRepository.findMatchPlayersByMatchId(populatedMatch.getId());
 
-		return futureGame.thenCombine(futureMatchPlayers, (game, matchPlayers) -> {
-			populatedMatch.setGame(game);
-			matchPlayers.forEach(populatedMatch::addMatchPlayer);
+			return futureGame.thenCombine(futureMatchPlayers, (game, matchPlayers) -> {
+				populatedMatch.setGame(game);
+				matchPlayers.forEach(populatedMatch::addMatchPlayer);
 
-			return populatedMatch;
-		});
+				return populatedMatch;
+			});
+		}
+
+		throw new IllegalStateException("Match cannot be populated without an attached game");
 	}
 }
