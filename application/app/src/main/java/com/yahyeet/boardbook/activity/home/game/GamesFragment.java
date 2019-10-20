@@ -47,7 +47,6 @@ public class GamesFragment extends Fragment implements IGameFragment {
 		tvSearch.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-				//gamePresenter.searchGames(tvSearch.getText().toString());
 			}
 
 			@Override

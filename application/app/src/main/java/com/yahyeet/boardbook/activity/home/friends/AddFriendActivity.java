@@ -46,13 +46,12 @@ public class AddFriendActivity extends AppCompatActivity implements IAddFriendAc
 
 			@Override
 			public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-				addFriendPresenter.searchNonFriends(tvAddFriendSearch.getText().toString());
 
 			}
 
 			@Override
 			public void afterTextChanged(Editable editable) {
-
+				addFriendPresenter.searchNonFriends(tvAddFriendSearch.getText().toString());
 			}
 		});
 	}
