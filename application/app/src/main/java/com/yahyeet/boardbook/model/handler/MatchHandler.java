@@ -45,22 +45,25 @@ public class MatchHandler implements IRepositoryListener<Match> {
 	}
 
 	public CompletableFuture<Match> save(Match match) {
-		CompletableFuture<Match> savedMatchFuture = matchRepository.save(match);
-		CompletableFuture<Void> savedMatchPlayersFuture = savedMatchFuture.thenCompose(savedMatch -> {
-			match.setId(savedMatch.getId());
-			List<CompletableFuture<MatchPlayer>> savedMatchPlayerFutures =
-				match
-					.getMatchPlayers()
-					.stream()
-					.map(matchPlayer -> matchPlayerRepository.save(matchPlayer))
-					.collect(Collectors.toList());
+		if(match.getGame() != null){
+			CompletableFuture<Match> savedMatchFuture = matchRepository.save(match);
+			CompletableFuture<Void> savedMatchPlayersFuture = savedMatchFuture.thenCompose(savedMatch -> {
+				match.setId(savedMatch.getId());
+				List<CompletableFuture<MatchPlayer>> savedMatchPlayerFutures =
+						match
+								.getMatchPlayers()
+								.stream()
+								.map(matchPlayer -> matchPlayerRepository.save(matchPlayer))
+								.collect(Collectors.toList());
 
-			return CompletableFuture.allOf(savedMatchPlayerFutures.toArray(new CompletableFuture[0]));
-		});
+				return CompletableFuture.allOf(savedMatchPlayerFutures.toArray(new CompletableFuture[0]));
+			});
 
-		return savedMatchFuture
-			.thenCombine(savedMatchPlayersFuture, (savedMatch, nothing) -> savedMatch)
-			.thenCompose(this::populate);
+			return savedMatchFuture
+					.thenCombine(savedMatchPlayersFuture, (savedMatch, nothing) -> savedMatch)
+					.thenCompose(this::populate);
+		}
+		throw new IllegalStateException("Cannot save match without attached game");
 	}
 
 	public CompletableFuture<List<Match>> all() {
