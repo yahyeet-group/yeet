@@ -5,6 +5,7 @@
     android:id="@+id/loginLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context=".activity.account.LoginFragment">
 
 
@@ -13,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-
+        android:textColor="@color/colorText"
         android:text="@string/email"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/loginEmailInput"
@@ -24,6 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        android:textColor="@color/colorText"
         android:text="@string/password"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/loginPasswordInput"
@@ -75,6 +77,7 @@
         android:layout_marginTop="140dp"
         android:background="@drawable/custom_button"
         android:text="@string/login"
+        android:textColor="@color/colorText"
         app:layout_constraintStart_toStartOf="@+id/loginPasswordInput"
         app:layout_constraintTop_toBottomOf="@+id/loginPasswordInput" />
 
