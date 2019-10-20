@@ -78,7 +78,12 @@ public class MatchHandlerTest {
 
         Match match = new Match(game);
         User user = new User();
-        userHandler.save(user);
+        user.setId("0");
+        try {
+            userHandler.save(user).get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
 
         GameRole gameRole = new GameRole();
         gameRole.setId("0");
@@ -139,7 +144,7 @@ public class MatchHandlerTest {
         match2.addMatchPlayer(player);
         Match match3 = new Match(game);
         match3.addMatchPlayer(player);
-        
+
         try {
             matchHandler.save(match1).get();
             matchHandler.save(match2).get();
