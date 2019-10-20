@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +17,7 @@ import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.home.friends.FriendsFragment;
 import com.yahyeet.boardbook.activity.home.game.GamesFragment;
 import com.yahyeet.boardbook.activity.home.matchfeed.MatchfeedFragment;
+import com.yahyeet.boardbook.activity.matchcreation.CreateMatchActivity;
 import com.yahyeet.boardbook.presenter.HomePresenter;
 
 public class HomeActivity extends AppCompatActivity implements IHomeActivity {
@@ -58,6 +60,11 @@ public class HomeActivity extends AppCompatActivity implements IHomeActivity {
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+
+		findViewById(R.id.btn_create).setOnClickListener(event -> {
+			Intent intent = new Intent(this, CreateMatchActivity.class);
+			startActivity(intent);
+		});
 	}
 
 	@Override
