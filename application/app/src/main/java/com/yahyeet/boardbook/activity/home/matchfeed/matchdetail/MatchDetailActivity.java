@@ -61,17 +61,22 @@ public class MatchDetailActivity extends AppCompatActivity implements IMatchDeta
 	}
 
 	@Override
-	public void enableLoading(){
+	public void disableViewInteraction(){
 		pbLoading.setVisibility(View.VISIBLE);
 	}
 
+
+
 	@Override
-	public void disableLoading(){
+	public void enableViewInteraction(){
 		pbLoading.setVisibility(View.INVISIBLE);
 	}
 
 
-
+	@Override
+	public void displayLoadingFailed() {
+		//TODO: Implement method
+	}
 
 
 

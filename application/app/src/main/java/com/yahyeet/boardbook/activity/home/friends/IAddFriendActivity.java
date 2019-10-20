@@ -1,15 +1,11 @@
 package com.yahyeet.boardbook.activity.home.friends;
 
-public interface IAddFriendActivity {
+import com.yahyeet.boardbook.activity.IFutureInteractable;
+
+public interface IAddFriendActivity extends IFutureInteractable {
 
 
 	void enableAddFriendList();
-
-	void disableActivityInteraction();
-
-	void enableActivityInteraction();
-
-	void showErrorMessage();
 
 	void finishAddFriendActivity();
 

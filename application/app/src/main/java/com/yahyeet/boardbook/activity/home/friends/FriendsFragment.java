@@ -85,17 +85,4 @@ public class FriendsFragment extends Fragment implements IFriendFragment {
 		RecyclerView recyclerView = getView().findViewById(R.id.friendsRecycler);
 		friendsPresenter.enableFriendsList(recyclerView, getContext());
 	}
-
-	@Override
-	public void disableFragmentInteraction() {
-		addFriendbtn.setEnabled(false);
-		friendSearch.setEnabled(false);
-	}
-
-	@Override
-	public void enableFragmentInteraction() {
-
-		addFriendbtn.setEnabled(true);
-		friendSearch.setEnabled(true);
-	}
 }

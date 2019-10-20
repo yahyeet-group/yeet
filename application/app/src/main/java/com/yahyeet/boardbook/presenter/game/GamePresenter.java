@@ -77,7 +77,7 @@ public class GamePresenter implements GameHandlerListener {
 
 	private void initiateGamePresenter() {
 
-		gameFragment.disableFragmentInteraction();
+		gameFragment.disableViewInteraction();
 		BoardbookSingleton.getInstance().getGameHandler().all().thenAccept(initiatedGames -> {
 			if (initiatedGames != null) {
 				gameDatabase.addAll(initiatedGames);
@@ -85,13 +85,13 @@ public class GamePresenter implements GameHandlerListener {
 			}
 
 			uiHandler.post(() -> {
-				gameFragment.enableFragmentInteraction();
+				gameFragment.enableViewInteraction();
 				updateAdapters();
 			});
 		}).exceptionally(e -> {
 			uiHandler.post(() -> {
 				gameFragment.displayLoadingFailed();
-				gameFragment.enableFragmentInteraction();
+				gameFragment.enableViewInteraction();
 			});
 			return null;
 		});

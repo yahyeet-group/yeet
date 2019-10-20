@@ -23,18 +23,19 @@ public class MatchDetailPresenter {
 		this.matchDetailActivity = matchDetailActivity;
 
 
-		matchDetailActivity.enableLoading();
+		matchDetailActivity.disableViewInteraction();
 		BoardbookSingleton.getInstance().getMatchHandler().find(matchID).thenAccept(foundMatch -> {
 			match = foundMatch;
 
 			new android.os.Handler(Looper.getMainLooper()).post(() -> {
 				initiateGameDetail();
 				matchDetailActivity.initiateMatchDetailList();
-				matchDetailActivity.disableLoading();
+				matchDetailActivity.enableViewInteraction();
 			});
 
 		}).exceptionally(e -> {
 			e.printStackTrace();
+			matchDetailActivity.displayLoadingFailed();
 			return null;
 		});
 
