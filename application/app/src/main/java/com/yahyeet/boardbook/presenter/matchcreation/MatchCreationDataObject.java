@@ -20,11 +20,14 @@ public class MatchCreationDataObject {
 	private List<User> selectedPlayers = new ArrayList<>();
 
 	private Game game;
-	private Activity parentActivity;
+	// private Activity parentActivity;
 
 	public MatchCreationDataObject(Activity activity) {
-		this.parentActivity = activity;
+		// TODO: Removed for now, but can get back if necessary later
+		//this.parentActivity = activity;
 	}
+
+	public MatchCreationDataObject(){}
 
 	public List<User> getSelectedPlayers() {
 		return selectedPlayers;

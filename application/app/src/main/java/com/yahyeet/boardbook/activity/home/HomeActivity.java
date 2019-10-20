@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -24,6 +25,7 @@ public class HomeActivity extends AppCompatActivity implements IHomeActivity {
 
 
 	private HomePresenter homePresenter;
+	private ImageButton btn_create;
 
 	private BottomNavigationView.OnNavigationItemSelectedListener navListener = menuItem -> {
 		Fragment selectedFragment = null;
@@ -50,6 +52,9 @@ public class HomeActivity extends AppCompatActivity implements IHomeActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+		btn_create = findViewById(R.id.btn_create);
+
+		btn_create.setOnClickListener(v -> startCreateMatch());
 
 		homePresenter = new HomePresenter(this);
 
@@ -65,6 +70,12 @@ public class HomeActivity extends AppCompatActivity implements IHomeActivity {
 			Intent intent = new Intent(this, CreateMatchActivity.class);
 			startActivity(intent);
 		});
+	}
+
+
+	private void startCreateMatch(){
+		Intent startCreateMatch = new Intent(this, CreateMatchActivity.class);
+		startActivity(startCreateMatch);
 	}
 
 	@Override
