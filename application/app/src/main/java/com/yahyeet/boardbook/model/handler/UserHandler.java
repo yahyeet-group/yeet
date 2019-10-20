@@ -1,22 +1,45 @@
 package com.yahyeet.boardbook.model.handler;
 
+import com.yahyeet.boardbook.model.entity.Match;
+import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.model.handler.populator.MatchPlayerPopulator;
+import com.yahyeet.boardbook.model.handler.populator.MatchPopulator;
+import com.yahyeet.boardbook.model.handler.populator.UserPopulator;
+import com.yahyeet.boardbook.model.repository.IGameRepository;
+import com.yahyeet.boardbook.model.repository.IGameRoleRepository;
+import com.yahyeet.boardbook.model.repository.IGameTeamRepository;
+import com.yahyeet.boardbook.model.repository.IMatchPlayerRepository;
 import com.yahyeet.boardbook.model.repository.IMatchRepository;
+import com.yahyeet.boardbook.model.repository.IRepositoryListener;
 import com.yahyeet.boardbook.model.repository.IUserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public class UserHandler {
+public class UserHandler implements IRepositoryListener<User> {
 	private IUserRepository userRepository;
-	private IMatchRepository matchRepository;
 	private List<UserHandlerListener> listeners = new ArrayList<>();
 
-	public UserHandler(IUserRepository userRepository, IMatchRepository matchRepository) {
+	private MatchPlayerPopulator matchPlayerPopulator;
+	private MatchPopulator matchPopulator;
+	private UserPopulator userPopulator;
+
+	public UserHandler(IUserRepository userRepository,
+										 IMatchRepository matchRepository,
+										 IGameRoleRepository gameRoleRepository,
+										 IGameTeamRepository gameTeamRepository,
+										 IGameRepository gameRepository,
+										 IMatchPlayerRepository matchPlayerRepository) {
 		this.userRepository = userRepository;
-		this.matchRepository = matchRepository;
+		matchPlayerPopulator = new MatchPlayerPopulator(gameRoleRepository, gameTeamRepository, matchRepository, userRepository);
+		matchPopulator = new MatchPopulator(gameRepository, matchPlayerRepository);
+		userPopulator = new UserPopulator(matchPlayerRepository, matchRepository, userRepository);
 	}
 
 	public CompletableFuture<User> find(String id) {
@@ -24,53 +47,9 @@ public class UserHandler {
 	}
 
 	public CompletableFuture<User> save(User user) {
-		if (user.getId() == null) {
-			return userRepository
-				.create(user)
-				.thenCompose(this::populate)
-				.thenApplyAsync(createdUser -> {
-					notifyListenersOnUserAdd(createdUser);
+		checkUserValidity(user);
 
-					return createdUser;
-				});
-		} else {
-			return userRepository
-				.update(user)
-				.thenCompose(this::populate)
-				.thenApplyAsync(updatedUser -> {
-					notifyListenersOnUserUpdate(updatedUser);
-
-					return updatedUser;
-				});
-		}
-	}
-
-	public CompletableFuture<User> saveWithId(User user) {
-		return userRepository
-			.create(user)
-			.thenCompose(this::populate)
-			.thenApplyAsync(createdUser -> {
-				notifyListenersOnUserAdd(createdUser);
-
-				return createdUser;
-			});
-
-	}
-
-	public CompletableFuture<User> update(User user) {
-		return userRepository.update(user).thenCompose((u) -> {
-			notifyListenersOnUserUpdate(u);
-
-			return this.populate(u);
-		});
-	}
-
-	public CompletableFuture<Void> remove(User user) {
-		return userRepository.remove(user).thenApply((v) -> {
-			notifyListenersOnUserRemove(user);
-
-			return null;
-		});
+		return userRepository.save(user).thenCompose(this::populate);
 	}
 
 	public CompletableFuture<List<User>> all() {
@@ -93,21 +72,52 @@ public class UserHandler {
 	}
 
 	public CompletableFuture<User> populate(User user) {
-		if (user.getId() == null) {
-			throw new IllegalArgumentException("Cannot populate a user without an identifier");
-		}
+		AtomicReference<User> fullyPopulatedUser = new AtomicReference<>();
 
-		return userRepository.findFriendsByUserId(user.getId()).thenApply(friends -> {
-			user.setFriends(friends);
+		return userPopulator.populate(user).thenApply(populatedUser -> {
+			fullyPopulatedUser.set(populatedUser);
 
 			return null;
-		}).thenCompose(
-			o -> matchRepository.findMatchesByUserId(user.getId())
-		).thenApply(matches -> {
-			user.setMatches(matches);
+		}).thenCompose(nothing -> {
+			List<CompletableFuture<Match>> allFuturePopulatedMatches =
+				fullyPopulatedUser
+					.get()
+					.getMatches()
+					.stream().map(match -> matchPopulator.populate(match))
+					.collect(Collectors.toList());
 
-			return user;
-		});
+			CompletableFuture<Void> allOfFutureFuturePopulatedMatches = CompletableFuture.allOf(allFuturePopulatedMatches.toArray(new CompletableFuture[0]));
+
+			return allOfFutureFuturePopulatedMatches.thenApply(future ->
+				allFuturePopulatedMatches
+					.stream()
+					.map(CompletableFuture::join)
+					.collect(Collectors.toList()));
+		}).thenApply(populatedMatches -> {
+			fullyPopulatedUser.get().getMatches().clear();
+			populatedMatches.forEach(populatedMatch -> fullyPopulatedUser.get().addMatch(populatedMatch));
+
+			return populatedMatches;
+		}).thenCompose(populatedMatches -> {
+			List<CompletableFuture<Void>> allFuturePopulatedMatchPlayers = new ArrayList<>();
+
+			fullyPopulatedUser
+				.get()
+				.getMatches()
+				.forEach(match -> {
+					match
+						.getMatchPlayers()
+						.forEach(matchPlayer -> allFuturePopulatedMatchPlayers.add(matchPlayerPopulator.populate(matchPlayer).thenApply(populatedMatchPlayer -> {
+							matchPlayer.setUser(populatedMatchPlayer.getUser());
+							matchPlayer.setMatch(populatedMatchPlayer.getMatch());
+							matchPlayer.setRole(populatedMatchPlayer.getRole());
+
+							return null;
+						})));
+				});
+
+			return CompletableFuture.allOf(allFuturePopulatedMatchPlayers.toArray(new CompletableFuture[0]));
+		}).thenApply(nothing -> fullyPopulatedUser.get());
 	}
 
 	public void addListener(UserHandlerListener listener) {
@@ -133,6 +143,29 @@ public class UserHandler {
 	private void notifyListenersOnUserRemove(User user) {
 		for (UserHandlerListener listener : listeners) {
 			listener.onRemoveUser(user);
+		}
+	}
+
+	@Override
+	public void onCreate(User user) {
+		notifyListenersOnUserAdd(user);
+	}
+
+	@Override
+	public void onUpdate(User user) {
+		notifyListenersOnUserUpdate(user);
+	}
+
+	@Override
+	public void onDelete(User user) {
+		notifyListenersOnUserRemove(user);
+	}
+
+	private void checkUserValidity(User user) {
+		for (User friend : user.getFriends()) {
+			if (friend.getId() == null) {
+				throw new IllegalArgumentException("Cannot add friends that have no id");
+			}
 		}
 	}
 }

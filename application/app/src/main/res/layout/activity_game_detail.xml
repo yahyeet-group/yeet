@@ -4,7 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.GameActivity.GameDetailActivity">
+    android:background="@color/colorBackground"
+    tools:context=".activity.home.game.gamedetail.GameDetailActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_gravity="center"
+        android:background="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/gameDetailRecyclerView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/friendPicture" />
 
     <TextView
         android:id="@+id/gameDetailName"
@@ -13,6 +23,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:text="GameName"
+        android:textColor="@color/colorText"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,6 +33,7 @@
         android:layout_width="326dp"
         android:layout_height="75dp"
         android:layout_marginTop="52dp"
+        android:textColor="@color/colorText"
         android:text="Description"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,6 +46,7 @@
         android:layout_width="326dp"
         android:layout_height="75dp"
         android:layout_marginTop="44dp"
+        android:textColor="@color/colorText"
         android:text="Rules"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,6 +57,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorText"
         android:text="Description"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/gameDetailDescription"
@@ -54,14 +68,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:textColor="@color/colorText"
         android:text="@string/teams"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@+id/gameDetailRules"
         app:layout_constraintTop_toBottomOf="@+id/gameDetailRules" />
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorText"
         android:text="Rules"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/gameDetailRules"
@@ -82,6 +99,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="30dp"
         android:layout_marginTop="390dp"
+        android:textColor="@color/colorText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/gameDetailTeamTitle">
 

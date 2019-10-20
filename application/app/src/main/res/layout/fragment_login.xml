@@ -5,7 +5,8 @@
     android:id="@+id/loginLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.accountActivity.LoginFragment">
+    android:background="@color/colorBackground"
+    tools:context=".activity.account.LoginFragment">
 
 
     <TextView
@@ -13,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-
+        android:textColor="@color/colorText"
         android:text="@string/email"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/loginEmailInput"
@@ -24,10 +25,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        android:textColor="@color/colorText"
         android:text="@string/password"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/loginPasswordInput"
         app:layout_constraintStart_toStartOf="@+id/loginPasswordInput" />
+
+    <TextView
+        android:id="@+id/loginError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:lines="1"
+        android:text="@string/loginInvalidAccountError"
+        android:textAlignment="center"
+        android:textColor="@color/colorError"
+        android:textSize="30sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/loginPasswordInput"
+        app:layout_constraintStart_toStartOf="@+id/loginPasswordInput"
+        app:layout_constraintTop_toBottomOf="@+id/loginPasswordInput" />
 
     <EditText
         android:id="@+id/loginPasswordInput"
@@ -35,6 +52,7 @@
         android:layout_height="56dp"
         android:layout_marginTop="128dp"
         android:ems="10"
+        android:textColorHint="@color/colorText"
         android:hint="@string/passHint"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="@+id/loginEmailInput"
@@ -47,6 +65,7 @@
         android:layout_marginStart="64dp"
         android:layout_marginTop="128dp"
         android:ems="10"
+        android:textColorHint="@color/colorText"
         android:hint="@string/emailHint"
         android:inputType="textEmailAddress"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,25 +76,11 @@
         android:layout_width="174dp"
         android:layout_height="82dp"
         android:layout_marginStart="56dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="140dp"
         android:background="@drawable/custom_button"
         android:text="@string/login"
+        android:textColor="@color/colorText"
         app:layout_constraintStart_toStartOf="@+id/loginPasswordInput"
-        app:layout_constraintTop_toBottomOf="@+id/loginErrorText" />
-
-    <TextView
-        android:id="@+id/loginErrorText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:alpha="0"
-        android:text="@string/errorLoginText"
-        android:textColor="#FC0A0A"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginPasswordInput" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

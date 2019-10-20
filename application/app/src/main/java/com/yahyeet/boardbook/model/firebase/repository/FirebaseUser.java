@@ -1,84 +1,60 @@
 package com.yahyeet.boardbook.model.firebase.repository;
 
-import com.yahyeet.boardbook.model.entity.AbstractEntity;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.yahyeet.boardbook.model.entity.User;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-class FirebaseUser {
-    private String id;
-    private String name;
-    private List<String> friends;
+class FirebaseUser extends AbstractFirebaseEntity<User> {
+	private String name;
 
-    public FirebaseUser() {}
+	public FirebaseUser() {
+	}
 
-    public FirebaseUser(String id, String name) {
-        this.id = id;
-        this.name = name;
-        friends = new ArrayList<>();
-    }
+	public FirebaseUser(String id, String name) {
+		super(id);
+		this.name = name;
+	}
 
-    public String getId() {
-        return id;
-    }
+	@Override
+	public Map<String, Object> toMap() {
+		Map<String, Object> data = new HashMap<>();
 
-    public void setId(String id) {
-        this.id = id;
-    }
+		if (name != null) {
+			data.put("name", name);
+		}
 
-    public String getName() {
-        return name;
-    }
+		return data;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	@Override
+	public User toModelType() {
+		User user = new User(name);
+		user.setId(getId());
+		return user;
+	}
 
-    public List<String> getFriends() {
-        return friends;
-    }
+	public static FirebaseUser fromModelType(User user) {
+		return new FirebaseUser(user.getId(), user.getName());
+	}
 
-    public void setFriends(List<String> friends) {
-        this.friends = friends;
-    }
+	public static FirebaseUser fromDocument(DocumentSnapshot document) {
+		FirebaseUser firebaseUser = new FirebaseUser();
+		firebaseUser.setId(document.getId());
 
-    public Map<String, Object> toMap() {
-        Map<String, Object> data = new HashMap<>();
+		if (document.contains("name")) {
+			firebaseUser.setName(document.getString("name"));
+		}
 
-        if (name != null) {
-            data.put("name", name);
-        }
+		return firebaseUser;
+	}
 
-        if (friends != null) {
-            data.put("friends", friends);
-        }
+	public String getName() {
+		return name;
+	}
 
-        return data;
-    }
-
-    public static FirebaseUser fromUser(User user) {
-        FirebaseUser firebaseUser = new FirebaseUser(user.getId(), user.getName());
-
-        if (user.getFriends() != null) {
-            firebaseUser.setFriends(
-                    user
-                            .getFriends()
-                            .stream()
-                            .map(AbstractEntity::getId)
-                            .collect(Collectors.toList())
-            );
-        }
-
-        return firebaseUser;
-    }
-
-    public User toUser() {
-        User user = new User(name);
-        user.setId(getId());
-        return user;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 }

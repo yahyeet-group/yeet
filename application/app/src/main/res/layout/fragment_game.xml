@@ -4,7 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="@color/colorBackground">
+
+    <View
+        android:id="@+id/view6"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_gravity="center"
+        android:background="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/gameListView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/friendPicture" />
 
     <EditText
         android:id="@+id/searchInput"
@@ -14,6 +24,7 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Search Games"
+        android:textColorHint="@color/colorText"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,7 +33,7 @@
         android:id="@+id/gameListView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="60dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchInput">
 
@@ -46,6 +57,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
+        android:background="@drawable/custom_button"
+        android:textColor="@color/colorText"
         android:text="Display List"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchInput" />
@@ -55,6 +68,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
+        android:background="@drawable/custom_button"
+        android:textColor="@color/colorText"
         android:text="Display Grid"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchInput" />
@@ -89,8 +104,23 @@
             android:layout_marginTop="18dp"
             android:layout_marginEnd="0dp"
             android:text="@string/gameLoadingText"
+            android:textColor="@color/colorText"
             android:textAlignment="center"
             android:textSize="24sp" />
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/gameErrorText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="256dp"
+        android:text="@string/gameLoadErrorText"
+        android:textAlignment="center"
+        android:textColor="@color/colorError"
+        android:textSize="30sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchInput" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

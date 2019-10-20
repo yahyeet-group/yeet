@@ -4,17 +4,18 @@ public class MatchPlayer extends AbstractEntity {
     private User user;
     private GameRole role;
     private GameTeam team;
+    private Match match;
     private boolean win;
 
-    public MatchPlayer(String id, User user, GameRole role, GameTeam team, boolean win) {
-        super(id);
+    public MatchPlayer(User user, GameRole role, GameTeam team, boolean win) {
         this.user = user;
         this.role = role;
         this.team = team;
         this.win = win;
     }
 
-    public MatchPlayer() {
+    public MatchPlayer(String id) {
+        super(id);
     }
 
     public User getUser() {
@@ -33,19 +34,27 @@ public class MatchPlayer extends AbstractEntity {
         this.role = role;
     }
 
+    public Match getMatch() {
+        return match;
+    }
+
+    public void setMatch(Match match) {
+        this.match = match;
+    }
+
+    public boolean getWin() {
+        return win;
+    }
+
+    public void setWin(boolean win) {
+        this.win = win;
+    }
+
     public GameTeam getTeam() {
         return team;
     }
 
     public void setTeam(GameTeam team) {
         this.team = team;
-    }
-
-    public boolean isWin() {
-        return win;
-    }
-
-    public void setWin(boolean win) {
-        this.win = win;
     }
 }
