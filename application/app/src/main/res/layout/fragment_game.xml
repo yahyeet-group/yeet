@@ -7,14 +7,12 @@
     android:background="@color/colorBackground">
 
     <View
-        android:id="@+id/view6"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_gravity="center"
         android:background="#000000"
-        app:layout_constraintBottom_toBottomOf="@+id/gameListView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friendPicture" />
+        app:layout_constraintBottom_toTopOf="@+id/gameRecyclerView"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/searchInput"
@@ -29,28 +27,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ListView
-        android:id="@+id/gameListView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/gameRecyclerView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchInput">
 
-    </ListView>
-
-    <GridView
-        android:id="@+id/gameGridView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:columnWidth="92dp"
-        android:gravity="center"
-        android:horizontalSpacing="0dp"
-        android:numColumns="auto_fit"
-        android:stretchMode="spacingWidthUniform"
-        android:verticalSpacing="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/gameListView" />
+    </androidx.recyclerview.widget.RecyclerView>
 
     <Button
         android:id="@+id/gameListDisplayButton"

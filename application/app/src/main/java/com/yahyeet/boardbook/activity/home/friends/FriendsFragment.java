@@ -42,7 +42,6 @@ public class FriendsFragment extends Fragment implements IFriendFragment {
 		friendSearch.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-				friendsPresenter.searchFriends(friendSearch.getText().toString());
 			}
 
 			@Override
