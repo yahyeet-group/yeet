@@ -13,7 +13,7 @@ import com.yahyeet.boardbook.model.util.PasswordFailedException;
 public class AccountManagerPresenter {
 	private IAccountManagerActivity accountManagerActivity;
 	// Set true to skip login
-	private Boolean fastPass = true;
+	private Boolean fastPass = false;
 
 	public AccountManagerPresenter(IAccountManagerActivity accountManagerActivity) {
 		this.accountManagerActivity = accountManagerActivity;

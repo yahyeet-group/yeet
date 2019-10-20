@@ -44,7 +44,7 @@ public class MatchfeedPresenter implements MatchHandlerListener {
 		User loggedIn = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
 
 
-		//matchDatabase.addAll(loggedIn.getMatches());
+		matchDatabase.addAll(loggedIn.getMatches());
 
 
 		// TODO: This code breaks everything and needs to be reimplemented
