@@ -14,7 +14,7 @@ import com.yahyeet.boardbook.model.entity.User;
 
 public class ConfigureTeamPresenter {
 
-    private ConfigureTeamAdapter playerAdapter;
+    private ConfigureTeamAdapter configureTeamAdapter;
 
     private IConfigureTeamsFragment configureTeamsFragment;
 
@@ -27,7 +27,7 @@ public class ConfigureTeamPresenter {
     }
 
     public void repopulateMatches() {
-        playerAdapter.notifyDataSetChanged();
+        configureTeamAdapter.notifyDataSetChanged();
     }
 
     public void enableGameFeed(RecyclerView playerRecycleView, Context viewContext) {
@@ -35,10 +35,10 @@ public class ConfigureTeamPresenter {
         playerRecycleView.setLayoutManager(layoutManager);
         //TODO: Replace with matches from user
         User[] testSet = {new User(), new User()};
-        playerAdapter = new ConfigureTeamAdapter();
-        playerRecycleView.setAdapter(playerAdapter);
-
-
+        configureTeamAdapter = new ConfigureTeamAdapter(this);
+        playerRecycleView.setAdapter(configureTeamAdapter);
     }
+
+    public CMMasterPresenter getMasterPresenter(){ return masterPresenter;}
 
 }

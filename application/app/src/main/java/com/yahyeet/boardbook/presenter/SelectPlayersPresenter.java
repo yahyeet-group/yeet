@@ -1,10 +1,12 @@
 package com.yahyeet.boardbook.presenter;
 
 import android.content.Context;
+import android.widget.SearchView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.CreateingMatches.CMMasterPresenter;
 import com.yahyeet.boardbook.activity.CreateingMatches.SelectGame.GamesAdapter;
 import com.yahyeet.boardbook.activity.CreateingMatches.SelectPlayers.PlayerAdapter;
@@ -24,6 +26,8 @@ public class SelectPlayersPresenter {
 	public SelectPlayersPresenter(SelectPlayersFragment spf, CMMasterPresenter cma) {
 		this.masterPresenter = cma;
 		this.spf = spf;
+
+
 	}
 
 	public void repopulateMatches() {
@@ -36,13 +40,40 @@ public class SelectPlayersPresenter {
 		//TODO: Replace with real users
 
 		List<User> testSet = new LinkedList<>();
-		testSet.add(new User());
+		User testUser = new User();
+		testUser.setName("Jaan Karm");
+		testSet.add(testUser);
+		User testUser2 = new User();
+		testUser2.setName("Broberg Bror");
+		testSet.add(testUser2);
+		User testUser3 = new User();
+		testUser3.setName("Rolf the Kid");
+		testSet.add(testUser3);
+		User testUser4 = new User();
+		testUser4.setName("Daniel the Man");
+		testSet.add(testUser4);
 		playerAdapter = new PlayerAdapter(testSet, this);
 		gameRecycleView.setAdapter(playerAdapter);
 	}
 
 	public CMMasterPresenter getMasterPresenter() {
 		return masterPresenter;
+	}
+
+	public void enableSearchBar(SearchView searchView){
+
+		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				playerAdapter.getFilter().filter(newText);
+				return false;
+			}
+		});
 	}
 
 }

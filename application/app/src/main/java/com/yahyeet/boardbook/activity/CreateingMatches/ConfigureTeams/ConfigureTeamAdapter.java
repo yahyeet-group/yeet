@@ -10,17 +10,20 @@ import android.widget.Spinner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.CreateingMatches.CMMasterPresenter;
 import com.yahyeet.boardbook.activity.CreateingMatches.CreateMatchDataHandler;
 import com.yahyeet.boardbook.activity.CreateingMatches.HelperFunctions;
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.presenter.ConfigureTeamPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdapter.PlayerViewHolder> {
 
-	private User[] myDataset = {new User()};
+	private List<User> myDataset = new ArrayList<>();
 	private int playeradded = 0;
+	private ConfigureTeamPresenter ctp;
 
 
 	class PlayerViewHolder extends RecyclerView.ViewHolder {
@@ -33,7 +36,10 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 
 	}
 
-	public ConfigureTeamAdapter() {
+	public ConfigureTeamAdapter(ConfigureTeamPresenter ctp) {
+		this.ctp = ctp;
+		myDataset.addAll(ctp.getMasterPresenter().getCmdh().getSelectedPlayers());
+
 	}
 
 
@@ -76,6 +82,6 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 
 	@Override
 	public int getItemCount() {
-		return myDataset.length;
+		return myDataset.size();
 	}
 }

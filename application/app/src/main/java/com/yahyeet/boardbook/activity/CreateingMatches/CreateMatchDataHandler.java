@@ -16,6 +16,8 @@ public class CreateMatchDataHandler {
 	//TODO See if this name should be kept
 
 	private List<MatchPlayer> players = new ArrayList<>();
+	private List<User> selectedPlayers = new ArrayList<>();
+
 	private Game game;
 	private Activity parentActivity;
 
@@ -23,6 +25,17 @@ public class CreateMatchDataHandler {
 		this.parentActivity = activity;
 	}
 
+	public List<User> getSelectedPlayers() {
+		return selectedPlayers;
+	}
+
+	public void addSelectedPlayer(User user){
+		selectedPlayers.add(user);
+	}
+
+	public void removeSelectedPlayer(User user){
+		selectedPlayers.remove(user);
+	}
 
 	public void addPlayer(User user, GameTeam gameTeam, GameRole gameRole, Boolean win) {
 		MatchPlayer mp = new MatchPlayer();

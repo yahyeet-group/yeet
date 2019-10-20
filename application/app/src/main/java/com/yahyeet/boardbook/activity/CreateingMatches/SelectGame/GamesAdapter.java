@@ -37,12 +37,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHol
             gameImage = v.findViewById(R.id.gameImageView);
             selectGameButton = v.findViewById(R.id.selectGameButton);
 
-            //TODO add so it changes fragment§
-            selectGameButton.setOnClickListener((n) -> {
-                System.out.println("Yeet --- " + v.getId());
-            });
         }
-
     }
 
     public GamesAdapter(Game[] myDataset, SelectGamePresenter sgp) {

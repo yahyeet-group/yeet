@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,20 +25,30 @@ public class SelectPlayersFragment extends Fragment implements ISelectGameFragme
 		CreateMatchActivity cma = (CreateMatchActivity)getActivity();
 		selectPlayersPresenter = new SelectPlayersPresenter(this, cma.getPresenter());
 		return inflater.inflate(R.layout.fragment_select_players, container, false);
+
+
+
 	}
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		enableMatchFeed();
+		enableSearchView();
+		this.getView().findViewById(R.id.selectPlayersDoneButton).setOnClickListener(event -> {
+					selectPlayersPresenter.getMasterPresenter().goToConfigureTeams();
+			System.out.println(selectPlayersPresenter.getMasterPresenter().getCmdh().getSelectedPlayers().toString());
+			});
 	}
 
 	public void enableMatchFeed() {
-		// TODO: Examine how these method calls can get nullPointerException
 		RecyclerView playerRecycler = getView().findViewById(R.id.playerRecycleView);
-
-		// use this setting to improve performance if you know that changes
-		// in content do not change the layout size of the RecyclerView
 		playerRecycler.setHasFixedSize(true);
 		selectPlayersPresenter.enableGameFeed(playerRecycler, getView().getContext());
 	}
+
+	public void enableSearchView(){
+		SearchView searchView = getView().findViewById(R.id.searchPlayers);
+		selectPlayersPresenter.enableSearchBar(searchView);
+	}
+
 }
