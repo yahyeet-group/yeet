@@ -45,25 +45,60 @@ public class MatchHandler implements IRepositoryListener<Match> {
 	}
 
 	public CompletableFuture<Match> save(Match match) {
-		if(match.getGame() != null){
-			CompletableFuture<Match> savedMatchFuture = matchRepository.save(match);
-			CompletableFuture<Void> savedMatchPlayersFuture = savedMatchFuture.thenCompose(savedMatch -> {
-				match.setId(savedMatch.getId());
-				List<CompletableFuture<MatchPlayer>> savedMatchPlayerFutures =
-						match
-								.getMatchPlayers()
-								.stream()
-								.map(matchPlayer -> matchPlayerRepository.save(matchPlayer))
-								.collect(Collectors.toList());
-
-				return CompletableFuture.allOf(savedMatchPlayerFutures.toArray(new CompletableFuture[0]));
-			});
-
-			return savedMatchFuture
-					.thenCombine(savedMatchPlayersFuture, (savedMatch, nothing) -> savedMatch)
-					.thenCompose(this::populate);
+		if (match.getGame() == null) {
+			throw new IllegalArgumentException("Cannot create a match without a game");
 		}
-		throw new IllegalStateException("Cannot save match without attached game");
+
+		if (match.getGame().getId() == null) {
+			throw new IllegalArgumentException("Cannot create a match with a game that has no id");
+		}
+
+		if (match.getMatchPlayers().isEmpty()) {
+			throw new IllegalArgumentException("Cannot create a match without any players");
+		}
+
+		for (MatchPlayer player : match.getMatchPlayers()) {
+			if (player.getMatch() == null) {
+				throw new IllegalArgumentException("Cannot create a match where a match player has no match");
+			}
+
+			if (player.getUser() == null) {
+				throw new IllegalArgumentException("Cannot create a match where a match player has no user");
+			}
+
+			if (player.getUser().getId() == null) {
+				throw new IllegalArgumentException("Cannot create a match where a match player with a user that has no id");
+			}
+
+			if (player.getTeam() == null && player.getRole() != null) {
+				throw new IllegalArgumentException("Cannot create a match where a match player with a role but no team");
+			}
+
+			if (player.getTeam() != null && player.getTeam().getId() == null) {
+				throw new IllegalArgumentException("Cannot create a match where a match player with a team that has no id");
+			}
+
+			if (player.getRole() != null && player.getRole().getId() == null) {
+				throw new IllegalArgumentException("Cannot create a match where a match player with a role that has no id");
+			}
+		}
+
+		CompletableFuture<Match> savedMatchFuture = matchRepository.save(match);
+		CompletableFuture<Void> savedMatchPlayersFuture = savedMatchFuture.thenCompose(savedMatch -> {
+			match.setId(savedMatch.getId());
+			List<CompletableFuture<MatchPlayer>> savedMatchPlayerFutures =
+				match
+					.getMatchPlayers()
+					.stream()
+					.map(matchPlayer -> matchPlayerRepository.save(matchPlayer))
+					.collect(Collectors.toList());
+
+			return CompletableFuture.allOf(savedMatchPlayerFutures.toArray(new CompletableFuture[0]));
+		});
+
+		return savedMatchFuture
+			.thenCombine(savedMatchPlayersFuture, (savedMatch, nothing) -> savedMatch)
+			.thenCompose(this::populate);
 	}
 
 	public CompletableFuture<List<Match>> all() {
