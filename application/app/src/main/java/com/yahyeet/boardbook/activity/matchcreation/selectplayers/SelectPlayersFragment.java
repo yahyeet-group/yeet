@@ -21,7 +21,7 @@ public class SelectPlayersFragment extends Fragment implements ISelectGameFragme
 	private SelectPlayersPresenter selectPlayersPresenter;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		CreateMatchActivity cma = (CreateMatchActivity)getActivity();
+		CreateMatchActivity cma = (CreateMatchActivity) getActivity();
 		selectPlayersPresenter = new SelectPlayersPresenter(this, cma.getPresenter());
 		return inflater.inflate(R.layout.fragment_select_players, container, false);
 

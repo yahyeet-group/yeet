@@ -1,35 +1,28 @@
 package com.yahyeet.boardbook.presenter.matchcreation;
 
-import androidx.fragment.app.FragmentManager;
 
-import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.activity.matchcreation.configureteams.ConfigureTeamsFragment;
-import com.yahyeet.boardbook.activity.matchcreation.CreateMatchActivity;
-import com.yahyeet.boardbook.activity.matchcreation.selectgame.SelectGameFragment;
-import com.yahyeet.boardbook.activity.matchcreation.selectplayers.SelectPlayersFragment;
+import com.yahyeet.boardbook.activity.matchcreation.ICreateMatchActivity;
 
 public class CMMasterPresenter {
 
 	private MatchCreationDataObject cmdh;
-	private CreateMatchActivity activity;
-	private FragmentManager fm;
+	private ICreateMatchActivity activity;
 
-	public CMMasterPresenter(CreateMatchActivity activity) {
+	public CMMasterPresenter(ICreateMatchActivity activity) {
 		this.activity = activity;
-		cmdh = new MatchCreationDataObject(activity);
-		fm = activity.getSupportFragmentManager();
+		cmdh = new MatchCreationDataObject();
 	}
 
 	public void goToConfigureTeams() {
-		fm.beginTransaction().replace(R.id.fragment_container, new ConfigureTeamsFragment()).commit();
+		activity.goToConfigureTeams();
 	}
 
 	public void goToSelectGame(){
-		fm.beginTransaction().replace(R.id.fragment_container, new SelectGameFragment()).commit();
+		activity.goToSelectGame();
 	}
 
 	public void goToSelectPlayers(){
-		fm.beginTransaction().replace(R.id.fragment_container, new SelectPlayersFragment()).commit();
+		activity.goToSelectPlayers();
 	}
 
 	public MatchCreationDataObject getCmdh(){
