@@ -26,12 +26,19 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 	private ConfigureTeamPresenter ctp;
 
 
-	class PlayerViewHolder extends RecyclerView.ViewHolder {
+	public class PlayerViewHolder extends RecyclerView.ViewHolder {
 
+		private Spinner teamSpinner;
+		private Spinner roleSpinner;
 
 		PlayerViewHolder(View v) {
 			super(v);
 
+		}
+
+		public Spinner[] getSpinners(){
+			Spinner[] spinners = {teamSpinner, roleSpinner};
+			return spinners;
 		}
 
 	}
@@ -97,7 +104,6 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 		teamSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				int testpos = position -1;
 				if (teamArray.get(position).equals("No Team")) {
 					roleSpinner.setEnabled(false);
 					return;
@@ -113,15 +119,19 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 			}
 		});
 
+		holder.roleSpinner = roleSpinner;
+		holder.teamSpinner = teamSpinner;
+
 	}
 
 
 	@Override
 	public int getItemCount() {
 		return myDataset.size();
+
 	}
 
-	private List<GameRole> setRolesByTeam(GameTeam team, View v, Spinner roleSpinner) {
+	private void setRolesByTeam(GameTeam team, View v, Spinner roleSpinner) {
 		List<GameRole> roles = new ArrayList<>(team.getRoles());
 		List<String> rolesString = new ArrayList<>();
 		GameRole nullRole = new GameRole();
@@ -134,6 +144,11 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 		roleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		roleSpinner.setAdapter(roleAdapter);
 
-		return null;
 	}
+
+	private void finalizeMatch(){
+
+	}
+
+
 }

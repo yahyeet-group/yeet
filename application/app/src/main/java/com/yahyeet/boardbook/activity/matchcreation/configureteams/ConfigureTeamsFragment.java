@@ -36,6 +36,8 @@ public class ConfigureTeamsFragment extends Fragment implements IConfigureTeamsF
 		RecyclerView gameRecycler = getView().findViewById(R.id.configureTeamsRecyleView);
 		gameRecycler.setHasFixedSize(true);
 		spp.enableGameFeed(gameRecycler, getView().getContext());
+
+
 	}
 
 
