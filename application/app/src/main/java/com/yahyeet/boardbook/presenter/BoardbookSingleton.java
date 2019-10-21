@@ -18,7 +18,7 @@ import com.yahyeet.boardbook.model.service.IAuthService;
 
 public class BoardbookSingleton {
 	private static Boardbook instance;
-	private static final String FIREBASE_COLLECTION_PREFIX = "testGame";
+	private static final String FIREBASE_COLLECTION_PREFIX = "";
 
 	private BoardbookSingleton() {
 	}
