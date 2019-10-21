@@ -138,6 +138,7 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 		else {
 			loginFragment.setFragmentInteraction(true);
 		}
+		registerSwitchButton.setEnabled(true);
 	}
 
 	/**
@@ -149,6 +150,8 @@ public class AccountManagerActivity extends AppCompatActivity implements IAccoun
 		else {
 			loginFragment.setFragmentInteraction(false);
 		}
+		registerSwitchButton.setEnabled(false);
+
 	}
 
 

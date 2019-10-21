@@ -3,62 +3,92 @@ package com.yahyeet.boardbook.presenter.game;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.Filter;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.home.game.gamedetail.GameDetailActivity;
 import com.yahyeet.boardbook.model.entity.Game;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public abstract class GameAdapter extends BaseAdapter {
+public abstract class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameViewHolder> {
 
-    protected Context context;
-    private  List<Game> gameList;
+	private static final String TAG = "GameAdapter";
 
-    GameAdapter(Context context, List<Game> gameList){
-        this.context = context;
-        this.gameList = gameList;
-    }
+	List<Game> dataset;
+	private List<Game> allGames;
+	private Context context;
 
-    @Override
-    public int getCount() {
-        return gameList.size();
-    }
+	static abstract class GameViewHolder extends RecyclerView.ViewHolder {
 
-    @Override
-    public Object getItem(int position) {
-        return gameList.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // inflate the layout for each list row
-        if (convertView == null) {
-            convertView = getInflatedView(parent);
-        }
+		GameViewHolder(View v) {
+			super(v);
+		}
+	}
 
 
-        convertView.setOnClickListener(view -> {
-            Intent intent = new Intent(context, GameDetailActivity.class);
-            intent.putExtra("Game", gameList.get(position).getId());
-            context.startActivity(intent);
+	@Override
+	public void onBindViewHolder(@NonNull GameViewHolder holder, int position) {
+		holder.itemView.setOnClickListener(view -> {
+			Intent intent = new Intent(context, GameDetailActivity.class);
+			intent.putExtra("Game", dataset.get(position).getId());
+			context.startActivity(intent);
+		});
+	}
 
-        });
+	public GameAdapter(List<Game> dataset, List<Game> allGames, Context context) {
+		if (dataset != null){
+			this.dataset = dataset;
+			this.allGames = allGames;
+		}
+		else {
+			this.dataset = new ArrayList<>();
+			this.allGames = new ArrayList<>();
+		}
+		this.context = context;
+	}
 
-        Game currentItem = (Game) getItem(position);
-        setupViewElements(convertView, currentItem);
 
-        // returns the view for the current row
-        return convertView;
-    }
+	@Override
+	public int getItemCount() {
+		return dataset.size();
+	}
 
-    abstract View getInflatedView(ViewGroup parent);
+	public Filter getFilter() {
+		return playerFilter;
+	}
 
-    abstract void setupViewElements(View convertView, Game currentItem);
+	private Filter playerFilter = new Filter() {
+		@Override
+		protected FilterResults performFiltering(CharSequence constraint) {
+			List<Game> filteredList = new ArrayList<>();
+			if (constraint == null || constraint.length() == 0) {
+				filteredList.addAll(allGames);
+			} else {
+				String filterPattern = constraint.toString().toLowerCase().trim();
+
+				for (Game game : allGames) {
+					if (game.getName().toLowerCase().contains(filterPattern)) {
+						filteredList.add(game);
+					}
+
+				}
+			}
+
+			FilterResults results = new FilterResults();
+			results.values = filteredList;
+
+			return results;
+		}
+
+		@Override
+		protected void publishResults(CharSequence constraint, FilterResults results) {
+			dataset.clear();
+			dataset.addAll((List) results.values);
+			notifyDataSetChanged();
+		}
+	};
 }

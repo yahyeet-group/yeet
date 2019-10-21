@@ -3,9 +3,10 @@ package com.yahyeet.boardbook.presenter.game;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ListView;
+
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.home.game.IGameFragment;
 import com.yahyeet.boardbook.model.entity.Game;
@@ -15,7 +16,6 @@ import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GamePresenter implements GameHandlerListener {
 
@@ -23,57 +23,64 @@ public class GamePresenter implements GameHandlerListener {
 	private Handler uiHandler;
 
 	private IGameFragment gameFragment;
-	private BaseAdapter listAdapter;
-	private BaseAdapter gridAdapter;
+	private GameAdapter listAdapter;
+	private GameAdapter gridAdapter;
+	private RecyclerView.LayoutManager listLayoutManager;
+	private RecyclerView.LayoutManager gridLayoutManager;
 
 	private boolean gameListEnabled;
 	private boolean gameGridEnabled;
 
 	final private List<Game> gameDatabase = new ArrayList<>();
-	private List<Game> all = new ArrayList<>();
+	final private List<Game> allGameDatabase = new ArrayList<>();
 
 
-	public GamePresenter(IGameFragment gameFragment) {
+	public GamePresenter(IGameFragment gameFragment, Context viewContext) {
 		this.gameFragment = gameFragment;
 		uiHandler = new android.os.Handler(Looper.getMainLooper());
+
+		setLayoutManagers(viewContext);
+		initiateAdapters(viewContext);
+
 		initiateGamePresenter();
+
 
 		GameHandler gameHandler = BoardbookSingleton.getInstance().getGameHandler();
 		gameHandler.addListener(this);
 	}
 
-	public void displayGameList(Context viewContext, ListView gameListView) {
-		if (listAdapter == null)
-			initiateListAdapter(viewContext, gameListView);
+	public void displayGameList(RecyclerView recyclerView) {
+		recyclerView.setLayoutManager(listLayoutManager);
+		recyclerView.setAdapter(listAdapter);
+
 		gameListEnabled = true;
 		gameGridEnabled = false;
 	}
 
-	public void displayGameGrid(Context viewContext, GridView gameGridView) {
-		if (gridAdapter == null)
-			initiateGridAdapter(viewContext, gameGridView);
+	public void displayGameGrid(RecyclerView recyclerView) {
+		recyclerView.setLayoutManager(gridLayoutManager);
+		recyclerView.setAdapter(gridAdapter);
+
 		gameGridEnabled = true;
 		gameListEnabled = false;
 	}
 
-	private void initiateListAdapter(Context viewContext, ListView gameListView) {
-		listAdapter = new GameListAdapter(viewContext, gameDatabase);
-		gameListView.setAdapter(listAdapter);
-
+	private void initiateAdapters(Context viewContext){
+		gridAdapter = new GameGridAdapter(gameDatabase, allGameDatabase, viewContext);
+		listAdapter = new GameListAdapter(gameDatabase, allGameDatabase, viewContext);
 	}
 
-	private void initiateGridAdapter(Context viewContext, GridView gameGridView) {
-		gridAdapter = new GameGridAdapter(viewContext, gameDatabase);
-		gameGridView.setAdapter(gridAdapter);
+	private void setLayoutManagers(Context viewContext){
+		listLayoutManager = new LinearLayoutManager(viewContext);
+		gridLayoutManager = new GridLayoutManager(viewContext, 3);
 	}
 
 	private void initiateGamePresenter() {
-
-		gameFragment.disableViewInteraction();
-		BoardbookSingleton.getInstance().getGameHandler().all().thenAccept(initGames -> {
-			if (initGames != null) {
-				gameDatabase.addAll(initGames);
-				all.addAll(initGames);
+		gameFragment.disableFragmentInteraction();
+		BoardbookSingleton.getInstance().getGameHandler().all().thenAccept(initiatedGames -> {
+			if (initiatedGames != null) {
+				gameDatabase.addAll(initiatedGames);
+				allGameDatabase.addAll(initiatedGames);
 			}
 
 			uiHandler.post(() -> {
@@ -91,9 +98,10 @@ public class GamePresenter implements GameHandlerListener {
 
 	// TODO: Method requires better name
 	public void searchGames(String query) {
-		gameDatabase.clear();
-		gameDatabase.addAll(findMatchingName(all, query));
-		updateAdapters();
+		if(gameListEnabled)
+			listAdapter.getFilter().filter(query);
+		else if(gameGridEnabled)
+			gridAdapter.getFilter().filter(query);
 	}
 
 
@@ -102,20 +110,6 @@ public class GamePresenter implements GameHandlerListener {
 			listAdapter.notifyDataSetChanged();
 		else if (gameGridEnabled)
 			gridAdapter.notifyDataSetChanged();
-	}
-
-	// TODO: Write tests for this method
-	private List<Game> findMatchingName(List<Game> games, String query) {
-
-		if (query == null)
-			return games;
-
-		try {
-			return games.stream().filter(game -> game.getName().toLowerCase().contains(query)).collect(Collectors.toList());
-		} catch (NullPointerException e) {
-			//TODO: Alert that a null name object exists
-			return games;
-		}
 	}
 
 	@Override
