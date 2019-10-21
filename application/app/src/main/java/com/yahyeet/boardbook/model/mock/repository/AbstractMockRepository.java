@@ -55,9 +55,9 @@ public class AbstractMockRepository<T extends AbstractEntity> implements IReposi
                 if (!found.get()) {
                     return create.apply(entity);
                 }
-            }
 
-            throw new CompletionException(new IllegalStateException("The state was illegal!"));
+                return entity;
+            }
         });
     }
 

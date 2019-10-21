@@ -30,7 +30,11 @@ public class User extends AbstractEntity {
     }
 
     public void addFriend(User friend) {
+        if(getFriends().stream().anyMatch(f -> f.equals(friend))){
+            return;
+        }
         friends.add(friend);
+        friend.addFriend(this);
     }
 
     public List<Match> getMatches() {
