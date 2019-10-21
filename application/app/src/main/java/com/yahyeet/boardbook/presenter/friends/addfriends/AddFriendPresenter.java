@@ -83,30 +83,11 @@ public class AddFriendPresenter {
 				return null;
 			}
 		);
-
-
 	}
-
 
 	public void searchNonFriends(String query) {
-		List<User> temp = findMatchingName(all, query);
-		userDatabase.clear();
-		userDatabase.addAll(temp);
-		repopulateFriends();
+		addFriendsAdapter.getFilter().filter(query);
 
 	}
-
-	private List<User> findMatchingName(List<User> users, String query) {
-
-		if (query == null)
-			return users;
-
-		if (users == null) {
-			return new ArrayList<>();
-		}
-
-		return users.stream().filter(user -> user.getName().toLowerCase().contains(query)).collect(Collectors.toList());
-	}
-
 
 }

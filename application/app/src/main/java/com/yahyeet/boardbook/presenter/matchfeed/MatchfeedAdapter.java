@@ -157,7 +157,7 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				vh.tvUsername.setText(user.getName());
 				double stats = statisticsUtil.getWinrateFromMatches(matches, user);
 				int percent = (int) (100 * stats);
-				vh.tvGamesPlayed.setText(user.getMatches().size());
+				vh.tvGamesPlayed.setText(Integer.toString(user.getMatches().size()));
 				vh.tvWinrate.setText(percent + "%");
 				vh.pbWinrate.setProgress(percent);
 			}
