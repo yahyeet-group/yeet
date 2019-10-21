@@ -15,11 +15,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.presenter.game.GamePresenter;
 
 import javax.annotation.Nonnull;
 
-public class GamesFragment extends Fragment implements IGameFragment {
+public class GamesFragment extends Fragment implements IGameFragment, IFutureInteractable {
 
 	private GamePresenter gamePresenter;
 	private TextView tvSearch;

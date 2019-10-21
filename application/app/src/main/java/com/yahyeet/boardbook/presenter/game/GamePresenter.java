@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.home.game.IGameFragment;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.handler.GameHandler;
@@ -16,13 +17,13 @@ import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 public class GamePresenter extends AdapterPresenter<Game, GameHandler> implements GameHandlerListener {
 
 
-	private IGameFragment gameFragment;
+	private IFutureInteractable gameFragment;
 	private RecyclerView.LayoutManager listLayoutManager;
 	private RecyclerView.LayoutManager gridLayoutManager;
 
 	private DisplayType currentDisplayType;
 
-	public GamePresenter(IGameFragment gameFragment, Context viewContext) {
+	public GamePresenter(IFutureInteractable gameFragment, Context viewContext) {
 		super(gameFragment);
 		this.gameFragment = gameFragment;
 		currentDisplayType = DisplayType.LIST;

@@ -7,6 +7,7 @@ import android.os.Looper;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.home.matchfeed.matchdetail.IMatchDetailActivity;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.model.entity.Match;
@@ -23,30 +24,38 @@ public class MatchDetailPresenter {
 		this.matchDetailActivity = matchDetailActivity;
 
 
-		matchDetailActivity.disableViewInteraction();
-		BoardbookSingleton.getInstance().getMatchHandler().find(matchID).thenAccept(foundMatch -> {
-			match = foundMatch;
+		if(matchDetailActivity instanceof IFutureInteractable){
 
-			new android.os.Handler(Looper.getMainLooper()).post(() -> {
-				initiateGameDetail();
-				matchDetailActivity.initiateMatchDetailList();
-				matchDetailActivity.enableViewInteraction();
+			IFutureInteractable futureDetail = (IFutureInteractable) matchDetailActivity;
+
+			futureDetail.disableViewInteraction();
+			BoardbookSingleton.getInstance().getMatchHandler().find(matchID).thenAccept(foundMatch -> {
+				match = foundMatch;
+
+				new android.os.Handler(Looper.getMainLooper()).post(() -> {
+					setMatchDetailName();
+					matchDetailActivity.initiateMatchDetailList();
+					futureDetail.enableViewInteraction();
+				});
+
+			}).exceptionally(e -> {
+				e.printStackTrace();
+				futureDetail.displayLoadingFailed();
+				return null;
 			});
-
-		}).exceptionally(e -> {
-			e.printStackTrace();
-			matchDetailActivity.displayLoadingFailed();
-			return null;
-		});
-
-
-
+		}
+		else{
+			throw new ClassCastException("Activity not instance of IFutureIntractable");
+		}
 
 	}
 
-	public void initiateGameDetail() {
+
+	private void setMatchDetailName() {
 		matchDetailActivity.setGameName("Game of " + match.getGame().getName());
 	}
+
+
 
 	/**
 	 * Makes recyclerView to repopulate its matches with current data
