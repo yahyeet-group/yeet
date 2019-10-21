@@ -1,9 +1,9 @@
 package com.yahyeet.boardbook.presenter.friends.addfriends;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +21,7 @@ import java.util.List;
 
 public class AddFriendsAdapter extends RecyclerView.Adapter<AddFriendsAdapter.AddFriendsViewHolder> {
 
+	private List<User> dataset;
 	private List<User> allUsers;
 	private IAddFriendActivity parent;
 
@@ -42,9 +43,12 @@ public class AddFriendsAdapter extends RecyclerView.Adapter<AddFriendsAdapter.Ad
 	}
 
 	public AddFriendsAdapter(List<User> dataset, IAddFriendActivity parent) {
-		if (dataset != null)
-			allUsers = dataset;
+		if (dataset != null){
+			this.dataset = dataset;
+			allUsers = new ArrayList<>(dataset);
+		}
 		else {
+			this.dataset = new ArrayList<>();
 			allUsers = new ArrayList<>();
 		}
 		this.parent = parent;
@@ -64,11 +68,11 @@ public class AddFriendsAdapter extends RecyclerView.Adapter<AddFriendsAdapter.Ad
 	@Override
 	public void onBindViewHolder(@NonNull AddFriendsViewHolder holder, int position) {
 
-		holder.userName.setText(allUsers.get(position).getName());
+		holder.userName.setText(dataset.get(position).getName());
 
 		holder.btnAddFriend.setOnClickListener(view -> {
 			User loggedIn = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
-			loggedIn.addFriend(allUsers.get(position));
+			loggedIn.addFriend(dataset.get(position));
 			BoardbookSingleton.getInstance().getUserHandler().save(loggedIn).thenAccept(nothing -> {
 				parent.finishAddFriendActivity();
 			});
@@ -79,6 +83,41 @@ public class AddFriendsAdapter extends RecyclerView.Adapter<AddFriendsAdapter.Ad
 
 	@Override
 	public int getItemCount() {
-		return allUsers.size();
+		return dataset.size();
 	}
+
+	public Filter getFilter() {
+		return playerFilter;
+	}
+
+	private Filter playerFilter = new Filter() {
+		@Override
+		protected FilterResults performFiltering(CharSequence constraint) {
+			List<User> filteredList = new ArrayList<>();
+			if (constraint == null || constraint.length() == 0) {
+				filteredList.addAll(allUsers);
+			} else {
+				String filterPattern = constraint.toString().toLowerCase().trim();
+
+				for (User user : allUsers) {
+					if (user.getName().toLowerCase().contains(filterPattern)) {
+						filteredList.add(user);
+					}
+
+				}
+			}
+
+			FilterResults results = new FilterResults();
+			results.values = filteredList;
+
+			return results;
+		}
+
+		@Override
+		protected void publishResults(CharSequence constraint, FilterResults results) {
+			dataset.clear();
+			dataset.addAll((List) results.values);
+			notifyDataSetChanged();
+		}
+	};
 }

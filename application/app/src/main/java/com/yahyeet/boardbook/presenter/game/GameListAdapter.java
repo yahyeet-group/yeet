@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.model.entity.Game;
 
@@ -13,26 +15,48 @@ import java.util.List;
 
 public class GameListAdapter extends GameAdapter {
 
-    public GameListAdapter(Context context, List<Game> gameList) {
-        super(context, gameList);
+
+    public GameListAdapter(List<Game> dataset, List<Game> allGames, Context context) {
+        super(dataset, allGames, context);
     }
 
+    static class GameListViewHolder extends GameViewHolder {
 
+        TextView textViewName;
+        TextView textViewDifficulty;
+        TextView textViewPlayers;
+        TextView textViewTeams;
+
+
+        GameListViewHolder(View v) {
+            super(v);
+            // Define click listener for the ViewHolder's View.
+            textViewName = v.findViewById(R.id.gameSeachName);
+            textViewDifficulty = v.findViewById(R.id.gameDifficulty);
+            textViewPlayers = v.findViewById(R.id.gameListMinMaxPlayers);
+            textViewTeams = v.findViewById(R.id.gameListTeamAmount);
+
+        }
+    }
+
+    @NonNull
     @Override
-    protected View getInflatedView(ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.element_game_list, parent, false);
+    public GameViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater
+          .from(parent.getContext())
+          .inflate(R.layout.element_game_list, parent, false);
+        return new GameListViewHolder(v);
     }
 
     @Override
-    void setupViewElements(View convertView, Game currentItem) {
-        TextView textViewName = convertView.findViewById(R.id.gameSeachName);
-        TextView textViewDifficulty = convertView.findViewById(R.id.gameDifficulty);
-        TextView textViewPlayers = convertView.findViewById(R.id.gameListMinMaxPlayers);
-        TextView textViewTeams = convertView.findViewById(R.id.gameListTeamAmount);
-        textViewName.setText(currentItem.getName());
-        textViewDifficulty.setText(getDifficulty(currentItem.getDifficulty()));
-        textViewPlayers.setText(currentItem.getMinPlayers() + " - " + currentItem.getMaxPlayers() + " Players");
-        textViewTeams.setText("0 - " + currentItem.getTeams().size() + " Teams");
+    public void onBindViewHolder(@NonNull GameViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+
+        GameListViewHolder gameGridViewHolder = (GameListViewHolder) holder;
+        gameGridViewHolder.textViewName.setText(dataset.get(position).getName());
+        gameGridViewHolder.textViewDifficulty.setText(getDifficulty(dataset.get(position).getDifficulty()));
+        gameGridViewHolder.textViewPlayers.setText(dataset.get(position).getMinPlayers() + " - " + dataset.get(position).getMaxPlayers() + " Players");
+        gameGridViewHolder.textViewTeams.setText("0 - " + dataset.get(position).getTeams().size() + " Teams");
     }
 
 
