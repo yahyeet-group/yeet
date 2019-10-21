@@ -76,7 +76,7 @@ public class GamePresenter implements GameHandlerListener {
 	}
 
 	private void initiateGamePresenter() {
-		gameFragment.disableFragmentInteraction();
+		gameFragment.disableViewInteraction();
 		BoardbookSingleton.getInstance().getGameHandler().all().thenAccept(initiatedGames -> {
 			if (initiatedGames != null) {
 				gameDatabase.addAll(initiatedGames);
