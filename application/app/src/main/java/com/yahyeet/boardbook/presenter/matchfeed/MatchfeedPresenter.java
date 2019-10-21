@@ -43,10 +43,12 @@ public class MatchfeedPresenter implements MatchHandlerListener {
 
 		User loggedIn = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
 
+
 		matchDatabase.addAll(loggedIn.getMatches());
 
 
 		// TODO: This code breaks everything and needs to be reimplemented
+		// TODO: If implemented then IMatchfeedFragment needs to extend IFutureIntractable
 		/*CompletableFuture.allOf(loggedIn
 			.getFriends()
 			.stream()

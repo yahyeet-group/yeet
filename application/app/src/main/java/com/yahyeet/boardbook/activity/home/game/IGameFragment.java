@@ -1,16 +1,11 @@
 package com.yahyeet.boardbook.activity.home.game;
 
-public interface IGameFragment {
 
-	/**
-	 * Enables all interactive elements of the activity
-	 */
-	void enableFragmentInteraction();
+public interface IGameFragment{
 
-	/**
-	 * Disables all interactive elements of the activity
-	 */
-	void disableFragmentInteraction();
+	void enableViewInteraction();
+
+	void disableViewInteraction();
 
 	/**
 	 * Displays error message of games not loading correctly

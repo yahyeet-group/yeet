@@ -3,6 +3,7 @@ package com.yahyeet.boardbook.model.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Game extends AbstractEntity {
 	private String name;
 	private String description;
@@ -26,6 +27,13 @@ public class Game extends AbstractEntity {
 
 	public Game(String id) {
 		super(id);
+	}
+
+
+	//Nox has added this in purely for testing purposes
+	public Game(String name, String description){
+		this.name = name;
+		this.description = description;
 	}
 
 	public String getName() {
