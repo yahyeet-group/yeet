@@ -12,13 +12,13 @@
         android:layout_width="174dp"
         android:layout_height="82dp"
         android:layout_marginStart="56dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginBottom="20dp"
         android:alpha="1"
         android:background="@drawable/custom_button"
         android:clickable="false"
         android:text="@string/newAcc"
-        app:layout_constraintStart_toStartOf="@+id/registerPasswordInput"
-        app:layout_constraintTop_toBottomOf="@+id/registerPasswordInput" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/registerPasswordInput" />
 
     <EditText
         android:id="@+id/registerPasswordInput"

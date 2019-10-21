@@ -4,5 +4,4 @@ public interface IFriendFragment {
 
 	void enableFriendList();
 
-
 }

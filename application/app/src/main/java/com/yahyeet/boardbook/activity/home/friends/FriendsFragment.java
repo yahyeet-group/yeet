@@ -76,7 +76,7 @@ public class FriendsFragment extends Fragment implements IFriendFragment {
 
 	public void onStart() {
 		super.onStart();
-		friendsPresenter.repopulateFriends();
+		friendsPresenter.notifyAdapter();
 	}
 
 	@Override

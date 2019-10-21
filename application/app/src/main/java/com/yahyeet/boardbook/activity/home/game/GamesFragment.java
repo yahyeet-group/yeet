@@ -3,7 +3,6 @@ package com.yahyeet.boardbook.activity.home.game;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.presenter.game.GamePresenter;
 
 import javax.annotation.Nonnull;
 
-public class GamesFragment extends Fragment implements IGameFragment {
+public class GamesFragment extends Fragment implements IGameFragment, IFutureInteractable {
 
 	private GamePresenter gamePresenter;
 	private TextView tvSearch;
@@ -60,7 +60,7 @@ public class GamesFragment extends Fragment implements IGameFragment {
 			}
 		});
 
-		enableGameList();
+		gamePresenter.bindAdapterToView(rvGame);
 	}
 
 	/**

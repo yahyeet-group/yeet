@@ -16,7 +16,7 @@ import java.util.List;
 public class SelectGamePresenter  {
 
 	private GamesAdapter gamesAdapter;
-	private List<Game> dataset;
+	private List<Game> dataset = new ArrayList<>();
 
 	private ISelectGameFragment selectGameFragment;
 	private CMMasterPresenter masterPresenter;

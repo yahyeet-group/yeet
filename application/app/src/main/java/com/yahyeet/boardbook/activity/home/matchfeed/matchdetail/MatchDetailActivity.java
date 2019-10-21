@@ -9,9 +9,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.presenter.matchfeed.matchdetail.MatchDetailPresenter;
 
-public class MatchDetailActivity extends AppCompatActivity implements IMatchDetailActivity {
+public class MatchDetailActivity extends AppCompatActivity implements IMatchDetailActivity, IFutureInteractable {
 
 	private MatchDetailPresenter matchDetailPresenter;
 
@@ -53,16 +54,10 @@ public class MatchDetailActivity extends AppCompatActivity implements IMatchDeta
 		tvName.setText(name);
 	}
 
-	// Weird that presenter tells activity to send its information back to presenter
-	// Neccessary because activity cant send info before presenter has its match from database
+	// Necessary because activity cant send info before presenter has its match from database
 	@Override
 	public void initiateMatchDetailList(){
 		matchDetailPresenter.enableMatchplayerAdapter(rvMatchPlayers, this, getResources());
-	}
-
-	@Override
-	public void enableViewInteraction(){
-		pbLoading.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
@@ -71,8 +66,18 @@ public class MatchDetailActivity extends AppCompatActivity implements IMatchDeta
 	}
 
 
+
+	@Override
+	public void enableViewInteraction(){
+		pbLoading.setVisibility(View.INVISIBLE);
+	}
+
+
 	@Override
 	public void displayLoadingFailed() {
-
+		//TODO: Implement method
 	}
+
+
+
 }

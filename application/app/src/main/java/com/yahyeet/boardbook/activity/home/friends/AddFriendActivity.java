@@ -11,9 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.presenter.friends.addfriends.AddFriendPresenter;
 
-public class AddFriendActivity extends AppCompatActivity implements IAddFriendActivity {
+public class AddFriendActivity extends AppCompatActivity implements IAddFriendActivity, IFutureInteractable {
 
 	private AddFriendPresenter addFriendPresenter;
 	private EditText tvAddFriendSearch;
