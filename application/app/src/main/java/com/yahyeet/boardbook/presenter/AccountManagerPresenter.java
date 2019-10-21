@@ -17,7 +17,6 @@ import java.util.concurrent.CompletableFuture;
 
 public class AccountManagerPresenter {
 	private IAccountManagerActivity accountManagerActivity;
-
 	// Set true to skip login
 	private Boolean fastPass = false;
 

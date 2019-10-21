@@ -1,7 +1,7 @@
 package com.yahyeet.boardbook.model.handler;
 
+import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.Match;
-import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.handler.populator.MatchPlayerPopulator;
 import com.yahyeet.boardbook.model.handler.populator.MatchPopulator;

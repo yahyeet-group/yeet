@@ -6,6 +6,7 @@ import android.os.Looper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.home.friends.IAddFriendActivity;
 import com.yahyeet.boardbook.model.Boardbook;
 import com.yahyeet.boardbook.model.handler.UserHandler;
@@ -21,10 +22,8 @@ public class AddFriendPresenter extends AdapterPresenter<User, UserHandler> {
 
 	private IAddFriendActivity addFriendActivity;
 
-	final private List<User> userDatabase = new ArrayList<>();
-
 	public AddFriendPresenter(IAddFriendActivity addFriendActivity) {
-		super(addFriendActivity);
+		super((IFutureInteractable) addFriendActivity);
 		this.addFriendActivity = addFriendActivity;
 
 		fillAndModifyDatabase(BoardbookSingleton.getInstance().getUserHandler());

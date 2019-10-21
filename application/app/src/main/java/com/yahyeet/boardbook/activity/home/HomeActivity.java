@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -16,12 +18,14 @@ import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.home.friends.FriendsFragment;
 import com.yahyeet.boardbook.activity.home.game.GamesFragment;
 import com.yahyeet.boardbook.activity.home.matchfeed.MatchfeedFragment;
+import com.yahyeet.boardbook.activity.matchcreation.CreateMatchActivity;
 import com.yahyeet.boardbook.presenter.HomePresenter;
 
 public class HomeActivity extends AppCompatActivity implements IHomeActivity {
 
 
 	private HomePresenter homePresenter;
+	private ImageButton btn_create;
 
 	private BottomNavigationView.OnNavigationItemSelectedListener navListener = menuItem -> {
 		Fragment selectedFragment = null;
@@ -48,6 +52,9 @@ public class HomeActivity extends AppCompatActivity implements IHomeActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+		btn_create = findViewById(R.id.btn_create);
+
+		btn_create.setOnClickListener(v -> startCreateMatch());
 
 		homePresenter = new HomePresenter(this);
 
@@ -58,6 +65,17 @@ public class HomeActivity extends AppCompatActivity implements IHomeActivity {
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+
+		findViewById(R.id.btn_create).setOnClickListener(event -> {
+			Intent intent = new Intent(this, CreateMatchActivity.class);
+			startActivity(intent);
+		});
+	}
+
+
+	private void startCreateMatch(){
+		Intent startCreateMatch = new Intent(this, CreateMatchActivity.class);
+		startActivity(startCreateMatch);
 	}
 
 	@Override
