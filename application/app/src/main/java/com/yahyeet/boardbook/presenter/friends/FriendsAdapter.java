@@ -15,15 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.profile.ProfileActivity;
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.presenter.AbstractAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendViewHolder> {
+public class FriendsAdapter extends AbstractAdapter<User> {
 
 	private static final String TAG = "FriendsAdapter";
-	private List<User> dataset;
-	private List<User> allFriends;
 	private Context context;
 
 	static class FriendViewHolder extends RecyclerView.ViewHolder {
@@ -41,20 +40,10 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendVi
 			friendName = v.findViewById(R.id.friendName);
 			friendPicture = v.findViewById(R.id.friendPicture);
 		}
-
-
 	}
 
-
-	public FriendsAdapter(List<User> dataset, Context context) {
-		if (dataset != null){
-			this.dataset = dataset;
-			allFriends = new ArrayList<>(dataset);
-		}
-		else {
-			this.dataset = new ArrayList<>();
-			allFriends = new ArrayList<>();
-		}
+	public FriendsAdapter(List<User> database, Context context) {
+		super(database);
 		this.context = context;
 	}
 
@@ -72,57 +61,55 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendVi
 	// Replace the contents of a view (invoked by the layout manager)
 	// Method that assigns data to the view
 	@Override
-	public void onBindViewHolder(FriendViewHolder holder, int position) {
+	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
+		if(holder instanceof FriendViewHolder){
+			FriendViewHolder vh = (FriendViewHolder) holder;
+			vh.friendName.setText(getDatabase().get(position).getName());
+			//holder.friendPicture.setImageURI();
 
-		holder.friendName.setText(dataset.get(position).getName());
-		//holder.friendPicture.setImageURI();
+			vh.itemView.setOnClickListener(v1 -> {
+				Intent startProfile = new Intent(context, ProfileActivity.class);
+				startProfile.putExtra("UserId", getDatabase().get(position).getId());
+				context.startActivity(startProfile);
+			});
+		}
 
-		holder.itemView.setOnClickListener(v1 -> {
-			Intent startProfile = new Intent(context, ProfileActivity.class);
-			startProfile.putExtra("UserId", dataset.get(position).getId());
-			context.startActivity(startProfile);
-		});
 
 	}
 
 	@Override
-	public int getItemCount() {
-		return dataset.size();
-	}
+	protected Filter createNewFilter() {
+		return new Filter() {
+			@Override
+			protected FilterResults performFiltering(CharSequence constraint) {
+				List<User> filteredList = new ArrayList<>();
+				if (constraint == null || constraint.length() == 0) {
+					filteredList.addAll(getAllEntities());
+				} else {
+					String filterPattern = constraint.toString().toLowerCase().trim();
 
-	public Filter getFilter() {
-		return playerFilter;
-	}
+					for (User user : getAllEntities()) {
+						if (user.getName().toLowerCase().contains(filterPattern)) {
+							filteredList.add(user);
+						}
 
-	private Filter playerFilter = new Filter() {
-		@Override
-		protected FilterResults performFiltering(CharSequence constraint) {
-			List<User> filteredList = new ArrayList<>();
-			if (constraint == null || constraint.length() == 0) {
-				filteredList.addAll(allFriends);
-			} else {
-				String filterPattern = constraint.toString().toLowerCase().trim();
-
-				for (User user : allFriends) {
-					if (user.getName().toLowerCase().contains(filterPattern)) {
-						filteredList.add(user);
 					}
-
 				}
+
+				FilterResults results = new FilterResults();
+				results.values = filteredList;
+
+				return results;
 			}
 
-			FilterResults results = new FilterResults();
-			results.values = filteredList;
+			@Override
+			protected void publishResults(CharSequence constraint, FilterResults results) {
+				getDatabase().clear();
+				getDatabase().addAll((List) results.values);
+				notifyDataSetChanged();
+			}
+		};
+	}
 
-			return results;
-		}
-
-		@Override
-		protected void publishResults(CharSequence constraint, FilterResults results) {
-			dataset.clear();
-			dataset.addAll((List) results.values);
-			notifyDataSetChanged();
-		}
-	};
 }

@@ -30,7 +30,7 @@ public class GamePresenter extends AdapterPresenter<Game, GameHandler> implement
 
 		GameHandler gameHandler = BoardbookSingleton.getInstance().getGameHandler();
 
-		pullAllDataToDatabase(gameHandler);
+		fillDatabase(gameHandler);
 		gameHandler.addListener(this);
 
 

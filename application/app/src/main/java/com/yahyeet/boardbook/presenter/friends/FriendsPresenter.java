@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.home.friends.IFriendFragment;
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.model.handler.UserHandlerListener;
+import com.yahyeet.boardbook.model.repository.IRepositoryListener;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.presenter.friends.FriendsAdapter;
 
@@ -14,22 +16,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FriendsPresenter {
+public class FriendsPresenter implements UserHandlerListener {
 
 	private FriendsAdapter friendsAdapter;
 	// TODO: Remove if never necessary
 	private IFriendFragment friendsFragment;
 
-	final private List<User> userDatabase = new ArrayList<>();
+	final private List<User> userDatabase;
 
 	public FriendsPresenter(IFriendFragment friendsFragment) {
 		this.friendsFragment = friendsFragment;
+
+		userDatabase = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
+		BoardbookSingleton.getInstance().getUserHandler().addListener(this);
 	}
 
 	/**
-	 * Makes recyclerView to repopulate its matches with current data
+	 * Makes recyclerView to repopulate its users with current data
 	 */
-	public void repopulateFriends() {
+	public void notifyAdapter() {
 		friendsAdapter.notifyDataSetChanged();
 	}
 
@@ -42,23 +47,39 @@ public class FriendsPresenter {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		friendsRecyclerView.setLayoutManager(layoutManager);
 
-		initiateFriendPresenter();
-
 		friendsAdapter = new FriendsAdapter(userDatabase, viewContext);
 		friendsRecyclerView.setAdapter(friendsAdapter);
 
-	}
-
-	private void initiateFriendPresenter() {
-		List<User> friends = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
-
-		if (friends != null) {
-			userDatabase.addAll(friends);
-		}
 	}
 
 	public void searchFriends(String query) {
 		friendsAdapter.getFilter().filter(query);
 	}
 
+	@Override
+	public void onAddUser(User user) {
+		// New users don't automatically become friends
+		notifyAdapter();
+	}
+
+	@Override
+	public void onUpdateUser(User user) {
+		for (int i = 0; i < userDatabase.size(); i++) {
+			if (userDatabase.get(i).getId().equals(user.getId())) {
+				userDatabase.set(i, user);
+			}
+		}
+		notifyAdapter();
+	}
+
+	@Override
+	public void onRemoveUser(User user) {
+		for (int i = 0; i < userDatabase.size(); i++) {
+			if (userDatabase.get(i).getId().equals(user.getId())) {
+				userDatabase.remove(i);
+				break;
+			}
+		}
+		notifyAdapter();
+	}
 }

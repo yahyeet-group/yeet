@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.home.friends.IAddFriendActivity;
+import com.yahyeet.boardbook.model.Boardbook;
+import com.yahyeet.boardbook.model.handler.UserHandler;
+import com.yahyeet.boardbook.presenter.AdapterPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.model.entity.User;
 
@@ -14,79 +17,51 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AddFriendPresenter {
+public class AddFriendPresenter extends AdapterPresenter<User, UserHandler> {
 
-	private AddFriendsAdapter addFriendsAdapter;
-	// TODO: Remove if never necessary
 	private IAddFriendActivity addFriendActivity;
 
 	final private List<User> userDatabase = new ArrayList<>();
-	private List<User> all = new ArrayList<>();
 
 	public AddFriendPresenter(IAddFriendActivity addFriendActivity) {
+		super(addFriendActivity);
 		this.addFriendActivity = addFriendActivity;
+
+		fillAndModifyDatabase(BoardbookSingleton.getInstance().getUserHandler());
 	}
 
-	/**
-	 * Makes recyclerView to repopulate its matches with current data
-	 */
-	public void repopulateFriends() {
-		addFriendsAdapter.notifyDataSetChanged();
-	}
+
 
 	/**
 	 * Creates the necessary structure for populating matches
 	 *
-	 * @param matchRecyclerView the RecyclerView that will be populated with matches
+	 * @param recyclerView the RecyclerView that will be populated with matches
 	 */
-	public void enableAddFriendsList(RecyclerView matchRecyclerView, Context viewContext) {
-		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
-		matchRecyclerView.setLayoutManager(layoutManager);
+	public void enableAddFriendsList(RecyclerView recyclerView, Context viewContext) {
+		recyclerView.setLayoutManager(new LinearLayoutManager(viewContext));
 
-		initiateAddFriendPresenter();
-
-		addFriendsAdapter = new AddFriendsAdapter(userDatabase, addFriendActivity);
-		matchRecyclerView.setAdapter(addFriendsAdapter);
+		setAdapter(new AddFriendsAdapter(getDatabase(), addFriendActivity));
+		recyclerView.setAdapter(getAdapter());
 	}
 
-	private void initiateAddFriendPresenter() {
-
-		addFriendActivity.disableViewInteraction();
+	@Override
+	protected void modifyDatabase(List<User> database) {
 		List<User> myFriends = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
+		if (database != null && myFriends != null) {
 
+			database.remove(BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser());
 
-		BoardbookSingleton.getInstance().getUserHandler().all().thenAccept(allUsers -> {
-			if (allUsers != null && myFriends != null) {
+			List<User> notMyFriends = database
+				.stream()
+				.filter(user -> myFriends.stream().noneMatch(friend -> friend.getId().equals(user.getId())))
+				.collect(Collectors.toList());
 
-				allUsers.remove(BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser());
-
-				List<User> notMyFriends = allUsers
-					.stream()
-					.filter(user -> myFriends.stream().noneMatch(friend -> friend.getId().equals(user.getId())))
-					.collect(Collectors.toList());
-
-				userDatabase.addAll(notMyFriends);
-				all.addAll(notMyFriends);
-
-
-				new android.os.Handler(Looper.getMainLooper()).post(() -> {
-					addFriendActivity.enableViewInteraction();
-					repopulateFriends();
-				});
-
-			}
-		}).exceptionally(e -> {
-				new android.os.Handler(Looper.getMainLooper()).post(() -> {
-					addFriendActivity.enableViewInteraction();
-					addFriendActivity.displayLoadingFailed();
-				});
-				return null;
-			}
-		);
+			setDatabase(notMyFriends);
+		}
 	}
 
 	public void searchNonFriends(String query) {
-		addFriendsAdapter.getFilter().filter(query);
+		getAdapter().getFilter().filter(query);
 
 	}
 
