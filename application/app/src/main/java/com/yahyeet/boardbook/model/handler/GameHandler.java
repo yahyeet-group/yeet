@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public class GameHandler extends EntityHandler<Game> implements IRepositoryListener<Game> {
+public class GameHandler implements IRepositoryListener<Game>, EntityHandler<Game> {
 
 	private IGameRepository gameRepository;
 	private IGameRoleRepository gameRoleRepository;

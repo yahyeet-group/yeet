@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public class UserHandler extends EntityHandler<User> implements IRepositoryListener<User> {
+public class UserHandler implements IRepositoryListener<User>, EntityHandler<User> {
 	private IUserRepository userRepository;
 	private List<UserHandlerListener> listeners = new ArrayList<>();
 
