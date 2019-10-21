@@ -15,12 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.profile.ProfileActivity;
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.presenter.AbstractAdapter;
+import com.yahyeet.boardbook.presenter.SearchAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendsAdapter extends AbstractAdapter<User> {
+public class FriendsAdapter extends SearchAdapter<User> {
 
 	private static final String TAG = "FriendsAdapter";
 	private Context context;

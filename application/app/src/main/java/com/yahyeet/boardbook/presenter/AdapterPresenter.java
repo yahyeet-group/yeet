@@ -9,11 +9,10 @@ import com.yahyeet.boardbook.model.handler.EntityHandler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public abstract class AdapterPresenter<E extends AbstractEntity, H extends EntityHandler<E>> {
 
-	private AbstractAdapter<E> adapter;
+	private SearchAdapter<E> adapter;
 	private IFutureInteractable fragment;
 	private List<E> database;
 
@@ -70,7 +69,7 @@ public abstract class AdapterPresenter<E extends AbstractEntity, H extends Entit
 		adapter.notifyDataSetChanged();
 	}
 
-	protected AbstractAdapter<E> getAdapter() {
+	protected SearchAdapter<E> getAdapter() {
 		return adapter;
 	}
 
@@ -87,11 +86,11 @@ public abstract class AdapterPresenter<E extends AbstractEntity, H extends Entit
 		database.addAll(newDatbase);
 	}
 
-	protected void setAdapter(AbstractAdapter<E> adapter) {
+	protected void setAdapter(SearchAdapter<E> adapter) {
 		this.adapter = adapter;
 	}
 
-	// To be overriden, but not forced so not abstract
+	// To be overridden	, but not forced so not abstract
 	protected void modifyDatabase(List<E> database){}
-
+		// Called in fillAndModifyDatabase, override if database should not be all entities of type T
 }

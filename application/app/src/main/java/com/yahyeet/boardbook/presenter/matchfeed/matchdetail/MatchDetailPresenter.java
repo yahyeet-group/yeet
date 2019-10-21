@@ -45,7 +45,7 @@ public class MatchDetailPresenter {
 			});
 		}
 		else{
-			throw new ClassCastException("Activity not instance of IFutureIntractable");
+			throw new IllegalArgumentException("Activity not instance of IFutureIntractable");
 		}
 
 	}
