@@ -8,17 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yahyeet.boardbook.activity.home.friends.IFriendFragment;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.handler.UserHandlerListener;
-import com.yahyeet.boardbook.model.repository.IRepositoryListener;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
-import com.yahyeet.boardbook.presenter.friends.FriendsAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FriendsPresenter implements UserHandlerListener {
 
-	private FriendsAdapter friendsAdapter;
+	private FriendsAdapterAbstract friendsAdapter;
 	// TODO: Remove if never necessary
 	private IFriendFragment friendsFragment;
 
@@ -47,7 +43,7 @@ public class FriendsPresenter implements UserHandlerListener {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		friendsRecyclerView.setLayoutManager(layoutManager);
 
-		friendsAdapter = new FriendsAdapter(userDatabase, viewContext);
+		friendsAdapter = new FriendsAdapterAbstract(userDatabase, viewContext);
 		friendsRecyclerView.setAdapter(friendsAdapter);
 
 	}

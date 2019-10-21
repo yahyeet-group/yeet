@@ -6,29 +6,32 @@ import android.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.activity.matchcreation.selectplayers.SelectPlayersFragment;
+import com.yahyeet.boardbook.activity.IFutureInteractable;
+import com.yahyeet.boardbook.activity.matchcreation.selectplayers.ISelectPlayersFragment;
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.model.handler.UserHandler;
+import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
+import com.yahyeet.boardbook.presenter.AdapterPresenter;
+import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class SelectPlayersPresenter {
+public class SelectPlayersPresenter extends AdapterPresenter<User, UserHandler> {
 
 	private CMMasterPresenter masterPresenter;
-	private SelectPlayersFragment spf;
-	private PlayerAdapter playerAdapter;
-	private List<User> database = new ArrayList<>();
+	private ISelectPlayersFragment spf;
+	private AbstractSearchAdapter<User> searchAdapter;
 
-	public SelectPlayersPresenter(SelectPlayersFragment spf, CMMasterPresenter cma) {
+	public SelectPlayersPresenter(ISelectPlayersFragment spf, CMMasterPresenter cma) {
+		super((IFutureInteractable) spf);
 		this.masterPresenter = cma;
 		this.spf = spf;
 
+		searchAdapter = new PlayerAdapter(getDatabase(), this);
+		setAdapter(searchAdapter);
 
-	}
+		fillDatabase(BoardbookSingleton.getInstance().getUserHandler());
 
-	public void repopulateMatches() {
-		playerAdapter.notifyDataSetChanged();
+
 	}
 
 	public void enableGameFeed(RecyclerView gameRecycleView, Context viewContext) {
@@ -49,8 +52,7 @@ public class SelectPlayersPresenter {
 		testUser4.setName("Daniel the Man");
 		testSet.add(testUser4);*/
 
-		playerAdapter = new PlayerAdapter(database, this);
-		gameRecycleView.setAdapter(playerAdapter);
+		gameRecycleView.setAdapter(getAdapter());
 	}
 
 	public CMMasterPresenter getMasterPresenter() {
@@ -67,7 +69,7 @@ public class SelectPlayersPresenter {
 
 			@Override
 			public boolean onQueryTextChange(String newText) {
-				playerAdapter.getFilter().filter(newText);
+				searchAdapter.getFilter().filter(newText);
 				return false;
 			}
 		});

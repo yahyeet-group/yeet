@@ -14,14 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.home.game.gamedetail.GameDetailActivity;
 import com.yahyeet.boardbook.model.entity.Game;
-import com.yahyeet.boardbook.presenter.SearchAdapter;
+import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameAdapter extends SearchAdapter<Game> {
+public class GameAdapterAbstract extends AbstractSearchAdapter<Game> {
 
-	private static final String TAG = "GameAdapter";
+	private static final String TAG = "GameAdapterAbstract";
 
 	private Context context;
 
@@ -65,7 +65,7 @@ public class GameAdapter extends SearchAdapter<Game> {
 	}
 
 
-	public GameAdapter(List<Game> database, Context context, DisplayType displayType) {
+	public GameAdapterAbstract(List<Game> database, Context context, DisplayType displayType) {
 		super(database);
 		this.context = context;
 		this.displayType = displayType;

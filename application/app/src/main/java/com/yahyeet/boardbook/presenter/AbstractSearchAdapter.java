@@ -9,13 +9,13 @@ import com.yahyeet.boardbook.model.entity.AbstractEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SearchAdapter<T extends AbstractEntity> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class AbstractSearchAdapter<T extends AbstractEntity> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private List<T> database;
 	private List<T> allEntities;
 	private Filter filter;
 
-	public SearchAdapter(List<T> database) {
+	public AbstractSearchAdapter(List<T> database) {
 
 		if(database != null)
 			this.database = database;

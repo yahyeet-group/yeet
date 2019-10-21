@@ -14,13 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.home.friends.IAddFriendActivity;
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.presenter.SearchAdapter;
+import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddFriendsAdapter extends SearchAdapter<User> {
+public class AddFriendsAdapterAbstract extends AbstractSearchAdapter<User> {
 
 	private IAddFriendActivity parent;
 
@@ -41,7 +41,7 @@ public class AddFriendsAdapter extends SearchAdapter<User> {
 		}
 	}
 
-	public AddFriendsAdapter(List<User> database, IAddFriendActivity parent) {
+	public AddFriendsAdapterAbstract(List<User> database, IAddFriendActivity parent) {
 		super(database);
 		this.parent = parent;
 

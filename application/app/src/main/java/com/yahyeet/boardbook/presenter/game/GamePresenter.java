@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IFutureInteractable;
-import com.yahyeet.boardbook.activity.home.game.IGameFragment;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.handler.GameHandler;
 import com.yahyeet.boardbook.model.handler.GameHandlerListener;
+import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
 import com.yahyeet.boardbook.presenter.AdapterPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
@@ -21,6 +21,7 @@ public class GamePresenter extends AdapterPresenter<Game, GameHandler> implement
 	private RecyclerView.LayoutManager listLayoutManager;
 	private RecyclerView.LayoutManager gridLayoutManager;
 
+	private AbstractSearchAdapter<Game> searchAdapter;
 	private DisplayType currentDisplayType;
 
 	public GamePresenter(IFutureInteractable gameFragment, Context viewContext) {
@@ -37,7 +38,8 @@ public class GamePresenter extends AdapterPresenter<Game, GameHandler> implement
 
 
 		setLayoutManagers(viewContext);
-		setAdapter(new GameAdapter(getDatabase(), viewContext, DisplayType.LIST));
+		searchAdapter = new GameAdapterAbstract(getDatabase(), viewContext, DisplayType.LIST);
+		setAdapter(searchAdapter);
 
 	}
 
@@ -68,12 +70,12 @@ public class GamePresenter extends AdapterPresenter<Game, GameHandler> implement
 	}
 
 	public void searchGames(String query) {
-		getAdapter().getFilter().filter(query);
+		searchAdapter.getFilter().filter(query);
 	}
 
 
 	private void updateGameAdapter(){
-		((GameAdapter) getAdapter()).setDisplayType(currentDisplayType);
+		((GameAdapterAbstract) getAdapter()).setDisplayType(currentDisplayType);
 	}
 
 	private void notifyAdapter() {

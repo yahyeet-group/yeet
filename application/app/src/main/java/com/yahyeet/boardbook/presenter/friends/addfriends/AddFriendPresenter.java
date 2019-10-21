@@ -1,30 +1,33 @@
 package com.yahyeet.boardbook.presenter.friends.addfriends;
 
 import android.content.Context;
-import android.os.Looper;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.home.friends.IAddFriendActivity;
-import com.yahyeet.boardbook.model.Boardbook;
 import com.yahyeet.boardbook.model.handler.UserHandler;
+import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
 import com.yahyeet.boardbook.presenter.AdapterPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.model.entity.User;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class AddFriendPresenter extends AdapterPresenter<User, UserHandler> {
 
 	private IAddFriendActivity addFriendActivity;
+	private AbstractSearchAdapter searchAdapter;
 
 	public AddFriendPresenter(IAddFriendActivity addFriendActivity) {
 		super((IFutureInteractable) addFriendActivity);
 		this.addFriendActivity = addFriendActivity;
+
+		searchAdapter = new AddFriendsAdapterAbstract(getDatabase(), addFriendActivity);
+
+		setAdapter(searchAdapter);
 
 		fillAndModifyDatabase(BoardbookSingleton.getInstance().getUserHandler());
 	}
@@ -38,8 +41,6 @@ public class AddFriendPresenter extends AdapterPresenter<User, UserHandler> {
 	 */
 	public void enableAddFriendsList(RecyclerView recyclerView, Context viewContext) {
 		recyclerView.setLayoutManager(new LinearLayoutManager(viewContext));
-
-		setAdapter(new AddFriendsAdapter(getDatabase(), addFriendActivity));
 		recyclerView.setAdapter(getAdapter());
 	}
 
@@ -60,7 +61,7 @@ public class AddFriendPresenter extends AdapterPresenter<User, UserHandler> {
 	}
 
 	public void searchNonFriends(String query) {
-		getAdapter().getFilter().filter(query);
+		searchAdapter.getFilter().filter(query);
 
 	}
 

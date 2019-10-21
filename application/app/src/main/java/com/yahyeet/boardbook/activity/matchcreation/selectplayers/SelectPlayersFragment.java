@@ -12,11 +12,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.matchcreation.CreateMatchActivity;
 import com.yahyeet.boardbook.activity.matchcreation.selectgame.ISelectGameFragment;
 import com.yahyeet.boardbook.presenter.matchcreation.selectplayers.SelectPlayersPresenter;
 
-public class SelectPlayersFragment extends Fragment implements ISelectGameFragment {
+public class SelectPlayersFragment extends Fragment implements ISelectPlayersFragment, IFutureInteractable {
 
 	private SelectPlayersPresenter selectPlayersPresenter;
 
@@ -48,5 +49,20 @@ public class SelectPlayersFragment extends Fragment implements ISelectGameFragme
 	public void enableSearchView(){
 		SearchView searchView = getView().findViewById(R.id.searchPlayers);
 		selectPlayersPresenter.enableSearchBar(searchView);
+	}
+
+	@Override
+	public void enableViewInteraction() {
+		// TODO: Nox implement these
+	}
+
+	@Override
+	public void disableViewInteraction() {
+		// TODO: Nox implement these
+	}
+
+	@Override
+	public void displayLoadingFailed() {
+		// TODO: Nox implement these
 	}
 }

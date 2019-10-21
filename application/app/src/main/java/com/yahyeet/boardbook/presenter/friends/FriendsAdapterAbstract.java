@@ -15,14 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.profile.ProfileActivity;
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.presenter.SearchAdapter;
+import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendsAdapter extends SearchAdapter<User> {
+public class FriendsAdapterAbstract extends AbstractSearchAdapter<User> {
 
-	private static final String TAG = "FriendsAdapter";
+	private static final String TAG = "FriendsAdapterAbstract";
 	private Context context;
 
 	static class FriendViewHolder extends RecyclerView.ViewHolder {
@@ -42,7 +42,7 @@ public class FriendsAdapter extends SearchAdapter<User> {
 		}
 	}
 
-	public FriendsAdapter(List<User> database, Context context) {
+	public FriendsAdapterAbstract(List<User> database, Context context) {
 		super(database);
 		this.context = context;
 	}

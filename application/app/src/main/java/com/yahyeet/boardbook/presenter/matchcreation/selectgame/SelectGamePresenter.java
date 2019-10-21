@@ -5,38 +5,35 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.model.entity.Game;
-import com.yahyeet.boardbook.presenter.BoardbookSingleton;
+import com.yahyeet.boardbook.model.handler.GameHandler;
+import com.yahyeet.boardbook.presenter.AdapterPresenter;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 import com.yahyeet.boardbook.activity.matchcreation.selectgame.ISelectGameFragment;
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class SelectGamePresenter  {
+public class SelectGamePresenter extends AdapterPresenter<Game, GameHandler> {
 
-	private GamesAdapter gamesAdapter;
-	private List<Game> dataset = new ArrayList<>();
 
 	private ISelectGameFragment selectGameFragment;
 	private CMMasterPresenter masterPresenter;
 
 
 	public SelectGamePresenter(ISelectGameFragment selectGameFragment, CMMasterPresenter cm) {
-
+		super((IFutureInteractable) selectGameFragment);
 		this.selectGameFragment = selectGameFragment;
 		this.masterPresenter = cm;
 
 
-	}
+		setAdapter(new GamesAdapter(getDatabase(), this));
 
-	public void updateAdapter() {
-		gamesAdapter.notifyDataSetChanged();
 	}
 
 	public void enableGameFeed(RecyclerView gameRecycleView, Context viewContext) {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		gameRecycleView.setLayoutManager(layoutManager);
+
 		/*Game testGame = new Game("Avalon", "Cool Game", 3, 5, 10);
 		GameTeam mom = new GameTeam();
 		mom.setName("Minions of Mordred");
@@ -62,9 +59,7 @@ public class SelectGamePresenter  {
 		testSet.add(testGame);*/
 
 
-
-		gamesAdapter = new GamesAdapter(dataset, this);
-		gameRecycleView.setAdapter(gamesAdapter);
+		gameRecycleView.setAdapter(getAdapter());
 	}
 
 	public CMMasterPresenter getMasterPresenter(){

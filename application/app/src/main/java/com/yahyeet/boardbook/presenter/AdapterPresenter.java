@@ -2,6 +2,9 @@ package com.yahyeet.boardbook.presenter;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.Adapter;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.model.entity.AbstractEntity;
@@ -12,15 +15,15 @@ import java.util.List;
 
 public abstract class AdapterPresenter<E extends AbstractEntity, H extends EntityHandler<E>> {
 
-	private SearchAdapter<E> adapter;
+	private RecyclerView.Adapter adapter;
 	private IFutureInteractable fragment;
 	private List<E> database;
 
 	private Handler uiHandler = new android.os.Handler(Looper.getMainLooper());
 
 	public AdapterPresenter(IFutureInteractable fragment) {
-		database = new ArrayList<>();
 		this.fragment = fragment;
+		database = new ArrayList<>();
 	}
 
 	protected void fillDatabase(H handler) {
@@ -69,7 +72,7 @@ public abstract class AdapterPresenter<E extends AbstractEntity, H extends Entit
 		adapter.notifyDataSetChanged();
 	}
 
-	protected SearchAdapter<E> getAdapter() {
+	protected RecyclerView.Adapter getAdapter() {
 		return adapter;
 	}
 
@@ -86,11 +89,13 @@ public abstract class AdapterPresenter<E extends AbstractEntity, H extends Entit
 		database.addAll(newDatbase);
 	}
 
-	protected void setAdapter(SearchAdapter<E> adapter) {
+	protected void setAdapter(AbstractSearchAdapter<E> adapter) {
 		this.adapter = adapter;
 	}
 
 	// To be overridden	, but not forced so not abstract
-	protected void modifyDatabase(List<E> database){}
+	protected void modifyDatabase(List<E> database){
 		// Called in fillAndModifyDatabase, override if database should not be all entities of type T
+	}
+
 }
