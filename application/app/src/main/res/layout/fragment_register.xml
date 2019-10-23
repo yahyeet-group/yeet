@@ -11,14 +11,14 @@
         android:id="@+id/registerButton"
         android:layout_width="174dp"
         android:layout_height="82dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginBottom="20dp"
         android:alpha="1"
         android:background="@drawable/custom_button"
         android:clickable="false"
         android:text="@string/newAcc"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/registerPasswordInput" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/registerPasswordInput"
@@ -36,8 +36,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
-        android:textColor="@color/colorText"
         android:text="@string/password"
+        android:textColor="@color/colorText"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/registerPasswordInput"
         app:layout_constraintStart_toStartOf="@+id/registerPasswordInput" />
@@ -47,8 +47,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:textColor="@color/colorText"
         android:text="@string/username"
+        android:textColor="@color/colorText"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/registerUsernameInput"
         app:layout_constraintStart_toStartOf="@+id/registerUsernameInput" />
@@ -69,8 +69,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
-        android:textColor="@color/colorText"
         android:text="@string/email"
+        android:textColor="@color/colorText"
         android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/registerEmailInput"
         app:layout_constraintStart_toStartOf="@+id/registerEmailInput" />
