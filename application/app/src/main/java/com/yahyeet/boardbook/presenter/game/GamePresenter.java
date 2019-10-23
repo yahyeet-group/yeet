@@ -11,10 +11,10 @@ import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.handler.GameHandler;
 import com.yahyeet.boardbook.model.handler.GameHandlerListener;
 import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
-import com.yahyeet.boardbook.presenter.AdapterPresenter;
+import com.yahyeet.boardbook.presenter.AllEntitiesPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
-public class GamePresenter extends AdapterPresenter<Game, GameHandler> implements GameHandlerListener {
+public class GamePresenter extends AllEntitiesPresenter<Game, GameHandler> implements GameHandlerListener {
 
 
 	private IFutureInteractable gameFragment;

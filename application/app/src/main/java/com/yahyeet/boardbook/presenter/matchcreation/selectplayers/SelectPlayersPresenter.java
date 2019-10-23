@@ -11,11 +11,11 @@ import com.yahyeet.boardbook.activity.matchcreation.selectplayers.ISelectPlayers
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
-import com.yahyeet.boardbook.presenter.AdapterPresenter;
+import com.yahyeet.boardbook.presenter.AllEntitiesPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 
-public class SelectPlayersPresenter extends AdapterPresenter<User, UserHandler> {
+public class SelectPlayersPresenter extends AllEntitiesPresenter<User, UserHandler> {
 
 	private CMMasterPresenter masterPresenter;
 	private ISelectPlayersFragment spf;

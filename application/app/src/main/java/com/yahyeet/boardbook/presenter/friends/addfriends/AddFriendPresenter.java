@@ -9,14 +9,14 @@ import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.home.friends.IAddFriendActivity;
 import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
-import com.yahyeet.boardbook.presenter.AdapterPresenter;
+import com.yahyeet.boardbook.presenter.AllEntitiesPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.model.entity.User;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AddFriendPresenter extends AdapterPresenter<User, UserHandler> {
+public class AddFriendPresenter extends AllEntitiesPresenter<User, UserHandler> {
 
 	private IAddFriendActivity addFriendActivity;
 	private AbstractSearchAdapter searchAdapter;

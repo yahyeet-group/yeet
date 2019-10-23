@@ -13,7 +13,7 @@ import com.yahyeet.boardbook.model.handler.EntityHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AdapterPresenter<E extends AbstractEntity, H extends EntityHandler<E>> {
+public abstract class AllEntitiesPresenter<E extends AbstractEntity, H extends EntityHandler<E>> {
 
 	private RecyclerView.Adapter adapter;
 	private IFutureInteractable fragment;
@@ -21,16 +21,16 @@ public abstract class AdapterPresenter<E extends AbstractEntity, H extends Entit
 
 	private Handler uiHandler = new android.os.Handler(Looper.getMainLooper());
 
-	public AdapterPresenter(IFutureInteractable fragment) {
+	public AllEntitiesPresenter(IFutureInteractable fragment) {
 		this.fragment = fragment;
 		database = new ArrayList<>();
 	}
 
 	protected void fillDatabase(H handler) {
 		fragment.disableViewInteraction();
-		handler.all().thenAccept(initiatedGames -> {
-			if (initiatedGames != null) {
-				database.addAll(initiatedGames);
+		handler.all().thenAccept(initiatedEntities -> {
+			if (initiatedEntities != null) {
+				database.addAll(initiatedEntities);
 			}
 
 			uiHandler.post(() -> {
@@ -48,9 +48,9 @@ public abstract class AdapterPresenter<E extends AbstractEntity, H extends Entit
 
 	protected void fillAndModifyDatabase(H handler) {
 		fragment.disableViewInteraction();
-		handler.all().thenAccept(initiatedGames -> {
-			if (initiatedGames != null) {
-				database.addAll(initiatedGames);
+		handler.all().thenAccept(initiatedEntities -> {
+			if (initiatedEntities != null) {
+				database.addAll(initiatedEntities);
 				modifyDatabase(database);
 
 			}
@@ -89,7 +89,7 @@ public abstract class AdapterPresenter<E extends AbstractEntity, H extends Entit
 		database.addAll(newDatbase);
 	}
 
-	protected void setAdapter(AbstractSearchAdapter<E> adapter) {
+	protected void setAdapter(RecyclerView.Adapter adapter) {
 		this.adapter = adapter;
 	}
 

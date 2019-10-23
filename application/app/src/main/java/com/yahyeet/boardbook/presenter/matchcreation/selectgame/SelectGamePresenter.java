@@ -6,16 +6,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IFutureInteractable;
-import com.yahyeet.boardbook.model.Boardbook;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.handler.GameHandler;
-import com.yahyeet.boardbook.presenter.AdapterPresenter;
+import com.yahyeet.boardbook.presenter.AllEntitiesPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 import com.yahyeet.boardbook.activity.matchcreation.selectgame.ISelectGameFragment;
 
 
-public class SelectGamePresenter extends AdapterPresenter<Game, GameHandler> {
+public class SelectGamePresenter extends AllEntitiesPresenter<Game, GameHandler> {
 
 
 	private ISelectGameFragment selectGameFragment;
