@@ -1,6 +1,7 @@
 package com.yahyeet.boardbook.presenter.matchfeed;
 
 import android.content.Context;
+import android.os.Looper;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,7 +15,7 @@ import com.yahyeet.boardbook.model.handler.MatchHandlerListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchfeedPresenter implements MatchHandlerListener {
+public class MatchfeedPresenter {
 
 	private MatchfeedAdapter matchfeedAdapter;
 	private List<Match> matchDatabase = new ArrayList<>();
@@ -41,11 +42,11 @@ public class MatchfeedPresenter implements MatchHandlerListener {
 	 */
 	public void enableMatchFeed(RecyclerView matchRecyclerView, Context viewContext) {
 
-		User loggedIn = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
 
 
-		matchDatabase.addAll(loggedIn.getMatches());
 
+
+		updateUserDatabase();
 
 		// TODO: This code breaks everything and needs to be reimplemented
 		// TODO: If implemented then IMatchfeedFragment needs to extend IFutureIntractable
@@ -68,30 +69,15 @@ public class MatchfeedPresenter implements MatchHandlerListener {
 
 	}
 
-	@Override
-	public void onAddMatch(Match match) {
-		matchDatabase.add(match);
-		updateMatchAdapter();
+	public void updateUserDatabase(){
+		User loggedInUser = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
+
+
+		BoardbookSingleton.getInstance().getUserHandler().find(loggedInUser.getId()).thenAccept(foundUser -> {
+			matchDatabase.addAll(foundUser.getMatches());
+
+		});
 	}
 
-	@Override
-	public void onUpdateMatch(Match match) {
-		for (int i = 0; i < matchDatabase.size(); i++) {
-			if (matchDatabase.get(i).getId().equals(match.getId())) {
-				matchDatabase.set(i, match);
-			}
-		}
-		updateMatchAdapter();
-	}
 
-	@Override
-	public void onRemoveMatch(Match match) {
-		for (int i = 0; i < matchDatabase.size(); i++) {
-			if (matchDatabase.get(i).getId().equals(match.getId())) {
-				matchDatabase.remove(i);
-				break;
-			}
-		}
-		updateMatchAdapter();
-	}
 }

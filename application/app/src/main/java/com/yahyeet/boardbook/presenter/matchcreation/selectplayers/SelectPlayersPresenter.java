@@ -1,6 +1,7 @@
 package com.yahyeet.boardbook.presenter.matchcreation.selectplayers;
 
 import android.content.Context;
+import android.util.Pair;
 import android.widget.SearchView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,12 +9,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.matchcreation.selectplayers.ISelectPlayersFragment;
+import com.yahyeet.boardbook.model.Boardbook;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
 import com.yahyeet.boardbook.presenter.AllEntitiesPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
+
+
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class SelectPlayersPresenter extends AllEntitiesPresenter<User, UserHandler> {
 
@@ -29,7 +36,7 @@ public class SelectPlayersPresenter extends AllEntitiesPresenter<User, UserHandl
 		searchAdapter = new PlayerAdapter(getDatabase(), this);
 		setAdapter(searchAdapter);
 
-		fillDatabase(BoardbookSingleton.getInstance().getUserHandler());
+		fillAndModifyDatabase(BoardbookSingleton.getInstance().getUserHandler());
 
 
 	}
@@ -73,5 +80,44 @@ public class SelectPlayersPresenter extends AllEntitiesPresenter<User, UserHandl
 				return false;
 			}
 		});
+
+
+	}
+
+	@Override
+	protected void modifyDatabase(List<User> database) {
+
+		User loggedInUser = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
+
+		List<User> notFriends = database.stream().filter(user -> {
+			if(user.equals(loggedInUser))
+				return false;
+
+			if(loggedInUser
+				.getFriends()
+				.stream()
+				.anyMatch(friend -> friend.equals(user))) {
+				return false;
+			}
+
+			return true;
+		}).collect(Collectors.toList());
+
+
+		database.clear();
+
+		database.add(loggedInUser);
+
+		database.addAll(loggedInUser
+			.getFriends()
+			.stream()
+			.sorted((left, right) -> left.getName().compareTo(right.getName()))
+			.collect(Collectors.toList()));
+
+		database.addAll(notFriends
+			.stream()
+			.sorted((left, right) -> left.getName().compareTo(right.getName()))
+			.collect(Collectors.toList()));
+
 	}
 }
