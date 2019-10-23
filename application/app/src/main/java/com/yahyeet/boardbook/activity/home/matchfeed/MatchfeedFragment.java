@@ -42,6 +42,11 @@ public class MatchfeedFragment extends Fragment implements IMatchfeedFragment {
 		matchfeedPresenter.enableMatchFeed(matchRecycler, getView().getContext());
 	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		matchfeedPresenter.updateUserDatabase();
+	}
 
 	public void repopulateMatchFeed() {
 		matchfeedPresenter.updateMatchAdapter();
