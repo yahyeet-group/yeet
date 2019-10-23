@@ -17,6 +17,7 @@ import com.yahyeet.boardbook.presenter.AdapterPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -26,13 +27,14 @@ public class SelectPlayersPresenter extends AdapterPresenter<User, UserHandler> 
 	private CMMasterPresenter masterPresenter;
 	private ISelectPlayersFragment spf;
 	private AbstractSearchAdapter<User> searchAdapter;
+	private List<User> friends = new ArrayList<>();
 
 	public SelectPlayersPresenter(ISelectPlayersFragment spf, CMMasterPresenter cma) {
 		super((IFutureInteractable) spf);
 		this.masterPresenter = cma;
 		this.spf = spf;
 
-		searchAdapter = new PlayerAdapter(getDatabase(), this);
+		searchAdapter = new PlayerAdapter(getDatabase(), this, friends);
 		setAdapter(searchAdapter);
 
 		fillAndModifyDatabase(BoardbookSingleton.getInstance().getUserHandler());
@@ -108,6 +110,13 @@ public class SelectPlayersPresenter extends AdapterPresenter<User, UserHandler> 
 		database.add(loggedInUser);
 
 		database.addAll(loggedInUser
+			.getFriends()
+			.stream()
+			.sorted((left, right) -> left.getName().compareTo(right.getName()))
+			.collect(Collectors.toList()));
+
+
+		friends.addAll(loggedInUser
 			.getFriends()
 			.stream()
 			.sorted((left, right) -> left.getName().compareTo(right.getName()))

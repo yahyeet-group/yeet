@@ -1,5 +1,6 @@
 package com.yahyeet.boardbook.presenter.matchcreation.selectplayers;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 
 	private CMMasterPresenter cmmp;
 	private SelectPlayersPresenter spp;
+	private List<User> usersFriends;
 
 	class PlayerViewHolder extends RecyclerView.ViewHolder {
 
@@ -38,17 +40,19 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 	}
 
 
-	public PlayerAdapter(List<User> myDataset, SelectPlayersPresenter spp) {
+	public PlayerAdapter(List<User> myDataset, SelectPlayersPresenter spp, List<User> usersFriends) {
 		super(myDataset);
 		this.spp = spp;
 		cmmp = spp.getMasterPresenter();
+		this.usersFriends = usersFriends;
+
 
 	}
 
 	@Override
 	public PlayerAdapter.PlayerViewHolder onCreateViewHolder(ViewGroup vg, int viewType) {
 
-		View v = LayoutInflater.from(vg.getContext()).inflate(R.layout.select_players_element, vg, false);
+		View v = LayoutInflater.from(vg.getContext()).inflate(R.layout.element_select_players, vg, false);
 
 
 		return new PlayerViewHolder(v);
@@ -58,10 +62,14 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 	@Override
 	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
+
 		if(holder instanceof PlayerViewHolder){
 
 			PlayerViewHolder vh = (PlayerViewHolder) holder;
 			List<User> database = getDatabase();
+			if (usersFriends.contains(database.get(position))){
+				vh.itemView.setBackgroundColor(Color.parseColor("#09cdda"));
+			}
 
 			vh.playerName.setText(database.get(position).getName());
 			vh.actionButton.setOnClickListener(event -> {
