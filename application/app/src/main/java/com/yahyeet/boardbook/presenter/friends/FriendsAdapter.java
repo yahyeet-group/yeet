@@ -20,9 +20,8 @@ import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendsAdapterAbstract extends AbstractSearchAdapter<User> {
+public class FriendsAdapter extends AbstractSearchAdapter<User> {
 
-	private static final String TAG = "FriendsAdapterAbstract";
 	private Context context;
 
 	static class FriendViewHolder extends RecyclerView.ViewHolder {
@@ -42,7 +41,7 @@ public class FriendsAdapterAbstract extends AbstractSearchAdapter<User> {
 		}
 	}
 
-	public FriendsAdapterAbstract(List<User> database, Context context) {
+	public FriendsAdapter(List<User> database, Context context) {
 		super(database);
 		this.context = context;
 	}

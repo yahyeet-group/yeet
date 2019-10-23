@@ -6,32 +6,41 @@ import android.os.Looper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.model.handler.MatchHandler;
+import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.activity.home.matchfeed.IMatchfeedFragment;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.handler.MatchHandlerListener;
+import com.yahyeet.boardbook.presenter.OneEntityPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchfeedPresenter {
+public class MatchfeedPresenter extends OneEntityPresenter<User, UserHandler> {
 
 	private MatchfeedAdapter matchfeedAdapter;
-	private List<Match> matchDatabase = new ArrayList<>();
+	private List<Match> matchDatabase;
 
 
 	// TODO: Remove if never necessary
 	private IMatchfeedFragment matchfeedFragment;
 
 	public MatchfeedPresenter(IMatchfeedFragment matchfeedFragment) {
+		super((IFutureInteractable) matchfeedFragment);
 		this.matchfeedFragment = matchfeedFragment;
+
+		matchDatabase = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getMatches();
+
 	}
 
 	/**
 	 * Makes recyclerView to repopulate its matches with current data
 	 */
-	public void updateMatchAdapter() {
+	public void updateAdapter() {
+		//findLoggedInUser();
 		matchfeedAdapter.notifyDataSetChanged();
 	}
 
@@ -41,43 +50,27 @@ public class MatchfeedPresenter {
 	 * @param matchRecyclerView the RecyclerView that will be populated with matches
 	 */
 	public void enableMatchFeed(RecyclerView matchRecyclerView, Context viewContext) {
-
-
-
-
-
-		updateUserDatabase();
-
-		// TODO: This code breaks everything and needs to be reimplemented
-		// TODO: If implemented then IMatchfeedFragment needs to extend IFutureIntractable
-		/*CompletableFuture.allOf(loggedIn
-			.getFriends()
-			.stream()
-			.map(friend -> BoardbookSingleton.getInstance().getUserHandler()
-				.find(friend.getId()).thenApply(populatedFriend -> {
-					matchDatabase.addAll(populatedFriend.getMatches());
-					return null;
-				})).toArray(CompletableFuture[]::new)).thenAccept(nothing -> {
-			// Now all are added
-
-		});*/
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
-		matchRecyclerView.setLayoutManager(layoutManager);
 		matchfeedAdapter = new MatchfeedAdapter(viewContext, matchDatabase);
+
+		matchRecyclerView.setLayoutManager(layoutManager);
 		matchRecyclerView.setAdapter(matchfeedAdapter);
 
 
 	}
 
-	public void updateUserDatabase(){
-		User loggedInUser = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
-
-
-		BoardbookSingleton.getInstance().getUserHandler().find(loggedInUser.getId()).thenAccept(foundUser -> {
-			matchDatabase.addAll(foundUser.getMatches());
-
-		});
+	private void findLoggedInUser(){
+		findEntity(BoardbookSingleton.getInstance().getUserHandler(),
+			BoardbookSingleton
+				.getInstance()
+				.getAuthHandler()
+				.getLoggedInUser()
+				.getId());
 	}
 
-
+	@Override
+	protected void onEntityFound(User entity) {
+		matchDatabase.clear();
+		matchDatabase.addAll(entity.getMatches());
+	}
 }

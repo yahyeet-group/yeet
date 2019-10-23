@@ -26,6 +26,7 @@ public class BoardbookSingleton {
 	public static Boardbook getInstance() {
 		if (instance == null) {
 			FirebaseUserRepository userRepository = new FirebaseUserRepository(FirebaseFirestore.getInstance());
+			userRepository.setCollectionNamePrefix(FIREBASE_COLLECTION_PREFIX);
 			FirebaseGameRepository gameRepository = new FirebaseGameRepository(FirebaseFirestore.getInstance());
 			gameRepository.setCollectionNamePrefix(FIREBASE_COLLECTION_PREFIX);
 			FirebaseMatchRepository matchRepository = new FirebaseMatchRepository(FirebaseFirestore.getInstance());

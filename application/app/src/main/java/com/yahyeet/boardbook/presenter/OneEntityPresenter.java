@@ -3,12 +3,13 @@ package com.yahyeet.boardbook.presenter;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.google.errorprone.annotations.ForOverride;
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.model.entity.AbstractEntity;
 import com.yahyeet.boardbook.model.handler.EntityHandler;
 
 
-public class OneEntityPresenter<E extends AbstractEntity, H extends EntityHandler<E>>  {
+public class OneEntityPresenter<E extends AbstractEntity, H extends EntityHandler<E>> {
 
 	private IFutureInteractable fragment;
 
@@ -28,11 +29,20 @@ public class OneEntityPresenter<E extends AbstractEntity, H extends EntityHandle
 		handler.find(entityId).thenAccept(initiatedEntity -> {
 			if (initiatedEntity != null) {
 				entity = initiatedEntity;
+				uiHandler.post(() -> {
+					fragment.enableViewInteraction();
+
+					// Safety in case of modification affecting UI elements
+					onEntityFound(entity);
+				});
+			}
+			else{
+				uiHandler.post(() -> {
+					fragment.enableViewInteraction();
+				});
 			}
 
-			uiHandler.post(() -> {
-				fragment.enableViewInteraction();
-			});
+
 		}).exceptionally(e -> {
 			uiHandler.post(() -> {
 				fragment.displayLoadingFailed();
@@ -48,6 +58,12 @@ public class OneEntityPresenter<E extends AbstractEntity, H extends EntityHandle
 
 	public E getEntity() {
 		return entity;
+	}
+
+	@ForOverride
+	protected void onEntityFound(E entity) {
+		// Method called when entity has been found with said entity as parameter
+		// Override if subclass want's info from entity after future completion
 	}
 
 }

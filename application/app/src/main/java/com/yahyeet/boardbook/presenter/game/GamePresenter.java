@@ -38,7 +38,7 @@ public class GamePresenter extends AllEntitiesPresenter<Game, GameHandler> imple
 
 
 		setLayoutManagers(viewContext);
-		searchAdapter = new GameAdapterAbstract(getDatabase(), viewContext, DisplayType.LIST);
+		searchAdapter = new GameAdapter(getDatabase(), viewContext, DisplayType.LIST);
 		setAdapter(searchAdapter);
 
 	}
@@ -75,7 +75,7 @@ public class GamePresenter extends AllEntitiesPresenter<Game, GameHandler> imple
 
 
 	private void updateGameAdapter(){
-		((GameAdapterAbstract) getAdapter()).setDisplayType(currentDisplayType);
+		((GameAdapter) getAdapter()).setDisplayType(currentDisplayType);
 	}
 
 	private void notifyAdapter() {

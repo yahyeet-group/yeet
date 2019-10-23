@@ -4,13 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.presenter.game.gamedetail.GameDetailPresenter;
 
-public class GameDetailActivity extends AppCompatActivity implements IGameDetailActivity {
+public class GameDetailActivity extends AppCompatActivity implements IGameDetailActivity, IFutureInteractable {
 
 
 	private GameDetailPresenter gameDetailPresenter;
@@ -18,6 +21,7 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
 	private TextView gameDescription;
 	private TextView gameRules;
 	private ImageView gameImage;
+	private ProgressBar gameDetailLoading;
 	private RecyclerView teamRecyclerView;
 
 
@@ -25,6 +29,7 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_detail);
+		setAllIds();
 
 		String gameID;
 		if (savedInstanceState == null) {
@@ -40,10 +45,7 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
 
 		gameDetailPresenter = new GameDetailPresenter(this, gameID);
 
-		gameName = findViewById(R.id.gameDetailName);
-		gameDescription = findViewById(R.id.gameDetailDescription);
-		gameRules = findViewById(R.id.gameDetailRules);
-		teamRecyclerView = findViewById(R.id.gameDetailRecyclerView);
+
 	}
 
 	/**
@@ -51,7 +53,6 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
 	 */
 	protected void onStart() {
 		super.onStart();
-		gameDetailPresenter.initiateGameDetail();
 		gameDetailPresenter.enableTeamList(teamRecyclerView, this);
 	}
 
@@ -67,5 +68,36 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
 		this.gameRules.setText(rules);
 	}
 
+	@Override
+	public void enableViewInteraction() {
+		gameName.setVisibility(View.VISIBLE);
+		gameDescription.setVisibility(View.VISIBLE);
+		gameRules.setVisibility(View.VISIBLE);
 
+		gameDetailLoading.setVisibility(View.INVISIBLE);
+
+	}
+
+	@Override
+	public void disableViewInteraction() {
+		gameName.setVisibility(View.INVISIBLE);
+		gameDescription.setVisibility(View.INVISIBLE);
+		gameRules.setVisibility(View.INVISIBLE);
+
+		gameDetailLoading.setVisibility(View.VISIBLE);
+
+	}
+
+	@Override
+	public void displayLoadingFailed() {
+		findViewById(R.id.gameDetailError).setVisibility(View.VISIBLE);
+	}
+
+	private void setAllIds(){
+		gameName = findViewById(R.id.gameDetailName);
+		gameDescription = findViewById(R.id.gameDetailDescription);
+		gameRules = findViewById(R.id.gameDetailRules);
+		gameDetailLoading = findViewById(R.id.gameDetailLoading);
+		teamRecyclerView = findViewById(R.id.gameDetailRecyclerView);
+	}
 }

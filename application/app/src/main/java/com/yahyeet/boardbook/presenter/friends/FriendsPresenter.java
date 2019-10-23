@@ -14,7 +14,7 @@ import java.util.List;
 
 public class FriendsPresenter implements UserHandlerListener {
 
-	private FriendsAdapterAbstract friendsAdapter;
+	private FriendsAdapter friendsAdapter;
 	// TODO: Remove if never necessary
 	private IFriendFragment friendsFragment;
 
@@ -43,7 +43,7 @@ public class FriendsPresenter implements UserHandlerListener {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		friendsRecyclerView.setLayoutManager(layoutManager);
 
-		friendsAdapter = new FriendsAdapterAbstract(userDatabase, viewContext);
+		friendsAdapter = new FriendsAdapter(userDatabase, viewContext);
 		friendsRecyclerView.setAdapter(friendsAdapter);
 
 	}

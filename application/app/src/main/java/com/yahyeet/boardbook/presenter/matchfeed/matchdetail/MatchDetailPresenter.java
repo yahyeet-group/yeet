@@ -9,56 +9,44 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.home.matchfeed.matchdetail.IMatchDetailActivity;
+import com.yahyeet.boardbook.model.Boardbook;
+import com.yahyeet.boardbook.model.entity.MatchPlayer;
+import com.yahyeet.boardbook.model.handler.MatchHandler;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.model.entity.Match;
+import com.yahyeet.boardbook.presenter.OneEntityPresenter;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
-
-public class MatchDetailPresenter {
+public class MatchDetailPresenter extends OneEntityPresenter<Match, MatchHandler> {
 
 	private IMatchDetailActivity matchDetailActivity;
 	private MatchPlayerAdapter matchPlayerAdapter;
-	private Match match;
+
+	private List<MatchPlayer> matchPlayers = new ArrayList<>();
 
 	public MatchDetailPresenter(IMatchDetailActivity matchDetailActivity, String matchID) {
+		super((IFutureInteractable) matchDetailActivity);
 		this.matchDetailActivity = matchDetailActivity;
 
 
-		if(matchDetailActivity instanceof IFutureInteractable){
+		findEntity(BoardbookSingleton.getInstance().getMatchHandler(), matchID);
 
-			IFutureInteractable futureDetail = (IFutureInteractable) matchDetailActivity;
-
-			futureDetail.disableViewInteraction();
-			BoardbookSingleton.getInstance().getMatchHandler().find(matchID).thenAccept(foundMatch -> {
-				match = foundMatch;
-
-				new android.os.Handler(Looper.getMainLooper()).post(() -> {
-					setMatchDetailName();
-					matchDetailActivity.initiateMatchDetailList();
-					futureDetail.enableViewInteraction();
-				});
-
-			}).exceptionally(e -> {
-				e.printStackTrace();
-				futureDetail.displayLoadingFailed();
-				return null;
-			});
-		}
-		else{
-			throw new IllegalArgumentException("Activity not instance of IFutureIntractable");
-		}
 
 	}
 
 
 	private void setMatchDetailName() {
-		matchDetailActivity.setGameName("Game of " + match.getGame().getName());
+		matchDetailActivity.setGameName("Game of " + getEntity().getGame().getName());
 	}
 
 
 
 	/**
-	 * Makes recyclerView to repopulate its matches with current data
+	 * Makes recyclerView to repopulate its MatchPlayers with current data
 	 */
 	public void updateMatchplayerAdapter() {
 		matchPlayerAdapter.notifyDataSetChanged();
@@ -76,9 +64,30 @@ public class MatchDetailPresenter {
 
 		matchplayerRecyclerView.setLayoutManager(layoutManager);
 
-		matchPlayerAdapter = new MatchPlayerAdapter(match.getMatchPlayers(), resources);
+		matchPlayerAdapter = new MatchPlayerAdapter(matchPlayers, resources);
 		matchplayerRecyclerView.setAdapter(matchPlayerAdapter);
 	}
 
+	@Override
+	protected void onEntityFound(Match entity) {
+		setMatchDetailName();
 
+		matchPlayers.clear();
+		matchPlayers.addAll(sortByWin(entity.getMatchPlayers()));
+	}
+
+	private List<MatchPlayer> sortByWin(List<MatchPlayer> unsortedPlayers){
+
+		return unsortedPlayers
+			.stream()
+			.sorted((left, right) -> {
+				if(left.getWin() && !right.getWin())
+					return 1;
+				else if(left.getWin() && right.getWin())
+					return 0;
+				else
+					return -1;
+			})
+			.collect(Collectors.toList());
+	}
 }

@@ -6,6 +6,7 @@ import android.widget.Adapter;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.errorprone.annotations.ForOverride;
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.model.entity.AbstractEntity;
 import com.yahyeet.boardbook.model.handler.EntityHandler;
@@ -51,13 +52,14 @@ public abstract class AllEntitiesPresenter<E extends AbstractEntity, H extends E
 		handler.all().thenAccept(initiatedEntities -> {
 			if (initiatedEntities != null) {
 				database.addAll(initiatedEntities);
-				modifyDatabase(database);
-
 			}
 
 			uiHandler.post(() -> {
 				fragment.enableViewInteraction();
 				adapter.notifyDataSetChanged();
+
+				// Safety in case of modification affecting UI elements
+				modifyDatabase(database);
 			});
 		}).exceptionally(e -> {
 			uiHandler.post(() -> {
@@ -93,7 +95,7 @@ public abstract class AllEntitiesPresenter<E extends AbstractEntity, H extends E
 		this.adapter = adapter;
 	}
 
-	// To be overridden	, but not forced so not abstract
+	@ForOverride
 	protected void modifyDatabase(List<E> database){
 		// Called in fillAndModifyDatabase, override if database should not be all entities of type T
 	}

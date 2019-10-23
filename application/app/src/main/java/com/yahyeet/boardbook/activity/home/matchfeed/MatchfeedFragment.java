@@ -11,23 +11,32 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.presenter.matchfeed.MatchfeedPresenter;
 
 import javax.annotation.Nonnull;
 
-public class MatchfeedFragment extends Fragment implements IMatchfeedFragment {
+public class MatchfeedFragment extends Fragment implements IMatchfeedFragment, IFutureInteractable {
 
 	private MatchfeedPresenter matchfeedPresenter;
+	private RecyclerView rvMatch;
+
+	View parentView;
 
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		matchfeedPresenter = new MatchfeedPresenter(this);
 		return inflater.inflate(R.layout.fragment_matchfeed, container, false);
 	}
 
 	@Override
 	public void onViewCreated(@Nonnull View view, Bundle savedInstanceState) {
+
+		rvMatch = getView().findViewById(R.id.homeMatchRecycler);
+
+		matchfeedPresenter = new MatchfeedPresenter(this);
+		parentView = getView();
+
 		enableMatchFeed();
 	}
 
@@ -45,10 +54,30 @@ public class MatchfeedFragment extends Fragment implements IMatchfeedFragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		matchfeedPresenter.updateUserDatabase();
+		repopulateMatchFeed();
 	}
 
 	public void repopulateMatchFeed() {
-		matchfeedPresenter.updateMatchAdapter();
+		matchfeedPresenter.updateAdapter();
+	}
+
+	@Override
+	public void enableViewInteraction() {
+		rvMatch.setEnabled(true);
+		if(parentView != null)
+			parentView.findViewById(R.id.matchfeedProgressLoading).setVisibility(View.INVISIBLE);
+	}
+
+	@Override
+	public void disableViewInteraction() {
+		rvMatch.setEnabled(false);
+		if(parentView != null)
+			parentView.findViewById(R.id.matchfeedProgressLoading).setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void displayLoadingFailed() {
+		if(parentView != null)
+			parentView.findViewById(R.id.matchfeedError).setVisibility(View.VISIBLE);
 	}
 }

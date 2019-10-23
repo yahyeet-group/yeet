@@ -1,6 +1,7 @@
 package com.yahyeet.boardbook.activity.profile;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -8,21 +9,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.presenter.ProfilePresenter;
 
-public class ProfileActivity extends AppCompatActivity implements IProfileActivity {
+public class ProfileActivity extends AppCompatActivity implements IProfileActivity, IFutureInteractable {
 
 	private ProfilePresenter profilePresenter;
-	private TextView tvUsername;
-	private TextView tvWinrate;
-	private TextView tvGamesPlayed;
-	private ProgressBar pbWinrate;
+	private ProgressBar pbLoading;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
+
+		pbLoading = findViewById(R.id.profileLoading);
 
 		String userId;
 		if (savedInstanceState == null) {
@@ -54,4 +55,19 @@ public class ProfileActivity extends AppCompatActivity implements IProfileActivi
 		profilePresenter.enableMatchFeed(matchRecycler, getBaseContext());
 	}
 
+	@Override
+	public void enableViewInteraction() {
+		pbLoading.setVisibility(View.INVISIBLE);
+	}
+
+	@Override
+	public void disableViewInteraction() {
+		pbLoading.setVisibility(View.VISIBLE);
+
+	}
+
+	@Override
+	public void displayLoadingFailed() {
+		findViewById(R.id.profileError).setVisibility(View.VISIBLE);
+	}
 }

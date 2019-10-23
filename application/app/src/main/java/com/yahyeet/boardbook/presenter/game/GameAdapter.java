@@ -19,9 +19,9 @@ import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameAdapterAbstract extends AbstractSearchAdapter<Game> {
+public class GameAdapter extends AbstractSearchAdapter<Game> {
 
-	private static final String TAG = "GameAdapterAbstract";
+	private static final String TAG = "GameAdapter";
 
 	private Context context;
 
@@ -65,7 +65,7 @@ public class GameAdapterAbstract extends AbstractSearchAdapter<Game> {
 	}
 
 
-	public GameAdapterAbstract(List<Game> database, Context context, DisplayType displayType) {
+	public GameAdapter(List<Game> database, Context context, DisplayType displayType) {
 		super(database);
 		this.context = context;
 		this.displayType = displayType;
