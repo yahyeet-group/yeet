@@ -85,7 +85,7 @@ public class SelectPlayersPresenter extends AllEntitiesPresenter<User, UserHandl
 	}
 
 	@Override
-	protected void modifyDatabase(List<User> database) {
+	protected void onDatabaseLoaded(List<User> database) {
 
 		User loggedInUser = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
 

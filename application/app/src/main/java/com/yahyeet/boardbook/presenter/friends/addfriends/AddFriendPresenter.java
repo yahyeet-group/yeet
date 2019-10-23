@@ -45,7 +45,7 @@ public class AddFriendPresenter extends AllEntitiesPresenter<User, UserHandler> 
 	}
 
 	@Override
-	protected void modifyDatabase(List<User> database) {
+	protected void onDatabaseLoaded(List<User> database) {
 		List<User> myFriends = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
 		if (database != null && myFriends != null) {
 

@@ -2,7 +2,6 @@ package com.yahyeet.boardbook.presenter;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.Adapter;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -59,7 +58,7 @@ public abstract class AllEntitiesPresenter<E extends AbstractEntity, H extends E
 				adapter.notifyDataSetChanged();
 
 				// Safety in case of modification affecting UI elements
-				modifyDatabase(database);
+				onDatabaseLoaded(database);
 			});
 		}).exceptionally(e -> {
 			uiHandler.post(() -> {
@@ -96,7 +95,7 @@ public abstract class AllEntitiesPresenter<E extends AbstractEntity, H extends E
 	}
 
 	@ForOverride
-	protected void modifyDatabase(List<E> database){
+	protected void onDatabaseLoaded(List<E> database){
 		// Called in fillAndModifyDatabase, override if database should not be all entities of type T
 	}
 
