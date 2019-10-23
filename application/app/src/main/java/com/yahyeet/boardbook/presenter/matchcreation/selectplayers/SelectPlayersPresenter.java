@@ -1,7 +1,6 @@
 package com.yahyeet.boardbook.presenter.matchcreation.selectplayers;
 
 import android.content.Context;
-import android.util.Pair;
 import android.widget.SearchView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,20 +8,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.matchcreation.selectplayers.ISelectPlayersFragment;
-import com.yahyeet.boardbook.model.Boardbook;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
-import com.yahyeet.boardbook.presenter.AllEntitiesPresenter;
+import com.yahyeet.boardbook.presenter.FindAllPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 
 
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class SelectPlayersPresenter extends AllEntitiesPresenter<User, UserHandler> {
+public class SelectPlayersPresenter extends FindAllPresenter<User, UserHandler> {
 
 	private CMMasterPresenter masterPresenter;
 	private ISelectPlayersFragment spf;

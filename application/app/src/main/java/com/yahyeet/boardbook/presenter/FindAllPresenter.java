@@ -13,7 +13,7 @@ import com.yahyeet.boardbook.model.handler.EntityHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AllEntitiesPresenter<E extends AbstractEntity, H extends EntityHandler<E>> {
+public abstract class FindAllPresenter<E extends AbstractEntity, H extends EntityHandler<E>> {
 
 	private RecyclerView.Adapter adapter;
 	private IFutureInteractable fragment;
@@ -21,7 +21,7 @@ public abstract class AllEntitiesPresenter<E extends AbstractEntity, H extends E
 
 	private Handler uiHandler = new android.os.Handler(Looper.getMainLooper());
 
-	public AllEntitiesPresenter(IFutureInteractable fragment) {
+	public FindAllPresenter(IFutureInteractable fragment) {
 		this.fragment = fragment;
 		database = new ArrayList<>();
 	}

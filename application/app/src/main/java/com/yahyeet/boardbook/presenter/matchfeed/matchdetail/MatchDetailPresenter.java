@@ -12,14 +12,14 @@ import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import com.yahyeet.boardbook.model.handler.MatchHandler;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.model.entity.Match;
-import com.yahyeet.boardbook.presenter.OneEntityPresenter;
+import com.yahyeet.boardbook.presenter.FindOnePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class MatchDetailPresenter extends OneEntityPresenter<Match, MatchHandler> {
+public class MatchDetailPresenter extends FindOnePresenter<Match, MatchHandler> {
 
 	private IMatchDetailActivity matchDetailActivity;
 	private MatchPlayerAdapter matchPlayerAdapter;

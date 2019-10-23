@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.model.handler.UserHandler;
-import com.yahyeet.boardbook.presenter.BoardbookSingleton;
-import com.yahyeet.boardbook.presenter.OneEntityPresenter;
 import com.yahyeet.boardbook.activity.profile.IProfileActivity;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
@@ -17,7 +15,7 @@ import com.yahyeet.boardbook.presenter.matchfeed.MatchfeedAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfilePresenter extends OneEntityPresenter<User, UserHandler> {
+public class ProfilePresenter extends FindOnePresenter<User, UserHandler> {
 
 	private MatchfeedAdapter matchfeedAdapter;
 	private List<Match> matchDatabase = new ArrayList<>();

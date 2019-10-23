@@ -12,13 +12,12 @@ import com.yahyeet.boardbook.model.entity.GameRole;
 import com.yahyeet.boardbook.model.entity.GameTeam;
 import com.yahyeet.boardbook.model.handler.GameHandler;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
-import com.yahyeet.boardbook.presenter.OneEntityPresenter;
+import com.yahyeet.boardbook.presenter.FindOnePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-public class GameDetailPresenter extends OneEntityPresenter<Game, GameHandler> {
+public class GameDetailPresenter extends FindOnePresenter<Game, GameHandler> {
 
 	private IGameDetailActivity gameDetailActivity;
 	private GameDetailAdapter teamAdapter;

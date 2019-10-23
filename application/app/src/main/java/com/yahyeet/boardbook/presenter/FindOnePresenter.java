@@ -9,7 +9,7 @@ import com.yahyeet.boardbook.model.entity.AbstractEntity;
 import com.yahyeet.boardbook.model.handler.EntityHandler;
 
 
-public class OneEntityPresenter<E extends AbstractEntity, H extends EntityHandler<E>> {
+public class FindOnePresenter<E extends AbstractEntity, H extends EntityHandler<E>> {
 
 	private IFutureInteractable fragment;
 
@@ -18,7 +18,7 @@ public class OneEntityPresenter<E extends AbstractEntity, H extends EntityHandle
 
 	private Handler uiHandler = new android.os.Handler(Looper.getMainLooper());
 
-	public OneEntityPresenter(IFutureInteractable fragment) {
+	public FindOnePresenter(IFutureInteractable fragment) {
 		this.fragment = fragment;
 	}
 

@@ -11,12 +11,12 @@ import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.activity.home.matchfeed.IMatchfeedFragment;
 import com.yahyeet.boardbook.model.entity.Match;
-import com.yahyeet.boardbook.presenter.OneEntityPresenter;
+import com.yahyeet.boardbook.presenter.FindOnePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchfeedPresenter extends OneEntityPresenter<User, UserHandler> {
+public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> {
 
 	private MatchfeedAdapter matchfeedAdapter;
 	private List<Match> matchDatabase = new ArrayList<>();
