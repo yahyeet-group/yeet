@@ -46,4 +46,11 @@ public class UserEntityTest {
 		assertEquals(1, user.getFriends().size());
 		assertEquals("friendUser", user.getFriends().get(0).getName());
 	}
+
+	@Test
+	public void addItselfAsFriend() {
+		assertEquals(0, user.getFriends().size());
+		user.addFriend(user);
+		assertEquals(0, user.getFriends().size());
+	}
 }
