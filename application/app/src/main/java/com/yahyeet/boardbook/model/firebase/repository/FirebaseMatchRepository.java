@@ -38,7 +38,7 @@ public class FirebaseMatchRepository extends AbstractFirebaseRepository<Match> i
 		return CompletableFuture.supplyAsync(() -> {
 			Task<QuerySnapshot> task =
 				getFirestore()
-					.collection(getCollectionName())
+					.collection(getFullCollectionName())
 					.whereEqualTo("gameId", id)
 					.get();
 
