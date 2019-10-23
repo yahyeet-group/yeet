@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.model;
+package com.yahyeet.boardbook.model.handlers;
 
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.GameRole;
