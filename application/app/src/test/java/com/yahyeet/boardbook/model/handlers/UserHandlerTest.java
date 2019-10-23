@@ -115,9 +115,14 @@ public class UserHandlerTest {
 		user2.setId("rasmusId");
 		user1.addFriend(user2);
 		try {
-			userHandler.save(user1).get();
+			String id = userHandler.save(user1).get().getId();
+			User result = userHandler.find(id).get();
+			assertEquals(user1, result);
+			assertEquals(1, result.getFriends().size());
+			assertEquals(user2, result.getFriends().get(0));
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
+			fail();
 		}
 	}
 
