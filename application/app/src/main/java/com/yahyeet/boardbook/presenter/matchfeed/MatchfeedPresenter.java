@@ -1,19 +1,16 @@
 package com.yahyeet.boardbook.presenter.matchfeed;
 
 import android.content.Context;
-import android.os.Looper;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.model.handler.MatchHandler;
 import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.activity.home.matchfeed.IMatchfeedFragment;
 import com.yahyeet.boardbook.model.entity.Match;
-import com.yahyeet.boardbook.model.handler.MatchHandlerListener;
 import com.yahyeet.boardbook.presenter.OneEntityPresenter;
 
 import java.util.ArrayList;
@@ -22,7 +19,7 @@ import java.util.List;
 public class MatchfeedPresenter extends OneEntityPresenter<User, UserHandler> {
 
 	private MatchfeedAdapter matchfeedAdapter;
-	private List<Match> matchDatabase;
+	private List<Match> matchDatabase = new ArrayList<>();
 
 
 	// TODO: Remove if never necessary
@@ -32,15 +29,19 @@ public class MatchfeedPresenter extends OneEntityPresenter<User, UserHandler> {
 		super((IFutureInteractable) matchfeedFragment);
 		this.matchfeedFragment = matchfeedFragment;
 
-		matchDatabase = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getMatches();
+		findLoggedInUser();
 
+	}
+
+	public void restartAdapter(){
+		findLoggedInUser();
+		updateAdapter();
 	}
 
 	/**
 	 * Makes recyclerView to repopulate its matches with current data
 	 */
 	public void updateAdapter() {
-		//findLoggedInUser();
 		matchfeedAdapter.notifyDataSetChanged();
 	}
 
@@ -72,5 +73,6 @@ public class MatchfeedPresenter extends OneEntityPresenter<User, UserHandler> {
 	protected void onEntityFound(User entity) {
 		matchDatabase.clear();
 		matchDatabase.addAll(entity.getMatches());
+		updateAdapter();
 	}
 }

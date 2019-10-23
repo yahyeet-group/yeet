@@ -48,7 +48,7 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 	@Override
 	public PlayerAdapter.PlayerViewHolder onCreateViewHolder(ViewGroup vg, int viewType) {
 
-		View v = LayoutInflater.from(vg.getContext()).inflate(R.layout.select_players_element, vg, false);
+		View v = LayoutInflater.from(vg.getContext()).inflate(R.layout.element_select_players, vg, false);
 
 
 		return new PlayerViewHolder(v);

@@ -54,7 +54,7 @@ public class MatchfeedFragment extends Fragment implements IMatchfeedFragment, I
 	@Override
 	public void onStart() {
 		super.onStart();
-		repopulateMatchFeed();
+		matchfeedPresenter.restartAdapter();
 	}
 
 	public void repopulateMatchFeed() {

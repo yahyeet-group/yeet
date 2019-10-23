@@ -6,19 +6,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IFutureInteractable;
-import com.yahyeet.boardbook.model.handler.GameHandler;
-import com.yahyeet.boardbook.model.handler.MatchHandler;
 import com.yahyeet.boardbook.model.handler.UserHandler;
-import com.yahyeet.boardbook.presenter.matchfeed.MatchfeedAdapter;
+import com.yahyeet.boardbook.presenter.BoardbookSingleton;
+import com.yahyeet.boardbook.presenter.OneEntityPresenter;
 import com.yahyeet.boardbook.activity.profile.IProfileActivity;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.presenter.matchfeed.MatchfeedAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-public class ProfilePresenter extends OneEntityPresenter<User, UserHandler>{
+public class ProfilePresenter extends OneEntityPresenter<User, UserHandler> {
 
 	private MatchfeedAdapter matchfeedAdapter;
 	private List<Match> matchDatabase = new ArrayList<>();
@@ -30,6 +29,7 @@ public class ProfilePresenter extends OneEntityPresenter<User, UserHandler>{
 		super((IFutureInteractable) profileActivity);
 		this.profileActivity = profileActivity;
 
+		user = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
 		findEntity(BoardbookSingleton.getInstance().getUserHandler(), userId);
 	}
 
@@ -55,7 +55,9 @@ public class ProfilePresenter extends OneEntityPresenter<User, UserHandler>{
 
 	@Override
 	protected void onEntityFound(User entity) {
-		matchDatabase.clear();
+		//matchDatabase.clear();
 		matchDatabase.addAll(entity.getMatches());
+
+		updateMatchAdapter();
 	}
 }

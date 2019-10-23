@@ -2,14 +2,12 @@ package com.yahyeet.boardbook.presenter.matchfeed.matchdetail;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.Looper;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.home.matchfeed.matchdetail.IMatchDetailActivity;
-import com.yahyeet.boardbook.model.Boardbook;
 import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import com.yahyeet.boardbook.model.handler.MatchHandler;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
@@ -61,10 +59,9 @@ public class MatchDetailPresenter extends OneEntityPresenter<Match, MatchHandler
 	public void enableMatchplayerAdapter(RecyclerView matchplayerRecyclerView, Context viewContext, Resources resources) {
 
 		RecyclerView.LayoutManager layoutManager = new GridLayoutManager(viewContext, 1);
+		matchPlayerAdapter = new MatchPlayerAdapter(matchPlayers, resources);
 
 		matchplayerRecyclerView.setLayoutManager(layoutManager);
-
-		matchPlayerAdapter = new MatchPlayerAdapter(matchPlayers, resources);
 		matchplayerRecyclerView.setAdapter(matchPlayerAdapter);
 	}
 
@@ -74,6 +71,8 @@ public class MatchDetailPresenter extends OneEntityPresenter<Match, MatchHandler
 
 		matchPlayers.clear();
 		matchPlayers.addAll(sortByWin(entity.getMatchPlayers()));
+		matchDetailActivity.initiateMatchDetailList();
+
 	}
 
 	private List<MatchPlayer> sortByWin(List<MatchPlayer> unsortedPlayers){

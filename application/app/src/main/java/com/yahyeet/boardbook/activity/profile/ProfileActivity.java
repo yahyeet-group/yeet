@@ -3,7 +3,6 @@ package com.yahyeet.boardbook.activity.profile;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,7 +51,7 @@ public class ProfileActivity extends AppCompatActivity implements IProfileActivi
 		// use this setting to improve performance if you know that changes
 		// in content do not change the layout size of the RecyclerView
 		matchRecycler.setHasFixedSize(true);
-		profilePresenter.enableMatchFeed(matchRecycler, getBaseContext());
+		profilePresenter.enableMatchFeed(matchRecycler, this);
 	}
 
 	@Override

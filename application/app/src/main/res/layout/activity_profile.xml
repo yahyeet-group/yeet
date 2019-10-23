@@ -10,19 +10,18 @@
     <ProgressBar
         android:id="@+id/profileLoading"
         style="?android:attr/progressBarStyle"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/profileError"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rvProfile" />
 
     <TextView
         android:id="@+id/profileError"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="400dp"
         android:text="@string/matchfeedError"
         android:textAlignment="center"
         android:textColor="@color/colorError"
