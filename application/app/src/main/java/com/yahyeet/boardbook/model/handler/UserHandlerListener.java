@@ -10,5 +10,5 @@ public interface UserHandlerListener {
 
 	void onUpdateUser(User user);
 
-	void onRemoveUser(User user);
+	void onRemoveUser(String id);
 }

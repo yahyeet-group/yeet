@@ -145,9 +145,9 @@ public class UserHandler implements IRepositoryListener<User>, EntityHandler<Use
 		}
 	}
 
-	private void notifyListenersOnUserRemove(User user) {
+	private void notifyListenersOnUserRemove(String id) {
 		for (UserHandlerListener listener : listeners) {
-			listener.onRemoveUser(user);
+			listener.onRemoveUser(id);
 		}
 	}
 
@@ -162,8 +162,8 @@ public class UserHandler implements IRepositoryListener<User>, EntityHandler<Use
 	}
 
 	@Override
-	public void onDelete(User user) {
-		notifyListenersOnUserRemove(user);
+	public void onDelete(String id) {
+		notifyListenersOnUserRemove(id);
 	}
 
 	/**

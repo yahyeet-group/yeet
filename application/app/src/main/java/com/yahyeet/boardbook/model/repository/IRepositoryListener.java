@@ -21,7 +21,7 @@ public interface IRepositoryListener<T> {
 	/**
 	 * Called when an entity is deleted
 	 *
-	 * @param entity The deleted entity
+	 * @param id The deleted entity id
 	 */
-	void onDelete(T entity);
+	void onDelete(String id);
 }
