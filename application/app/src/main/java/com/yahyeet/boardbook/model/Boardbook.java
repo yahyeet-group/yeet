@@ -6,6 +6,9 @@ import com.yahyeet.boardbook.model.handler.MatchHandler;
 import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.model.util.StatisticsUtil;
 
+/**
+ * The facade class of the model
+ */
 public final class Boardbook {
 	private AuthHandler authHandler;
 	private UserHandler userHandler;

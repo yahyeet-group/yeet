@@ -17,8 +17,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+/**
+ * A class that handles game entities
+ */
 public class GameHandler implements IRepositoryListener<Game>, EntityHandler<Game> {
-
 	private IGameRepository gameRepository;
 	private IGameRoleRepository gameRoleRepository;
 	private IGameTeamRepository gameTeamRepository;
@@ -37,12 +39,16 @@ public class GameHandler implements IRepositoryListener<Game>, EntityHandler<Gam
 
 		gamePopulator = new GamePopulator(matchRepository, gameTeamRepository);
 		gameTeamPopulator = new GameTeamPopulator(gameRepository, gameRoleRepository);
+
+		this.gameRepository.addListener(this);
 	}
 
+	@Override
 	public CompletableFuture<Game> find(String id) {
 		return gameRepository.find(id).thenCompose(this::populate);
 	}
 
+	@Override
 	public CompletableFuture<Game> save(Game game) {
 		checkGameValidity(game);
 
@@ -78,6 +84,7 @@ public class GameHandler implements IRepositoryListener<Game>, EntityHandler<Gam
 			.thenCompose(this::populate);
 	}
 
+	@Override
 	public CompletableFuture<List<Game>> all() {
 		return gameRepository.all().thenComposeAsync(games -> {
 			List<CompletableFuture<Game>> completableFutures = games
@@ -97,7 +104,7 @@ public class GameHandler implements IRepositoryListener<Game>, EntityHandler<Gam
 		});
 	}
 
-	public CompletableFuture<Game> populate(Game game) {
+	private CompletableFuture<Game> populate(Game game) {
 		AtomicReference<Game> fullyPopulatedGame = new AtomicReference<>();
 
 		return gamePopulator.populate(game).thenApply(populatedGame -> {
@@ -166,6 +173,11 @@ public class GameHandler implements IRepositoryListener<Game>, EntityHandler<Gam
 		notifyListenersOnGameRemove(game);
 	}
 
+	/**
+	 * Checks whether a game contains valid data or not
+	 *
+	 * @param game Game to be validated
+	 */
 	private void checkGameValidity(Game game) {
 		if (game.getTeams() != null) {
 			for (GameTeam team : game.getTeams()) {

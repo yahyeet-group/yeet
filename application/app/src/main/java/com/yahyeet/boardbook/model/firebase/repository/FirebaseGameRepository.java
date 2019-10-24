@@ -5,6 +5,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.repository.IGameRepository;
 
+/**
+ * Firebase Firestore implementation of a game repository
+ */
 public class FirebaseGameRepository extends AbstractFirebaseRepository<Game> implements IGameRepository {
 	public FirebaseGameRepository(FirebaseFirestore firestore) {
 		super(firestore);
