@@ -12,6 +12,8 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
+/**
+ * Mock implementation of a game repository
+ */
 public class MockGameRepository extends AbstractMockRepository<Game> implements IGameRepository {
-
 }

@@ -2,6 +2,9 @@ package com.yahyeet.boardbook.model.entity;
 
 import androidx.annotation.Nullable;
 
+/**
+ * Defines the base of an entity in the model, which all other entities extend
+ */
 public abstract class AbstractEntity {
 	private String id;
 

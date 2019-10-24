@@ -3,7 +3,9 @@ package com.yahyeet.boardbook.model.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Defines a game entity
+ */
 public class Game extends AbstractEntity {
 	private String name;
 	private String description;

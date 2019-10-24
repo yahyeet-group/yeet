@@ -38,10 +38,22 @@ public class FirebaseMatch extends AbstractFirebaseEntity<Match> {
 		return match;
 	}
 
+	/**
+	 * Creates a Firebase match entity from a model match
+	 *
+	 * @param match Model match
+	 * @return Firebase match
+	 */
 	public static FirebaseMatch fromModelType(Match match) {
 		return new FirebaseMatch(match.getId(), match.getGame().getId());
 	}
 
+	/**
+	 * Create a Firebase match from a Firebase document snapshot
+	 *
+	 * @param document Firebase document snapshot
+	 * @return Firebase match
+	 */
 	public static FirebaseMatch fromDocument(DocumentSnapshot document) {
 		FirebaseMatch firebaseMatch = new FirebaseMatch();
 		firebaseMatch.setId(document.getId());

@@ -5,8 +5,10 @@ import com.yahyeet.boardbook.model.service.IAuthService;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Handles user authentication
+ */
 public class AuthHandler {
-
 	private IAuthService authService;
 
 	private User loggedInUser;
@@ -15,6 +17,14 @@ public class AuthHandler {
 		this.authService = authService;
 	}
 
+	/**
+	 * Logs in a user via email and password
+	 *
+	 * @param email The email
+	 * @param password The password
+	 * @return A completable future that resolves to an user on a successful login attempt, else
+	 * it throws an error
+	 */
 	public CompletableFuture<User> login(String email, String password) {
 		return authService.login(email, password).thenApply(u -> {
 			loggedInUser = u;
@@ -23,11 +33,25 @@ public class AuthHandler {
 		});
 	}
 
+	/**
+	 * Logs out the currently logged in user
+	 *
+	 * @return A completable future than when resolves denotes that the logout action was completed
+	 */
 	public CompletableFuture<Void> logout() {
 		setLoggedInUser(null);
 		return authService.logout();
 	}
 
+	/**
+	 * Registers a new user
+	 *
+	 * @param email The email
+	 * @param password The password
+	 * @param name The name
+	 * @return A completable future than on a successful signup request returns the new user, else
+	 * it throws an exception
+	 */
 	public CompletableFuture<User> signup(String email, String password, String name) {
 		return authService.signup(email, password, name).thenApply(u -> {
 			loggedInUser = u;
