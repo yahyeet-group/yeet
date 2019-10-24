@@ -42,6 +42,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 	@Override
 	public CompletableFuture<TModel> save(TModel entity) {
 		if (entity.getId() == null) {
+			notifyListenersOnCreate(entity);
 			CompletableFuture<AbstractFirebaseEntity<TModel>> futureFirebaseEntity =
 				createFirebaseEntity(fromModelEntityToFirebaseEntity(entity));
 

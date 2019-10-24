@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class MatchDetailPresenter extends FindOnePresenter<Match, MatchHandler> implements MatchHandlerListener {
+public class MatchDetailPresenter extends FindOnePresenter<Match, MatchHandler> {
 
 	private IMatchDetailActivity matchDetailActivity;
 	private MatchPlayerAdapter matchPlayerAdapter;
@@ -31,8 +31,6 @@ public class MatchDetailPresenter extends FindOnePresenter<Match, MatchHandler> 
 	public MatchDetailPresenter(IMatchDetailActivity matchDetailActivity, String matchID) {
 		super((IFutureInteractable) matchDetailActivity);
 		this.matchDetailActivity = matchDetailActivity;
-
-		BoardbookSingleton.getInstance().getMatchHandler().addListener(this);
 
 		findEntity(BoardbookSingleton.getInstance().getMatchHandler(), matchID);
 
@@ -70,33 +68,11 @@ public class MatchDetailPresenter extends FindOnePresenter<Match, MatchHandler> 
 
 	}
 
-	private List<MatchPlayer> sortByWin(List<MatchPlayer> unsortedPlayers){
+	private List<MatchPlayer> sortByWin(List<MatchPlayer> unsortedPlayers) {
 
 		return unsortedPlayers
 			.stream()
-			.sorted((left, right) -> {
-				if(left.getWin() && !right.getWin())
-					return 1;
-				else if(left.getWin() && right.getWin())
-					return 0;
-				else
-					return -1;
-			})
+			.sorted((left, right) -> Boolean.compare(left.getWin(), right.getWin()))
 			.collect(Collectors.toList());
-	}
-
-	@Override
-	public void onAddMatch(Match match) {
-
-	}
-
-	@Override
-	public void onUpdateMatch(Match match) {
-
-	}
-
-	@Override
-	public void onRemoveMatch(String id) {
-
 	}
 }

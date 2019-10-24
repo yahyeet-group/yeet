@@ -82,7 +82,8 @@ public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> impl
 	public void onAddMatch(Match match) {
 		if(match
 			.getMatchPlayerByUser(
-				BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser()) != null){
+				BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser()) != null
+		&& !matchDatabase.contains(match)){
 			matchDatabase.add(match);
 		}
 		updateAdapter();

@@ -75,6 +75,8 @@ public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
 			matchPlayer.setRole(gameRole);
 		}
 
+		matchPlayer.setWin(win);
+
 		return matchPlayer;
 	}
 
