@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
+/**
+ * A mock implementation of the authentication service
+ */
 public class MockAuthService implements IAuthService {
 
     private List<AuthenticationUser> mockUserDb;
