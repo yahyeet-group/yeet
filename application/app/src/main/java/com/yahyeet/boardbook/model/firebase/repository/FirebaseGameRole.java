@@ -45,10 +45,22 @@ public class FirebaseGameRole extends AbstractFirebaseEntity<GameRole> {
 		return gameRole;
 	}
 
+	/**
+	 * Creates a Firebase game role entity from a model game role
+	 *
+	 * @param gameRole Model game role
+	 * @return Firebase game role
+	 */
 	public static FirebaseGameRole fromModelType(GameRole gameRole) {
 		return new FirebaseGameRole(gameRole.getId(), gameRole.getName(), gameRole.getTeam().getId());
 	}
 
+	/**
+	 * Create a Firebase game role from a Firebase document snapshot
+	 *
+	 * @param document Firebase document snapshot
+	 * @return Firebase game role
+	 */
 	public static FirebaseGameRole fromDocument(DocumentSnapshot document) {
 		FirebaseGameRole firebaseGameRole = new FirebaseGameRole();
 		firebaseGameRole.setId(document.getId());
