@@ -3,6 +3,9 @@ package com.yahyeet.boardbook.model.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Defines a user entity
+ */
 public class User extends AbstractEntity {
 	private String name;
 	private List<User> friends = new ArrayList<>();
@@ -27,6 +30,12 @@ public class User extends AbstractEntity {
 		return friends;
 	}
 
+	/**
+	 * Adds a user to the current users friends list, and also adds the current user to the target
+	 * users friends list
+	 *
+	 * @param friend
+	 */
 	public void addFriend(User friend) {
 		if (friend.equals(this) || getFriends().stream().anyMatch(f -> f.equals(friend))) {
 			return;

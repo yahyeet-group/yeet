@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Defines a match entity
+ */
 public class Match extends AbstractEntity {
 	private List<MatchPlayer> matchPlayers = new ArrayList<>();
 	private Game game;
