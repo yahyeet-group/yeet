@@ -86,11 +86,11 @@ public class AbstractMockRepository<T extends AbstractEntity> implements IReposi
 
 	@Override
 	public void addListener(IRepositoryListener listener) {
-		throw new UnsupportedOperationException("The mock repository does not support this action");
+		// Stub
 	}
 
 	@Override
 	public void removeListener(IRepositoryListener listener) {
-		throw new UnsupportedOperationException("The mock repository does not support this action");
+		// Stub
 	}
 }
