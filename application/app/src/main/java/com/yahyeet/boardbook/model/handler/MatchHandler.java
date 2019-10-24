@@ -1,6 +1,5 @@
 package com.yahyeet.boardbook.model.handler;
 
-import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import com.yahyeet.boardbook.model.handler.populator.MatchPlayerPopulator;
@@ -19,6 +18,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+/**
+ * A class that handles match entities
+ */
 public class MatchHandler implements IRepositoryListener<Match>, EntityHandler<Match> {
 
 	private IMatchPlayerRepository matchPlayerRepository;
@@ -39,12 +41,16 @@ public class MatchHandler implements IRepositoryListener<Match>, EntityHandler<M
 
 		matchPopulator = new MatchPopulator(gameRepository, matchPlayerRepository);
 		matchPlayerPopulator = new MatchPlayerPopulator(gameRoleRepository, gameTeamRepository, matchRepository, userRepository);
+
+		this.matchRepository.addListener(this);
 	}
 
+	@Override
 	public CompletableFuture<Match> find(String id) {
 		return matchRepository.find(id).thenCompose(this::populate);
 	}
 
+	@Override
 	public CompletableFuture<Match> save(Match match) {
 		checkMatchValidity(match);
 
@@ -66,6 +72,7 @@ public class MatchHandler implements IRepositoryListener<Match>, EntityHandler<M
 			.thenCompose(this::populate);
 	}
 
+	@Override
 	public CompletableFuture<List<Match>> all() {
 		return matchRepository.all().thenComposeAsync(matches -> {
 			List<CompletableFuture<Match>> completableFutures = matches
@@ -85,7 +92,7 @@ public class MatchHandler implements IRepositoryListener<Match>, EntityHandler<M
 		});
 	}
 
-	public CompletableFuture<Match> populate(Match match) {
+	private CompletableFuture<Match> populate(Match match) {
 		AtomicReference<Match> fullyPopulatedMatch = new AtomicReference<>();
 
 		return matchPopulator.populate(match).thenApply(populatedMatch -> {
@@ -150,6 +157,11 @@ public class MatchHandler implements IRepositoryListener<Match>, EntityHandler<M
 		notifyListenersOnMatchRemove(match);
 	}
 
+	/**
+	 * Checks whether a match contains valid data or not
+	 *
+	 * @param match Match to be validated
+	 */
 	private void checkMatchValidity(Match match) {
 		if (match.getGame() == null) {
 			throw new IllegalArgumentException("Cannot create a match without a game");

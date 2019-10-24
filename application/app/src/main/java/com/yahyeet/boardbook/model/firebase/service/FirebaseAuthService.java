@@ -15,6 +15,9 @@ import com.yahyeet.boardbook.model.service.IAuthService;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
+/**
+ * An implementation of the authentication service that uses Firebase Firestore
+ */
 public class FirebaseAuthService implements IAuthService {
 
 	private static final String TAG = "Authentication";

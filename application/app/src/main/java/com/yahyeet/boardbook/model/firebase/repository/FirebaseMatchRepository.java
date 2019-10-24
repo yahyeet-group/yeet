@@ -13,6 +13,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.stream.Collectors;
 
+/**
+ * Firebase Firestore implementation of a match repository
+ */
 public class FirebaseMatchRepository extends AbstractFirebaseRepository<Match> implements IMatchRepository {
 	public FirebaseMatchRepository(FirebaseFirestore firestore) {
 		super(firestore);

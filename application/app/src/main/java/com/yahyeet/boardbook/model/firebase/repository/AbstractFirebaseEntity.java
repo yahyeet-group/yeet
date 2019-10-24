@@ -7,13 +7,29 @@ import com.yahyeet.boardbook.model.entity.AbstractEntity;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * Abstract generic class that defines methods and implements common functionality that Firebase
+ * entities need
+ *
+ * @param <T>
+ */
 public abstract class AbstractFirebaseEntity<T extends AbstractEntity> {
 	private String id;
 	private Timestamp createdAt;
 	private Timestamp updatedAt;
 
+	/**
+	 * Creates a map of the class fields in was a way such that Firebase can store them
+	 *
+	 * @return A map
+	 */
 	public abstract Map<String, Object> toMap();
 
+	/**
+	 * Converts the Firebase entity to a model entity
+	 *
+	 * @return A model entity
+	 */
 	public abstract T toModelType();
 
 	public AbstractFirebaseEntity() {
