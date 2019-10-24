@@ -34,7 +34,7 @@ public class User extends AbstractEntity {
 	 * Adds a user to the current users friends list, and also adds the current user to the target
 	 * users friends list
 	 *
-	 * @param friend
+	 * @param friend The user to be befriended
 	 */
 	public void addFriend(User friend) {
 		if (friend.equals(this) || getFriends().stream().anyMatch(f -> f.equals(friend))) {
