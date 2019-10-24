@@ -111,7 +111,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 		return CompletableFuture.completedFuture(null);
 	}
 
-	private String getFullCollectionName() {
+	public String getFullCollectionName() {
 		return collectionNamePrefix + "_" + getCollectionName();
 	}
 

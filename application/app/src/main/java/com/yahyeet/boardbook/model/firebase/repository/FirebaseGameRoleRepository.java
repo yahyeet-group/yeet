@@ -38,7 +38,7 @@ public class FirebaseGameRoleRepository extends AbstractFirebaseRepository<GameR
 		return CompletableFuture.supplyAsync(() -> {
 			Task<QuerySnapshot> task =
 				getFirestore()
-					.collection(getCollectionName())
+					.collection(getFullCollectionName())
 					.whereEqualTo("teamId", id)
 					.get();
 
