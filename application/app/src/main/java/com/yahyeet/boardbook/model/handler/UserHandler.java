@@ -1,6 +1,5 @@
 package com.yahyeet.boardbook.model.handler;
 
-import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.handler.populator.MatchPlayerPopulator;
@@ -20,6 +19,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+/**
+ * A class that handles user entities
+ */
 public class UserHandler implements IRepositoryListener<User>, EntityHandler<User> {
 	private IUserRepository userRepository;
 	private List<UserHandlerListener> listeners = new ArrayList<>();
@@ -38,18 +40,23 @@ public class UserHandler implements IRepositoryListener<User>, EntityHandler<Use
 		matchPlayerPopulator = new MatchPlayerPopulator(gameRoleRepository, gameTeamRepository, matchRepository, userRepository);
 		matchPopulator = new MatchPopulator(gameRepository, matchPlayerRepository);
 		userPopulator = new UserPopulator(matchPlayerRepository, matchRepository, userRepository);
+
+		this.userRepository.addListener(this);
 	}
 
+	@Override
 	public CompletableFuture<User> find(String id) {
 		return userRepository.find(id).thenCompose(this::populate);
 	}
 
+	@Override
 	public CompletableFuture<User> save(User user) {
 		checkUserValidity(user);
 
 		return userRepository.save(user).thenCompose(this::populate);
 	}
 
+	@Override
 	public CompletableFuture<List<User>> all() {
 		return userRepository.all().thenComposeAsync(users -> {
 			List<CompletableFuture<User>> completableFutures = users
@@ -69,7 +76,7 @@ public class UserHandler implements IRepositoryListener<User>, EntityHandler<Use
 		});
 	}
 
-	public CompletableFuture<User> populate(User user) {
+	private CompletableFuture<User> populate(User user) {
 		AtomicReference<User> fullyPopulatedUser = new AtomicReference<>();
 
 		return userPopulator.populate(user).thenApply(populatedUser -> {
@@ -159,6 +166,11 @@ public class UserHandler implements IRepositoryListener<User>, EntityHandler<Use
 		notifyListenersOnUserRemove(user);
 	}
 
+	/**
+	 * Checks whether a user contains valid data or not
+	 *
+	 * @param user User to be validated
+	 */
 	private void checkUserValidity(User user) {
 		for (User friend : user.getFriends()) {
 			if (friend.getId() == null) {
