@@ -69,9 +69,9 @@ public class FriendsPresenter implements UserHandlerListener {
 	}
 
 	@Override
-	public void onRemoveUser(User user) {
+	public void onRemoveUser(String id) {
 		for (int i = 0; i < userDatabase.size(); i++) {
-			if (userDatabase.get(i).getId().equals(user.getId())) {
+			if (userDatabase.get(i).getId().equals(id)) {
 				userDatabase.remove(i);
 				break;
 			}

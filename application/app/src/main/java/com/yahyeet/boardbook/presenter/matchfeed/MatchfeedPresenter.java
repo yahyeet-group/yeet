@@ -73,10 +73,17 @@ public class MatchfeedPresenter {
 		User loggedInUser = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
 
 
-		BoardbookSingleton.getInstance().getUserHandler().find(loggedInUser.getId()).thenAccept(foundUser -> {
-			matchDatabase.addAll(foundUser.getMatches());
 
-		});
+	@Override
+	public void onRemoveMatch(String id) {
+		for (int i = 0; i < matchDatabase.size(); i++) {
+			if (matchDatabase.get(i).getId().equals(id)) {
+				matchDatabase.remove(i);
+				break;
+			}
+		}
+		updateMatchAdapter();
+
 	}
 
 

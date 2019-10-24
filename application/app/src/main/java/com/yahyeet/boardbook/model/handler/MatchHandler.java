@@ -136,9 +136,9 @@ public class MatchHandler implements IRepositoryListener<Match>, EntityHandler<M
 		}
 	}
 
-	private void notifyListenersOnMatchRemove(Match match) {
+	private void notifyListenersOnMatchRemove(String id) {
 		for (MatchHandlerListener listener : listeners) {
-			listener.onRemoveMatch(match);
+			listener.onRemoveMatch(id);
 		}
 	}
 
@@ -153,8 +153,8 @@ public class MatchHandler implements IRepositoryListener<Match>, EntityHandler<M
 	}
 
 	@Override
-	public void onDelete(Match match) {
-		notifyListenersOnMatchRemove(match);
+	public void onDelete(String id) {
+		notifyListenersOnMatchRemove(id);
 	}
 
 	/**

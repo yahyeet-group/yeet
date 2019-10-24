@@ -10,5 +10,5 @@ public interface MatchHandlerListener {
 
 	void onUpdateMatch(Match match);
 
-	void onRemoveMatch(Match match);
+	void onRemoveMatch(String id);
 }
