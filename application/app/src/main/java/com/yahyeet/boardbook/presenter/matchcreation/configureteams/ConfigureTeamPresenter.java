@@ -28,11 +28,6 @@ public class ConfigureTeamPresenter {
 	public ConfigureTeamPresenter(ConfigureTeamsFragment ctf, CMMasterPresenter cm) {
 		this.masterPresenter = cm;
 	}
-
-	public void repopulateMatches() {
-		configureTeamAdapter.notifyDataSetChanged();
-	}
-
 	public void enableGameFeed(RecyclerView playerRecycleView, Context viewContext) {
 		this.playerRecycleView = playerRecycleView;
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);

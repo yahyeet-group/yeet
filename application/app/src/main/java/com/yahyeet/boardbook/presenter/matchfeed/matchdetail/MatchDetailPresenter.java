@@ -2,6 +2,7 @@ package com.yahyeet.boardbook.presenter.matchfeed.matchdetail;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Looper;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,14 +44,6 @@ public class MatchDetailPresenter extends FindOnePresenter<Match, MatchHandler> 
 		matchDetailActivity.setGameName("Game of " + getEntity().getGame().getName());
 	}
 
-
-
-	/**
-	 * Makes recyclerView to repopulate its MatchPlayers with current data
-	 */
-	public void updateMatchplayerAdapter() {
-		matchPlayerAdapter.notifyDataSetChanged();
-	}
 
 	/**
 	 * Initiates the adapter for a matchplayerRecyclerView

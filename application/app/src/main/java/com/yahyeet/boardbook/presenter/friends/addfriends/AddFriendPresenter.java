@@ -25,13 +25,12 @@ public class AddFriendPresenter extends FindAllPresenter<User, UserHandler> {
 		super((IFutureInteractable) addFriendActivity);
 		this.addFriendActivity = addFriendActivity;
 
-		searchAdapter = new AddFriendsAdapterAbstract(getDatabase(), addFriendActivity);
+		searchAdapter = new AddFriendsAdapter(getDatabase(), addFriendActivity);
 
 		setAdapter(searchAdapter);
 
 		fillAndModifyDatabase(BoardbookSingleton.getInstance().getUserHandler());
 	}
-
 
 
 	/**

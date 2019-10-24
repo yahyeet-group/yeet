@@ -52,7 +52,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 				.thenCombine(futureOnSave, ((firebaseEntity, nothing) -> firebaseEntity))
 				.thenApply(AbstractFirebaseEntity::toModelType)
 				.thenApply(createdEntity -> {
-					notifyListenersOnCreate(createdEntity);
+					//notifyListenersOnCreate(createdEntity);
 
 					return createdEntity;
 				});

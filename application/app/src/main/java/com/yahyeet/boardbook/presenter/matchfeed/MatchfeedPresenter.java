@@ -1,6 +1,7 @@
 package com.yahyeet.boardbook.presenter.matchfeed;
 
 import android.content.Context;
+import android.os.Looper;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,7 +41,9 @@ public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> impl
 	 * Makes recyclerView to repopulate its matches with current data
 	 */
 	public void updateAdapter() {
-		matchfeedAdapter.notifyDataSetChanged();
+		new android.os.Handler(Looper.getMainLooper())
+			.post(() -> matchfeedAdapter.notifyDataSetChanged());
+
 	}
 
 	/**
@@ -105,4 +108,5 @@ public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> impl
 		}
 		updateAdapter();
 	}
+
 }

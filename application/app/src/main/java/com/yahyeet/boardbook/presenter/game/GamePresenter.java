@@ -1,6 +1,7 @@
 package com.yahyeet.boardbook.presenter.game;
 
 import android.content.Context;
+import android.os.Looper;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -79,7 +80,9 @@ public class GamePresenter extends FindAllPresenter<Game, GameHandler> implement
 	}
 
 	private void notifyAdapter() {
-		getAdapter().notifyDataSetChanged();
+		new android.os.Handler(Looper.getMainLooper())
+			.post(() -> getAdapter().notifyDataSetChanged());
+
 	}
 
 	@Override

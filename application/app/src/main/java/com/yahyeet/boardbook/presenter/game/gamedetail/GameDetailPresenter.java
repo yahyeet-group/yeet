@@ -41,13 +41,6 @@ public class GameDetailPresenter extends FindOnePresenter<Game, GameHandler> {
 	}
 
 	/**
-	 * Makes recyclerView to repopulate its matches with current data
-	 */
-	public void updateTeamAdapter() {
-		teamAdapter.notifyDataSetChanged();
-	}
-
-	/**
 	 * Creates the necessary structure for populating teams
 	 *
 	 * @param teamRecyclerView the RecyclerView that will be populated with teams

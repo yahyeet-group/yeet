@@ -20,7 +20,7 @@ import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddFriendsAdapterAbstract extends AbstractSearchAdapter<User> {
+public class AddFriendsAdapter extends AbstractSearchAdapter<User> {
 
 	private IAddFriendActivity parent;
 
@@ -41,7 +41,7 @@ public class AddFriendsAdapterAbstract extends AbstractSearchAdapter<User> {
 		}
 	}
 
-	public AddFriendsAdapterAbstract(List<User> database, IAddFriendActivity parent) {
+	public AddFriendsAdapter(List<User> database, IAddFriendActivity parent) {
 		super(database);
 		this.parent = parent;
 

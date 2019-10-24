@@ -1,6 +1,7 @@
 package com.yahyeet.boardbook.presenter.friends;
 
 import android.content.Context;
+import android.os.Looper;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +32,9 @@ public class FriendsPresenter implements UserHandlerListener {
 	 * Makes recyclerView to repopulate its users with current data
 	 */
 	public void notifyAdapter() {
-		friendsAdapter.notifyDataSetChanged();
+		new android.os.Handler(Looper.getMainLooper())
+			.post(() -> friendsAdapter.notifyDataSetChanged());
+
 	}
 
 	/**
