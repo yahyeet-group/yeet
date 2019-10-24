@@ -45,21 +45,6 @@ public class SelectPlayersPresenter extends AdapterPresenter<User, UserHandler> 
 	public void enableGameFeed(RecyclerView gameRecycleView, Context viewContext) {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		gameRecycleView.setLayoutManager(layoutManager);
-/*
-		List<User> testSet = new LinkedList<>();
-		User testUser = new User();
-		testUser.setName("Jaan Karm");
-		testSet.add(testUser);
-		User testUser2 = new User();
-		testUser2.setName("Broberg Bror");
-		testSet.add(testUser2);
-		User testUser3 = new User();
-		testUser3.setName("Rolf the Kid");
-		testSet.add(testUser3);
-		User testUser4 = new User();
-		testUser4.setName("Daniel the Man");
-		testSet.add(testUser4);*/
-
 		gameRecycleView.setAdapter(getAdapter());
 	}
 

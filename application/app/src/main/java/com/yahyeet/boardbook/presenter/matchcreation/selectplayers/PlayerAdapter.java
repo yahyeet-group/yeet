@@ -37,8 +37,15 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 
 		}
 
-	}
+		public void setAlreadySelected(){
+			actionButton.setText("Remove");
+			this.itemView.setBackgroundColor(Color.parseColor("#0cc43d"));
+		}
+		public String getName(){
+			return playerName.getText().toString();
+		}
 
+	}
 
 	public PlayerAdapter(List<User> myDataset, SelectPlayersPresenter spp, List<User> usersFriends) {
 		super(myDataset);
@@ -77,11 +84,33 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 				if (vh.actionButton.getText().toString().toLowerCase().equals("add")) {
 					vh.actionButton.setText("Remove");
 					cmmp.getCmdh().addSelectedPlayer(database.get(position));
+					holder.itemView.setBackgroundColor(Color.parseColor("#0cc43d"));
 				}else {
 					vh.actionButton.setText("Add");
 					cmmp.getCmdh().removeSelectedPlayer(database.get(position));
+					holder.itemView.setBackgroundColor(Color.WHITE);
+					if (usersFriends.contains(database.get(position))){
+						vh.itemView.setBackgroundColor(Color.parseColor("#09cdda"));
+					}
 				}
 			});
+		}
+
+
+		/// If already selected from before this changes the pliancy and button
+		List<String> playerNames = new ArrayList<>();
+		for (User user: cmmp.getCmdh().getSelectedPlayers()) {
+			playerNames.add(user.getName());
+		}
+
+		int amountPlayers = getItemCount();
+		for (int i =0; i<amountPlayers; i++ ){
+			System.out.println("does this even run");
+			PlayerViewHolder holder1 = (PlayerViewHolder) holder;
+			if(playerNames.contains(holder1.getName())){
+				holder1.setAlreadySelected();
+			}
+
 		}
 
 
