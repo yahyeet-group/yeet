@@ -50,7 +50,12 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 
 			return futureFirebaseEntity
 				.thenCombine(futureOnSave, ((firebaseEntity, nothing) -> firebaseEntity))
-				.thenApply(AbstractFirebaseEntity::toModelType);
+				.thenApply(AbstractFirebaseEntity::toModelType)
+				.thenApply(createdEntity -> {
+					notifyListenersOnCreate(createdEntity);
+
+					return createdEntity;
+				});
 		} else {
 			return findFirebaseEntityById(entity.getId()).thenCompose(firebaseEntity -> {
 					CompletableFuture<AbstractFirebaseEntity<TModel>> futureFirebaseEntity =
@@ -61,7 +66,12 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 
 					return futureFirebaseEntity
 						.thenCombine(futureOnSave, ((fbEntity, nothing) -> fbEntity))
-						.thenApply(AbstractFirebaseEntity::toModelType);
+						.thenApply(AbstractFirebaseEntity::toModelType)
+						.thenApply(createdEntity -> {
+							notifyListenersOnUpdate(createdEntity);
+
+							return createdEntity;
+						});
 				}
 			).exceptionally(e -> {
 				try {
@@ -74,6 +84,11 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 					return futureFirebaseEntity
 						.thenCombine(futureOnSave, ((fbEntity, nothing) -> fbEntity))
 						.thenApply(AbstractFirebaseEntity::toModelType)
+						.thenApply(createdEntity -> {
+							notifyListenersOnCreate(createdEntity);
+
+							return createdEntity;
+						})
 						.get();
 				} catch (ExecutionException | InterruptedException error) {
 					throw new CompletionException(error);
@@ -89,7 +104,11 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 
 	@Override
 	public CompletableFuture<Void> delete(String id) {
-		return removeFirebaseEntityById(id);
+		return removeFirebaseEntityById(id).thenApply(nothing -> {
+			notifyListenersOnDelete(id);
+
+			return null;
+		});
 	}
 
 	@Override
@@ -112,10 +131,28 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 		listeners.remove(listener);
 	}
 
+	private void notifyListenersOnCreate(TModel entity) {
+		for (IRepositoryListener<TModel> listener : listeners) {
+			listener.onCreate(entity);
+		}
+	}
+
+	private void notifyListenersOnUpdate(TModel entity) {
+		for (IRepositoryListener<TModel> listener : listeners) {
+			listener.onUpdate(entity);
+		}
+	}
+
+	private void notifyListenersOnDelete(String id) {
+		for (IRepositoryListener<TModel> listener : listeners) {
+			listener.onDelete(id);
+		}
+	}
+
 	/**
 	 * Function that is run after an entity is saved
 	 *
-	 * @param entity Model entity that was saved
+	 * @param entity      Model entity that was saved
 	 * @param savedEntity Firebase entity that was saved
 	 * @return A completable future that when resolved denotes that the afterSave hook has completed
 	 */

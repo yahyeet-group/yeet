@@ -97,9 +97,9 @@ public class GamePresenter extends AdapterPresenter<Game, GameHandler> implement
 	}
 
 	@Override
-	public void onRemoveGame(Game game) {
+	public void onRemoveGame(String id) {
 		for (int i = 0; i < getDatabase().size(); i++) {
-			if (getDatabase().get(i).getId().equals(game.getId())) {
+			if (getDatabase().get(i).getId().equals(id)) {
 				getDatabase().remove(i);
 				break;
 			}

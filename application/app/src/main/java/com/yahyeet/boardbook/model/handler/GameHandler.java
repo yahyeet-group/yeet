@@ -152,9 +152,9 @@ public class GameHandler implements IRepositoryListener<Game>, EntityHandler<Gam
 		}
 	}
 
-	private void notifyListenersOnGameRemove(Game game) {
+	private void notifyListenersOnGameRemove(String id) {
 		for (GameHandlerListener listener : listeners) {
-			listener.onRemoveGame(game);
+			listener.onRemoveGame(id);
 		}
 	}
 
@@ -169,8 +169,8 @@ public class GameHandler implements IRepositoryListener<Game>, EntityHandler<Gam
 	}
 
 	@Override
-	public void onDelete(Game game) {
-		notifyListenersOnGameRemove(game);
+	public void onDelete(String id) {
+		notifyListenersOnGameRemove(id);
 	}
 
 	/**

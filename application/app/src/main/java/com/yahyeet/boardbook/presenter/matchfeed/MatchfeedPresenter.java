@@ -85,9 +85,9 @@ public class MatchfeedPresenter implements MatchHandlerListener {
 	}
 
 	@Override
-	public void onRemoveMatch(Match match) {
+	public void onRemoveMatch(String id) {
 		for (int i = 0; i < matchDatabase.size(); i++) {
-			if (matchDatabase.get(i).getId().equals(match.getId())) {
+			if (matchDatabase.get(i).getId().equals(id)) {
 				matchDatabase.remove(i);
 				break;
 			}

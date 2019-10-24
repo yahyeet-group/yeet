@@ -10,5 +10,5 @@ public interface GameHandlerListener {
 
 	void onUpdateGame(Game game);
 
-	void onRemoveGame(Game game);
+	void onRemoveGame(String id);
 }
