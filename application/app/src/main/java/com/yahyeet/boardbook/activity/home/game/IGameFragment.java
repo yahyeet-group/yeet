@@ -1,8 +1,6 @@
 package com.yahyeet.boardbook.activity.home.game;
 
-import com.yahyeet.boardbook.activity.IFutureInteractable;
-
-public interface IGameFragment {
-
-
-}
+/**
+ * Abstracts behavior from game fragment to its presenter
+ */
+public interface IGameFragment { }

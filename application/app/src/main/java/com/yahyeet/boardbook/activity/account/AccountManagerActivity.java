@@ -13,6 +13,9 @@ import com.yahyeet.boardbook.model.util.EmailFailedException;
 import com.yahyeet.boardbook.model.util.PasswordFailedException;
 import com.yahyeet.boardbook.presenter.AccountManagerPresenter;
 
+/**
+ * Activity that holds the account fragments 
+ */
 public class AccountManagerActivity extends AppCompatActivity implements IAccountManagerActivity, IAccountFragmentHolder {
 
 	private AccountManagerPresenter accountManagerPresenter;

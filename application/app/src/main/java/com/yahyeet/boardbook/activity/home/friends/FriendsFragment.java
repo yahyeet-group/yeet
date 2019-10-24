@@ -20,6 +20,9 @@ import com.yahyeet.boardbook.presenter.friends.FriendsPresenter;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Fragment that holds and displays friends that is opened by bottom bar
+ */
 public class FriendsFragment extends Fragment implements IFriendFragment {
 
 	private FriendsPresenter friendsPresenter;

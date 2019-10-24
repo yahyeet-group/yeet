@@ -11,7 +11,7 @@ import android.widget.Spinner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.activity.matchcreation.HelperFunctions;
+import com.yahyeet.boardbook.activity.viewutils.ViewUtils;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.GameRole;
 import com.yahyeet.boardbook.model.entity.GameTeam;
@@ -20,7 +20,6 @@ import com.yahyeet.boardbook.model.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdapter.PlayerViewHolder> {
 
@@ -92,18 +91,18 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 
 		View v = holder.itemView;
 		//Minimize on start
-		v.getLayoutParams().height = HelperFunctions.dpFromPx(250, holder.itemView.getContext());
+		v.getLayoutParams().height = ViewUtils.dpFromPx(250, holder.itemView.getContext());
 		v.requestLayout();
 
 		Button editButton = v.findViewById(R.id.spEditButton);
 		Button doneButton = v.findViewById(R.id.spDoneButton);
 
 		editButton.setOnClickListener((n) -> {
-			v.getLayoutParams().height = HelperFunctions.dpFromPx(250, holder.itemView.getContext());
+			v.getLayoutParams().height = ViewUtils.dpFromPx(250, holder.itemView.getContext());
 			v.requestLayout();
 		});
 		doneButton.setOnClickListener((n) -> {
-			v.getLayoutParams().height = HelperFunctions.dpFromPx(100, holder.itemView.getContext());
+			v.getLayoutParams().height = ViewUtils.dpFromPx(100, holder.itemView.getContext());
 			v.requestLayout();
 		});
 

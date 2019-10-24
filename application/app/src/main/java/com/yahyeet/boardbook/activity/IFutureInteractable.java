@@ -1,5 +1,8 @@
 package com.yahyeet.boardbook.activity;
 
+/**
+ * A view element that can interact with CompletableFutures
+ */
 public interface IFutureInteractable {
 
 	/**
