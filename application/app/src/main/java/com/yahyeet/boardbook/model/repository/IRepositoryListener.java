@@ -1,5 +1,8 @@
 package com.yahyeet.boardbook.model.repository;
 
+/**
+ * Interface that defines all the methods a repository listener must implement
+ */
 public interface IRepositoryListener<T> {
 	/**
 	 * Called when an entity is created

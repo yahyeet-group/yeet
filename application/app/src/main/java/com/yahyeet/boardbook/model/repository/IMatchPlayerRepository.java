@@ -5,6 +5,9 @@ import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Interface that defines all the methods a match team repository must implement
+ */
 public interface IMatchPlayerRepository extends IRepository<MatchPlayer>{
 	/**
 	 * Retrieves all match players that belong to a match
