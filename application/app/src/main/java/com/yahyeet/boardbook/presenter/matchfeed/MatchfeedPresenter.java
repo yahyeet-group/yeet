@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.model.repository.IRepositoryListener;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.activity.home.matchfeed.IMatchfeedFragment;
 import com.yahyeet.boardbook.model.entity.Match;
@@ -15,7 +16,7 @@ import com.yahyeet.boardbook.model.handler.MatchHandlerListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchfeedPresenter {
+public class MatchfeedPresenter  implements IRepositoryListener<Match> {
 
 	private MatchfeedAdapter matchfeedAdapter;
 	private List<Match> matchDatabase = new ArrayList<>();
@@ -69,15 +70,23 @@ public class MatchfeedPresenter {
 
 	}
 
-	public void updateUserDatabase(){
+	public void updateUserDatabase() {
 		User loggedInUser = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
-
-
-		BoardbookSingleton.getInstance().getUserHandler().find(loggedInUser.getId()).thenAccept(foundUser -> {
-			matchDatabase.addAll(foundUser.getMatches());
-
-		});
 	}
 
 
+	@Override
+	public void onCreate(Match entity) {
+
+	}
+
+	@Override
+	public void onUpdate(Match entity) {
+
+	}
+
+	@Override
+	public void onDelete(String id) {
+
+	}
 }

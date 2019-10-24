@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,41 +19,45 @@ import com.yahyeet.boardbook.presenter.matchcreation.selectgame.SelectGamePresen
 
 public class SelectGameFragment extends Fragment implements ISelectGameFragment, IFutureInteractable {
 
-    private SelectGamePresenter selectGamePresenter;
+	private SelectGamePresenter selectGamePresenter;
+	private RecyclerView gamesRecycleView;
+	private ProgressBar loadingIndicator;
+	private TextView loadingText;
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        CreateMatchActivity cma = (CreateMatchActivity)getActivity();
-        selectGamePresenter = new SelectGamePresenter(this, cma.getPresenter());
-        return inflater.inflate(R.layout.fragment_select_game, container, false);
-    }
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		CreateMatchActivity cma = (CreateMatchActivity) getActivity();
+		selectGamePresenter = new SelectGamePresenter(this, cma.getPresenter());
+		return inflater.inflate(R.layout.fragment_select_game, container, false);
+	}
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        enableMatchFeed();
-    }
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		gamesRecycleView = view.findViewById(R.id.gamesRecycleView);
+		loadingIndicator = view.findViewById(R.id.sgLoadingInd);
+		loadingText = view.findViewById(R.id.sgLoadingText);
+		enableMatchFeed();
 
-    public void enableMatchFeed() {
-        // TODO: Examine how these method calls can get nullPointerException
-        RecyclerView gameRecycler = getView().findViewById(R.id.gamesRecycleView);
+	}
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        gameRecycler.setHasFixedSize(true);
-        selectGamePresenter.enableGameFeed(gameRecycler, getView().getContext());
-    }
+	public void enableMatchFeed() {
+		gamesRecycleView.setHasFixedSize(true);
+		selectGamePresenter.enableGameFeed(gamesRecycleView, getView().getContext());
+	}
 
-    @Override
-    public void enableViewInteraction() {
-        // TODO: Nox implement these
-    }
+	@Override
+	public void enableViewInteraction() {
+		loadingIndicator.setVisibility(loadingIndicator.INVISIBLE);
+		loadingText.setVisibility(loadingText.INVISIBLE);
+		gamesRecycleView.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
+		gamesRecycleView.requestLayout();
+	}
 
-    @Override
-    public void disableViewInteraction() {
-        // TODO: Nox implement these
-    }
+	@Override
+	public void disableViewInteraction() {
+	}
 
-    @Override
-    public void displayLoadingFailed() {
-        // TODO: Nox implement these
-    }
+	@Override
+	public void displayLoadingFailed() {
+		loadingText.setText("Loading Failed");
+	}
 }

@@ -1,10 +1,16 @@
 package com.yahyeet.boardbook.activity.matchcreation.selectplayers;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,12 +20,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.matchcreation.CreateMatchActivity;
+import com.yahyeet.boardbook.activity.matchcreation.HelperFunctions;
 import com.yahyeet.boardbook.activity.matchcreation.selectgame.ISelectGameFragment;
 import com.yahyeet.boardbook.presenter.matchcreation.selectplayers.SelectPlayersPresenter;
 
 public class SelectPlayersFragment extends Fragment implements ISelectPlayersFragment, IFutureInteractable {
 
 	private SelectPlayersPresenter selectPlayersPresenter;
+	private SearchView searchView;
+	private RecyclerView playerRecyclerView;
+	private Button doneButton;
+	private ProgressBar loadingIndicator;
+	private TextView loadingText;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		CreateMatchActivity cma = (CreateMatchActivity) getActivity();
@@ -27,42 +39,59 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
 		return inflater.inflate(R.layout.fragment_select_players, container, false);
 
 
-
 	}
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		setViews();
+
 		enableMatchFeed();
 		enableSearchView();
-		this.getView().findViewById(R.id.selectPlayersDoneButton).setOnClickListener(event -> {
-					selectPlayersPresenter.getMasterPresenter().goToConfigureTeams();
-			System.out.println(selectPlayersPresenter.getMasterPresenter().getCmdh().getSelectedPlayers().toString());
-			});
+		doneButton.setOnClickListener(event -> {
+			selectPlayersPresenter.getMasterPresenter().goToConfigureTeams();
+			this.displayLoadingFailed();
+		});
 	}
 
 	public void enableMatchFeed() {
-		RecyclerView playerRecycler = getView().findViewById(R.id.playerRecycleView);
-		playerRecycler.setHasFixedSize(true);
-		selectPlayersPresenter.enableGameFeed(playerRecycler, getView().getContext());
+		playerRecyclerView.setHasFixedSize(true);
+		selectPlayersPresenter.enableGameFeed(playerRecyclerView, getView().getContext());
 	}
 
-	public void enableSearchView(){
-		SearchView searchView = getView().findViewById(R.id.searchPlayers);
+	public void enableSearchView() {
 		selectPlayersPresenter.enableSearchBar(searchView);
+	}
+
+
+	private void setViews(){
+
+		searchView = getView().findViewById(R.id.searchPlayers);
+		playerRecyclerView = getView().findViewById(R.id.playerRecycleView);
+		doneButton = getView().findViewById(R.id.selectPlayersDoneButton);
+		loadingIndicator = getView().findViewById(R.id.spLoadingInd);
+		loadingText = getView().findViewById(R.id.spTextLoading);
+
 	}
 
 	@Override
 	public void enableViewInteraction() {
-		// TODO: Nox implement these
+			doneButton.setEnabled(true);
+			loadingIndicator.setVisibility(loadingIndicator.INVISIBLE);
+			playerRecyclerView.setVisibility(playerRecyclerView.VISIBLE);
+			playerRecyclerView.getLayoutParams().height = HelperFunctions.dpFromPx(550, getContext());
+			playerRecyclerView.requestLayout();
+			loadingText.setVisibility(loadingText.INVISIBLE);
 	}
 
 	@Override
 	public void disableViewInteraction() {
-		// TODO: Nox implement these
+
 	}
 
 	@Override
 	public void displayLoadingFailed() {
-		// TODO: Nox implement these
+		loadingIndicator.invalidate();
+		loadingText.setText("Loading Failed");
 	}
+
 }

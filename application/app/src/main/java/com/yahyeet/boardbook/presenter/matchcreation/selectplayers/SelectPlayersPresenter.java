@@ -18,6 +18,7 @@ import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -27,13 +28,14 @@ public class SelectPlayersPresenter extends AllEntitiesPresenter<User, UserHandl
 	private CMMasterPresenter masterPresenter;
 	private ISelectPlayersFragment spf;
 	private AbstractSearchAdapter<User> searchAdapter;
+	private List<User> friends = new ArrayList<>();
 
 	public SelectPlayersPresenter(ISelectPlayersFragment spf, CMMasterPresenter cma) {
 		super((IFutureInteractable) spf);
 		this.masterPresenter = cma;
 		this.spf = spf;
 
-		searchAdapter = new PlayerAdapter(getDatabase(), this);
+		searchAdapter = new PlayerAdapter(getDatabase(), this, friends);
 		setAdapter(searchAdapter);
 
 		fillAndModifyDatabase(BoardbookSingleton.getInstance().getUserHandler());
@@ -44,21 +46,6 @@ public class SelectPlayersPresenter extends AllEntitiesPresenter<User, UserHandl
 	public void enableGameFeed(RecyclerView gameRecycleView, Context viewContext) {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		gameRecycleView.setLayoutManager(layoutManager);
-/*
-		List<User> testSet = new LinkedList<>();
-		User testUser = new User();
-		testUser.setName("Jaan Karm");
-		testSet.add(testUser);
-		User testUser2 = new User();
-		testUser2.setName("Broberg Bror");
-		testSet.add(testUser2);
-		User testUser3 = new User();
-		testUser3.setName("Rolf the Kid");
-		testSet.add(testUser3);
-		User testUser4 = new User();
-		testUser4.setName("Daniel the Man");
-		testSet.add(testUser4);*/
-
 		gameRecycleView.setAdapter(getAdapter());
 	}
 
@@ -109,6 +96,13 @@ public class SelectPlayersPresenter extends AllEntitiesPresenter<User, UserHandl
 		database.add(loggedInUser);
 
 		database.addAll(loggedInUser
+			.getFriends()
+			.stream()
+			.sorted((left, right) -> left.getName().compareTo(right.getName()))
+			.collect(Collectors.toList()));
+
+
+		friends.addAll(loggedInUser
 			.getFriends()
 			.stream()
 			.sorted((left, right) -> left.getName().compareTo(right.getName()))

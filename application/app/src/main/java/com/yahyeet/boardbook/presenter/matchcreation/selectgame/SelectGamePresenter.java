@@ -35,32 +35,6 @@ public class SelectGamePresenter extends AllEntitiesPresenter<Game, GameHandler>
 	public void enableGameFeed(RecyclerView gameRecycleView, Context viewContext) {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		gameRecycleView.setLayoutManager(layoutManager);
-
-		/*Game testGame = new Game("Avalon", "Cool Game", 3, 5, 10);
-		GameTeam mom = new GameTeam();
-		mom.setName("Minions of Mordred");
-		GameRole mordred = new GameRole();
-		mordred.setName("Mordred");
-		GameRole minion = new GameRole();
-		minion.setName("Minion of Mordred");
-		mom.addRole(mordred);
-		mom.addRole(minion);
-		testGame.addTeam(mom);
-		GameTeam som = new GameTeam();
-		som.setName("Servants of Merlin");
-		GameRole merlin = new GameRole();
-		merlin.setName("Merlin");
-		GameRole servant = new GameRole();
-		servant.setName("Servant of Merlin");
-		som.addRole(merlin);
-		som.addRole(servant);
-		testGame.addTeam(som);
-
-
-		List<Game> testSet = new ArrayList<>();
-		testSet.add(testGame);*/
-
-
 		gameRecycleView.setAdapter(getAdapter());
 	}
 

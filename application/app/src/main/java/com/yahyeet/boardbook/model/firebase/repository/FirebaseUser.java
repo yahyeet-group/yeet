@@ -35,10 +35,22 @@ class FirebaseUser extends AbstractFirebaseEntity<User> {
 		return user;
 	}
 
+	/**
+	 * Creates a Firebase user entity from a model user
+	 *
+	 * @param user Model user
+	 * @return Firebase user
+	 */
 	public static FirebaseUser fromModelType(User user) {
 		return new FirebaseUser(user.getId(), user.getName());
 	}
 
+	/**
+	 * Create a Firebase user from a Firebase document snapshot
+	 *
+	 * @param document Firebase document snapshot
+	 * @return Firebase user
+	 */
 	public static FirebaseUser fromDocument(DocumentSnapshot document) {
 		FirebaseUser firebaseUser = new FirebaseUser();
 		firebaseUser.setId(document.getId());

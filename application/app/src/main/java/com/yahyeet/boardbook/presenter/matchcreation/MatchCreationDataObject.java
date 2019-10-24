@@ -41,6 +41,10 @@ public class MatchCreationDataObject {
 		selectedPlayers.remove(user);
 	}
 
+	public void clearSelectedPlayers(){
+		selectedPlayers.clear();
+	}
+
 	public void addPlayer(User user, GameRole gameRole, GameTeam gameTeam, Boolean win) {
 		MatchPlayer mp = new MatchPlayer(user, gameRole, gameTeam, win);
 		players.add(mp);

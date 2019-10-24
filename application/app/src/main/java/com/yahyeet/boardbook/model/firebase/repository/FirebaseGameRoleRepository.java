@@ -13,6 +13,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.stream.Collectors;
 
+/**
+ * Firebase Firestore implementation of a game role repository
+ */
 public class FirebaseGameRoleRepository extends AbstractFirebaseRepository<GameRole> implements IGameRoleRepository {
 	public FirebaseGameRoleRepository(FirebaseFirestore firestore) {
 		super(firestore);
@@ -38,7 +41,7 @@ public class FirebaseGameRoleRepository extends AbstractFirebaseRepository<GameR
 		return CompletableFuture.supplyAsync(() -> {
 			Task<QuerySnapshot> task =
 				getFirestore()
-					.collection(getCollectionName())
+					.collection(getFullCollectionName())
 					.whereEqualTo("teamId", id)
 					.get();
 

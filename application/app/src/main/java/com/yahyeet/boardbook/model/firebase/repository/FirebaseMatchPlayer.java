@@ -78,6 +78,12 @@ public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
 		return matchPlayer;
 	}
 
+	/**
+	 * Creates a Firebase match player entity from a model match player
+	 *
+	 * @param matchPlayer Model match player
+	 * @return Firebase match player
+	 */
 	public static FirebaseMatchPlayer fromModelType(MatchPlayer matchPlayer) {
 		return new FirebaseMatchPlayer(
 			matchPlayer.getId(),
@@ -89,6 +95,12 @@ public class FirebaseMatchPlayer extends AbstractFirebaseEntity<MatchPlayer> {
 		);
 	}
 
+	/**
+	 * Create a Firebase match player from a Firebase document snapshot
+	 *
+	 * @param document Firebase document snapshot
+	 * @return Firebase match player
+	 */
 	public static FirebaseMatchPlayer fromDocument(DocumentSnapshot document) {
 		FirebaseMatchPlayer firebaseMatchPlayer = new FirebaseMatchPlayer();
 		firebaseMatchPlayer.setId(document.getId());

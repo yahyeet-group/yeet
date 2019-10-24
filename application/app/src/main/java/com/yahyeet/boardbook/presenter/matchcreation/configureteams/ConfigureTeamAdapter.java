@@ -6,7 +6,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,29 +34,20 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 
 		private Spinner teamSpinner;
 		private Spinner roleSpinner;
-		private User user;
-
+		private CheckBox winLoseBox;
 
 		PlayerViewHolder(View v) {
 			super(v);
 
 		}
 
-		public MatchPlayer getMatchPlayer() {
-			Game game = ctp.getMasterPresenter().getCmdh().getGame();
-			GameTeam gameTeam = null;
-			GameRole gameRole = null;
+		public Spinner[] getSpinners() {
+			Spinner[] spinners = {teamSpinner, roleSpinner};
+			return spinners;
+		}
 
-
-			if (teamSpinner.getSelectedItemPosition() != 0) {
-				gameTeam = game.getTeams().get(teamSpinner.getSelectedItemPosition() - 1);
-			}
-
-			if(roleSpinner.getSelectedItemPosition() != 0 && gameTeam != null){
-				gameRole = gameTeam.getRoles().get(roleSpinner.getSelectedItemPosition() -1);
-			}
-
-			return new MatchPlayer(user, gameRole, gameTeam, true);
+		public Boolean getWin() {
+			return winLoseBox.isChecked();
 		}
 
 	}
@@ -88,13 +81,17 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 	@Override
 	public void onBindViewHolder(ConfigureTeamAdapter.PlayerViewHolder holder, int position) {
 
-		holder.user = myDataset.get(position);
-
 		View v = holder.itemView;
-		//Minimize on start
+
+		//// Username binding
+		TextView username = v.findViewById(R.id.ctPlayerName);
+		username.setText(myDataset.get(position).getName());
+
+		//// Minimize on start
 		v.getLayoutParams().height = HelperFunctions.dpFromPx(250, holder.itemView.getContext());
 		v.requestLayout();
 
+		//// Button Binding
 		Button editButton = v.findViewById(R.id.spEditButton);
 		Button doneButton = v.findViewById(R.id.spDoneButton);
 
@@ -107,11 +104,13 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 			v.requestLayout();
 		});
 
+		//// Winning checkbox binding
+		holder.winLoseBox = v.findViewById(R.id.winCheckbox);
 
-		//// Spinner stuffs
+		//// Spinner intit and databinding
 		Spinner teamSpinner = v.findViewById(R.id.teamSpinner);
 
-		ArrayAdapter<String> teamAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item, teamArray);    // Specify the layout to use when the list of choices appears
+		ArrayAdapter<String> teamAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item, teamArray);
 		teamAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		teamSpinner.setAdapter(teamAdapter);
 
@@ -125,7 +124,7 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 					roleSpinner.setEnabled(false);
 					return;
 				}
-				setRolesByTeam(ctp.getMasterPresenter().getCmdh().getGame().getTeams().get(position -1), holder.itemView, roleSpinner);
+				setRolesByTeam(ctp.getMasterPresenter().getCmdh().getGame().getTeams().get(position - 1), holder.itemView, roleSpinner);
 				roleSpinner.setEnabled(true);
 
 			}
@@ -148,6 +147,8 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 
 	}
 
+
+	//// Method to change the roles depending on what team was chosen in the team spinner
 	private void setRolesByTeam(GameTeam team, View v, Spinner roleSpinner) {
 		List<GameRole> roles = new ArrayList<>(team.getRoles());
 		List<String> rolesString = new ArrayList<>();
@@ -157,15 +158,9 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 		for (GameRole role : roles) {
 			rolesString.add(role.getName());
 		}
-		ArrayAdapter<String> roleAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item, rolesString);    // Specify the layout to use when the list of choices appears
+		ArrayAdapter<String> roleAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item, rolesString);
 		roleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		roleSpinner.setAdapter(roleAdapter);
 
 	}
-
-	private void finalizeMatch() {
-
-	}
-
-
 }
