@@ -5,34 +5,37 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.home.game.gamedetail.IGameDetailActivity;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.GameRole;
 import com.yahyeet.boardbook.model.entity.GameTeam;
+import com.yahyeet.boardbook.model.handler.GameHandler;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
+import com.yahyeet.boardbook.presenter.FindOnePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-public class GameDetailPresenter {
+public class GameDetailPresenter extends FindOnePresenter<Game, GameHandler> {
 
 	private IGameDetailActivity gameDetailActivity;
 	private GameDetailAdapter teamAdapter;
-	private Game game;
+
+	private List<GameTeam> teams = new ArrayList<>();
+	private List<List<GameRole>> roleLists = new ArrayList<>();
 
 	public GameDetailPresenter(IGameDetailActivity gameDetailActivity, String gameID) {
+		super((IFutureInteractable) gameDetailActivity);
 		this.gameDetailActivity = gameDetailActivity;
-		try {
-			game = BoardbookSingleton.getInstance().getGameHandler().find(gameID).get();
-		} catch (ExecutionException | InterruptedException e) {
-			// TODO: What to do here?
-		}
+
+		findEntity(BoardbookSingleton.getInstance().getGameHandler(), gameID);
+
 	}
 
 	public void initiateGameDetail() {
-		gameDetailActivity.setGameName(game.getName());
-		gameDetailActivity.setGameDescription(game.getDescription());
+		gameDetailActivity.setGameName(getEntity().getName());
+		gameDetailActivity.setGameDescription(getEntity().getDescription());
 		// TODO: Add rules to games, String field
 		gameDetailActivity.setGameRules("");
 	}
@@ -54,13 +57,19 @@ public class GameDetailPresenter {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		teamRecyclerView.setLayoutManager(layoutManager);
 
-		List<List<GameRole>> allTeamRoleLists = new ArrayList<>();
-
-		for(GameTeam team : game.getTeams()){
-			allTeamRoleLists.add(team.getRoles());
-		}
-
-		teamAdapter = new GameDetailAdapter(game.getTeams(), allTeamRoleLists);
+		teamAdapter = new GameDetailAdapter(teams, roleLists);
 		teamRecyclerView.setAdapter(teamAdapter);
+	}
+
+	@Override
+	protected void onEntityFound(Game entity) {
+		initiateGameDetail();
+
+		teams.clear();
+		teams.addAll(entity.getTeams());
+
+		getEntity().getTeams().forEach(team -> {
+			roleLists.add(team.getRoles());
+		});
 	}
 }

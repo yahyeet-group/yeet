@@ -7,7 +7,22 @@
     android:background="@color/colorBackground"
     tools:context=".activity.home.game.gamedetail.GameDetailActivity">
 
+    <TextView
+        android:id="@+id/gameDetailError"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="@string/matchfeedError"
+        android:textAlignment="center"
+        android:textColor="@color/colorError"
+        android:textSize="30sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/homeMatchRecycler"
+        app:layout_constraintTop_toTopOf="@+id/view5" />
+
     <View
+        android:id="@+id/view5"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_gravity="center"
@@ -22,7 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:text="GameName"
         android:textColor="@color/colorText"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +48,6 @@
         android:layout_height="75dp"
         android:layout_marginTop="52dp"
         android:textColor="@color/colorText"
-        android:text="Description"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -47,7 +60,6 @@
         android:layout_height="75dp"
         android:layout_marginTop="44dp"
         android:textColor="@color/colorText"
-        android:text="Rules"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -104,4 +116,16 @@
         app:layout_constraintTop_toBottomOf="@id/gameDetailTeamTitle">
 
     </androidx.recyclerview.widget.RecyclerView>
+
+    <ProgressBar
+        android:id="@+id/gameDetailLoading"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="100dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view5" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

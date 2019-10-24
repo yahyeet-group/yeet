@@ -42,7 +42,7 @@ public class CMMasterPresenter {
 		for (MatchPlayer mp : cmdh.getPlayers()){
 			finalMatch.addMatchPlayer(mp);
 		}
-		System.out.println();
+
 		BoardbookSingleton.getInstance().getMatchHandler()
 			.save(finalMatch)
 			.thenAccept(u -> activity.finalizeMatchCreation())

@@ -2,10 +2,10 @@ package com.yahyeet.boardbook.presenter;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.Adapter;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.errorprone.annotations.ForOverride;
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.model.entity.AbstractEntity;
 import com.yahyeet.boardbook.model.handler.EntityHandler;
@@ -13,7 +13,7 @@ import com.yahyeet.boardbook.model.handler.EntityHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AllEntitiesPresenter<E extends AbstractEntity, H extends EntityHandler<E>> {
+public abstract class FindAllPresenter<E extends AbstractEntity, H extends EntityHandler<E>> {
 
 	private RecyclerView.Adapter adapter;
 	private IFutureInteractable fragment;
@@ -21,7 +21,7 @@ public abstract class AllEntitiesPresenter<E extends AbstractEntity, H extends E
 
 	private Handler uiHandler = new android.os.Handler(Looper.getMainLooper());
 
-	public AllEntitiesPresenter(IFutureInteractable fragment) {
+	public FindAllPresenter(IFutureInteractable fragment) {
 		this.fragment = fragment;
 		database = new ArrayList<>();
 	}
@@ -51,13 +51,14 @@ public abstract class AllEntitiesPresenter<E extends AbstractEntity, H extends E
 		handler.all().thenAccept(initiatedEntities -> {
 			if (initiatedEntities != null) {
 				database.addAll(initiatedEntities);
-				modifyDatabase(database);
-
 			}
 
 			uiHandler.post(() -> {
 				fragment.enableViewInteraction();
 				adapter.notifyDataSetChanged();
+
+				// Safety in case of modification affecting UI elements
+				onDatabaseLoaded(database);
 			});
 		}).exceptionally(e -> {
 			uiHandler.post(() -> {
@@ -93,8 +94,8 @@ public abstract class AllEntitiesPresenter<E extends AbstractEntity, H extends E
 		this.adapter = adapter;
 	}
 
-	// To be overridden	, but not forced so not abstract
-	protected void modifyDatabase(List<E> database){
+	@ForOverride
+	protected void onDatabaseLoaded(List<E> database){
 		// Called in fillAndModifyDatabase, override if database should not be all entities of type T
 	}
 

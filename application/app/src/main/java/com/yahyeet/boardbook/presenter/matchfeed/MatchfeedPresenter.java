@@ -1,22 +1,23 @@
 package com.yahyeet.boardbook.presenter.matchfeed;
 
 import android.content.Context;
-import android.os.Looper;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.model.repository.IRepositoryListener;
-import com.yahyeet.boardbook.presenter.BoardbookSingleton;
+import com.yahyeet.boardbook.model.handler.MatchHandlerListener;
+import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.activity.home.matchfeed.IMatchfeedFragment;
 import com.yahyeet.boardbook.model.entity.Match;
-import com.yahyeet.boardbook.model.handler.MatchHandlerListener;
+import com.yahyeet.boardbook.presenter.BoardbookSingleton;
+import com.yahyeet.boardbook.presenter.FindOnePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchfeedPresenter  implements IRepositoryListener<Match> {
+public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> implements MatchHandlerListener {
 
 	private MatchfeedAdapter matchfeedAdapter;
 	private List<Match> matchDatabase = new ArrayList<>();
@@ -26,13 +27,19 @@ public class MatchfeedPresenter  implements IRepositoryListener<Match> {
 	private IMatchfeedFragment matchfeedFragment;
 
 	public MatchfeedPresenter(IMatchfeedFragment matchfeedFragment) {
+		super((IFutureInteractable) matchfeedFragment);
 		this.matchfeedFragment = matchfeedFragment;
+
+		BoardbookSingleton.getInstance().getMatchHandler().addListener(this);
+
+		findLoggedInUser();
+
 	}
 
 	/**
 	 * Makes recyclerView to repopulate its matches with current data
 	 */
-	public void updateMatchAdapter() {
+	public void updateAdapter() {
 		matchfeedAdapter.notifyDataSetChanged();
 	}
 
@@ -42,51 +49,60 @@ public class MatchfeedPresenter  implements IRepositoryListener<Match> {
 	 * @param matchRecyclerView the RecyclerView that will be populated with matches
 	 */
 	public void enableMatchFeed(RecyclerView matchRecyclerView, Context viewContext) {
-
-
-
-
-
-		updateUserDatabase();
-
-		// TODO: This code breaks everything and needs to be reimplemented
-		// TODO: If implemented then IMatchfeedFragment needs to extend IFutureIntractable
-		/*CompletableFuture.allOf(loggedIn
-			.getFriends()
-			.stream()
-			.map(friend -> BoardbookSingleton.getInstance().getUserHandler()
-				.find(friend.getId()).thenApply(populatedFriend -> {
-					matchDatabase.addAll(populatedFriend.getMatches());
-					return null;
-				})).toArray(CompletableFuture[]::new)).thenAccept(nothing -> {
-			// Now all are added
-
-		});*/
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
-		matchRecyclerView.setLayoutManager(layoutManager);
 		matchfeedAdapter = new MatchfeedAdapter(viewContext, matchDatabase);
+
+		matchRecyclerView.setLayoutManager(layoutManager);
 		matchRecyclerView.setAdapter(matchfeedAdapter);
 
 
 	}
 
-	public void updateUserDatabase() {
-		User loggedInUser = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
-	}
 
-
-	@Override
-	public void onCreate(Match entity) {
-
-	}
-
-	@Override
-	public void onUpdate(Match entity) {
-
+	private void findLoggedInUser(){
+		findEntity(BoardbookSingleton.getInstance().getUserHandler(),
+			BoardbookSingleton
+				.getInstance()
+				.getAuthHandler()
+				.getLoggedInUser()
+				.getId());
 	}
 
 	@Override
-	public void onDelete(String id) {
+	protected void onEntityFound(User entity) {
+		matchDatabase.clear();
+		matchDatabase.addAll(entity.getMatches());
+		updateAdapter();
+	}
 
+	@Override
+	public void onAddMatch(Match match) {
+		if(match
+			.getMatchPlayerByUser(
+				BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser()) != null){
+			matchDatabase.add(match);
+		}
+		updateAdapter();
+	}
+
+	@Override
+	public void onUpdateMatch(Match match) {
+		for (int i = 0; i < matchDatabase.size(); i++) {
+			if (matchDatabase.get(i).getId().equals(match.getId())) {
+				matchDatabase.set(i, match);
+			}
+		}
+		updateAdapter();
+	}
+
+	@Override
+	public void onRemoveMatch(String id) {
+		for (int i = 0; i < matchDatabase.size(); i++) {
+			if (matchDatabase.get(i).getId().equals(id)) {
+				matchDatabase.remove(i);
+				break;
+			}
+		}
+		updateAdapter();
 	}
 }

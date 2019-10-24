@@ -9,14 +9,14 @@ import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.home.friends.IAddFriendActivity;
 import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
-import com.yahyeet.boardbook.presenter.AllEntitiesPresenter;
+import com.yahyeet.boardbook.presenter.FindAllPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.model.entity.User;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AddFriendPresenter extends AllEntitiesPresenter<User, UserHandler> {
+public class AddFriendPresenter extends FindAllPresenter<User, UserHandler> {
 
 	private IAddFriendActivity addFriendActivity;
 	private AbstractSearchAdapter searchAdapter;
@@ -45,7 +45,7 @@ public class AddFriendPresenter extends AllEntitiesPresenter<User, UserHandler> 
 	}
 
 	@Override
-	protected void modifyDatabase(List<User> database) {
+	protected void onDatabaseLoaded(List<User> database) {
 		List<User> myFriends = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
 		if (database != null && myFriends != null) {
 

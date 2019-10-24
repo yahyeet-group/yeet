@@ -11,8 +11,10 @@
     <string name="loginInvalidAccountError">Wrong Email or Password</string>
     <string name="emailFormatError">Email is not in a correct format</string>
     <string name="passwordLengthError">Password needs to be more than 6 characters</string>
-    <string name="gameLoadErrorText">Games could not be loaded. Please try again later.</string>
-    <string name="addFriendError">Users could not be loaded. Please try again later.</string>
+    <string name="gameLoadErrorText">Games could not be loaded right now. Please try again later.</string>
+    <string name="addFriendError">Users could not be loaded right now. Please try again later.</string>
+    <string name="matchfeedError">Matches could not be loaded right now. Please try again later.</string>
+    <string name="teamRoleError">Teams and Roles could not be loaded right now. Please try again later.</string>
 
     <string name="home">Home</string>
     <string name="chat">Chat</string>

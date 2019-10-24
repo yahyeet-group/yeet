@@ -87,14 +87,18 @@ public class AccountManagerPresenter {
 				accountManagerActivity.enableManagerInteraction();
 				if (e.getCause().getCause() instanceof FirebaseAuthUserCollisionException) {
 					accountManagerActivity.registerFailed(new EmailFailedException(e.getCause().getCause().getMessage()));
-					//TODO: Hardcoded knowing it will go 2 ways deep, fix in repositories
 				}
+				else if (e.getCause().getCause() instanceof FirebaseAuthInvalidCredentialsException){
+					accountManagerActivity.registerFailed(new EmailFailedException("Email is badly formatted, please use a valid email. Ex: yourName@email.com"));
 
-			});
-			e.printStackTrace();
-			return null;
+				//TODO: Hardcoded knowing it will go 2 ways deep, fix in repositories
+			}
+
 		});
-	}
+		e.printStackTrace();
+		return null;
+	});
+}
 
 	private void finishAccountManager() {
 		accountManagerActivity.finishAccountManager();

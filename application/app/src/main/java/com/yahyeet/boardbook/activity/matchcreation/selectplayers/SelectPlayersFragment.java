@@ -24,6 +24,8 @@ import com.yahyeet.boardbook.activity.matchcreation.HelperFunctions;
 import com.yahyeet.boardbook.activity.matchcreation.selectgame.ISelectGameFragment;
 import com.yahyeet.boardbook.presenter.matchcreation.selectplayers.SelectPlayersPresenter;
 
+import java.util.Objects;
+
 public class SelectPlayersFragment extends Fragment implements ISelectPlayersFragment, IFutureInteractable {
 
 	private SelectPlayersPresenter selectPlayersPresenter;
@@ -55,7 +57,7 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
 
 	public void enableMatchFeed() {
 		playerRecyclerView.setHasFixedSize(true);
-		selectPlayersPresenter.enableGameFeed(playerRecyclerView, getView().getContext());
+		selectPlayersPresenter.enableGameFeed(playerRecyclerView, Objects.requireNonNull(getView()).getContext());
 	}
 
 	public void enableSearchView() {
@@ -76,11 +78,15 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
 	@Override
 	public void enableViewInteraction() {
 			doneButton.setEnabled(true);
-			loadingIndicator.setVisibility(loadingIndicator.INVISIBLE);
-			playerRecyclerView.setVisibility(playerRecyclerView.VISIBLE);
-			playerRecyclerView.getLayoutParams().height = HelperFunctions.dpFromPx(550, getContext());
+			loadingIndicator.setVisibility(View.INVISIBLE);
+			playerRecyclerView.setVisibility(View.VISIBLE);
+
+			if(getContext() != null){
+				playerRecyclerView.getLayoutParams().height = HelperFunctions.dpFromPx(550, getContext());
+			}
+
 			playerRecyclerView.requestLayout();
-			loadingText.setVisibility(loadingText.INVISIBLE);
+			loadingText.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
