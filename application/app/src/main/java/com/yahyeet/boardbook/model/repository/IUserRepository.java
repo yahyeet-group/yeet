@@ -6,5 +6,11 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public interface IUserRepository extends IRepository<User> {
+    /**
+     * Retrieves all users that are friends with a user
+     *
+     * @param id User id
+     * @return A completable future that resolves to a list of users
+     */
     CompletableFuture<List<User>> findFriendsByUserId(String id);
 }

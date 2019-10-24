@@ -6,5 +6,11 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public interface IGameRoleRepository extends IRepository<GameRole> {
+	/**
+	 * Retrieves all game roles that belong to a team
+	 *
+	 * @param id Team id
+	 * @return A completable future that resolves to a list of game roles
+	 */
 	CompletableFuture<List<GameRole>> findRolesByTeamId(String id);
 }
