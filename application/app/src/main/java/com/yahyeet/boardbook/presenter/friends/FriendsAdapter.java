@@ -20,6 +20,9 @@ import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter for the friends recycler view
+ */
 public class FriendsAdapter extends AbstractSearchAdapter<User> {
 
 	private Context context;

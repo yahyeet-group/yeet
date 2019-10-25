@@ -1,5 +1,8 @@
 package com.yahyeet.boardbook.activity.account;
 
+/**
+ * Abstracts the relationship between AccountManagerActivity and AccountManagerPresenter
+ */
 public interface IAccountManagerActivity {
 
 	/**

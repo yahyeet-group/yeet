@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * Adapter for the match feed recycler view
+ */
 public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private static final String TAG = "MatchfeedAdapter";

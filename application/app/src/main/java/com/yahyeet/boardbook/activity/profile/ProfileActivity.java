@@ -11,7 +11,11 @@ import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.presenter.ProfilePresenter;
 
+/**
+ * Activity that displays a profile
+ */
 public class ProfileActivity extends AppCompatActivity implements IProfileActivity, IFutureInteractable {
+
 
 	private ProfilePresenter profilePresenter;
 	private ProgressBar pbLoading;

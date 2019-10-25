@@ -15,6 +15,9 @@ import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
 import com.yahyeet.boardbook.presenter.FindAllPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
+/**
+ * Presenter for the game activity
+ */
 public class GamePresenter extends FindAllPresenter<Game, GameHandler> implements IGameHandlerListener {
 
 	private IFutureInteractable gameFragment;

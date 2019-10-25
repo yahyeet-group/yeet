@@ -16,6 +16,9 @@ import androidx.annotation.Nullable;
 
 import com.yahyeet.boardbook.R;
 
+/**
+ * Fragment that contains register
+ */
 public class RegisterFragment extends AccountFragment {
 
 	private EditText etUser;

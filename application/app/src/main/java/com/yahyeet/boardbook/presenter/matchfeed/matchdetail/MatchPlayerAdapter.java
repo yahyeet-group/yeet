@@ -16,6 +16,9 @@ import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter for the match player recycler view
+ */
 public class MatchPlayerAdapter extends RecyclerView.Adapter<MatchPlayerAdapter.MatchPlayerViewHolder>{
 
 	private List<MatchPlayer> matchPlayers;

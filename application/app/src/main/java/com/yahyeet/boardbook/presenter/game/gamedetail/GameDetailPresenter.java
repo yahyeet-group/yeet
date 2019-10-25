@@ -17,7 +17,11 @@ import com.yahyeet.boardbook.presenter.FindOnePresenter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Presenter for the game detail activity
+ */
 public class GameDetailPresenter extends FindOnePresenter<Game, GameHandler> {
+
 
 	private IGameDetailActivity gameDetailActivity;
 	private GameDetailAdapter teamAdapter;

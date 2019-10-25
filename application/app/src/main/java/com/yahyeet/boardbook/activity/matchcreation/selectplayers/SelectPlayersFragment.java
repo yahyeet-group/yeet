@@ -1,7 +1,5 @@
 package com.yahyeet.boardbook.activity.matchcreation.selectplayers;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +8,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,12 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.matchcreation.CreateMatchActivity;
-import com.yahyeet.boardbook.activity.matchcreation.HelperFunctions;
-import com.yahyeet.boardbook.activity.matchcreation.selectgame.ISelectGameFragment;
+import com.yahyeet.boardbook.activity.viewutils.ViewUtils;
 import com.yahyeet.boardbook.presenter.matchcreation.selectplayers.SelectPlayersPresenter;
 
 import java.util.Objects;
 
+/**
+ * Fragment for selecting what players played in a match
+ */
 public class SelectPlayersFragment extends Fragment implements ISelectPlayersFragment, IFutureInteractable {
 
 	private SelectPlayersPresenter selectPlayersPresenter;
@@ -39,8 +38,6 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
 		CreateMatchActivity cma = (CreateMatchActivity) getActivity();
 		selectPlayersPresenter = new SelectPlayersPresenter(this, cma.getPresenter());
 		return inflater.inflate(R.layout.fragment_select_players, container, false);
-
-
 	}
 
 	@Override
@@ -82,7 +79,7 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
 			playerRecyclerView.setVisibility(View.VISIBLE);
 
 			if(getContext() != null){
-				playerRecyclerView.getLayoutParams().height = HelperFunctions.dpFromPx(550, getContext());
+				playerRecyclerView.getLayoutParams().height = ViewUtils.dpFromPx(550, getContext());
 			}
 
 			playerRecyclerView.requestLayout();

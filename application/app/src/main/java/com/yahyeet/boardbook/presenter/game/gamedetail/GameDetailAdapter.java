@@ -15,6 +15,9 @@ import com.yahyeet.boardbook.model.entity.GameTeam;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter for the game detail recycler view
+ */
 public class GameDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private static final int FIRST_LIST_ITEM_VIEW = 1;

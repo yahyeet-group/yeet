@@ -7,6 +7,9 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+/**
+ * Abstract behavior for other account managing fragments
+ */
 public abstract class AccountFragment extends Fragment {
 
 	IAccountFragmentHolder accountManager;

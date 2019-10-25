@@ -17,6 +17,10 @@ import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.matchcreation.CreateMatchActivity;
 import com.yahyeet.boardbook.presenter.matchcreation.selectgame.SelectGamePresenter;
 
+
+/**
+ * Fragment where game is set when adding a new match
+ */
 public class SelectGameFragment extends Fragment implements ISelectGameFragment, IFutureInteractable {
 
 	private SelectGamePresenter selectGamePresenter;

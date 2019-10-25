@@ -18,6 +18,10 @@ import com.yahyeet.boardbook.presenter.FindOnePresenter;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Presenter for the match feed activity
+ */
 public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> implements IMatchHandlerListener {
 
 	private MatchfeedAdapter matchfeedAdapter;
@@ -107,11 +111,10 @@ public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> impl
 				.getInstance()
 				.getAuthHandler()
 				.getLoggedInUser()
-			.getId(),
+				.getId(),
 			UserHandler.generatePopulatorConfig(false, true)
-			);
+		);
 	}
-
 
 
 }

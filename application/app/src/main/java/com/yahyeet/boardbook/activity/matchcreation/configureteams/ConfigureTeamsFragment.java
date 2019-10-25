@@ -14,6 +14,9 @@ import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.matchcreation.CreateMatchActivity;
 import com.yahyeet.boardbook.presenter.matchcreation.configureteams.ConfigureTeamPresenter;
 
+/**
+ * Fragment that sets team, role and win/loss for a new match
+ */
 public class ConfigureTeamsFragment extends Fragment implements IConfigureTeamsFragment{
 
 	private ConfigureTeamPresenter spp;

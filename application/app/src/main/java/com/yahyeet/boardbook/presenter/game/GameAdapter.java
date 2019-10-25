@@ -19,12 +19,14 @@ import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter with search functionality for recycler view in game
+ */
 public class GameAdapter extends AbstractSearchAdapter<Game> {
 
 	private static final String TAG = "GameAdapter";
 
 	private Context context;
-
 
 	private static final int GAME_LIST = 0;
 	private static final int GAME_GRID = 1;

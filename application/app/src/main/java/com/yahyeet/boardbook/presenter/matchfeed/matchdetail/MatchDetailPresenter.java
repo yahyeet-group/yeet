@@ -20,7 +20,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
+/**
+ * Presenter for the match detail activity
+ */
 public class MatchDetailPresenter extends FindOnePresenter<Match, MatchHandler> {
+
 
 	private IMatchDetailActivity matchDetailActivity;
 	private MatchPlayerAdapter matchPlayerAdapter;

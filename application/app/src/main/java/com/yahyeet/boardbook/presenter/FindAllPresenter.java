@@ -14,7 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Abstracts presenters that can find all of an entity
+ * @param <E> An entity
+ * @param <H> Handler for entity E
+ */
 public abstract class FindAllPresenter<E extends AbstractEntity, H extends IEntityHandler<E>> {
+
 
 	private RecyclerView.Adapter adapter;
 	private IFutureInteractable fragment;

@@ -16,6 +16,9 @@ import com.yahyeet.boardbook.model.entity.User;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Presenter for the add friend activity
+ */
 public class AddFriendPresenter extends FindAllPresenter<User, UserHandler> {
 
 	private IAddFriendActivity addFriendActivity;

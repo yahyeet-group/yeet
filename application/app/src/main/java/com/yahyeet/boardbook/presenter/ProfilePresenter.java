@@ -15,6 +15,9 @@ import com.yahyeet.boardbook.model.entity.User;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Presenter for the profile activity
+ */
 public class ProfilePresenter extends FindOnePresenter<User, UserHandler> {
 
 	private MatchfeedAdapter matchfeedAdapter;

@@ -1,5 +1,8 @@
 package com.yahyeet.boardbook.activity.home.game.gamedetail;
 
+/**
+ * Abstracts GameDetailActivity
+ */
 public interface IGameDetailActivity {
 
 	void setGameName(String name);
