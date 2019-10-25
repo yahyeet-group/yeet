@@ -11,7 +11,6 @@ import com.yahyeet.boardbook.model.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @Author Nox/Aaron Sandgren

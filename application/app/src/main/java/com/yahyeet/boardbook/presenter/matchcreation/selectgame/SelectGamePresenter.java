@@ -10,8 +10,8 @@ import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.handler.GameHandler;
 import com.yahyeet.boardbook.presenter.FindAllPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
-import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 import com.yahyeet.boardbook.activity.matchcreation.selectgame.ISelectGameFragment;
+import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 
 /**
  * This is the Presenter for the SelectGame fragment.

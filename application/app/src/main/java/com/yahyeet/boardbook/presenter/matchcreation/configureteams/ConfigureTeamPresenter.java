@@ -25,13 +25,13 @@ public class ConfigureTeamPresenter {
 	private CMMasterPresenter masterPresenter;
 
 	/**
-	 * @Author Nox/Aaron Sandgren
 	 * This is the Presenter for the ConfigureTeams fragment.
 	 * This class binds references to the MasterPresenter, Enables the RecycleView and gives it the correct adapter
 	 */
 	public ConfigureTeamPresenter(ConfigureTeamsFragment ctf, CMMasterPresenter cm) {
 		this.masterPresenter = cm;
 	}
+
 	public void enableGameFeed(RecyclerView playerRecycleView, Context viewContext) {
 		this.playerRecycleView = playerRecycleView;
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
@@ -81,7 +81,7 @@ public class ConfigureTeamPresenter {
 				team = teams.get(teamSpinner.getSelectedItemPosition() - 1);
 
 				if (roleSpinner.getSelectedItemPosition() != 0) {
-					role = teams.get(teamSpinner.getSelectedItemPosition() - 1).getRoles().get(roleSpinner.getSelectedItemPosition() -1);
+					role = teams.get(teamSpinner.getSelectedItemPosition() - 1).getRoles().get(roleSpinner.getSelectedItemPosition() - 1);
 				}
 			}
 

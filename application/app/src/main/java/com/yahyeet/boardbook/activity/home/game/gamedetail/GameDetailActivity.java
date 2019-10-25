@@ -1,13 +1,13 @@
 package com.yahyeet.boardbook.activity.home.game.gamedetail;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.IFutureInteractable;

@@ -9,7 +9,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.handler.UserHandler;
-import com.yahyeet.boardbook.model.repository.IUserRepository;
 import com.yahyeet.boardbook.model.service.IAuthService;
 
 import java.util.concurrent.CompletableFuture;

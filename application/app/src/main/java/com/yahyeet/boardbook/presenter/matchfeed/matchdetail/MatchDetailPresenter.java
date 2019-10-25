@@ -1,8 +1,6 @@
 package com.yahyeet.boardbook.presenter.matchfeed.matchdetail;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.os.Looper;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +16,6 @@ import com.yahyeet.boardbook.presenter.FindOnePresenter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 /**
  * Presenter for the match detail activity

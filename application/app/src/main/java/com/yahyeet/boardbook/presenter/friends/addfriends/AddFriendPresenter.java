@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.home.friends.IAddFriendActivity;
+import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
 import com.yahyeet.boardbook.presenter.FindAllPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
-import com.yahyeet.boardbook.model.entity.User;
 
 import java.util.List;
 import java.util.stream.Collectors;

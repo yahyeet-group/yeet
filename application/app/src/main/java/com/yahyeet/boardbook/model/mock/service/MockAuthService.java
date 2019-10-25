@@ -4,7 +4,6 @@ import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.service.IAuthService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;

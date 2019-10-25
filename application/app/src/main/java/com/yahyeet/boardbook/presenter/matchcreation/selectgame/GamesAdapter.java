@@ -18,7 +18,6 @@ import com.yahyeet.boardbook.model.entity.Game;
 import java.util.List;
 
 /**
- * @Author Nox/Aaron Sandgren
  * This is the adapter that creates and configures the views in the GamesRecycleView.
  */
 public class GamesAdapter extends AbstractSearchAdapter<Game> {
