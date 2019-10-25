@@ -23,16 +23,16 @@ public class MatchPopulator {
 	public CompletableFuture<Match> populate(Match match, Map<String, Boolean> config) {
 		Match populatedMatch = new Match(match.getId());
 
-		Boolean shouldFetchGame = config.getOrDefault("game", true);
-		Boolean shouldFetchMatchPlayers = config.getOrDefault("players", true);
+		Boolean shouldFetchGame = config.getOrDefault("game", false);
+		Boolean shouldFetchMatchPlayers = config.getOrDefault("players", false);
 
 		CompletableFuture<Game> futureGame = CompletableFuture.completedFuture(null);
-		if (shouldFetchGame == null || shouldFetchGame) {
+		if (shouldFetchGame != null && shouldFetchGame) {
 			futureGame = gameRepository.find(match.getGame().getId());
 		}
 
 		CompletableFuture<List<MatchPlayer>> futureMatchPlayers = CompletableFuture.completedFuture(new ArrayList<>());
-		if (shouldFetchMatchPlayers == null || shouldFetchMatchPlayers) {
+		if (shouldFetchMatchPlayers != null && shouldFetchMatchPlayers) {
 			futureMatchPlayers = matchPlayerRepository.findMatchPlayersByMatchId(populatedMatch.getId());
 		}
 

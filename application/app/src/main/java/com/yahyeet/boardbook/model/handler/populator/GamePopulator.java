@@ -30,16 +30,16 @@ public class GamePopulator {
 		);
 		populatedGame.setId(game.getId());
 
-		Boolean shouldFetchMatches = config.getOrDefault("matches", true);
-		Boolean shouldFetchTeams = config.getOrDefault("teams", true);
+		Boolean shouldFetchMatches = config.getOrDefault("matches", false);
+		Boolean shouldFetchTeams = config.getOrDefault("teams", false);
 
 		CompletableFuture<List<Match>> futureMatches = CompletableFuture.completedFuture(new ArrayList<>());
-		if (shouldFetchMatches == null || shouldFetchMatches) {
+		if (shouldFetchMatches != null && shouldFetchMatches) {
 			futureMatches = matchRepository.findMatchesByGameId(game.getId());
 		}
 
 		CompletableFuture<List<GameTeam>> futureTeams = CompletableFuture.completedFuture(new ArrayList<>());
-		if (shouldFetchTeams == null || shouldFetchTeams) {
+		if (shouldFetchTeams != null && shouldFetchTeams) {
 			futureTeams = gameTeamRepository.findTeamsByGameId(game.getId());
 		}
 

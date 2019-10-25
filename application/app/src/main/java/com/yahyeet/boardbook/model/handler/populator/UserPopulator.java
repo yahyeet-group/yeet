@@ -28,16 +28,16 @@ public class UserPopulator {
 		User populatedUser = new User(user.getName());
 		populatedUser.setId(user.getId());
 
-		Boolean shouldFetchFriends = config.getOrDefault("friends", true);
-		Boolean shouldFetchMatches = config.getOrDefault("matches", true);
+		Boolean shouldFetchFriends = config.getOrDefault("friends", false);
+		Boolean shouldFetchMatches = config.getOrDefault("matches", false);
 
 		CompletableFuture<List<User>> friendsFuture = CompletableFuture.completedFuture(new ArrayList<>());
-		if (shouldFetchFriends == null || shouldFetchFriends) {
+		if (shouldFetchFriends != null && shouldFetchFriends) {
 			friendsFuture = userRepository.findFriendsByUserId(populatedUser.getId());
 		}
 
 		CompletableFuture<List<MatchPlayer>> futureMatchPlayers = CompletableFuture.completedFuture(new ArrayList<>());
-		if (shouldFetchMatches == null || shouldFetchMatches) {
+		if (shouldFetchMatches != null && shouldFetchMatches) {
 			futureMatchPlayers = matchPlayerRepository.findMatchPlayersByUserId(populatedUser.getId());
 		}
 
