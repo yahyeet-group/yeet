@@ -11,6 +11,9 @@ import androidx.fragment.app.Fragment;
 
 import com.yahyeet.boardbook.R;
 
+/**
+ * Fragment that displays chats
+ */
 public class ChatFragment extends Fragment {
 
 	@Nullable

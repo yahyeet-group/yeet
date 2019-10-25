@@ -20,6 +20,9 @@ import com.yahyeet.boardbook.presenter.SearchAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter for the friends recycler view
+ */
 public class FriendsAdapter extends SearchAdapter<User> {
 
 	private static final String TAG = "FriendsAdapter";

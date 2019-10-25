@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Presenter for the add friend activity
+ */
 public class AddFriendPresenter extends AdapterPresenter<User, UserHandler> {
 
 	private IAddFriendActivity addFriendActivity;

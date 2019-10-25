@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * Presenter for the game detail activity
+ */
 public class GameDetailPresenter {
 
 	private IGameDetailActivity gameDetailActivity;

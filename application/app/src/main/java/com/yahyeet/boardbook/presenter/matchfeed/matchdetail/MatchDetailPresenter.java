@@ -12,8 +12,9 @@ import com.yahyeet.boardbook.activity.home.matchfeed.matchdetail.IMatchDetailAct
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.model.entity.Match;
 
-
-
+/**
+ * Presenter for the match detail activity
+ */
 public class MatchDetailPresenter {
 
 	private IMatchDetailActivity matchDetailActivity;

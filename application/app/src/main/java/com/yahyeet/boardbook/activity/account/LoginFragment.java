@@ -12,6 +12,9 @@ import androidx.annotation.Nullable;
 
 import com.yahyeet.boardbook.R;
 
+/**
+ * Fragment that contains login functionality
+ */
 public class LoginFragment extends AccountFragment {
 
 	private Button loginButton;

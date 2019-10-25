@@ -21,6 +21,9 @@ import com.yahyeet.boardbook.activity.home.matchfeed.MatchfeedFragment;
 import com.yahyeet.boardbook.activity.matchcreation.CreateMatchActivity;
 import com.yahyeet.boardbook.presenter.HomePresenter;
 
+/**
+ * Activity that show a feed of recently played matches by the logged in user and friends
+ */
 public class HomeActivity extends AppCompatActivity implements IHomeActivity {
 
 
