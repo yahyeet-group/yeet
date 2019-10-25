@@ -1,17 +1,14 @@
 package com.yahyeet.boardbook.presenter.matchcreation.configureteams;
 
 import android.content.Context;
-import android.widget.Spinner;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.matchcreation.configureteams.ConfigureTeamsFragment;
-import com.yahyeet.boardbook.activity.matchcreation.configureteams.IConfigureTeamsFragment;
 import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
-import com.yahyeet.boardbook.presenter.matchcreation.selectplayers.PlayerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

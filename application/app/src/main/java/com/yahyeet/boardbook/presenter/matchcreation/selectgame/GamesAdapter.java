@@ -10,8 +10,8 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 import com.yahyeet.boardbook.model.entity.Game;
+import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 
 import java.util.List;
 

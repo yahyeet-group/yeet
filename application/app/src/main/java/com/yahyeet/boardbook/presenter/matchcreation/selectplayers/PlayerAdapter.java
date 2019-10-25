@@ -11,8 +11,8 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.home.matchfeed.matchdetail.IMatchDetailActivity;
-import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.model.entity.Match;
+import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
 /**
  * Presenter for the match detail activity

@@ -5,11 +5,11 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.activity.home.matchfeed.IMatchfeedFragment;
 import com.yahyeet.boardbook.model.entity.Match;
+import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.handler.IMatchHandlerListener;
+import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
 import java.util.ArrayList;
 import java.util.List;

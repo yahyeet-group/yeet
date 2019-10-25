@@ -1,12 +1,7 @@
 package com.yahyeet.boardbook.presenter.matchcreation;
 
 
-import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.matchcreation.ICreateMatchActivity;
-import com.yahyeet.boardbook.activity.matchcreation.configureteams.ConfigureTeamsFragment;
-import com.yahyeet.boardbook.activity.matchcreation.CreateMatchActivity;
-import com.yahyeet.boardbook.activity.matchcreation.selectgame.SelectGameFragment;
-import com.yahyeet.boardbook.activity.matchcreation.selectplayers.SelectPlayersFragment;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
