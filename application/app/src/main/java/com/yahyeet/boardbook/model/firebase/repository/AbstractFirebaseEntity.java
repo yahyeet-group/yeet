@@ -1,11 +1,9 @@
 package com.yahyeet.boardbook.model.firebase.repository;
 
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.yahyeet.boardbook.model.entity.AbstractEntity;
 
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * Abstract generic class that defines methods and implements common functionality that Firebase

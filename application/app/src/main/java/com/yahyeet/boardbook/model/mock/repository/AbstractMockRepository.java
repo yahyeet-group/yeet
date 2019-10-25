@@ -4,7 +4,6 @@ import com.yahyeet.boardbook.model.entity.AbstractEntity;
 import com.yahyeet.boardbook.model.repository.IRepository;
 import com.yahyeet.boardbook.model.repository.IRepositoryListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

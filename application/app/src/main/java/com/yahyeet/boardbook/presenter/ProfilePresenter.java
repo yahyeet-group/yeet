@@ -5,12 +5,10 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.model.handler.GameHandler;
-import com.yahyeet.boardbook.model.handler.MatchHandler;
-import com.yahyeet.boardbook.presenter.matchfeed.MatchfeedAdapter;
 import com.yahyeet.boardbook.activity.profile.IProfileActivity;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.presenter.matchfeed.MatchfeedAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

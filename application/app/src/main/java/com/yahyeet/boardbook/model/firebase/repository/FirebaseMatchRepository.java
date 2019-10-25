@@ -9,7 +9,6 @@ import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.repository.IMatchRepository;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
