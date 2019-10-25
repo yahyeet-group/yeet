@@ -10,6 +10,11 @@ import com.yahyeet.boardbook.model.handler.EntityHandler;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Abstracts presenters that can find all of an entity
+ * @param <E> An entity
+ * @param <H> Handler for entity E
+ */
 public abstract class AdapterPresenter<E extends AbstractEntity, H extends EntityHandler<E>> {
 
 	private SearchAdapter<E> adapter;

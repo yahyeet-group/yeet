@@ -16,17 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Presenter for the Friends view
+ */
 public class FriendsPresenter implements UserHandlerListener {
 
 	private FriendsAdapter friendsAdapter;
-	// TODO: Remove if never necessary
-	private IFriendFragment friendsFragment;
 
 	final private List<User> userDatabase;
 
-	public FriendsPresenter(IFriendFragment friendsFragment) {
-		this.friendsFragment = friendsFragment;
-
+	public FriendsPresenter() {
 		userDatabase = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
 		BoardbookSingleton.getInstance().getUserHandler().addListener(this);
 	}

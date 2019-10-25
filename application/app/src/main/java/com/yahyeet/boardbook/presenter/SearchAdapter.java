@@ -9,6 +9,10 @@ import com.yahyeet.boardbook.model.entity.AbstractEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter that can search through it's database
+ * @param <T> What the database stores
+ */
 public abstract class SearchAdapter<T extends AbstractEntity> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private List<T> database;

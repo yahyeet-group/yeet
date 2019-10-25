@@ -32,7 +32,7 @@ public class FriendsFragment extends Fragment implements IFriendFragment {
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		friendsPresenter = new FriendsPresenter(this);
+		friendsPresenter = new FriendsPresenter();
 
 
 		return inflater.inflate(R.layout.fragment_friends, container, false);
@@ -41,7 +41,7 @@ public class FriendsFragment extends Fragment implements IFriendFragment {
 	@Override
 	public void onViewCreated(@Nonnull View view, Bundle savedInstanceState) {
 		setAllViews();
-		friendsPresenter = new FriendsPresenter(this);
+		friendsPresenter = new FriendsPresenter();
 		friendSearch.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

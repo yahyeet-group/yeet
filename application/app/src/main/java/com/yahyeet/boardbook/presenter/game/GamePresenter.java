@@ -14,6 +14,9 @@ import com.yahyeet.boardbook.model.handler.GameHandlerListener;
 import com.yahyeet.boardbook.presenter.AdapterPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
+/**
+ * Presenter for the game activity
+ */
 public class GamePresenter extends AdapterPresenter<Game, GameHandler> implements GameHandlerListener {
 
 

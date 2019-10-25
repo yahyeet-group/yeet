@@ -20,6 +20,9 @@ import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter for add friend recycler view
+ */
 public class AddFriendsAdapter extends SearchAdapter<User> {
 
 	private IAddFriendActivity parent;
