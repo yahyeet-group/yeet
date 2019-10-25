@@ -41,7 +41,6 @@ public class SelectPlayersPresenter extends AdapterPresenter<User, UserHandler> 
 
 		fillAndModifyDatabase(BoardbookSingleton.getInstance().getUserHandler());
 
-
 	}
 
 	public void enableGameFeed(RecyclerView gameRecycleView, Context viewContext) {

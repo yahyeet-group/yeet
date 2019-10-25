@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IFutureInteractable;
-import com.yahyeet.boardbook.model.Boardbook;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.handler.GameHandler;
 import com.yahyeet.boardbook.presenter.AdapterPresenter;
@@ -30,7 +29,6 @@ public class SelectGamePresenter extends AdapterPresenter<Game, GameHandler> {
 		super((IFutureInteractable) selectGameFragment);
 		this.selectGameFragment = selectGameFragment;
 		this.masterPresenter = cm;
-
 
 		fillDatabase(BoardbookSingleton.getInstance().getGameHandler());
 		setAdapter(new GamesAdapter(getDatabase(), this));
