@@ -14,7 +14,11 @@ import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 import com.yahyeet.boardbook.activity.matchcreation.selectgame.ISelectGameFragment;
 
-
+/**
+ * @Author Nox/Aaron Sandgren
+ * This is the Presenter for the SelectGame fragment.
+ * This class binds references to the MasterPresenter, Enables the RecycleView and gives it the correct adapter
+ */
 public class SelectGamePresenter extends AdapterPresenter<Game, GameHandler> {
 
 

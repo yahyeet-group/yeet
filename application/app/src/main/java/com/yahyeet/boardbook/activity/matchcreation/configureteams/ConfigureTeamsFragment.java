@@ -14,6 +14,12 @@ import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.matchcreation.CreateMatchActivity;
 import com.yahyeet.boardbook.presenter.matchcreation.configureteams.ConfigureTeamPresenter;
 
+/**
+ * @Author Nox/Aaron Sandgren
+ * This is the fragment for the step of configuring the teams in the Wizard.
+ * This instantiates the the ConfigureTeamPresenter for the class and
+ * starts up the RecycleView
+ */
 public class ConfigureTeamsFragment extends Fragment implements IConfigureTeamsFragment{
 
 	private ConfigureTeamPresenter spp;

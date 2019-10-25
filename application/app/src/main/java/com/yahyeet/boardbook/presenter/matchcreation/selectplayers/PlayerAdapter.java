@@ -19,12 +19,19 @@ import com.yahyeet.boardbook.model.entity.User;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @Author Nox/Aaron Sandgren
+ * This is the adapter that creates and configures the views in the PlayerRecycleView.
+ */
 public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filterable {
 
 	private CMMasterPresenter cmmp;
 	private SelectPlayersPresenter spp;
 	private List<User> usersFriends;
 
+	/**
+	 * This is the class that will be the object for every entry in the RecycleView
+	 */
 	class PlayerViewHolder extends RecyclerView.ViewHolder {
 
 		TextView playerName;
@@ -37,6 +44,10 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 
 		}
 
+		/**
+		 * This is called to set the button text and color to represent one player
+		 * that had been selected from before.
+		 */
 		public void setAlreadySelected(){
 			actionButton.setText("Remove");
 			this.itemView.setBackgroundColor(Color.parseColor("#0cc43d"));
@@ -73,11 +84,16 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 		if(holder instanceof PlayerViewHolder){
 
 			PlayerViewHolder vh = (PlayerViewHolder) holder;
+
+			// This makes is to so that friends of the logged in user is shown in a different color
 			List<User> database = getDatabase();
 			if (usersFriends.contains(database.get(position))){
 				vh.itemView.setBackgroundColor(Color.parseColor("#09cdda"));
 			}
 
+			// This bind the button for selecting and deselecting the player
+			// Ensuring that the button text is correct and that the user
+			// Gets added to the DataObject
 			vh.playerName.setText(database.get(position).getName());
 			vh.actionButton.setOnClickListener(event -> {
 				System.out.println(vh.actionButton.getText().toString().toLowerCase());
@@ -97,7 +113,9 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 		}
 
 
-		/// If already selected from before this changes the pliancy and button
+		/// If the user where to go back from the Configuring teams part of the wizard to
+		/// Selecting players, the Recycle view would be reloaded and therefore the pliancy of the buttons.
+		/// This fixes so that players from before now look like they should do.
 		List<String> playerNames = new ArrayList<>();
 		for (User user: cmmp.getCmdh().getSelectedPlayers()) {
 			playerNames.add(user.getName());
@@ -105,7 +123,6 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 
 		int amountPlayers = getItemCount();
 		for (int i =0; i<amountPlayers; i++ ){
-			System.out.println("does this even run");
 			PlayerViewHolder holder1 = (PlayerViewHolder) holder;
 			if(playerNames.contains(holder1.getName())){
 				holder1.setAlreadySelected();

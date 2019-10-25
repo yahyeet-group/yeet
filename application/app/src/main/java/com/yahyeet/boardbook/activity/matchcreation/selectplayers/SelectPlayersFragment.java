@@ -24,6 +24,13 @@ import com.yahyeet.boardbook.activity.matchcreation.HelperFunctions;
 import com.yahyeet.boardbook.activity.matchcreation.selectgame.ISelectGameFragment;
 import com.yahyeet.boardbook.presenter.matchcreation.selectplayers.SelectPlayersPresenter;
 
+/**
+ * @Author Nox/Aaron Sandgren
+ * This is the fragment for the step of selecting players in the Wizard.
+ * This instantiates the the SelectPlayerPresenter for the class and
+ * starts up the RecycleView and the Search functionality
+ */
+
 public class SelectPlayersFragment extends Fragment implements ISelectPlayersFragment, IFutureInteractable {
 
 	private SelectPlayersPresenter selectPlayersPresenter;
@@ -49,7 +56,6 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
 		enableSearchView();
 		doneButton.setOnClickListener(event -> {
 			selectPlayersPresenter.getMasterPresenter().goToConfigureTeams();
-			this.displayLoadingFailed();
 		});
 	}
 
@@ -62,7 +68,7 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
 		selectPlayersPresenter.enableSearchBar(searchView);
 	}
 
-
+	// This could be done in constructor but this reduces clutter
 	private void setViews(){
 
 		searchView = getView().findViewById(R.id.searchPlayers);
@@ -73,6 +79,10 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
 
 	}
 
+	/**
+	 * This is called when the async data from the database has been downloaded. Until then the the functional
+	 * views of the program are disabled and a loading symbol is shown
+	 */
 	@Override
 	public void enableViewInteraction() {
 			doneButton.setEnabled(true);
@@ -88,6 +98,9 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
 
 	}
 
+	/**
+	 * This shows a loading error text if the data couldn't be downloaded.
+	 */
 	@Override
 	public void displayLoadingFailed() {
 		loadingIndicator.invalidate();

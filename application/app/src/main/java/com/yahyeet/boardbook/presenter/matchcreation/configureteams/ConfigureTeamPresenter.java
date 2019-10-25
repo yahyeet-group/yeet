@@ -24,7 +24,11 @@ public class ConfigureTeamPresenter {
 	private RecyclerView playerRecycleView;
 	private CMMasterPresenter masterPresenter;
 
-
+	/**
+	 * @Author Nox/Aaron Sandgren
+	 * This is the Presenter for the ConfigureTeams fragment.
+	 * This class binds references to the MasterPresenter, Enables the RecycleView and gives it the correct adapter
+	 */
 	public ConfigureTeamPresenter(ConfigureTeamsFragment ctf, CMMasterPresenter cm) {
 		this.masterPresenter = cm;
 	}
@@ -49,7 +53,15 @@ public class ConfigureTeamPresenter {
 		return masterPresenter;
 	}
 
+	/**
+	 * This finalizes the match in that it takes all the players selected together with the teams selected
+	 * and creates MatchPlayer objects that correspond with the user selected configuration
+	 */
+	// This method is a bit messy but we didn't want the view to be dependent on the Enteties and thefore couldnt
+	// Create the MatchPlayer in the adapter which would have been cleaner. Here all the data is gotten from the adapter
+	// And then bound to a correct MatchPlayer
 	public void finalizeMatch() {
+		// Variables so that I don't have to initialize in the loop.
 		List<MatchPlayer> players = new ArrayList<>();
 		Spinner teamSpinner;
 		Spinner roleSpinner;
@@ -61,7 +73,11 @@ public class ConfigureTeamPresenter {
 		User user;
 
 		for (int i = 0; i < playerRecycleView.getAdapter().getItemCount(); i++) {
+			// reset variables after every loop
+			role = null;
+			team = null;
 
+			// Getting spinners and from every entry in the RecycleView
 			ConfigureTeamAdapter.PlayerViewHolder holder = (ConfigureTeamAdapter.PlayerViewHolder) playerRecycleView.findViewHolderForAdapterPosition(i);
 			teamSpinner = holder.getSpinners()[0];
 			roleSpinner = holder.getSpinners()[1];
@@ -79,7 +95,7 @@ public class ConfigureTeamPresenter {
 			players.add(new MatchPlayer(user, role, team, holder.getWin()));
 
 		}
-
+		// Add the match players into the DataObject and call finalize on MasterPresenter
 		masterPresenter.getCmdh().addPlayer(players);
 		masterPresenter.finalizeMatch();
 
