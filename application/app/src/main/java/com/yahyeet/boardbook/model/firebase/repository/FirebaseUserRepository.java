@@ -16,6 +16,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.stream.Collectors;
 
+/**
+ * Firebase Firestore implementation of a user repository
+ */
 public class FirebaseUserRepository extends AbstractFirebaseRepository<User> implements IUserRepository {
 
 	public FirebaseUserRepository(FirebaseFirestore firestore) {
@@ -127,6 +130,14 @@ public class FirebaseUserRepository extends AbstractFirebaseRepository<User> imp
 			});
 	}
 
+	/**
+	 * Connects two user in a pivot collection in Firebase Firestore
+	 *
+	 * @param leftId First user
+	 * @param rightId Second user
+	 * @return A completable future that when resolves denotes that the operation is finished, if the
+	 * operation is unsuccessful it throws an error
+	 */
 	private CompletableFuture<Void> addFriend(String leftId, String rightId) {
 		return CompletableFuture.supplyAsync(() -> {
 			Map<String, Object> data = new HashMap<>();

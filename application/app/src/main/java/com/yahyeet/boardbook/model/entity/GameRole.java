@@ -1,5 +1,8 @@
 package com.yahyeet.boardbook.model.entity;
 
+/**
+ * Defines a game role entity
+ */
 public class GameRole extends AbstractEntity {
 	private String name;
 	private GameTeam team;

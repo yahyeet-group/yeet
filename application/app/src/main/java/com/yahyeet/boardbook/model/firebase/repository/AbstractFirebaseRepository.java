@@ -19,6 +19,11 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
+/**
+ * Abstract Firebase Firestore implementation of a repository
+ *
+ * @param <TModel>
+ */
 public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> implements IRepository<TModel> {
 	private FirebaseFirestore firestore;
 	private String collectionNamePrefix = "";
@@ -45,7 +50,12 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 
 			return futureFirebaseEntity
 				.thenCombine(futureOnSave, ((firebaseEntity, nothing) -> firebaseEntity))
-				.thenApply(AbstractFirebaseEntity::toModelType);
+				.thenApply(AbstractFirebaseEntity::toModelType)
+				.thenApply(createdEntity -> {
+					notifyListenersOnCreate(createdEntity);
+
+					return createdEntity;
+				});
 		} else {
 			return findFirebaseEntityById(entity.getId()).thenCompose(firebaseEntity -> {
 					CompletableFuture<AbstractFirebaseEntity<TModel>> futureFirebaseEntity =
@@ -56,7 +66,12 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 
 					return futureFirebaseEntity
 						.thenCombine(futureOnSave, ((fbEntity, nothing) -> fbEntity))
-						.thenApply(AbstractFirebaseEntity::toModelType);
+						.thenApply(AbstractFirebaseEntity::toModelType)
+						.thenApply(createdEntity -> {
+							notifyListenersOnUpdate(createdEntity);
+
+							return createdEntity;
+						});
 				}
 			).exceptionally(e -> {
 				try {
@@ -69,6 +84,11 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 					return futureFirebaseEntity
 						.thenCombine(futureOnSave, ((fbEntity, nothing) -> fbEntity))
 						.thenApply(AbstractFirebaseEntity::toModelType)
+						.thenApply(createdEntity -> {
+							notifyListenersOnCreate(createdEntity);
+
+							return createdEntity;
+						})
 						.get();
 				} catch (ExecutionException | InterruptedException error) {
 					throw new CompletionException(error);
@@ -83,8 +103,12 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 	}
 
 	@Override
-	public CompletableFuture<Void> delete(TModel entity) {
-		return removeFirebaseEntityById(entity.getId());
+	public CompletableFuture<Void> delete(String id) {
+		return removeFirebaseEntityById(id).thenApply(nothing -> {
+			notifyListenersOnDelete(id);
+
+			return null;
+		});
 	}
 
 	@Override
@@ -99,24 +123,61 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 
 	@Override
 	public void addListener(IRepositoryListener<TModel> listener) {
-
+		listeners.add(listener);
 	}
 
 	@Override
 	public void removeListener(IRepositoryListener<TModel> listener) {
-
+		listeners.remove(listener);
 	}
 
+	private void notifyListenersOnCreate(TModel entity) {
+		for (IRepositoryListener<TModel> listener : listeners) {
+			listener.onCreate(entity);
+		}
+	}
+
+	private void notifyListenersOnUpdate(TModel entity) {
+		for (IRepositoryListener<TModel> listener : listeners) {
+			listener.onUpdate(entity);
+		}
+	}
+
+	private void notifyListenersOnDelete(String id) {
+		for (IRepositoryListener<TModel> listener : listeners) {
+			listener.onDelete(id);
+		}
+	}
+
+	/**
+	 * Function that is run after an entity is saved
+	 *
+	 * @param entity      Model entity that was saved
+	 * @param savedEntity Firebase entity that was saved
+	 * @return A completable future that when resolved denotes that the afterSave hook has completed
+	 */
 	public CompletableFuture<Void> afterSave(TModel entity, AbstractFirebaseEntity<TModel> savedEntity) {
 		return CompletableFuture.completedFuture(null);
 	}
 
-	public String getFullCollectionName() {
+	/**
+	 * @return The full Firebase Firestore collection name
+	 */
+	String getFullCollectionName() {
 		return collectionNamePrefix + "_" + getCollectionName();
 	}
 
+	/**
+	 * @return The base collection name
+	 */
 	public abstract String getCollectionName();
 
+	/**
+	 * Creates a new entity in Firebase Firestore
+	 *
+	 * @param firebaseEntity Entity to be stored
+	 * @return A completable future that resolves to the created Firebase entity
+	 */
 	private CompletableFuture<AbstractFirebaseEntity<TModel>> createFirebaseEntity(AbstractFirebaseEntity<TModel> firebaseEntity) {
 		return CompletableFuture.supplyAsync(() -> {
 			Task<DocumentReference> task = firestore.collection(getFullCollectionName())
@@ -136,6 +197,12 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 		});
 	}
 
+	/**
+	 * Creates a new entity in Firebase Firestore with a preset id
+	 *
+	 * @param firebaseEntity Entity to be stored
+	 * @return A completable future that resolves to the created Firebase entity
+	 */
 	private CompletableFuture<AbstractFirebaseEntity<TModel>> createFirebaseEntityWithId(AbstractFirebaseEntity<TModel> firebaseEntity) {
 		return CompletableFuture.supplyAsync(() -> {
 			Task<Void> task = firestore.collection(getFullCollectionName())
@@ -155,6 +222,13 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 		});
 	}
 
+	/**
+	 * Finds a Firebase entity by id in Firebase Firestore
+	 *
+	 * @param id Entity id
+	 * @return A completable future that resolves to the found Firebase entity. If the entity isn't
+	 * found it throws an exception
+	 */
 	private CompletableFuture<AbstractFirebaseEntity<TModel>> findFirebaseEntityById(String id) {
 		AbstractFirebaseEntity<TModel> cachedEntity = cache.get(id);
 		if (cachedEntity != null) {
@@ -178,6 +252,13 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 		});
 	}
 
+	/**
+	 * Removes a Firebase entity from Firebase Firestore
+	 *
+	 * @param id Entity id
+	 * @return A completable future that when resolves denotes that the Firebase entity was removed.
+	 * If no such entity is found it throws an exception
+	 */
 	private CompletableFuture<Void> removeFirebaseEntityById(String id) {
 		return CompletableFuture.supplyAsync(() -> {
 			Task<Void> task = firestore.collection(getFullCollectionName()).document(id).delete();
@@ -196,6 +277,13 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 		});
 	}
 
+	/**
+	 * Updates the fields of a Firebase entity in Firebase Firestore
+	 *
+	 * @param firebaseEntity The entity with updated values
+	 * @return A completable future that resolves to the updates Firebase entity, if the opration is
+	 * not successful it throws an exception
+	 */
 	private CompletableFuture<AbstractFirebaseEntity<TModel>> updateFirebaseEntity(AbstractFirebaseEntity<TModel> firebaseEntity) {
 		return CompletableFuture.supplyAsync(() -> {
 			Task<Void> task = firestore.collection(getFullCollectionName())
@@ -216,6 +304,12 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 		}).thenCompose(this::findFirebaseEntityById);
 	}
 
+	/**
+	 * Finds all Firebase entities in Firebase Firestore
+	 *
+	 * @return A completable future that resolves to a list of all Firebase entities, throws an
+	 * exception if the operation is not successful
+	 */
 	private CompletableFuture<List<AbstractFirebaseEntity<TModel>>> findAllFirebaseEntities() {
 		return CompletableFuture.supplyAsync(() -> {
 			Task<QuerySnapshot> task = firestore.collection(getFullCollectionName()).get();
@@ -238,7 +332,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 		this.collectionNamePrefix = collectionNamePrefix;
 	}
 
-	public String getCollectionNamePrefix() {
+	String getCollectionNamePrefix() {
 		return collectionNamePrefix;
 	}
 
@@ -246,7 +340,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 		return firestore;
 	}
 
-	protected Map<String, AbstractFirebaseEntity<TModel>> getCache() {
+	Map<String, AbstractFirebaseEntity<TModel>> getCache() {
 		return cache;
 	}
 }

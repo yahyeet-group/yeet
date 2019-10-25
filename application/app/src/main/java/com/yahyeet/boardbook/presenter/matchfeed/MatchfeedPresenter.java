@@ -9,7 +9,7 @@ import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.activity.home.matchfeed.IMatchfeedFragment;
 import com.yahyeet.boardbook.model.entity.Match;
-import com.yahyeet.boardbook.model.handler.MatchHandlerListener;
+import com.yahyeet.boardbook.model.handler.IMatchHandlerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Presenter for the match feed activity
  */
-public class MatchfeedPresenter implements MatchHandlerListener {
+public class MatchfeedPresenter implements IMatchHandlerListener {
 
 	private MatchfeedAdapter matchfeedAdapter;
 	private List<Match> matchDatabase = new ArrayList<>();
@@ -88,9 +88,9 @@ public class MatchfeedPresenter implements MatchHandlerListener {
 	}
 
 	@Override
-	public void onRemoveMatch(Match match) {
+	public void onRemoveMatch(String id) {
 		for (int i = 0; i < matchDatabase.size(); i++) {
-			if (matchDatabase.get(i).getId().equals(match.getId())) {
+			if (matchDatabase.get(i).getId().equals(id)) {
 				matchDatabase.remove(i);
 				break;
 			}

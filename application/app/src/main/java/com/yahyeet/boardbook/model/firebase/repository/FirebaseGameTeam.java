@@ -43,10 +43,22 @@ class FirebaseGameTeam extends AbstractFirebaseEntity<GameTeam> {
 		return gameTeam;
 	}
 
+	/**
+	 * Creates a Firebase game team entity from a model game team
+	 *
+	 * @param gameTeam Model game team
+	 * @return Firebase game team
+	 */
 	public static FirebaseGameTeam fromModelType(GameTeam gameTeam) {
 		return new FirebaseGameTeam(gameTeam.getId(), gameTeam.getName(), gameTeam.getGame().getId());
 	}
 
+	/**
+	 * Create a Firebase game team from a Firebase document snapshot
+	 *
+	 * @param document Firebase document snapshot
+	 * @return Firebase game team
+	 */
 	public static FirebaseGameTeam fromDocument(DocumentSnapshot document) {
 		FirebaseGameTeam firebaseGameTeam = new FirebaseGameTeam();
 		firebaseGameTeam.setId(document.getId());

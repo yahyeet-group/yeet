@@ -1,5 +1,8 @@
 package com.yahyeet.boardbook.model.entity;
 
+/**
+ * Defines a match player entity
+ */
 public class MatchPlayer extends AbstractEntity {
     private User user;
     private GameRole role;

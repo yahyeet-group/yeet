@@ -58,8 +58,14 @@ public class FirebaseGame extends AbstractFirebaseEntity<Game> {
 		return game;
 	}
 
+	/**
+	 * Creates a Firebase game entity from a model game
+	 *
+	 * @param game Model game
+	 * @return Firebase game
+	 */
 	public static FirebaseGame fromModelType(Game game) {
-		FirebaseGame firebaseGame = new FirebaseGame(
+		return new FirebaseGame(
 			game.getId(),
 			game.getName(),
 			game.getDescription(),
@@ -67,10 +73,14 @@ public class FirebaseGame extends AbstractFirebaseEntity<Game> {
 			game.getMinPlayers(),
 			game.getMaxPlayers()
 		);
-
-		return firebaseGame;
 	}
 
+	/**
+	 * Create a Firebase game from a Firebase document snapshot
+	 *
+	 * @param document Firebase document snapshot
+	 * @return Firebase game
+	 */
 	public static FirebaseGame fromDocument(DocumentSnapshot document) {
 		FirebaseGame firebaseGame = new FirebaseGame();
 		firebaseGame.setId(document.getId());

@@ -7,7 +7,10 @@ import com.yahyeet.boardbook.model.repository.IMatchPlayerRepository;
 import com.yahyeet.boardbook.model.repository.IMatchRepository;
 import com.yahyeet.boardbook.model.repository.IUserRepository;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -22,13 +25,26 @@ public class UserPopulator {
 		this.userRepository = userRepository;
 	}
 
-	public CompletableFuture<User> populate(User user) {
+	public CompletableFuture<User> populate(User user, Map<String, Boolean> config) {
+		if (config == null) {
+			config = new HashMap<>();
+		}
+
 		User populatedUser = new User(user.getName());
 		populatedUser.setId(user.getId());
 
-		CompletableFuture<List<User>> friendsFuture = userRepository.findFriendsByUserId(populatedUser.getId());
+		Boolean shouldFetchFriends = config.getOrDefault("friends", false);
+		Boolean shouldFetchMatches = config.getOrDefault("matches", false);
 
-		CompletableFuture<List<MatchPlayer>> futureMatchPlayers = matchPlayerRepository.findMatchPlayersByUserId(populatedUser.getId());
+		CompletableFuture<List<User>> friendsFuture = CompletableFuture.completedFuture(new ArrayList<>());
+		if (shouldFetchFriends != null && shouldFetchFriends) {
+			friendsFuture = userRepository.findFriendsByUserId(populatedUser.getId());
+		}
+
+		CompletableFuture<List<MatchPlayer>> futureMatchPlayers = CompletableFuture.completedFuture(new ArrayList<>());
+		if (shouldFetchMatches != null && shouldFetchMatches) {
+			futureMatchPlayers = matchPlayerRepository.findMatchPlayersByUserId(populatedUser.getId());
+		}
 
 		CompletableFuture<List<Match>> futureMatches = futureMatchPlayers.thenCompose(matchPlayers -> {
 			List<CompletableFuture<Match>> allMatchFutures =

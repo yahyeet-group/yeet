@@ -6,6 +6,9 @@ import com.yahyeet.boardbook.model.entity.User;
 
 import java.util.List;
 
+/**
+ * A util class that contains logic to calculate stats from matches
+ */
 public class StatisticsUtil {
 
 	public double getWinrateFromMatches(List<Match> matches, User user){

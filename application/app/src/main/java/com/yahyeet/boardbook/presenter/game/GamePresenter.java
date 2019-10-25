@@ -7,17 +7,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IFutureInteractable;
-import com.yahyeet.boardbook.activity.home.game.IGameFragment;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.handler.GameHandler;
-import com.yahyeet.boardbook.model.handler.GameHandlerListener;
+import com.yahyeet.boardbook.model.handler.IGameHandlerListener;
 import com.yahyeet.boardbook.presenter.AdapterPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
 /**
  * Presenter for the game activity
  */
-public class GamePresenter extends AdapterPresenter<Game, GameHandler> implements GameHandlerListener {
+public class GamePresenter extends AdapterPresenter<Game, GameHandler> implements IGameHandlerListener {
 
 
 	private IFutureInteractable gameFragment;
@@ -100,9 +99,9 @@ public class GamePresenter extends AdapterPresenter<Game, GameHandler> implement
 	}
 
 	@Override
-	public void onRemoveGame(Game game) {
+	public void onRemoveGame(String id) {
 		for (int i = 0; i < getDatabase().size(); i++) {
-			if (getDatabase().get(i).getId().equals(game.getId())) {
+			if (getDatabase().get(i).getId().equals(id)) {
 				getDatabase().remove(i);
 				break;
 			}

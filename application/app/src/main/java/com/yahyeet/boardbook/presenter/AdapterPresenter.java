@@ -5,7 +5,7 @@ import android.os.Looper;
 
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.model.entity.AbstractEntity;
-import com.yahyeet.boardbook.model.handler.EntityHandler;
+import com.yahyeet.boardbook.model.handler.IEntityHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  * @param <E> An entity
  * @param <H> Handler for entity E
  */
-public abstract class AdapterPresenter<E extends AbstractEntity, H extends EntityHandler<E>> {
+public abstract class AdapterPresenter<E extends AbstractEntity, H extends IEntityHandler<E>> {
 
 	private SearchAdapter<E> adapter;
 	private IFutureInteractable fragment;

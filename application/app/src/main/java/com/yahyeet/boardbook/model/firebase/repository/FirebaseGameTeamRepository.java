@@ -13,6 +13,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.stream.Collectors;
 
+/**
+ * Firebase Firestore implementation of a game team repository
+ */
 public class FirebaseGameTeamRepository extends AbstractFirebaseRepository<GameTeam> implements IGameTeamRepository {
 	public FirebaseGameTeamRepository(FirebaseFirestore firestore) {
 		super(firestore);
