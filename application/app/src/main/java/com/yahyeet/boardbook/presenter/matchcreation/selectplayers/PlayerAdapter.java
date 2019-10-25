@@ -119,7 +119,7 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 		}
 
 		int amountPlayers = getItemCount();
-		for (int i =0; i<amountPlayers; i++ ){
+		for (int i =0; i < amountPlayers; i++ ){
 			System.out.println("does this even run");
 			PlayerViewHolder holder1 = (PlayerViewHolder) holder;
 			if(playerNames.contains(holder1.getName())){

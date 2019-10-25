@@ -35,7 +35,8 @@ public class SelectPlayersPresenter extends FindAllPresenter<User, UserHandler> 
 		searchAdapter = new PlayerAdapter(getDatabase(), this, friends);
 		setAdapter(searchAdapter);
 
-		fillAndModifyDatabase(BoardbookSingleton.getInstance().getUserHandler());
+		fillAndModifyDatabase(BoardbookSingleton.getInstance().getUserHandler(),
+			null);
 
 
 	}

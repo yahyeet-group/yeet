@@ -27,7 +27,8 @@ public class SelectGamePresenter extends FindAllPresenter<Game, GameHandler> {
 		this.masterPresenter = cm;
 
 
-		fillDatabase(BoardbookSingleton.getInstance().getGameHandler());
+		fillDatabase(BoardbookSingleton.getInstance().getGameHandler(),
+			null);
 		setAdapter(new GamesAdapter(getDatabase(), this));
 
 	}

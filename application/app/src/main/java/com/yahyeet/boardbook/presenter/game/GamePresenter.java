@@ -10,13 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.handler.GameHandler;
-import com.yahyeet.boardbook.model.handler.GameHandlerListener;
+import com.yahyeet.boardbook.model.handler.IGameHandlerListener;
 import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
 import com.yahyeet.boardbook.presenter.FindAllPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
-public class GamePresenter extends FindAllPresenter<Game, GameHandler> implements GameHandlerListener {
-
+public class GamePresenter extends FindAllPresenter<Game, GameHandler> implements IGameHandlerListener {
 
 	private IFutureInteractable gameFragment;
 	private RecyclerView.LayoutManager listLayoutManager;
@@ -33,7 +32,7 @@ public class GamePresenter extends FindAllPresenter<Game, GameHandler> implement
 
 		GameHandler gameHandler = BoardbookSingleton.getInstance().getGameHandler();
 
-		fillDatabase(gameHandler);
+		fillDatabase(gameHandler, GameHandler.generatePopulatorConfig(false, true));
 		gameHandler.addListener(this);
 
 

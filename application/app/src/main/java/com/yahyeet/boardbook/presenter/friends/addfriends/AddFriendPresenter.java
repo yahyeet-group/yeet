@@ -29,7 +29,8 @@ public class AddFriendPresenter extends FindAllPresenter<User, UserHandler> {
 
 		setAdapter(searchAdapter);
 
-		fillAndModifyDatabase(BoardbookSingleton.getInstance().getUserHandler());
+		fillAndModifyDatabase(BoardbookSingleton.getInstance().getUserHandler(),
+			null);
 	}
 
 

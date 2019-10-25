@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.home.friends.IFriendFragment;
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.model.handler.UserHandlerListener;
+import com.yahyeet.boardbook.model.handler.IUserHandlerListener;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
 import java.util.List;
 
-public class FriendsPresenter implements UserHandlerListener {
+public class FriendsPresenter implements IUserHandlerListener {
 
 	private FriendsAdapter friendsAdapter;
 	// TODO: Remove if never necessary

@@ -7,18 +7,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IFutureInteractable;
-import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.model.handler.MatchHandlerListener;
-import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.activity.home.matchfeed.IMatchfeedFragment;
 import com.yahyeet.boardbook.model.entity.Match;
+import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.model.handler.IMatchHandlerListener;
+import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.presenter.FindOnePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> implements MatchHandlerListener {
+public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> implements IMatchHandlerListener {
 
 	private MatchfeedAdapter matchfeedAdapter;
 	private List<Match> matchDatabase = new ArrayList<>();
@@ -58,16 +58,6 @@ public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> impl
 		matchRecyclerView.setAdapter(matchfeedAdapter);
 
 
-	}
-
-
-	private void findLoggedInUser(){
-		findEntity(BoardbookSingleton.getInstance().getUserHandler(),
-			BoardbookSingleton
-				.getInstance()
-				.getAuthHandler()
-				.getLoggedInUser()
-				.getId());
 	}
 
 	@Override

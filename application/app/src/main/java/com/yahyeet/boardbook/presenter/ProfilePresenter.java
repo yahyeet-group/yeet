@@ -28,7 +28,8 @@ public class ProfilePresenter extends FindOnePresenter<User, UserHandler> {
 		this.profileActivity = profileActivity;
 
 		user = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
-		findEntity(BoardbookSingleton.getInstance().getUserHandler(), userId);
+		findEntity(BoardbookSingleton.getInstance().getUserHandler(), userId,
+			UserHandler.generatePopulatorConfig(false, true));
 	}
 
 	/**

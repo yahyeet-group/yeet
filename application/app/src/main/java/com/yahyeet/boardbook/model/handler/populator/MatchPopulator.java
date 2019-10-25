@@ -6,7 +6,9 @@ import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import com.yahyeet.boardbook.model.repository.IGameRepository;
 import com.yahyeet.boardbook.model.repository.IMatchPlayerRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class MatchPopulator {
@@ -18,11 +20,21 @@ public class MatchPopulator {
 		this.matchPlayerRepository = matchPlayerRepository;
 	}
 
-	public CompletableFuture<Match> populate(Match match) {
+	public CompletableFuture<Match> populate(Match match, Map<String, Boolean> config) {
 		Match populatedMatch = new Match(match.getId());
 
-		CompletableFuture<Game> futureGame = gameRepository.find(match.getGame().getId());
-		CompletableFuture<List<MatchPlayer>> futureMatchPlayers = matchPlayerRepository.findMatchPlayersByMatchId(populatedMatch.getId());
+		Boolean shouldFetchGame = config.getOrDefault("game", true);
+		Boolean shouldFetchMatchPlayers = config.getOrDefault("players", true);
+
+		CompletableFuture<Game> futureGame = CompletableFuture.completedFuture(null);
+		if (shouldFetchGame == null || shouldFetchGame) {
+			futureGame = gameRepository.find(match.getGame().getId());
+		}
+
+		CompletableFuture<List<MatchPlayer>> futureMatchPlayers = CompletableFuture.completedFuture(new ArrayList<>());
+		if (shouldFetchMatchPlayers == null || shouldFetchMatchPlayers) {
+			futureMatchPlayers = matchPlayerRepository.findMatchPlayersByMatchId(populatedMatch.getId());
+		}
 
 		return futureGame.thenCombine(futureMatchPlayers, (game, matchPlayers) -> {
 			populatedMatch.setGame(game);

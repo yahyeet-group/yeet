@@ -8,12 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.errorprone.annotations.ForOverride;
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.model.entity.AbstractEntity;
-import com.yahyeet.boardbook.model.handler.EntityHandler;
+import com.yahyeet.boardbook.model.handler.IEntityHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public abstract class FindAllPresenter<E extends AbstractEntity, H extends EntityHandler<E>> {
+public abstract class FindAllPresenter<E extends AbstractEntity, H extends IEntityHandler<E>> {
 
 	private RecyclerView.Adapter adapter;
 	private IFutureInteractable fragment;
@@ -26,9 +27,9 @@ public abstract class FindAllPresenter<E extends AbstractEntity, H extends Entit
 		database = new ArrayList<>();
 	}
 
-	protected void fillDatabase(H handler) {
+	protected void fillDatabase(H handler, Map<String, Boolean> config) {
 		fragment.disableViewInteraction();
-		handler.all().thenAccept(initiatedEntities -> {
+		handler.all(config).thenAccept(initiatedEntities -> {
 			if (initiatedEntities != null) {
 				database.addAll(initiatedEntities);
 			}
@@ -46,9 +47,9 @@ public abstract class FindAllPresenter<E extends AbstractEntity, H extends Entit
 		});
 	}
 
-	protected void fillAndModifyDatabase(H handler) {
+	protected void fillAndModifyDatabase(H handler, Map<String, Boolean> config) {
 		fragment.disableViewInteraction();
-		handler.all().thenAccept(initiatedEntities -> {
+		handler.all(config).thenAccept(initiatedEntities -> {
 			if (initiatedEntities != null) {
 				database.addAll(initiatedEntities);
 			}

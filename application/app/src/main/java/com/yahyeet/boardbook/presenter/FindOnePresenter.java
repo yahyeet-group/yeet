@@ -6,10 +6,12 @@ import android.os.Looper;
 import com.google.errorprone.annotations.ForOverride;
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.model.entity.AbstractEntity;
-import com.yahyeet.boardbook.model.handler.EntityHandler;
+import com.yahyeet.boardbook.model.handler.IEntityHandler;
+
+import java.util.Map;
 
 
-public class FindOnePresenter<E extends AbstractEntity, H extends EntityHandler<E>> {
+public class FindOnePresenter<E extends AbstractEntity, H extends IEntityHandler<E>> {
 
 	private IFutureInteractable fragment;
 
@@ -23,10 +25,10 @@ public class FindOnePresenter<E extends AbstractEntity, H extends EntityHandler<
 	}
 
 
-	protected void findEntity(H handler, String entityId) {
+	protected void findEntity(H handler, String entityId, Map<String, Boolean> config) {
 		fragment.disableViewInteraction();
 
-		handler.find(entityId).thenAccept(initiatedEntity -> {
+		handler.find(entityId, config).thenAccept(initiatedEntity -> {
 			if (initiatedEntity != null) {
 				entity = initiatedEntity;
 				uiHandler.post(() -> {

@@ -29,7 +29,8 @@ public class GameDetailPresenter extends FindOnePresenter<Game, GameHandler> {
 		super((IFutureInteractable) gameDetailActivity);
 		this.gameDetailActivity = gameDetailActivity;
 
-		findEntity(BoardbookSingleton.getInstance().getGameHandler(), gameID);
+		findEntity(BoardbookSingleton.getInstance().getGameHandler(), gameID,
+			GameHandler.generatePopulatorConfig(false, true));
 
 	}
 

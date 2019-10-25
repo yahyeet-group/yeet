@@ -11,7 +11,6 @@ import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.home.matchfeed.matchdetail.IMatchDetailActivity;
 import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import com.yahyeet.boardbook.model.handler.MatchHandler;
-import com.yahyeet.boardbook.model.handler.MatchHandlerListener;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.presenter.FindOnePresenter;
@@ -32,7 +31,8 @@ public class MatchDetailPresenter extends FindOnePresenter<Match, MatchHandler> 
 		super((IFutureInteractable) matchDetailActivity);
 		this.matchDetailActivity = matchDetailActivity;
 
-		findEntity(BoardbookSingleton.getInstance().getMatchHandler(), matchID);
+		findEntity(BoardbookSingleton.getInstance().getMatchHandler(), matchID,
+			MatchHandler.generatePopulatorConfig(true, true));
 
 
 	}
