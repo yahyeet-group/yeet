@@ -28,7 +28,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 	private FirebaseFirestore firestore;
 	private String collectionNamePrefix = "";
 
-	private Map<String, AbstractFirebaseEntity<TModel>> cache = new HashMap();
+	private Map<String, AbstractFirebaseEntity<TModel>> cache = new HashMap<>();
 	private List<IRepositoryListener<TModel>> listeners = new ArrayList<>();
 
 	public AbstractFirebaseRepository(FirebaseFirestore firestore) {
@@ -104,11 +104,13 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 
 	@Override
 	public CompletableFuture<Void> delete(String id) {
-		return removeFirebaseEntityById(id).thenApply(nothing -> {
-			notifyListenersOnDelete(id);
+		return removeFirebaseEntityById(id)
+			.thenCompose(nothing -> afterDelete(id))
+			.thenApply(nothing -> {
+				notifyListenersOnDelete(id);
 
-			return null;
-		});
+				return null;
+			});
 	}
 
 	@Override
@@ -116,7 +118,7 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 		return findAllFirebaseEntities().thenApplyAsync(firebaseEntities ->
 			firebaseEntities
 				.stream()
-				.map(firebaseEntity -> firebaseEntity.toModelType())
+				.map(AbstractFirebaseEntity::toModelType)
 				.collect(Collectors.toList())
 		);
 	}
@@ -157,6 +159,16 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 	 * @return A completable future that when resolved denotes that the afterSave hook has completed
 	 */
 	public CompletableFuture<Void> afterSave(TModel entity, AbstractFirebaseEntity<TModel> savedEntity) {
+		return CompletableFuture.completedFuture(null);
+	}
+
+	/**
+	 * Function that is run after an entity is removed
+	 *
+	 * @param id The id of deleted entity
+	 * @return A completable future that when resolved denotes that the afterDelete hook has completed
+	 */
+	public CompletableFuture<Void> afterDelete(String id) {
 		return CompletableFuture.completedFuture(null);
 	}
 
@@ -242,7 +254,9 @@ public abstract class AbstractFirebaseRepository<TModel extends AbstractEntity> 
 				DocumentSnapshot document = Tasks.await(task);
 
 				if (document.exists()) {
-					return fromDocumentToFirebaseEntity(document);
+					AbstractFirebaseEntity<TModel> entity = fromDocumentToFirebaseEntity(document);
+					cache.put(entity.getId(), entity);
+					return entity;
 				}
 
 				throw new CompletionException(new Exception("Entity not found"));
