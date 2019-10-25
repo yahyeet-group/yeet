@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * Presenter for the profile activity
+ */
 public class ProfilePresenter {
 
 	private MatchfeedAdapter matchfeedAdapter;

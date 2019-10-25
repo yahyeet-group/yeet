@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.presenter.game.gamedetail.GameDetailPresenter;
 
+/**
+ * Activity that shows more detailed information about a match
+ */
 public class GameDetailActivity extends AppCompatActivity implements IGameDetailActivity {
 
 

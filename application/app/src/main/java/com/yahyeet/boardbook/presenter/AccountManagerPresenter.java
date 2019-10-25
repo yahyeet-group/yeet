@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Presenter for the account manager activity
+ */
 public class AccountManagerPresenter {
 	private IAccountManagerActivity accountManagerActivity;
 	// Set true to skip login

@@ -12,6 +12,9 @@ import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.presenter.matchfeed.matchdetail.MatchDetailPresenter;
 
+/**
+ * Activity that shows detail for a match
+ */
 public class MatchDetailActivity extends AppCompatActivity implements IMatchDetailActivity, IFutureInteractable {
 
 	private MatchDetailPresenter matchDetailPresenter;

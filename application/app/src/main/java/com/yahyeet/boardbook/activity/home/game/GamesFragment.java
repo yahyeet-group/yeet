@@ -20,6 +20,9 @@ import com.yahyeet.boardbook.presenter.game.GamePresenter;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Fragment that holds and displays games
+ */
 public class GamesFragment extends Fragment implements IGameFragment, IFutureInteractable {
 
 	private GamePresenter gamePresenter;
