@@ -17,9 +17,10 @@ import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.matchcreation.CreateMatchActivity;
 import com.yahyeet.boardbook.presenter.matchcreation.selectgame.SelectGamePresenter;
 
-
 /**
- * Fragment where game is set when adding a new match
+ * This is the fragment for the step of selecting the game in the Wizard.
+ * This instantiates the the SelectGamePresenter for the class and
+ * starts up the RecycleView
  */
 public class SelectGameFragment extends Fragment implements ISelectGameFragment, IFutureInteractable {
 
@@ -43,11 +44,16 @@ public class SelectGameFragment extends Fragment implements ISelectGameFragment,
 
 	}
 
+
 	public void enableMatchFeed() {
 		gamesRecycleView.setHasFixedSize(true);
 		selectGamePresenter.enableGameFeed(gamesRecycleView, getView().getContext());
 	}
 
+	/**
+	 * This is called when the async data from the database has been downloaded. Until then the the functional
+	 * views of the program are disabled and a loading symbol is shown
+	 */
 	@Override
 	public void enableViewInteraction() {
 		loadingIndicator.setVisibility(loadingIndicator.INVISIBLE);

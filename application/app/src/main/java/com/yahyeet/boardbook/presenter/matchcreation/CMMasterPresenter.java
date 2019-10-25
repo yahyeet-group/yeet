@@ -1,12 +1,14 @@
 package com.yahyeet.boardbook.presenter.matchcreation;
 
+/**
+ * @Author Nox/Aaron Sandgren
+ * This is the "CreateMatchMasterPresenter. This is served alongside the fragment presenters
+ * to give them access to Activity methods and serve them with the MatchCreationDataObject.
+ * This also creates and the final match and sends it to the MatchHandler to save
+ *
+ */
 
-import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.matchcreation.ICreateMatchActivity;
-import com.yahyeet.boardbook.activity.matchcreation.configureteams.ConfigureTeamsFragment;
-import com.yahyeet.boardbook.activity.matchcreation.CreateMatchActivity;
-import com.yahyeet.boardbook.activity.matchcreation.selectgame.SelectGameFragment;
-import com.yahyeet.boardbook.activity.matchcreation.selectplayers.SelectPlayersFragment;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.MatchPlayer;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
@@ -37,6 +39,10 @@ public class CMMasterPresenter {
 		return cmdh;
 	}
 
+	/**
+	 * This is called to create and populate the match that is to be saved.
+	 * It also gives this match to the MatchHandler to actually be saved.
+	 */
 	public void finalizeMatch(){
 		Match finalMatch = new Match(cmdh.getGame());
 		for (MatchPlayer mp : cmdh.getPlayers()){

@@ -13,9 +13,11 @@ import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 import com.yahyeet.boardbook.activity.matchcreation.selectgame.ISelectGameFragment;
 
-
+/**
+ * This is the Presenter for the SelectGame fragment.
+ * This class binds references to the MasterPresenter, Enables the RecycleView and gives it the correct adapter
+ */
 public class SelectGamePresenter extends FindAllPresenter<Game, GameHandler> {
-
 
 	private ISelectGameFragment selectGameFragment;
 	private CMMasterPresenter masterPresenter;
@@ -25,7 +27,6 @@ public class SelectGamePresenter extends FindAllPresenter<Game, GameHandler> {
 		super((IFutureInteractable) selectGameFragment);
 		this.selectGameFragment = selectGameFragment;
 		this.masterPresenter = cm;
-
 
 		fillDatabase(BoardbookSingleton.getInstance().getGameHandler(),
 			null);

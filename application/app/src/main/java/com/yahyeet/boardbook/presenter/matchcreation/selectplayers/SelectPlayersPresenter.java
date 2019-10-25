@@ -20,17 +20,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This is the Presenter for the SelectingPlayers fragment.
+ * This class binds references to the MasterPresenter, Enables the RecycleView and gives it the correct adapter
+ * Enables the SearchBar by configuring its eventListener and collects some data from the database to use in the adapter class
+ */
 public class SelectPlayersPresenter extends FindAllPresenter<User, UserHandler> {
 
 	private CMMasterPresenter masterPresenter;
-	private ISelectPlayersFragment spf;
 	private AbstractSearchAdapter<User> searchAdapter;
 	private List<User> friends = new ArrayList<>();
 
 	public SelectPlayersPresenter(ISelectPlayersFragment spf, CMMasterPresenter cma) {
 		super((IFutureInteractable) spf);
 		this.masterPresenter = cma;
-		this.spf = spf;
 
 		User loggedInUser = BoardbookSingleton
 			.getInstance()
@@ -47,7 +50,6 @@ public class SelectPlayersPresenter extends FindAllPresenter<User, UserHandler> 
 
 		fillAndModifyDatabase(BoardbookSingleton.getInstance().getUserHandler(),
 			null);
-
 
 	}
 

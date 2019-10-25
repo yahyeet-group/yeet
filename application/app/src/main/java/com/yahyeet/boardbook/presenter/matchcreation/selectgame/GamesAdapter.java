@@ -17,7 +17,10 @@ import com.yahyeet.boardbook.model.entity.Game;
 
 import java.util.List;
 
-
+/**
+ * @Author Nox/Aaron Sandgren
+ * This is the adapter that creates and configures the views in the GamesRecycleView.
+ */
 public class GamesAdapter extends AbstractSearchAdapter<Game> {
 
     private SelectGamePresenter sgp;
@@ -61,14 +64,13 @@ public class GamesAdapter extends AbstractSearchAdapter<Game> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
+        // Binds the button in the entries
         if(holder instanceof GamesViewHolder){
             GamesViewHolder vh = (GamesViewHolder) holder;
             vh.gameTitle.setText(getDatabase().get(position).getName());
             vh.itemView.findViewById(R.id.selectGameButton).setOnClickListener((event)->{
                 cmmp.goToSelectPlayers();
                 cmmp.getCmdh().setGame(getDatabase().get(position));
-                // Not working if actually implemented
-                //System.out.println(dataset.get(position).getTeams().get(0).getRoles().get(0).getName());
             });
         }
 
