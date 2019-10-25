@@ -105,7 +105,7 @@ public class UserHandler implements IRepositoryListener<User>, IEntityHandler<Us
 				fullyPopulatedUser
 					.get()
 					.getMatches()
-					.stream().map(match -> matchPopulator.populate(match, config))
+					.stream().map(match -> matchPopulator.populate(match, MatchHandler.generatePopulatorConfig(true, true)))
 					.collect(Collectors.toList());
 
 			CompletableFuture<Void> allOfFutureFuturePopulatedMatches = CompletableFuture.allOf(allFuturePopulatedMatches.toArray(new CompletableFuture[0]));

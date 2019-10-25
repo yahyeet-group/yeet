@@ -10,8 +10,12 @@ import com.yahyeet.boardbook.model.handler.IEntityHandler;
 
 import java.util.Map;
 
-
-public class FindOnePresenter<E extends AbstractEntity, H extends IEntityHandler<E>> {
+/**
+ * Abstracts presenters that can find one of an entity
+ * @param <E> an entity
+ * @param <H> handler for entity E
+ */
+public abstract class FindOnePresenter<E extends AbstractEntity, H extends IEntityHandler<E>> {
 
 	private IFutureInteractable fragment;
 

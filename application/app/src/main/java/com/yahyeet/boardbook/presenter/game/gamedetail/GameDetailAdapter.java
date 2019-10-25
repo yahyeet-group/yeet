@@ -20,13 +20,10 @@ public class GameDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	private static final int FIRST_LIST_ITEM_VIEW = 1;
 	private static final int SECOND_LIST_ITEM_VIEW = 2;
 
-	private List<GameTeam> firstList = new ArrayList<>();
-	private List<List<GameRole>> secondList = new ArrayList<>();
+	private List<GameTeam> firstList;
+	private List<List<GameRole>> secondList;
 
 	private List<String> allNames = new ArrayList<>();
-
-	public GameDetailAdapter() {
-	}
 
 	public GameDetailAdapter(List<GameTeam> firstList, List<List<GameRole>> secondList) {
 		this.firstList = firstList;
@@ -38,14 +35,6 @@ public class GameDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 				allNames.add(role.getName());
 		}
 
-	}
-
-	public void setFirstList(List<GameTeam> firstList) {
-		this.firstList = firstList;
-	}
-
-	public void setSecondList(List<List<GameRole>> secondList) {
-		this.secondList = secondList;
 	}
 
 	public class ViewHolder extends RecyclerView.ViewHolder {
