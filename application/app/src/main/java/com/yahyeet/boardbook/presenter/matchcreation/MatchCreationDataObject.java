@@ -13,8 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @Author Nox/Aaron Sandgren
+ * THis is the dataobject where during the wizard the selected game, selected players
+ * and the team configuration is saved to be able to when done to serve the data
+ * to a Method that saves the match.
+ * This object gets instantiated every time the Wizard is started anew(the user has
+ * left it completely and gone back to the home activity). And the this is available
+ * through the MasterPresenter and therefore the individual presenters.
+ * All the methods are just about modifying the data.
+ */
 public class MatchCreationDataObject {
-	//TODO See if this name should be kept
 
 	private List<MatchPlayer> players = new ArrayList<>();
 	private List<User> selectedPlayers = new ArrayList<>();
@@ -79,14 +88,6 @@ public class MatchCreationDataObject {
 	public void setGame(Game game) {
 		this.game = game;
 	}
-
-	public Match finalizeMatch(){
-		//TODO I suppose match should hold what game it is playing. Added game to match constructor // Vex
-		Match match = new Match(game);
-		players.forEach(match::addMatchPlayer);
-		return match;
-	}
-
 
 }
 

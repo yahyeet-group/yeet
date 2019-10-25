@@ -23,7 +23,10 @@ import com.yahyeet.boardbook.presenter.matchcreation.selectplayers.SelectPlayers
 import java.util.Objects;
 
 /**
- * Fragment for selecting what players played in a match
+ * @Author Nox/Aaron Sandgren
+ * This is the fragment for the step of selecting players in the Wizard.
+ * This instantiates the the SelectPlayerPresenter for the class and
+ * starts up the RecycleView and the Search functionality
  */
 public class SelectPlayersFragment extends Fragment implements ISelectPlayersFragment, IFutureInteractable {
 
@@ -48,7 +51,6 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
 		enableSearchView();
 		doneButton.setOnClickListener(event -> {
 			selectPlayersPresenter.getMasterPresenter().goToConfigureTeams();
-			this.displayLoadingFailed();
 		});
 	}
 
@@ -61,8 +63,8 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
 		selectPlayersPresenter.enableSearchBar(searchView);
 	}
 
-
-	private void setViews(){
+	// This could be done in constructor but this reduces clutter
+	private void setViews() {
 
 		searchView = getView().findViewById(R.id.searchPlayers);
 		playerRecyclerView = getView().findViewById(R.id.playerRecycleView);
@@ -72,18 +74,22 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
 
 	}
 
+	/**
+	 * This is called when the async data from the database has been downloaded. Until then the the functional
+	 * views of the program are disabled and a loading symbol is shown
+	 */
 	@Override
 	public void enableViewInteraction() {
-			doneButton.setEnabled(true);
-			loadingIndicator.setVisibility(View.INVISIBLE);
-			playerRecyclerView.setVisibility(View.VISIBLE);
+		doneButton.setEnabled(true);
+		loadingIndicator.setVisibility(View.INVISIBLE);
+		playerRecyclerView.setVisibility(View.VISIBLE);
 
-			if(getContext() != null){
-				playerRecyclerView.getLayoutParams().height = ViewUtils.dpFromPx(550, getContext());
-			}
+		if (getContext() != null) {
+			playerRecyclerView.getLayoutParams().height = ViewUtils.dpFromPx(550, getContext());
+		}
 
-			playerRecyclerView.requestLayout();
-			loadingText.setVisibility(View.INVISIBLE);
+		playerRecyclerView.requestLayout();
+		loadingText.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
@@ -91,6 +97,9 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
 
 	}
 
+	/**
+	 * This shows a loading error text if the data couldn't be downloaded.
+	 */
 	@Override
 	public void displayLoadingFailed() {
 		loadingIndicator.invalidate();
