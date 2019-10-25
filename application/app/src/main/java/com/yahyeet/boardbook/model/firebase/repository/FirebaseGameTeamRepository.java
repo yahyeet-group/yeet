@@ -74,7 +74,7 @@ public class FirebaseGameTeamRepository extends AbstractFirebaseRepository<GameT
 				getCache().put(firebaseGameTeam.getId(), firebaseGameTeam);
 			});
 
-			gameTeamsIdsCache.put(id, firebaseGameTeams.stream().map(AbstractFirebaseEntity::getId).collect(Collectors.toList()));
+			//gameTeamsIdsCache.put(id, firebaseGameTeams.stream().map(AbstractFirebaseEntity::getId).collect(Collectors.toList()));
 
 			return firebaseGameTeams
 				.stream()
@@ -102,7 +102,7 @@ public class FirebaseGameTeamRepository extends AbstractFirebaseRepository<GameT
 		return CompletableFuture.supplyAsync(() -> {
 			for (Map.Entry<String, List<String>> pair : gameTeamsIdsCache.entrySet()) {
 				if (pair.getValue().stream().anyMatch(cachedTeamId -> cachedTeamId.equals(teamId))) {
-					gameTeamsIdsCache.put(pair.getKey(), pair.getValue().stream().filter(cachedTeamId -> !cachedTeamId.equals(teamId)).collect(Collectors.toList()));
+					//gameTeamsIdsCache.put(pair.getKey(), pair.getValue().stream().filter(cachedTeamId -> !cachedTeamId.equals(teamId)).collect(Collectors.toList()));
 					break;
 				}
 			}

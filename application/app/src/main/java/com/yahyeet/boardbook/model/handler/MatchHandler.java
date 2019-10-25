@@ -54,7 +54,11 @@ public class MatchHandler implements IRepositoryListener<Match>, IEntityHandler<
 
 	@Override
 	public CompletableFuture<Match> find(String id, Map<String, Boolean> config) {
-		return matchRepository.find(id).thenCompose(foundMatch -> populate(foundMatch, config));
+		return matchRepository.find(id).thenCompose(foundMatch -> populate(foundMatch, config))
+			.exceptionally(e -> {
+
+				return null;
+			});
 	}
 
 	@Override

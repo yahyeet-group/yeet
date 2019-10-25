@@ -81,7 +81,7 @@ public class FirebaseUserRepository extends AbstractFirebaseRepository<User> imp
 				.map(this::find)
 				.collect(Collectors.toList());
 
-			friendIdsCache.put(id, friendIds);
+			//friendIdsCache.put(id, friendIds);
 
 			CompletableFuture<Void> allOfFriendsFuture = CompletableFuture.allOf(friendsFuture.toArray(new CompletableFuture[0]));
 
@@ -127,7 +127,7 @@ public class FirebaseUserRepository extends AbstractFirebaseRepository<User> imp
 	@Override
 	public CompletableFuture<Void> afterSave(User entity, AbstractFirebaseEntity<User> savedEntity) {
 		CompletableFuture<List<User>> futureLocalAddedFriendIds = findFriendsByUserId(savedEntity.getId()).thenApply(remoteFriends -> {
-				friendIdsCache.put(entity.getId(), remoteFriends.stream().map(AbstractEntity::getId).collect(Collectors.toList()));
+				//friendIdsCache.put(entity.getId(), remoteFriends.stream().map(AbstractEntity::getId).collect(Collectors.toList()));
 
 				return entity
 					.getFriends()

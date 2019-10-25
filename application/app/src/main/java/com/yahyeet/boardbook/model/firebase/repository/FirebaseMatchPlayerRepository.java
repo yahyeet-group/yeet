@@ -78,7 +78,7 @@ public class FirebaseMatchPlayerRepository extends AbstractFirebaseRepository<Ma
 				getCache().put(firebaseMatchPlayer.getId(), firebaseMatchPlayer);
 			});
 
-			matchMatchPlayerIdsCache.put(id, firebaseMatchPlayers.stream().map(AbstractFirebaseEntity::getId).collect(Collectors.toList()));
+			//matchMatchPlayerIdsCache.put(id, firebaseMatchPlayers.stream().map(AbstractFirebaseEntity::getId).collect(Collectors.toList()));
 
 			return firebaseMatchPlayers
 				.stream()
@@ -124,7 +124,7 @@ public class FirebaseMatchPlayerRepository extends AbstractFirebaseRepository<Ma
 				getCache().put(firebaseMatchPlayer.getId(), firebaseMatchPlayer);
 			});
 
-			userMatchPlayerIdsCache.put(id, firebaseMatchPlayers.stream().map(AbstractFirebaseEntity::getId).collect(Collectors.toList()));
+			//userMatchPlayerIdsCache.put(id, firebaseMatchPlayers.stream().map(AbstractFirebaseEntity::getId).collect(Collectors.toList()));
 
 			return firebaseMatchPlayers
 				.stream()
@@ -157,14 +157,14 @@ public class FirebaseMatchPlayerRepository extends AbstractFirebaseRepository<Ma
 		return CompletableFuture.supplyAsync(() -> {
 			for (Map.Entry<String, List<String>> pair : matchMatchPlayerIdsCache.entrySet()) {
 				if (pair.getValue().stream().anyMatch(cachedMatchPlayerId -> cachedMatchPlayerId.equals(matchPlayerId))) {
-					matchMatchPlayerIdsCache.put(pair.getKey(), pair.getValue().stream().filter(cachedMatchPlayerId -> !cachedMatchPlayerId.equals(matchPlayerId)).collect(Collectors.toList()));
+					//matchMatchPlayerIdsCache.put(pair.getKey(), pair.getValue().stream().filter(cachedMatchPlayerId -> !cachedMatchPlayerId.equals(matchPlayerId)).collect(Collectors.toList()));
 					break;
 				}
 			}
 
 			for (Map.Entry<String, List<String>> pair : userMatchPlayerIdsCache.entrySet()) {
 				if (pair.getValue().stream().anyMatch(cachedMatchPlayerId -> cachedMatchPlayerId.equals(matchPlayerId))) {
-					userMatchPlayerIdsCache.put(pair.getKey(), pair.getValue().stream().filter(cachedMatchPlayerId -> !cachedMatchPlayerId.equals(matchPlayerId)).collect(Collectors.toList()));
+					//userMatchPlayerIdsCache.put(pair.getKey(), pair.getValue().stream().filter(cachedMatchPlayerId -> !cachedMatchPlayerId.equals(matchPlayerId)).collect(Collectors.toList()));
 					break;
 				}
 			}

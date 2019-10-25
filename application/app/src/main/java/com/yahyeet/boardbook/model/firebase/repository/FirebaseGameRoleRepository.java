@@ -78,7 +78,7 @@ public class FirebaseGameRoleRepository extends AbstractFirebaseRepository<GameR
 				getCache().put(firebaseGameRole.getId(), firebaseGameRole);
 			});
 
-			teamRoleIdsCache.put(id, firebaseGameRoles.stream().map(AbstractFirebaseEntity::getId).collect(Collectors.toList()));
+			//teamRoleIdsCache.put(id, firebaseGameRoles.stream().map(AbstractFirebaseEntity::getId).collect(Collectors.toList()));
 
 			return firebaseGameRoles
 				.stream()
@@ -105,7 +105,7 @@ public class FirebaseGameRoleRepository extends AbstractFirebaseRepository<GameR
 		return CompletableFuture.supplyAsync(() -> {
 			for (Map.Entry<String, List<String>> pair : teamRoleIdsCache.entrySet()) {
 				if (pair.getValue().stream().anyMatch(cachedRoleId -> cachedRoleId.equals(roleId))) {
-					teamRoleIdsCache.put(pair.getKey(), pair.getValue().stream().filter(cachedRoleId -> !cachedRoleId.equals(roleId)).collect(Collectors.toList()));
+					//teamRoleIdsCache.put(pair.getKey(), pair.getValue().stream().filter(cachedRoleId -> !cachedRoleId.equals(roleId)).collect(Collectors.toList()));
 					break;
 				}
 			}
