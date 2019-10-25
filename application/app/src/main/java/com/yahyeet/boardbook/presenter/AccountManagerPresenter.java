@@ -8,6 +8,7 @@ import android.os.Looper;
 
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.model.util.EmailFailedException;
 import com.yahyeet.boardbook.model.util.PasswordFailedException;
 
@@ -24,7 +25,9 @@ public class AccountManagerPresenter {
 
 	public AccountManagerPresenter(IAccountManagerActivity accountManagerActivity) {
 		this.accountManagerActivity = accountManagerActivity;
-		BoardbookSingleton.getInstance().getUserHandler().all().thenAccept(user -> {
+		BoardbookSingleton.getInstance().getUserHandler().all(UserHandler.generatePopulatorConfig(true, true)).thenCompose(users -> {
+			return BoardbookSingleton.getInstance().getUserHandler().all(UserHandler.generatePopulatorConfig(true, true));
+		}).thenAccept(users -> {
 			int a = 4;
 		}).exceptionally(e -> {
 			int a = 4;

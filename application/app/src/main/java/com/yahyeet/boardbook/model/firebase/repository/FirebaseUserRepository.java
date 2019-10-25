@@ -6,6 +6,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.yahyeet.boardbook.model.entity.AbstractEntity;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.repository.IUserRepository;
 
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
  * Firebase Firestore implementation of a user repository
  */
 public class FirebaseUserRepository extends AbstractFirebaseRepository<User> implements IUserRepository {
+	private Map<String, List<String>> friendIdsCache = new HashMap<>();
 
 	public FirebaseUserRepository(FirebaseFirestore firestore) {
 		super(firestore);
@@ -42,6 +44,19 @@ public class FirebaseUserRepository extends AbstractFirebaseRepository<User> imp
 
 	@Override
 	public CompletableFuture<List<User>> findFriendsByUserId(String id) {
+		List<String> cachedFriendIds = friendIdsCache.get(id);
+		if (cachedFriendIds != null) {
+			List<CompletableFuture<User>> futureFriends = cachedFriendIds.stream().map(this::find).collect(Collectors.toList());
+
+			return CompletableFuture
+				.allOf(futureFriends.toArray(new CompletableFuture[0]))
+				.thenApply(future -> futureFriends
+					.stream()
+					.map(CompletableFuture::join)
+					.collect(Collectors.toList())
+				);
+		}
+
 		CompletableFuture<List<User>> friendsPartOne = CompletableFuture.supplyAsync(() -> {
 			Task<QuerySnapshot> task =
 				getFirestore()
@@ -65,6 +80,8 @@ public class FirebaseUserRepository extends AbstractFirebaseRepository<User> imp
 				.stream()
 				.map(this::find)
 				.collect(Collectors.toList());
+
+			friendIdsCache.put(id, friendIds);
 
 			CompletableFuture<Void> allOfFriendsFuture = CompletableFuture.allOf(friendsFuture.toArray(new CompletableFuture[0]));
 
@@ -92,7 +109,7 @@ public class FirebaseUserRepository extends AbstractFirebaseRepository<User> imp
 		}).thenCompose(friendIds -> {
 			List<CompletableFuture<User>> friendsFuture = friendIds
 				.stream()
-				.map(friendId -> find(friendId))
+				.map(this::find)
 				.collect(Collectors.toList());
 
 			CompletableFuture<Void> allOfFriendsFuture = CompletableFuture.allOf(friendsFuture.toArray(new CompletableFuture[0]));
@@ -109,17 +126,23 @@ public class FirebaseUserRepository extends AbstractFirebaseRepository<User> imp
 
 	@Override
 	public CompletableFuture<Void> afterSave(User entity, AbstractFirebaseEntity<User> savedEntity) {
-		return findFriendsByUserId(savedEntity.getId()).thenApply(remoteFriends ->
-			entity
-				.getFriends()
-				.stream()
-				.filter(localFriend ->
-					remoteFriends
-						.stream()
-						.noneMatch(remoteFriend -> remoteFriend.equals(localFriend))
-				)
-				.collect(Collectors.toList()
-				))
+		CompletableFuture<List<User>> futureLocalAddedFriendIds = findFriendsByUserId(savedEntity.getId()).thenApply(remoteFriends -> {
+				friendIdsCache.put(entity.getId(), remoteFriends.stream().map(AbstractEntity::getId).collect(Collectors.toList()));
+
+				return entity
+					.getFriends()
+					.stream()
+					.filter(localFriend ->
+						remoteFriends
+							.stream()
+							.noneMatch(remoteFriend -> remoteFriend.equals(localFriend))
+					)
+					.collect(Collectors.toList()
+					);
+			}
+		);
+
+		CompletableFuture<Void> futureSavedFriends = futureLocalAddedFriendIds
 			.thenCompose(addedFriends -> {
 				List<CompletableFuture<Void>> addedFriendsFuture = addedFriends
 					.stream()
@@ -128,12 +151,20 @@ public class FirebaseUserRepository extends AbstractFirebaseRepository<User> imp
 
 				return CompletableFuture.allOf(addedFriendsFuture.toArray(new CompletableFuture[0]));
 			});
+
+		return futureLocalAddedFriendIds
+			.thenCombine(futureSavedFriends, (addedFriends, nothing) -> addedFriends)
+			.thenApply(addedFriends -> {
+				addedFriends.forEach(friend -> friendIdsCache.get(entity.getId()).add(friend.getId()));
+
+				return null;
+			});
 	}
 
 	/**
 	 * Connects two user in a pivot collection in Firebase Firestore
 	 *
-	 * @param leftId First user
+	 * @param leftId  First user
 	 * @param rightId Second user
 	 * @return A completable future that when resolves denotes that the operation is finished, if the
 	 * operation is unsuccessful it throws an error
@@ -152,6 +183,19 @@ public class FirebaseUserRepository extends AbstractFirebaseRepository<User> imp
 			} catch (Exception e) {
 				throw new CompletionException(e);
 			}
+		}).thenApply(nothing -> {
+			List<String> leftUserCachedFriends = friendIdsCache.get(leftId);
+			List<String> rightUserCachedFriends = friendIdsCache.get(rightId);
+
+			if (leftUserCachedFriends != null) {
+				leftUserCachedFriends.add(rightId);
+			}
+
+			if (rightUserCachedFriends != null) {
+				rightUserCachedFriends.add(leftId);
+			}
+
+			return null;
 		});
 	}
 
