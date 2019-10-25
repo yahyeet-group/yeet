@@ -5,7 +5,7 @@ import com.yahyeet.boardbook.model.entity.User;
 /**
  * Interface that defines the methods a user handler listener must implement
  */
-public interface UserHandlerListener {
+public interface IUserHandlerListener {
 	void onAddUser(User user);
 
 	void onUpdateUser(User user);
