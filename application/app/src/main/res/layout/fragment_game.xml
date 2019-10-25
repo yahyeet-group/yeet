@@ -88,7 +88,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="18dp"
             android:layout_marginEnd="0dp"
-            android:text="@string/gameLoadingText"
+            android:text="@string/loadingText"
             android:textColor="@color/colorText"
             android:textAlignment="center"
             android:textSize="24sp" />

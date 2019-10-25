@@ -43,7 +43,7 @@ public class MatchDetailPresenter extends FindOnePresenter<Match, MatchHandler> 
 
 
 	private void setMatchDetailName() {
-		matchDetailActivity.setGameName("Game of " + getEntity().getGame().getName());
+		matchDetailActivity.setGameName("Match of " + getEntity().getGame().getName());
 	}
 
 

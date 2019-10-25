@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
     <View
+        android:id="@+id/view6"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
@@ -25,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/custom_done_button"
         android:enabled="false"
         android:text="Done"
@@ -35,15 +36,15 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/playerRecycleView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="570dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="40dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/selectPlayersDoneButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchPlayers" />
+        app:layout_constraintTop_toBottomOf="@+id/searchPlayers"
+        app:layout_constraintVertical_bias="0.0" />
 
     <SearchView
         android:id="@+id/searchPlayers"
@@ -68,7 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="312dp"
-        android:text="@string/gameLoadingText"
+        android:text="@string/loadingText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

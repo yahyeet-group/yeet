@@ -169,7 +169,7 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			} else if (holder instanceof HeaderViewHolder) {
 				HeaderViewHolder vh = (HeaderViewHolder) holder;
 				vh.tvUsername.setText(currentUser.getName());
-				double stats = statisticsUtil.getWinrateFromMatches(matches, currentUser);
+				double stats = statisticsUtil.getWinrateFromMatches(currentUser.getMatches(), currentUser);
 				int percent = (int) (100 * stats);
 				vh.tvGamesPlayed.setText(Integer.toString(currentUser.getMatches().size()));
 				vh.tvWinrate.setText(percent + "%");

@@ -29,6 +29,12 @@ public abstract class FindOnePresenter<E extends AbstractEntity, H extends IEnti
 	}
 
 
+	/**
+	 * Finds an entity with entityId
+	 * @param handler defines what entity will be found
+	 * @param entityId id of the entity to find
+	 * @param config defines if entities in found entity should be populated
+	 */
 	protected void findEntity(H handler, String entityId, Map<String, Boolean> config) {
 		fragment.disableViewInteraction();
 

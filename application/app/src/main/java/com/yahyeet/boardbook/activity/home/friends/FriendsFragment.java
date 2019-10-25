@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.presenter.friends.FriendsPresenter;
 
 import javax.annotation.Nonnull;
@@ -23,7 +24,7 @@ import javax.annotation.Nonnull;
 /**
  * Fragment that holds and displays friends that is opened by bottom bar
  */
-public class FriendsFragment extends Fragment implements IFriendFragment {
+public class FriendsFragment extends Fragment implements IFriendFragment, IFutureInteractable {
 
 	private FriendsPresenter friendsPresenter;
 	private ImageButton addFriendbtn;
@@ -32,16 +33,13 @@ public class FriendsFragment extends Fragment implements IFriendFragment {
 	@Nullable
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		friendsPresenter = new FriendsPresenter();
-
-
 		return inflater.inflate(R.layout.fragment_friends, container, false);
 	}
 
 	@Override
 	public void onViewCreated(@Nonnull View view, Bundle savedInstanceState) {
 		setAllViews();
-		friendsPresenter = new FriendsPresenter();
+		friendsPresenter = new FriendsPresenter(this);
 		friendSearch.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -79,12 +77,36 @@ public class FriendsFragment extends Fragment implements IFriendFragment {
 
 	public void onStart() {
 		super.onStart();
-		friendsPresenter.notifyAdapter();
+		friendsPresenter.updateFriends();
 	}
 
 	@Override
 	public void enableFriendList() {
 		RecyclerView recyclerView = getView().findViewById(R.id.friendsRecycler);
 		friendsPresenter.enableFriendsList(recyclerView, getContext());
+	}
+
+	@Override
+	public void enableViewInteraction() {
+		addFriendbtn.setEnabled(true);
+		View view = getView();
+		if(view != null)
+			view.findViewById(R.id.friendsLoading).setVisibility(View.INVISIBLE);
+	}
+
+	@Override
+	public void disableViewInteraction() {
+		addFriendbtn.setEnabled(true);
+		View view = getView();
+		if(view != null)
+			view.findViewById(R.id.friendsLoading).setVisibility(View.VISIBLE);
+
+	}
+
+	@Override
+	public void displayLoadingFailed() {
+		View view = getView();
+		if(view != null)
+			view.findViewById(R.id.friendsError).setVisibility(View.VISIBLE);
 	}
 }

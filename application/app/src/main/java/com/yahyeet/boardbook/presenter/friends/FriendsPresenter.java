@@ -6,25 +6,34 @@ import android.os.Looper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.home.friends.IFriendFragment;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.handler.IUserHandlerListener;
+import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
+import com.yahyeet.boardbook.presenter.FindOnePresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Presenter for the Friends view
  */
-public class FriendsPresenter implements IUserHandlerListener {
+public class FriendsPresenter extends FindOnePresenter<User, UserHandler> implements IUserHandlerListener {
 
 	private FriendsAdapter friendsAdapter;
+	private IFriendFragment friendFragment;
 
-	final private List<User> userDatabase;
+	private List<User> userDatabase = new ArrayList<>();
 
-	public FriendsPresenter() {
-		userDatabase = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
+	public FriendsPresenter(IFriendFragment friendFragment) {
+		super((IFutureInteractable) friendFragment);
 		BoardbookSingleton.getInstance().getUserHandler().addListener(this);
+
+		this.friendFragment = friendFragment;
+
+		updateFriends();
 	}
 
 	/**
@@ -77,6 +86,29 @@ public class FriendsPresenter implements IUserHandlerListener {
 				break;
 			}
 		}
+		notifyAdapter();
+	}
+
+	public void updateFriends() {
+
+		findEntity(
+			BoardbookSingleton
+				.getInstance()
+				.getUserHandler(),
+			BoardbookSingleton
+				.getInstance()
+				.getAuthHandler()
+				.getLoggedInUser()
+				.getId(),
+			UserHandler
+				.generatePopulatorConfig(true, false)
+		);
+	}
+
+	@Override
+	protected void onEntityFound(User entity) {
+		userDatabase.clear();
+		userDatabase.addAll(entity.getFriends());
 		notifyAdapter();
 	}
 }

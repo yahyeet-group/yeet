@@ -33,6 +33,11 @@ public abstract class FindAllPresenter<E extends AbstractEntity, H extends IEnti
 		database = new ArrayList<>();
 	}
 
+	/**
+	 * Finds all entities of a specific type
+	 * @param handler defines what type of entity to be found
+	 * @param config defines if entities should be populated
+	 */
 	protected void fillDatabase(H handler, Map<String, Boolean> config) {
 		fragment.disableViewInteraction();
 		handler.all(config).thenAccept(initiatedEntities -> {
@@ -53,6 +58,11 @@ public abstract class FindAllPresenter<E extends AbstractEntity, H extends IEnti
 		});
 	}
 
+	/**
+	 * Finds all entities of a specific type, also calls onDatabaseLoaded
+	 * @param handler defines what type of entity to be found
+	 * @param config defines if entities should be populated
+	 */
 	protected void fillAndModifyDatabase(H handler, Map<String, Boolean> config) {
 		fragment.disableViewInteraction();
 		handler.all(config).thenAccept(initiatedEntities -> {
@@ -74,6 +84,11 @@ public abstract class FindAllPresenter<E extends AbstractEntity, H extends IEnti
 			});
 			return null;
 		});
+	}
+
+	@ForOverride
+	protected void onDatabaseLoaded(List<E> database){
+		// Called in fillAndModifyDatabase, override if database should not be all entities of type T
 	}
 
 	protected void updateAdapter(){
@@ -99,11 +114,6 @@ public abstract class FindAllPresenter<E extends AbstractEntity, H extends IEnti
 
 	protected void setAdapter(RecyclerView.Adapter adapter) {
 		this.adapter = adapter;
-	}
-
-	@ForOverride
-	protected void onDatabaseLoaded(List<E> database){
-		// Called in fillAndModifyDatabase, override if database should not be all entities of type T
 	}
 
 }

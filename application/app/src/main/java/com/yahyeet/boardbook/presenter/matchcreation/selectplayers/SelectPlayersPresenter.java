@@ -32,6 +32,16 @@ public class SelectPlayersPresenter extends FindAllPresenter<User, UserHandler> 
 		this.masterPresenter = cma;
 		this.spf = spf;
 
+		User loggedInUser = BoardbookSingleton
+			.getInstance()
+			.getAuthHandler()
+			.getLoggedInUser();
+
+		if (!masterPresenter.getCmdh().getSelectedPlayers().contains(loggedInUser))
+			masterPresenter
+				.getCmdh()
+				.addSelectedPlayer(loggedInUser);
+
 		searchAdapter = new PlayerAdapter(getDatabase(), this, friends);
 		setAdapter(searchAdapter);
 
@@ -51,7 +61,7 @@ public class SelectPlayersPresenter extends FindAllPresenter<User, UserHandler> 
 		return masterPresenter;
 	}
 
-	public void enableSearchBar(SearchView searchView){
+	public void enableSearchBar(SearchView searchView) {
 
 		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 			@Override
@@ -75,10 +85,10 @@ public class SelectPlayersPresenter extends FindAllPresenter<User, UserHandler> 
 		User loggedInUser = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
 
 		List<User> notFriends = database.stream().filter(user -> {
-			if(user.equals(loggedInUser))
+			if (user.equals(loggedInUser))
 				return false;
 
-			if(loggedInUser
+			if (loggedInUser
 				.getFriends()
 				.stream()
 				.anyMatch(friend -> friend.equals(user))) {
@@ -90,8 +100,6 @@ public class SelectPlayersPresenter extends FindAllPresenter<User, UserHandler> 
 
 
 		database.clear();
-
-		database.add(loggedInUser);
 
 		database.addAll(loggedInUser
 			.getFriends()

@@ -65,13 +65,6 @@ public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> impl
 	}
 
 	@Override
-	protected void onEntityFound(User entity) {
-		matchDatabase.clear();
-		matchDatabase.addAll(entity.getMatches());
-		updateAdapter();
-	}
-
-	@Override
 	public void onAddMatch(Match match) {
 		BoardbookSingleton.getInstance().getMatchHandler().find(match.getId()).thenAccept(foundMatch -> {
 			if (foundMatch.getMatchPlayerByUser(BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser()) != null)
@@ -103,8 +96,8 @@ public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> impl
 	}
 
 	private void updateMatchDatabase() {
-
-		findEntity(BoardbookSingleton
+		findEntity(
+			BoardbookSingleton
 				.getInstance()
 				.getUserHandler(),
 			BoardbookSingleton
@@ -112,8 +105,16 @@ public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> impl
 				.getAuthHandler()
 				.getLoggedInUser()
 				.getId(),
-			UserHandler.generatePopulatorConfig(false, true)
+			UserHandler
+				.generatePopulatorConfig(true, true)
 		);
+	}
+
+	@Override
+	protected void onEntityFound(User entity) {
+		matchDatabase.clear();
+		matchDatabase.addAll(entity.getMatches());
+		updateAdapter();
 	}
 
 

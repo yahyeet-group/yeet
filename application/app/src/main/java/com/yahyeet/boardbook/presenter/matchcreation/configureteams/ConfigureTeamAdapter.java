@@ -41,8 +41,7 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 		}
 
 		public Spinner[] getSpinners() {
-			Spinner[] spinners = {teamSpinner, roleSpinner};
-			return spinners;
+			return new Spinner[]{teamSpinner, roleSpinner};
 		}
 
 		public Boolean getWin() {

@@ -57,9 +57,11 @@ public class ProfilePresenter extends FindOnePresenter<User, UserHandler> {
 
 	@Override
 	protected void onEntityFound(User entity) {
-		//matchDatabase.clear();
+		matchDatabase.clear();
 		matchDatabase.addAll(entity.getMatches());
+		user = entity;
 
+		profileActivity.enableAdapter();
 		updateMatchAdapter();
 	}
 }

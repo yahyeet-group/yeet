@@ -3,6 +3,7 @@ package com.yahyeet.boardbook.activity.profile;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +19,7 @@ public class ProfileActivity extends AppCompatActivity implements IProfileActivi
 
 
 	private ProfilePresenter profilePresenter;
-	private ProgressBar pbLoading;
+	private RelativeLayout pbLoading;
 
 
 	@Override
@@ -42,20 +43,6 @@ public class ProfileActivity extends AppCompatActivity implements IProfileActivi
 		}
 
 		profilePresenter = new ProfilePresenter(this, userId);
-		enableMatchFeed();
-	}
-
-	/**
-	 * Initiates recyclerView of matches in activity and populates it
-	 */
-	public void enableMatchFeed() {
-		// TODO: Examine how these method calls can get nullPointerException
-		RecyclerView matchRecycler = findViewById(R.id.rvProfile);
-
-		// use this setting to improve performance if you know that changes
-		// in content do not change the layout size of the RecyclerView
-		matchRecycler.setHasFixedSize(true);
-		profilePresenter.enableMatchFeed(matchRecycler, this);
 	}
 
 	@Override
@@ -72,5 +59,15 @@ public class ProfileActivity extends AppCompatActivity implements IProfileActivi
 	@Override
 	public void displayLoadingFailed() {
 		findViewById(R.id.profileError).setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void enableAdapter() {
+		RecyclerView matchRecycler = findViewById(R.id.rvProfile);
+
+		// use this setting to improve performance if you know that changes
+		// in content do not change the layout size of the RecyclerView
+		matchRecycler.setHasFixedSize(true);
+		profilePresenter.enableMatchFeed(matchRecycler, this);
 	}
 }
