@@ -7,6 +7,7 @@ import com.yahyeet.boardbook.model.repository.IGameRepository;
 import com.yahyeet.boardbook.model.repository.IMatchPlayerRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -21,6 +22,10 @@ public class MatchPopulator {
 	}
 
 	public CompletableFuture<Match> populate(Match match, Map<String, Boolean> config) {
+		if (config == null) {
+			config = new HashMap<>();
+		}
+
 		Match populatedMatch = new Match(match.getId());
 
 		Boolean shouldFetchGame = config.getOrDefault("game", false);

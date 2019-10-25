@@ -8,6 +8,7 @@ import com.yahyeet.boardbook.model.repository.IMatchRepository;
 import com.yahyeet.boardbook.model.repository.IUserRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -25,6 +26,10 @@ public class UserPopulator {
 	}
 
 	public CompletableFuture<User> populate(User user, Map<String, Boolean> config) {
+		if (config == null) {
+			config = new HashMap<>();
+		}
+
 		User populatedUser = new User(user.getName());
 		populatedUser.setId(user.getId());
 
