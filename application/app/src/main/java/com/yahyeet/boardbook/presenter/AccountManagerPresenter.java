@@ -6,17 +6,9 @@ import com.yahyeet.boardbook.activity.account.IAccountManagerActivity;
 
 import android.os.Looper;
 
-import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.model.util.EmailFailedException;
 import com.yahyeet.boardbook.model.util.PasswordFailedException;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Presenter for the account manager activity
@@ -28,15 +20,6 @@ public class AccountManagerPresenter {
 
 	public AccountManagerPresenter(IAccountManagerActivity accountManagerActivity) {
 		this.accountManagerActivity = accountManagerActivity;
-		BoardbookSingleton.getInstance().getUserHandler().all(UserHandler.generatePopulatorConfig(true, true)).thenCompose(users -> {
-			return BoardbookSingleton.getInstance().getUserHandler().all(UserHandler.generatePopulatorConfig(true, true));
-		}).thenAccept(users -> {
-			int a = 4;
-		}).exceptionally(e -> {
-			int a = 4;
-
-			return null;
-		});
 		if (fastPass) {
 			BoardbookSingleton.getInstance().getAuthHandler().setLoggedInUser(new User("The Almighty Temp User"));
 			finishAccountManager();
