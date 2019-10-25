@@ -87,7 +87,7 @@ public class FirebaseGameTeamRepository extends AbstractFirebaseRepository<GameT
 	@Override
 	public CompletableFuture<Void> afterSave(GameTeam entity, AbstractFirebaseEntity<GameTeam> savedEntity) {
 		return CompletableFuture.supplyAsync(() -> {
-			List<String> cachedTeamIds = gameTeamsIdsCache.get(entity.getId());
+			List<String> cachedTeamIds = gameTeamsIdsCache.get(entity.getGame().getId());
 
 			if (cachedTeamIds != null && cachedTeamIds.stream().noneMatch(teamId -> teamId.equals(entity.getId()))) {
 				cachedTeamIds.add(entity.getId());

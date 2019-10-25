@@ -90,7 +90,7 @@ public class FirebaseGameRoleRepository extends AbstractFirebaseRepository<GameR
 	@Override
 	public CompletableFuture<Void> afterSave(GameRole entity, AbstractFirebaseEntity<GameRole> savedEntity) {
 		return CompletableFuture.supplyAsync(() -> {
-			List<String> cachedRoleIds = teamRoleIdsCache.get(entity.getId());
+			List<String> cachedRoleIds = teamRoleIdsCache.get(entity.getTeam().getId());
 
 			if (cachedRoleIds != null && cachedRoleIds.stream().noneMatch(roleId -> roleId.equals(entity.getId()))) {
 				cachedRoleIds.add(entity.getId());

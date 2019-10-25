@@ -90,7 +90,7 @@ public class FirebaseMatchRepository extends AbstractFirebaseRepository<Match> i
 	@Override
 	public CompletableFuture<Void> afterSave(Match entity, AbstractFirebaseEntity<Match> savedEntity) {
 		return CompletableFuture.supplyAsync(() -> {
-			List<String> cachedMatchIds = gameMatchIdsCache.get(entity.getId());
+			List<String> cachedMatchIds = gameMatchIdsCache.get(entity.getGame().getId());
 
 			if (cachedMatchIds != null && cachedMatchIds.stream().noneMatch(matchId -> matchId.equals(entity.getId()))) {
 				cachedMatchIds.add(entity.getId());
