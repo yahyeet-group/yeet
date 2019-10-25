@@ -49,10 +49,10 @@ public class MatchDetailPresenter extends FindOnePresenter<Match, MatchHandler> 
 	 * @param matchplayerRecyclerView view that will receive new adapter
 	 * @param viewContext             structure of current view
 	 */
-	public void enableMatchplayerAdapter(RecyclerView matchplayerRecyclerView, Context viewContext, Resources resources) {
+	public void enableMatchplayerAdapter(RecyclerView matchplayerRecyclerView, Context viewContext) {
 
 		RecyclerView.LayoutManager layoutManager = new GridLayoutManager(viewContext, 1);
-		matchPlayerAdapter = new MatchPlayerAdapter(matchPlayers, resources);
+		matchPlayerAdapter = new MatchPlayerAdapter(matchPlayers);
 
 		matchplayerRecyclerView.setLayoutManager(layoutManager);
 		matchplayerRecyclerView.setAdapter(matchPlayerAdapter);
@@ -64,7 +64,6 @@ public class MatchDetailPresenter extends FindOnePresenter<Match, MatchHandler> 
 
 		matchPlayers.clear();
 		matchPlayers.addAll(sortByWin(entity.getMatchPlayers()));
-		matchDetailActivity.initiateMatchDetailList();
 
 	}
 
@@ -72,7 +71,7 @@ public class MatchDetailPresenter extends FindOnePresenter<Match, MatchHandler> 
 
 		return unsortedPlayers
 			.stream()
-			.sorted((left, right) -> Boolean.compare(left.getWin(), right.getWin()))
+			.sorted((left, right) -> -Boolean.compare(left.getWin(), right.getWin()))
 			.collect(Collectors.toList());
 	}
 }

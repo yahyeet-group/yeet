@@ -47,6 +47,11 @@ public class MatchDetailActivity extends AppCompatActivity implements IMatchDeta
 		pbLoading = findViewById(R.id.matchDetailLoading);
 
 		matchDetailPresenter = new MatchDetailPresenter(this, matchID);
+		initiateMatchDetailList();
+	}
+
+	public void initiateMatchDetailList(){
+		matchDetailPresenter.enableMatchplayerAdapter(rvMatchPlayers, this);
 	}
 
 	@Override
@@ -54,11 +59,7 @@ public class MatchDetailActivity extends AppCompatActivity implements IMatchDeta
 		tvName.setText(name);
 	}
 
-	// Necessary because activity cant send info before presenter has its match from database
-	@Override
-	public void initiateMatchDetailList(){
-		matchDetailPresenter.enableMatchplayerAdapter(rvMatchPlayers, this, getResources());
-	}
+
 
 	@Override
 	public void disableViewInteraction(){
@@ -75,7 +76,7 @@ public class MatchDetailActivity extends AppCompatActivity implements IMatchDeta
 
 	@Override
 	public void displayLoadingFailed() {
-		//TODO: Implement method
+		findViewById(R.id.matchDetailError).setVisibility(View.VISIBLE);
 	}
 
 

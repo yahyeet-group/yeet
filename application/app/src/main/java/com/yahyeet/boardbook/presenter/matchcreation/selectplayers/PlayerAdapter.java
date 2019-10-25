@@ -1,5 +1,6 @@
 package com.yahyeet.boardbook.presenter.matchcreation.selectplayers;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 	private SelectPlayersPresenter spp;
 	private List<User> usersFriends;
 
+
 	class PlayerViewHolder extends RecyclerView.ViewHolder {
 
 		TextView playerName;
@@ -34,6 +36,7 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 			super(v);
 			playerName = v.findViewById(R.id.playerNameText);
 			actionButton = v.findViewById(R.id.actionButton);
+
 
 		}
 
@@ -52,6 +55,8 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 		this.spp = spp;
 		cmmp = spp.getMasterPresenter();
 		this.usersFriends = usersFriends;
+
+
 
 
 	}
@@ -80,15 +85,25 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 
 			vh.playerName.setText(database.get(position).getName());
 			vh.actionButton.setOnClickListener(event -> {
-				System.out.println(vh.actionButton.getText().toString().toLowerCase());
 				if (vh.actionButton.getText().toString().toLowerCase().equals("add")) {
+
 					vh.actionButton.setText("Remove");
+					vh.actionButton.setBackgroundColor(vh.itemView
+						.getResources()
+						.getColor(R.color.colorMatchWon, null));
+
 					cmmp.getCmdh().addSelectedPlayer(database.get(position));
 					holder.itemView.setBackgroundColor(Color.parseColor("#0cc43d"));
+
 				}else {
 					vh.actionButton.setText("Add");
+					vh.actionButton.setBackground(vh.itemView
+						.getResources()
+						.getDrawable(R.drawable.custom_button, null));
+
 					cmmp.getCmdh().removeSelectedPlayer(database.get(position));
 					holder.itemView.setBackgroundColor(Color.WHITE);
+
 					if (usersFriends.contains(database.get(position))){
 						vh.itemView.setBackgroundColor(Color.parseColor("#09cdda"));
 					}

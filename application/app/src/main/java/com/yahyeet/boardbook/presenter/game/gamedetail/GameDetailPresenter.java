@@ -36,8 +36,6 @@ public class GameDetailPresenter extends FindOnePresenter<Game, GameHandler> {
 	public void initiateGameDetail() {
 		gameDetailActivity.setGameName(getEntity().getName());
 		gameDetailActivity.setGameDescription(getEntity().getDescription());
-		// TODO: Add rules to games, String field
-		gameDetailActivity.setGameRules("");
 	}
 
 	/**

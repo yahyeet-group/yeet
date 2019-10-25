@@ -33,8 +33,7 @@ public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> impl
 
 		BoardbookSingleton.getInstance().getMatchHandler().addListener(this);
 
-		findLoggedInUser();
-
+		matchDatabase = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getMatches();
 	}
 
 	/**
@@ -80,13 +79,12 @@ public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> impl
 
 	@Override
 	public void onAddMatch(Match match) {
-		if(match
-			.getMatchPlayerByUser(
-				BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser()) != null
-		&& !matchDatabase.contains(match)){
-			matchDatabase.add(match);
-		}
-		updateAdapter();
+		BoardbookSingleton.getInstance().getMatchHandler().find(match.getId()).thenAccept(foundMatch -> {
+			if(foundMatch.getMatchPlayerByUser(BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser()) != null)
+				matchDatabase.add(foundMatch);
+			updateAdapter();
+		});
+
 	}
 
 	@Override

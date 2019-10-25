@@ -55,18 +55,6 @@
         app:layout_constraintTop_toBottomOf="@+id/gameDetailName" />
 
     <TextView
-        android:id="@+id/gameDetailRules"
-        android:layout_width="326dp"
-        android:layout_height="75dp"
-        android:layout_marginTop="44dp"
-        android:textColor="@color/colorText"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/gameDetailName"
-        app:layout_constraintTop_toBottomOf="@+id/gameDetailDescription" />
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorText"
@@ -80,21 +68,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textColor="@color/colorText"
         android:text="@string/teams"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@+id/gameDetailRules"
-        app:layout_constraintTop_toBottomOf="@+id/gameDetailRules" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:textColor="@color/colorText"
-        android:text="Rules"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/gameDetailRules"
-        app:layout_constraintStart_toStartOf="@+id/gameDetailRules" />
+        app:layout_constraintTop_toBottomOf="@+id/gameDetailDescription"
+        tools:layout_editor_absoluteX="8dp" />
 
     <ImageView
         android:id="@+id/gameDetailImage"
@@ -110,7 +88,7 @@
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="390dp"
+        android:layout_marginTop="290dp"
         android:textColor="@color/colorText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/gameDetailTeamTitle">

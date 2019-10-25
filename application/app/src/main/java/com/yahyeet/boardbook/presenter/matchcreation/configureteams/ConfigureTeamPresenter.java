@@ -32,8 +32,6 @@ public class ConfigureTeamPresenter {
 		this.playerRecycleView = playerRecycleView;
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		playerRecycleView.setLayoutManager(layoutManager);
-		//TODO: Replace with matches from user
-		User[] testSet = {new User(), new User()};
 		configureTeamAdapter = new ConfigureTeamAdapter(this);
 		playerRecycleView.setAdapter(configureTeamAdapter);
 

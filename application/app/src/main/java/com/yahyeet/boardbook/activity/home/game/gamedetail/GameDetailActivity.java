@@ -19,8 +19,6 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
 	private GameDetailPresenter gameDetailPresenter;
 	private TextView gameName;
 	private TextView gameDescription;
-	private TextView gameRules;
-	private ImageView gameImage;
 	private ProgressBar gameDetailLoading;
 	private RecyclerView teamRecyclerView;
 
@@ -64,15 +62,10 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
 		this.gameDescription.setText(description);
 	}
 
-	public void setGameRules(String rules) {
-		this.gameRules.setText(rules);
-	}
-
 	@Override
 	public void enableViewInteraction() {
 		gameName.setVisibility(View.VISIBLE);
 		gameDescription.setVisibility(View.VISIBLE);
-		gameRules.setVisibility(View.VISIBLE);
 
 		gameDetailLoading.setVisibility(View.INVISIBLE);
 
@@ -82,7 +75,6 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
 	public void disableViewInteraction() {
 		gameName.setVisibility(View.INVISIBLE);
 		gameDescription.setVisibility(View.INVISIBLE);
-		gameRules.setVisibility(View.INVISIBLE);
 
 		gameDetailLoading.setVisibility(View.VISIBLE);
 
@@ -96,7 +88,6 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
 	private void setAllIds(){
 		gameName = findViewById(R.id.gameDetailName);
 		gameDescription = findViewById(R.id.gameDetailDescription);
-		gameRules = findViewById(R.id.gameDetailRules);
 		gameDetailLoading = findViewById(R.id.gameDetailLoading);
 		teamRecyclerView = findViewById(R.id.gameDetailRecyclerView);
 	}

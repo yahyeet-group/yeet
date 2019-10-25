@@ -58,7 +58,6 @@ public class FriendsPresenter implements UserHandlerListener {
 	@Override
 	public void onAddUser(User user) {
 		// New users don't automatically become friends
-		notifyAdapter();
 	}
 
 	@Override

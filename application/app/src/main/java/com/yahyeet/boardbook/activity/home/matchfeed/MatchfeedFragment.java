@@ -31,17 +31,15 @@ public class MatchfeedFragment extends Fragment implements IMatchfeedFragment, I
 
 	@Override
 	public void onViewCreated(@Nonnull View view, Bundle savedInstanceState) {
-
+		parentView = getView();
 		rvMatch = getView().findViewById(R.id.homeMatchRecycler);
 
 		matchfeedPresenter = new MatchfeedPresenter(this);
-		parentView = getView();
-
-		enableMatchFeed();
+		bindAdapterToView();
 	}
 
 
-	public void enableMatchFeed() {
+	private void bindAdapterToView() {
 		// TODO: Uppdate to current implementation
 		RecyclerView matchRecycler = getView().findViewById(R.id.homeMatchRecycler);
 
@@ -49,10 +47,6 @@ public class MatchfeedFragment extends Fragment implements IMatchfeedFragment, I
 		// in content do not change the layout size of the RecyclerView
 		matchRecycler.setHasFixedSize(true);
 		matchfeedPresenter.enableMatchFeed(matchRecycler, getView().getContext());
-	}
-
-	public void repopulateMatchFeed() {
-		matchfeedPresenter.updateAdapter();
 	}
 
 	@Override

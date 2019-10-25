@@ -5,5 +5,4 @@ public interface IMatchDetailActivity {
 
 	void setGameName(String name);
 
-	void initiateMatchDetailList();
 }

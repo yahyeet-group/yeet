@@ -98,10 +98,12 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 		editButton.setOnClickListener((n) -> {
 			v.getLayoutParams().height = HelperFunctions.dpFromPx(250, holder.itemView.getContext());
 			v.requestLayout();
+			editButton.setVisibility(View.INVISIBLE);
 		});
 		doneButton.setOnClickListener((n) -> {
 			v.getLayoutParams().height = HelperFunctions.dpFromPx(100, holder.itemView.getContext());
 			v.requestLayout();
+			editButton.setVisibility(View.VISIBLE);
 		});
 
 		//// Winning checkbox binding

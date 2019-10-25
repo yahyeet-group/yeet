@@ -6,6 +6,5 @@ public interface IGameDetailActivity {
 
 	void setGameDescription(String description);
 
-	void setGameRules(String rules);
 
 }
