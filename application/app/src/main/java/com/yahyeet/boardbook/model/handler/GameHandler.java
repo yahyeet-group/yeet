@@ -12,7 +12,9 @@ import com.yahyeet.boardbook.model.repository.IMatchRepository;
 import com.yahyeet.boardbook.model.repository.IRepositoryListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -20,11 +22,11 @@ import java.util.stream.Collectors;
 /**
  * A class that handles game entities
  */
-public class GameHandler implements IRepositoryListener<Game>, EntityHandler<Game> {
+public class GameHandler implements IRepositoryListener<Game>, IEntityHandler<Game> {
 	private IGameRepository gameRepository;
 	private IGameRoleRepository gameRoleRepository;
 	private IGameTeamRepository gameTeamRepository;
-	private List<GameHandlerListener> listeners = new ArrayList<>();
+	private List<IGameHandlerListener> listeners = new ArrayList<>();
 
 	private GamePopulator gamePopulator;
 	private GameTeamPopulator gameTeamPopulator;
@@ -43,13 +45,25 @@ public class GameHandler implements IRepositoryListener<Game>, EntityHandler<Gam
 		this.gameRepository.addListener(this);
 	}
 
+
 	@Override
 	public CompletableFuture<Game> find(String id) {
-		return gameRepository.find(id).thenCompose(this::populate);
+		return find(id, new HashMap<>());
 	}
 
 	@Override
+	public CompletableFuture<Game> find(String id, Map<String, Boolean> config) {
+		return gameRepository.find(id).thenCompose(game -> populate(game, config));
+	}
+
+
+	@Override
 	public CompletableFuture<Game> save(Game game) {
+		return save(game, new HashMap<>());
+	}
+
+	@Override
+	public CompletableFuture<Game> save(Game game, Map<String, Boolean> config) {
 		checkGameValidity(game);
 
 		CompletableFuture<Game> savedGameFuture = gameRepository.save(game);
@@ -81,15 +95,20 @@ public class GameHandler implements IRepositoryListener<Game>, EntityHandler<Gam
 
 		return savedGameFuture
 			.thenCombine(savedGameTeamsAndRolesFuture, (savedGame, nothing) -> savedGame)
-			.thenCompose(this::populate);
+			.thenCompose(savedGame -> populate(savedGame, config));
 	}
 
 	@Override
 	public CompletableFuture<List<Game>> all() {
+		return all(new HashMap<>());
+	}
+
+	@Override
+	public CompletableFuture<List<Game>> all(Map<String, Boolean> config) {
 		return gameRepository.all().thenComposeAsync(games -> {
 			List<CompletableFuture<Game>> completableFutures = games
 				.stream()
-				.map(this::populate)
+				.map(foundGame -> populate(foundGame, config))
 				.collect(Collectors.toList());
 
 			CompletableFuture<Void> allFutures = CompletableFuture.allOf(
@@ -104,10 +123,10 @@ public class GameHandler implements IRepositoryListener<Game>, EntityHandler<Gam
 		});
 	}
 
-	private CompletableFuture<Game> populate(Game game) {
+	private CompletableFuture<Game> populate(Game game, Map<String, Boolean> config) {
 		AtomicReference<Game> fullyPopulatedGame = new AtomicReference<>();
 
-		return gamePopulator.populate(game).thenApply(populatedGame -> {
+		return gamePopulator.populate(game, config).thenApply(populatedGame -> {
 			fullyPopulatedGame.set(populatedGame);
 
 			return null;
@@ -132,28 +151,28 @@ public class GameHandler implements IRepositoryListener<Game>, EntityHandler<Gam
 		}).thenApply(nothing -> fullyPopulatedGame.get());
 	}
 
-	public void addListener(GameHandlerListener listener) {
+	public void addListener(IGameHandlerListener listener) {
 		listeners.add(listener);
 	}
 
-	public void removeListener(GameHandlerListener listener) {
+	public void removeListener(IGameHandlerListener listener) {
 		listeners.remove(listener);
 	}
 
 	private void notifyListenersOnGameAdd(Game game) {
-		for (GameHandlerListener listener : listeners) {
+		for (IGameHandlerListener listener : listeners) {
 			listener.onAddGame(game);
 		}
 	}
 
 	private void notifyListenersOnGameUpdate(Game game) {
-		for (GameHandlerListener listener : listeners) {
+		for (IGameHandlerListener listener : listeners) {
 			listener.onUpdateGame(game);
 		}
 	}
 
 	private void notifyListenersOnGameRemove(String id) {
-		for (GameHandlerListener listener : listeners) {
+		for (IGameHandlerListener listener : listeners) {
 			listener.onRemoveGame(id);
 		}
 	}
@@ -171,6 +190,16 @@ public class GameHandler implements IRepositoryListener<Game>, EntityHandler<Gam
 	@Override
 	public void onDelete(String id) {
 		notifyListenersOnGameRemove(id);
+	}
+
+	public static Map<String, Boolean> generatePopulatorConfig(
+		boolean shouldPopulateMatches,
+		boolean shouldPopulateTeams
+	) {
+		Map<String, Boolean> config = new HashMap<>();
+		config.put("matches", shouldPopulateMatches);
+		config.put("teams", shouldPopulateTeams);
+		return config;
 	}
 
 	/**

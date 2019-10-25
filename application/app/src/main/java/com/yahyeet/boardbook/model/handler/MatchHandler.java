@@ -13,7 +13,9 @@ import com.yahyeet.boardbook.model.repository.IRepositoryListener;
 import com.yahyeet.boardbook.model.repository.IUserRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -21,11 +23,11 @@ import java.util.stream.Collectors;
 /**
  * A class that handles match entities
  */
-public class MatchHandler implements IRepositoryListener<Match>, EntityHandler<Match> {
+public class MatchHandler implements IRepositoryListener<Match>, IEntityHandler<Match> {
 
 	private IMatchPlayerRepository matchPlayerRepository;
 	private IMatchRepository matchRepository;
-	private List<MatchHandlerListener> listeners = new ArrayList<>();
+	private List<IMatchHandlerListener> listeners = new ArrayList<>();
 
 	private MatchPopulator matchPopulator;
 	private MatchPlayerPopulator matchPlayerPopulator;
@@ -47,11 +49,21 @@ public class MatchHandler implements IRepositoryListener<Match>, EntityHandler<M
 
 	@Override
 	public CompletableFuture<Match> find(String id) {
-		return matchRepository.find(id).thenCompose(this::populate);
+		return find(id, new HashMap<>());
+	}
+
+	@Override
+	public CompletableFuture<Match> find(String id, Map<String, Boolean> config) {
+		return matchRepository.find(id).thenCompose(foundMatch -> populate(foundMatch, config));
 	}
 
 	@Override
 	public CompletableFuture<Match> save(Match match) {
+		return save(match, new HashMap<>());
+	}
+
+	@Override
+	public CompletableFuture<Match> save(Match match, Map<String, Boolean> config) {
 		checkMatchValidity(match);
 
 		CompletableFuture<Match> savedMatchFuture = matchRepository.save(match);
@@ -69,15 +81,20 @@ public class MatchHandler implements IRepositoryListener<Match>, EntityHandler<M
 
 		return savedMatchFuture
 			.thenCombine(savedMatchPlayersFuture, (savedMatch, nothing) -> savedMatch)
-			.thenCompose(this::populate);
+			.thenCompose(savedMatch -> populate(savedMatch, config));
 	}
 
 	@Override
 	public CompletableFuture<List<Match>> all() {
+		return all(new HashMap<>());
+	}
+
+	@Override
+	public CompletableFuture<List<Match>> all(Map<String, Boolean> config) {
 		return matchRepository.all().thenComposeAsync(matches -> {
 			List<CompletableFuture<Match>> completableFutures = matches
 				.stream()
-				.map(this::populate)
+				.map(foundMatch -> populate(foundMatch, config))
 				.collect(Collectors.toList());
 
 			CompletableFuture<Void> allFutures = CompletableFuture.allOf(
@@ -92,10 +109,10 @@ public class MatchHandler implements IRepositoryListener<Match>, EntityHandler<M
 		});
 	}
 
-	private CompletableFuture<Match> populate(Match match) {
+	private CompletableFuture<Match> populate(Match match, Map<String, Boolean> config) {
 		AtomicReference<Match> fullyPopulatedMatch = new AtomicReference<>();
 
-		return matchPopulator.populate(match).thenApply(populatedMatch -> {
+		return matchPopulator.populate(match, config).thenApply(populatedMatch -> {
 			fullyPopulatedMatch.set(populatedMatch);
 
 			return populatedMatch;
@@ -116,28 +133,28 @@ public class MatchHandler implements IRepositoryListener<Match>, EntityHandler<M
 		}).thenApply(nothing -> fullyPopulatedMatch.get());
 	}
 
-	public void addListener(MatchHandlerListener listener) {
+	public void addListener(IMatchHandlerListener listener) {
 		listeners.add(listener);
 	}
 
-	public void removeListener(MatchHandlerListener listener) {
+	public void removeListener(IMatchHandlerListener listener) {
 		listeners.remove(listener);
 	}
 
 	private void notifyListenersOnMatchAdd(Match match) {
-		for (MatchHandlerListener listener : listeners) {
+		for (IMatchHandlerListener listener : listeners) {
 			listener.onAddMatch(match);
 		}
 	}
 
 	private void notifyListenersOnMatchUpdate(Match match) {
-		for (MatchHandlerListener listener : listeners) {
+		for (IMatchHandlerListener listener : listeners) {
 			listener.onUpdateMatch(match);
 		}
 	}
 
 	private void notifyListenersOnMatchRemove(String id) {
-		for (MatchHandlerListener listener : listeners) {
+		for (IMatchHandlerListener listener : listeners) {
 			listener.onRemoveMatch(id);
 		}
 	}
@@ -155,6 +172,16 @@ public class MatchHandler implements IRepositoryListener<Match>, EntityHandler<M
 	@Override
 	public void onDelete(String id) {
 		notifyListenersOnMatchRemove(id);
+	}
+
+	public static Map<String, Boolean> generatePopulatorConfig(
+		boolean shouldPopulateGame,
+		boolean shouldPopulatePlayers
+	) {
+		Map<String, Boolean> config = new HashMap<>();
+		config.put("game", shouldPopulateGame);
+		config.put("players", shouldPopulatePlayers);
+		return config;
 	}
 
 	/**

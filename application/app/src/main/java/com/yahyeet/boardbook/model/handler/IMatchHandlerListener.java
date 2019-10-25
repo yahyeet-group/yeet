@@ -5,7 +5,7 @@ import com.yahyeet.boardbook.model.entity.Match;
 /**
  * Interface that defines the methods a match handler listener must implement
  */
-public interface MatchHandlerListener {
+public interface IMatchHandlerListener {
 	void onAddMatch(Match match);
 
 	void onUpdateMatch(Match match);

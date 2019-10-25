@@ -5,7 +5,7 @@ import com.yahyeet.boardbook.model.entity.Game;
 /**
  * Interface that defines the methods a game handler listener must implement
  */
-public interface GameHandlerListener {
+public interface IGameHandlerListener {
 	void onAddGame(Game game);
 
 	void onUpdateGame(Game game);

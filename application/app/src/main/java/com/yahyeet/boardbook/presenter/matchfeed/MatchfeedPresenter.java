@@ -9,12 +9,12 @@ import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.activity.home.matchfeed.IMatchfeedFragment;
 import com.yahyeet.boardbook.model.entity.Match;
-import com.yahyeet.boardbook.model.handler.MatchHandlerListener;
+import com.yahyeet.boardbook.model.handler.IMatchHandlerListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchfeedPresenter implements MatchHandlerListener {
+public class MatchfeedPresenter implements IMatchHandlerListener {
 
 	private MatchfeedAdapter matchfeedAdapter;
 	private List<Match> matchDatabase = new ArrayList<>();
