@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
-        app:layout_constraintBottom_toBottomOf="@+id/playerRecycleView"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playerRecycleView" />
 
     <View
         android:layout_width="match_parent"
@@ -25,13 +25,15 @@
         android:id="@+id/selectPlayersDoneButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/custom_done_button"
         android:enabled="false"
         android:text="Done"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playerRecycleView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/playerRecycleView"
@@ -39,7 +41,7 @@
         android:layout_height="570dp"
         android:layout_marginTop="10dp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/selectPlayersDoneButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"

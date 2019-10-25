@@ -88,9 +88,9 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 				if (vh.actionButton.getText().toString().toLowerCase().equals("add")) {
 
 					vh.actionButton.setText("Remove");
-					vh.actionButton.setBackgroundColor(vh.itemView
+					vh.actionButton.setBackground(vh.itemView
 						.getResources()
-						.getColor(R.color.colorMatchWon, null));
+						.getDrawable(R.drawable.custom_button, null));
 
 					cmmp.getCmdh().addSelectedPlayer(database.get(position));
 					holder.itemView.setBackgroundColor(Color.parseColor("#0cc43d"));

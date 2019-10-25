@@ -101,6 +101,8 @@ public class SelectPlayersPresenter extends FindAllPresenter<User, UserHandler> 
 
 		database.clear();
 
+		database.add(BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser());
+
 		database.addAll(loggedInUser
 			.getFriends()
 			.stream()
