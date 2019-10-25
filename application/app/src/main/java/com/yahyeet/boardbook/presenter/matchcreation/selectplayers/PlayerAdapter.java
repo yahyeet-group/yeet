@@ -115,10 +115,6 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 
 					cmmp.getCmdh().removeSelectedPlayer(database.get(position));
 					holder.itemView.setBackgroundColor(Color.WHITE);
-
-					if (usersFriends.contains(database.get(position))){
-						vh.itemView.setBackgroundColor(Color.parseColor("#09cdda"));
-					}
 				}
 			});
 

@@ -76,6 +76,6 @@ public class MatchfeedFragment extends Fragment implements IMatchfeedFragment, I
 	@Override
 	public void onStart() {
 		super.onStart();
-		matchfeedPresenter.updateAdapter();
+		matchfeedPresenter.updateMatchDatabase();
 	}
 }

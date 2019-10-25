@@ -46,7 +46,6 @@ public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> impl
 	public void updateAdapter() {
 		new android.os.Handler(Looper.getMainLooper())
 			.post(() -> matchfeedAdapter.notifyDataSetChanged());
-
 	}
 
 	/**
@@ -66,12 +65,7 @@ public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> impl
 
 	@Override
 	public void onAddMatch(Match match) {
-		BoardbookSingleton.getInstance().getMatchHandler().find(match.getId()).thenAccept(foundMatch -> {
-			if (foundMatch.getMatchPlayerByUser(BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser()) != null)
-				matchDatabase.add(foundMatch);
-			updateAdapter();
-		});
-
+		// Not necessary
 	}
 
 	@Override
@@ -95,7 +89,7 @@ public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> impl
 		updateAdapter();
 	}
 
-	private void updateMatchDatabase() {
+	public void updateMatchDatabase() {
 		findEntity(
 			BoardbookSingleton
 				.getInstance()
