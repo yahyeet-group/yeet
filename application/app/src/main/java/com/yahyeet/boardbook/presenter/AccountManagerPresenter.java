@@ -24,10 +24,7 @@ public class AccountManagerPresenter {
 
 	public AccountManagerPresenter(IAccountManagerActivity accountManagerActivity) {
 		this.accountManagerActivity = accountManagerActivity;
-		Map<String, Boolean> config = new HashMap<>();
-//		config.put("game", false);
-//		config.put("players", false);
-		BoardbookSingleton.getInstance().getMatchHandler().all(config).thenAccept(user -> {
+		BoardbookSingleton.getInstance().getUserHandler().all().thenAccept(user -> {
 			int a = 4;
 		}).exceptionally(e -> {
 			int a = 4;

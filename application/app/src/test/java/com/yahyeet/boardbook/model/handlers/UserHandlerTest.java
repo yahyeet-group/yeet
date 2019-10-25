@@ -116,7 +116,7 @@ public class UserHandlerTest {
 		user1.addFriend(user2);
 		try {
 			String id = userHandler.save(user1).get().getId();
-			User result = userHandler.find(id).get();
+			User result = userHandler.find(id, UserHandler.generatePopulatorConfig(true, false)).get();
 			assertEquals(user1, result);
 			assertEquals(1, result.getFriends().size());
 			assertEquals(user2, result.getFriends().get(0));
@@ -140,7 +140,7 @@ public class UserHandlerTest {
 
 		game.addTeam(gt);
 		try {
-			game = gameHandler.save(game).get();
+			game = gameHandler.save(game, GameHandler.generatePopulatorConfig(false, true)).get();
 		} catch (ExecutionException | InterruptedException e) {
 			e.printStackTrace();
 		}

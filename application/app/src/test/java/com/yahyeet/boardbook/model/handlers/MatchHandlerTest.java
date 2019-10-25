@@ -87,7 +87,7 @@ public class MatchHandlerTest {
 
 		game.addTeam(gt);
 		try {
-			game = gameHandler.save(game).get();
+			game = gameHandler.save(game, GameHandler.generatePopulatorConfig(false, true)).get();
 		} catch (ExecutionException | InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -138,7 +138,7 @@ public class MatchHandlerTest {
 
 		game.addTeam(gt);
 		try {
-			game = gameHandler.save(game).get();
+			game = gameHandler.save(game, GameHandler.generatePopulatorConfig(false, true)).get();
 		} catch (ExecutionException | InterruptedException e) {
 			e.printStackTrace();
 		}
