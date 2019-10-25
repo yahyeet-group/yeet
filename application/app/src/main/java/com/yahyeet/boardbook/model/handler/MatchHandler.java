@@ -49,7 +49,7 @@ public class MatchHandler implements IRepositoryListener<Match>, IEntityHandler<
 
 	@Override
 	public CompletableFuture<Match> find(String id) {
-		return find(id, new HashMap<>());
+		return find(id, generatePopulatorConfig(false, false));
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class MatchHandler implements IRepositoryListener<Match>, IEntityHandler<
 
 	@Override
 	public CompletableFuture<Match> save(Match match) {
-		return save(match, new HashMap<>());
+		return save(match, generatePopulatorConfig(false, false));
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class MatchHandler implements IRepositoryListener<Match>, IEntityHandler<
 
 	@Override
 	public CompletableFuture<List<Match>> all() {
-		return all(new HashMap<>());
+		return all(generatePopulatorConfig(false, false));
 	}
 
 	@Override

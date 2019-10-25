@@ -48,7 +48,7 @@ public class UserHandler implements IRepositoryListener<User>, IEntityHandler<Us
 
 	@Override
 	public CompletableFuture<User> find(String id) {
-		return find(id, new HashMap<>());
+		return find(id, generatePopulatorConfig(false, false));
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class UserHandler implements IRepositoryListener<User>, IEntityHandler<Us
 
 	@Override
 	public CompletableFuture<User> save(User user) {
-		return save(user, new HashMap<>());
+		return save(user, generatePopulatorConfig(false, false));
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class UserHandler implements IRepositoryListener<User>, IEntityHandler<Us
 
 	@Override
 	public CompletableFuture<List<User>> all() {
-		return all(new HashMap<>());
+		return all(generatePopulatorConfig(false, false));
 	}
 
 	@Override

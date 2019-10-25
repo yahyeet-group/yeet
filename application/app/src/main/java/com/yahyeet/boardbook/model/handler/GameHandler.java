@@ -48,7 +48,7 @@ public class GameHandler implements IRepositoryListener<Game>, IEntityHandler<Ga
 
 	@Override
 	public CompletableFuture<Game> find(String id) {
-		return find(id, new HashMap<>());
+		return find(id, generatePopulatorConfig(false, false));
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class GameHandler implements IRepositoryListener<Game>, IEntityHandler<Ga
 
 	@Override
 	public CompletableFuture<Game> save(Game game) {
-		return save(game, new HashMap<>());
+		return save(game, generatePopulatorConfig(false, false));
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class GameHandler implements IRepositoryListener<Game>, IEntityHandler<Ga
 
 	@Override
 	public CompletableFuture<List<Game>> all() {
-		return all(new HashMap<>());
+		return all(generatePopulatorConfig(false, false));
 	}
 
 	@Override
