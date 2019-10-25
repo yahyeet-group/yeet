@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.presenter.ProfilePresenter;
 
+/**
+ * Activity that displays a profile
+ */
 public class ProfileActivity extends AppCompatActivity implements IProfileActivity {
 
 	private ProfilePresenter profilePresenter;

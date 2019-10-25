@@ -7,6 +7,9 @@ import com.yahyeet.boardbook.activity.home.IHomeActivity;
 import com.yahyeet.boardbook.activity.profile.ProfileActivity;
 import com.yahyeet.boardbook.activity.account.AccountManagerActivity;
 
+/**
+ * Presenter for the home activity
+ */
 public class HomePresenter {
 
 	private IHomeActivity homeActivity;

@@ -12,17 +12,16 @@ import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
 import java.util.List;
 
+/**
+ * Presenter for the Friends view
+ */
 public class FriendsPresenter implements IUserHandlerListener {
 
 	private FriendsAdapter friendsAdapter;
-	// TODO: Remove if never necessary
-	private IFriendFragment friendsFragment;
 
 	final private List<User> userDatabase;
 
-	public FriendsPresenter(IFriendFragment friendsFragment) {
-		this.friendsFragment = friendsFragment;
-
+	public FriendsPresenter() {
 		userDatabase = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
 		BoardbookSingleton.getInstance().getUserHandler().addListener(this);
 	}

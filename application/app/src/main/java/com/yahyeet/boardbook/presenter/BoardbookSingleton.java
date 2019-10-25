@@ -16,6 +16,9 @@ import com.yahyeet.boardbook.model.handler.MatchHandler;
 import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.model.service.IAuthService;
 
+/**
+ * Singleton that wraps the model
+ */
 public class BoardbookSingleton {
 	private static Boardbook instance;
 	private static final String FIREBASE_COLLECTION_PREFIX = "testGame";

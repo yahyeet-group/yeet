@@ -1,5 +1,8 @@
 package com.yahyeet.boardbook.activity.account;
 
+/**
+ * Binds events from fragments to the activity so that the fragments does not depend on the parents presenter.
+ */
 public interface IAccountFragmentHolder {
 
 

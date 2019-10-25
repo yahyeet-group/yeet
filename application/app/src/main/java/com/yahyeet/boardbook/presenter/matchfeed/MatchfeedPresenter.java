@@ -14,6 +14,9 @@ import com.yahyeet.boardbook.model.handler.IMatchHandlerListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Presenter for the match feed activity
+ */
 public class MatchfeedPresenter implements IMatchHandlerListener {
 
 	private MatchfeedAdapter matchfeedAdapter;

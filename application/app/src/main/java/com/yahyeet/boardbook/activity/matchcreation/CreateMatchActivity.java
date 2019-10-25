@@ -10,6 +10,9 @@ import com.yahyeet.boardbook.activity.matchcreation.selectgame.SelectGameFragmen
 import com.yahyeet.boardbook.activity.matchcreation.selectplayers.SelectPlayersFragment;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 
+/**
+ * Activity that hold all fragments for creating a match
+ */
 public class CreateMatchActivity extends AppCompatActivity implements ICreateMatchActivity {
 
  private CMMasterPresenter presenter;

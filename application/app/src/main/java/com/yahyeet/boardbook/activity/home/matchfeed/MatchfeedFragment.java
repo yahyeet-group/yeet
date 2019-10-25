@@ -15,6 +15,9 @@ import com.yahyeet.boardbook.presenter.matchfeed.MatchfeedPresenter;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Fragment that displays a feed of matches
+ */
 public class MatchfeedFragment extends Fragment implements IMatchfeedFragment {
 
 	private MatchfeedPresenter matchfeedPresenter;

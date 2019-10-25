@@ -16,6 +16,9 @@ import com.yahyeet.boardbook.activity.matchcreation.CreateMatchActivity;
 import com.yahyeet.boardbook.activity.matchcreation.selectgame.ISelectGameFragment;
 import com.yahyeet.boardbook.presenter.matchcreation.selectplayers.SelectPlayersPresenter;
 
+/**
+ * Fragment for selecting what players played in a match
+ */
 public class SelectPlayersFragment extends Fragment implements ISelectGameFragment {
 
 	private SelectPlayersPresenter selectPlayersPresenter;
@@ -24,9 +27,6 @@ public class SelectPlayersFragment extends Fragment implements ISelectGameFragme
 		CreateMatchActivity cma = (CreateMatchActivity) getActivity();
 		selectPlayersPresenter = new SelectPlayersPresenter(this, cma.getPresenter());
 		return inflater.inflate(R.layout.fragment_select_players, container, false);
-
-
-
 	}
 
 	@Override
