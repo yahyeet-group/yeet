@@ -1,6 +1,7 @@
 package com.yahyeet.boardbook.presenter.matchcreation.selectplayers;
 
 import android.content.Context;
+import android.os.Looper;
 import android.widget.SearchView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,9 +31,11 @@ public class SelectPlayersPresenter extends FindAllPresenter<User, UserHandler> 
 	private CMMasterPresenter masterPresenter;
 	private AbstractSearchAdapter<User> searchAdapter;
 	private List<User> friends = new ArrayList<>();
+	private ISelectPlayersFragment selectPlayersFragment;
 
 	public SelectPlayersPresenter(ISelectPlayersFragment spf, CMMasterPresenter cma) {
 		super((IFutureInteractable) spf);
+		selectPlayersFragment = spf;
 		this.masterPresenter = cma;
 
 		User loggedInUser = BoardbookSingleton
@@ -45,11 +48,12 @@ public class SelectPlayersPresenter extends FindAllPresenter<User, UserHandler> 
 				.getCmdh()
 				.addSelectedPlayer(loggedInUser);
 
+
 		searchAdapter = new PlayerAdapter(getDatabase(), this, friends);
 		setAdapter(searchAdapter);
 
 		fillAndModifyDatabase(BoardbookSingleton.getInstance().getUserHandler(),
-			null);
+			UserHandler.generatePopulatorConfig(true, false));
 
 	}
 
@@ -84,44 +88,51 @@ public class SelectPlayersPresenter extends FindAllPresenter<User, UserHandler> 
 	@Override
 	protected void onDatabaseLoaded(List<User> database) {
 
-		User loggedInUser = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
+		User notPopulatedLoggedInUser = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
+		BoardbookSingleton.getInstance().getUserHandler().find(notPopulatedLoggedInUser.getId(), UserHandler.generatePopulatorConfig(true, false)).thenAccept(loggedInUser -> {
+			List<User> notFriends = database.stream().filter(user -> {
+				if (user.equals(loggedInUser))
+					return false;
 
-		List<User> notFriends = database.stream().filter(user -> {
-			if (user.equals(loggedInUser))
-				return false;
+				if (loggedInUser
+					.getFriends()
+					.stream()
+					.anyMatch(friend -> friend.equals(user))) {
+					return false;
+				}
 
-			if (loggedInUser
+				return true;
+			}).collect(Collectors.toList());
+
+
+			database.clear();
+
+			database.add(loggedInUser);
+
+			database.addAll(loggedInUser
 				.getFriends()
 				.stream()
-				.anyMatch(friend -> friend.equals(user))) {
-				return false;
-			}
-
-			return true;
-		}).collect(Collectors.toList());
+				.sorted((left, right) -> left.getName().compareTo(right.getName()))
+				.collect(Collectors.toList()));
 
 
-		database.clear();
+			friends.addAll(loggedInUser
+				.getFriends()
+				.stream()
+				.sorted((left, right) -> left.getName().compareTo(right.getName()))
+				.collect(Collectors.toList()));
 
-		database.add(BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser());
+			database.addAll(notFriends
+				.stream()
+				.sorted((left, right) -> left.getName().compareTo(right.getName()))
+				.collect(Collectors.toList()));
 
-		database.addAll(loggedInUser
-			.getFriends()
-			.stream()
-			.sorted((left, right) -> left.getName().compareTo(right.getName()))
-			.collect(Collectors.toList()));
+			new android.os.Handler(Looper.getMainLooper()).post(() -> selectPlayersFragment.enablePlayerAdapter());
+
+		});
 
 
-		friends.addAll(loggedInUser
-			.getFriends()
-			.stream()
-			.sorted((left, right) -> left.getName().compareTo(right.getName()))
-			.collect(Collectors.toList()));
 
-		database.addAll(notFriends
-			.stream()
-			.sorted((left, right) -> left.getName().compareTo(right.getName()))
-			.collect(Collectors.toList()));
 
 	}
 }

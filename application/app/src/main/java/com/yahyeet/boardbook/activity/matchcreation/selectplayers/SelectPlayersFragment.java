@@ -47,16 +47,17 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		setViews();
 
-		enableMatchFeed();
 		enableSearchView();
 		doneButton.setOnClickListener(event -> {
 			selectPlayersPresenter.getMasterPresenter().goToConfigureTeams();
 		});
 	}
 
-	public void enableMatchFeed() {
+
+	@Override
+	public void enablePlayerAdapter() {
 		playerRecyclerView.setHasFixedSize(true);
-		selectPlayersPresenter.enableGameFeed(playerRecyclerView, Objects.requireNonNull(getView()).getContext());
+		selectPlayersPresenter.enableGameFeed(playerRecyclerView, getView().getContext());
 	}
 
 	public void enableSearchView() {
@@ -84,9 +85,6 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
 		loadingIndicator.setVisibility(View.INVISIBLE);
 		playerRecyclerView.setVisibility(View.VISIBLE);
 
-		if (getContext() != null) {
-			playerRecyclerView.getLayoutParams().height = ViewUtils.dpFromPx(550, getContext());
-		}
 
 		playerRecyclerView.requestLayout();
 		loadingText.setVisibility(View.INVISIBLE);

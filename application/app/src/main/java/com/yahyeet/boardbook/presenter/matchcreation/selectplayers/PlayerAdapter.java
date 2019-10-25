@@ -91,9 +91,6 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 
 			// This makes is to so that friends of the logged in user is shown in a different color
 			List<User> database = getDatabase();
-			if (usersFriends.contains(database.get(position))){
-				vh.itemView.setBackgroundColor(Color.parseColor("#09cdda"));
-			}
 
 			// This bind the button for selecting and deselecting the player
 			// Ensuring that the button text is correct and that the user
@@ -124,25 +121,24 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 					}
 				}
 			});
-		}
 
-
-		/// If the user where to go back from the Configuring teams part of the wizard to
-		/// Selecting players, the Recycle view would be reloaded and therefore the pliancy of the buttons.
-		/// This fixes so that players from before now look like they should do.
-		List<String> playerNames = new ArrayList<>();
-		for (User user: cmmp.getCmdh().getSelectedPlayers()) {
-			playerNames.add(user.getName());
-		}
-
-		int amountPlayers = getItemCount();
-		for (int i = 0; i < amountPlayers; i++){
-			PlayerViewHolder holder1 = (PlayerViewHolder) holder;
-			if(playerNames.contains(holder1.getName())){
-				holder1.setAlreadySelected();
+			/// If the user where to go back from the Configuring teams part of the wizard to
+			/// Selecting players, the Recycle view would be reloaded and therefore the pliancy of the buttons.
+			/// This fixes so that players from before now look like they should do.
+			List<String> playerNames = new ArrayList<>();
+			for (User user: cmmp.getCmdh().getSelectedPlayers()) {
+				playerNames.add(user.getName());
 			}
 
+
+
+			if(playerNames.contains(vh.playerName.getText())){
+				vh.setAlreadySelected();
+			}
 		}
+
+
+
 	}
 
 	@Override
