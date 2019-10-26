@@ -35,8 +35,10 @@ public class GameDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 		for (GameTeam team : firstList){
 			allNames.add(team.getName());
-			for(GameRole role : team.getRoles())
-				allNames.add(role.getName());
+			if(!team.getRoles().isEmpty()){
+				for(GameRole role : team.getRoles())
+					allNames.add(role.getName());
+			}
 		}
 
 	}
@@ -168,7 +170,8 @@ public class GameDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		List<Integer> sizeList = new ArrayList<>();
 
 		for (List<GameRole> list : secondList)
-			sizeList.add(list.size());
+			if(!list.isEmpty())
+				sizeList.add(list.size());
 
 		int desiredPosition = position;
 

@@ -49,11 +49,8 @@ public class GameDetailActivity extends AppCompatActivity implements IGameDetail
 
 	}
 
-	/**
-	 * Initiates activity and enables team list
-	 */
-	protected void onStart() {
-		super.onStart();
+	@Override
+	public void enableRecyclerView(){
 		gameDetailPresenter.enableTeamList(teamRecyclerView, this);
 	}
 

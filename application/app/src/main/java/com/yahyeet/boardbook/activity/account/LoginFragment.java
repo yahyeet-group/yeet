@@ -54,6 +54,7 @@ public class LoginFragment extends AccountFragment {
 	 */
 	private void loginAccount() {
 		accountManager.loginAccount(etEmail.getText().toString(), etPassword.getText().toString());
+
 	}
 
 	/**

@@ -78,4 +78,7 @@ public abstract class FindOnePresenter<E extends AbstractEntity, H extends IEnti
 		// Override if subclass want's info from entity after future completion
 	}
 
+	public void setEntity(E entity) {
+		this.entity = entity;
+	}
 }
