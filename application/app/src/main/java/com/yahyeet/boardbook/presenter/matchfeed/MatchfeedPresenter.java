@@ -55,7 +55,10 @@ public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> impl
 	 */
 	public void enableMatchFeed(RecyclerView matchRecyclerView, Context viewContext) {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
-		matchfeedAdapter = new MatchfeedAdapter(viewContext, matchDatabase);
+		matchfeedAdapter = new MatchfeedAdapter(
+			viewContext,
+			matchDatabase,
+			getEntity());
 
 		matchRecyclerView.setLayoutManager(layoutManager);
 		matchRecyclerView.setAdapter(matchfeedAdapter);
@@ -108,7 +111,7 @@ public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> impl
 	protected void onEntityFound(User entity) {
 		matchDatabase.clear();
 		matchDatabase.addAll(entity.getMatches());
-		updateAdapter();
+		matchfeedFragment.bindAdapterToView();
 	}
 
 

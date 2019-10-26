@@ -132,6 +132,7 @@ public class UserHandler implements IRepositoryListener<User>, IEntityHandler<Us
 						.forEach(matchPlayer -> allFuturePopulatedMatchPlayers.add(matchPlayerPopulator.populate(matchPlayer).thenApply(populatedMatchPlayer -> {
 							matchPlayer.setUser(populatedMatchPlayer.getUser());
 							matchPlayer.setMatch(populatedMatchPlayer.getMatch());
+							matchPlayer.setTeam(populatedMatchPlayer.getTeam());
 							matchPlayer.setRole(populatedMatchPlayer.getRole());
 
 							return null;

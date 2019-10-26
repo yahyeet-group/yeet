@@ -68,8 +68,9 @@ public class GamesAdapter extends AbstractSearchAdapter<Game> {
             GamesViewHolder vh = (GamesViewHolder) holder;
             vh.gameTitle.setText(getDatabase().get(position).getName());
             vh.itemView.findViewById(R.id.selectGameButton).setOnClickListener((event)->{
-                cmmp.goToSelectPlayers();
                 cmmp.getCmdh().setGame(getDatabase().get(position));
+                cmmp.goToSelectPlayers();
+
             });
         }
 

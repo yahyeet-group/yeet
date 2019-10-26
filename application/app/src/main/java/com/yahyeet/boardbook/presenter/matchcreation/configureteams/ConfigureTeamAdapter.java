@@ -1,5 +1,6 @@
 package com.yahyeet.boardbook.presenter.matchcreation.configureteams;
 
+import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,9 @@ import com.yahyeet.boardbook.model.entity.GameTeam;
 import com.yahyeet.boardbook.model.entity.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is the adapter that creates and configures the views in the ConfigureTeamsRecycleView
@@ -29,6 +32,7 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 	private List<User> myDataset = new ArrayList<>();
 	private ConfigureTeamPresenter ctp;
 
+	private List<String> teamNames = new ArrayList<>();
 
 	public class PlayerViewHolder extends RecyclerView.ViewHolder {
 
@@ -59,7 +63,6 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 
 	}
 
-	public List<String> teamArray = new ArrayList<>();
 
 	public ConfigureTeamAdapter(ConfigureTeamPresenter ctp) {
 		this.ctp = ctp;
@@ -67,12 +70,14 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 
 		// Adds a default team called no team which is purely for placeholding in the spinners.
 		List<GameTeam> teams = new ArrayList<>(ctp.getMasterPresenter().getCmdh().getGame().getTeams());
+
 		GameTeam teamNull = new GameTeam();
 		teamNull.setName("No Team");
 		teams.add(0, teamNull);
-		for (GameTeam gameTeam : teams) {
-			teamArray.add(gameTeam.getName());
-		}
+
+		teams.forEach(team -> teamNames.add(team.getName()));
+
+
 	}
 
 
@@ -122,7 +127,7 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 		Spinner teamSpinner = v.findViewById(R.id.teamSpinner);
 
 		//Configuring the spinner
-		ArrayAdapter<String> teamAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item, teamArray);
+		ArrayAdapter<String> teamAdapter = new ArrayAdapter<>(v.getContext(), android.R.layout.simple_spinner_item, teamNames);
 		teamAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		teamSpinner.setAdapter(teamAdapter);
 
@@ -135,7 +140,7 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 		teamSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				if (teamArray.get(position).equals("No Team")) {
+				if (teamNames.get(position).equals("No Team")) {
 					roleSpinner.setEnabled(false);
 					return;
 				}
@@ -165,11 +170,15 @@ public class ConfigureTeamAdapter extends RecyclerView.Adapter<ConfigureTeamAdap
 
 	//// Method to change the roles depending on what team was chosen in the team spinner
 	private void setRolesByTeam(GameTeam team, View v, Spinner roleSpinner) {
-		List<GameRole> roles = new ArrayList<>(team.getRoles());
+		List<GameRole> roles = new ArrayList<>();
+
 		List<String> rolesString = new ArrayList<>();
 		GameRole nullRole = new GameRole();
 		nullRole.setName("No Role");
 		roles.add(0, nullRole);
+
+		roles.addAll(team.getRoles());
+
 		for (GameRole role : roles) {
 			rolesString.add(role.getName());
 		}

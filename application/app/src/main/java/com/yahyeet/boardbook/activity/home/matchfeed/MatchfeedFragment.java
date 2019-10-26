@@ -39,12 +39,10 @@ public class MatchfeedFragment extends Fragment implements IMatchfeedFragment, I
 		rvMatch = getView().findViewById(R.id.homeMatchRecycler);
 
 		matchfeedPresenter = new MatchfeedPresenter(this);
-		bindAdapterToView();
 	}
 
-
-	private void bindAdapterToView() {
-		// TODO: Uppdate to current implementation
+	@Override
+	public void bindAdapterToView() {
 		RecyclerView matchRecycler = getView().findViewById(R.id.homeMatchRecycler);
 
 		// use this setting to improve performance if you know that changes
@@ -78,4 +76,5 @@ public class MatchfeedFragment extends Fragment implements IMatchfeedFragment, I
 		super.onStart();
 		matchfeedPresenter.updateMatchDatabase();
 	}
+
 }

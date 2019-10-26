@@ -41,11 +41,12 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	private StatisticsUtil statisticsUtil;
 
 
-	public MatchfeedAdapter(Context context, List<Match> dataset) {
+	public MatchfeedAdapter(Context context, List<Match> dataset, User currentUser) {
 		if (dataset != null)
 			matches = dataset;
 		else
 			matches = new ArrayList<>();
+		this.currentUser = currentUser;
 
 		this.context = context;
 	}
@@ -138,7 +139,7 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 				MatchPlayer currentMatchPlayer = matches
 					.get(position)
-					.getMatchPlayerByUser(BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser());
+					.getMatchPlayerByUser(currentUser);
 
 				MatchViewHolder vh = (MatchViewHolder) holder;
 				vh.tvWinLost.setText(currentMatchPlayer.getWin() ? "Winner" : "Looser");
@@ -146,9 +147,11 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				vh.tvPlayerAmount.setText(matches.get(position).getMatchPlayers().size() + " Players");
 
 				if(currentMatchPlayer.getTeam() != null){
-					vh.tvTeamName.setText("In " + currentMatchPlayer.getTeam());
+					vh.tvTeamName.setText("In " + currentMatchPlayer.getTeam().getName());
 					if(currentMatchPlayer.getRole() != null)
-						vh.tvRoleName.setText("(" + currentMatchPlayer.getRole() + ")");
+						vh.tvRoleName.setText("(" + currentMatchPlayer.getRole().getName() + ")");
+					else
+						vh.tvRoleName.setText("");
 				} else if(currentMatchPlayer.getRole() != null){
 					vh.tvTeamName.setText("as " + currentMatchPlayer.getRole().getName());
 					vh.tvRoleName.setText("");
@@ -186,7 +189,7 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			return 0;
 		}
 
-		if(currentUser == null)
+		if(!isProfile)
 			return matches.size();
 
 		return matches.size() + 1;
