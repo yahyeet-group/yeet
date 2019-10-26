@@ -38,9 +38,9 @@ public class GameDetailPresenter extends FindOnePresenter<Game, GameHandler> {
 
 	}
 
-	public void initiateGameDetail() {
-		gameDetailActivity.setGameName(getEntity().getName());
-		gameDetailActivity.setGameDescription(getEntity().getDescription());
+	public void initiateGameDetail(Game game) {
+		gameDetailActivity.setGameName(game.getName());
+		gameDetailActivity.setGameDescription(game.getDescription());
 	}
 
 	/**
@@ -59,13 +59,17 @@ public class GameDetailPresenter extends FindOnePresenter<Game, GameHandler> {
 
 	@Override
 	protected void onEntityFound(Game entity) {
-		initiateGameDetail();
+		initiateGameDetail(entity);
 
 		teams.clear();
 		teams.addAll(entity.getTeams());
 
+		roleLists.clear();
 		getEntity().getTeams().forEach(team -> {
 			roleLists.add(team.getRoles());
 		});
+
+		gameDetailActivity.enableRecyclerView();
+
 	}
 }
