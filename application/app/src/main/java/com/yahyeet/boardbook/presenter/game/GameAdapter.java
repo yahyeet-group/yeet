@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.home.game.gamedetail.GameDetailActivity;
 import com.yahyeet.boardbook.model.entity.Game;
-import com.yahyeet.boardbook.presenter.SearchAdapter;
+import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Adapter with search functionality for recycler view in game
  */
-public class GameAdapter extends SearchAdapter<Game> {
+public class GameAdapter extends AbstractSearchAdapter<Game> {
 
 	private static final String TAG = "GameAdapter";
 

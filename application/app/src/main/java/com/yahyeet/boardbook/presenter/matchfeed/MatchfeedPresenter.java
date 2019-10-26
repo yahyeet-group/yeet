@@ -1,23 +1,28 @@
 package com.yahyeet.boardbook.presenter.matchfeed;
 
 import android.content.Context;
+import android.os.Looper;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.home.matchfeed.IMatchfeedFragment;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.handler.IMatchHandlerListener;
+import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
+import com.yahyeet.boardbook.presenter.FindOnePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Presenter for the match feed activity
  */
-public class MatchfeedPresenter implements IMatchHandlerListener {
+public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> implements IMatchHandlerListener {
 
 	private MatchfeedAdapter matchfeedAdapter;
 	private List<Match> matchDatabase = new ArrayList<>();
@@ -27,14 +32,20 @@ public class MatchfeedPresenter implements IMatchHandlerListener {
 	private IMatchfeedFragment matchfeedFragment;
 
 	public MatchfeedPresenter(IMatchfeedFragment matchfeedFragment) {
+		super((IFutureInteractable) matchfeedFragment);
 		this.matchfeedFragment = matchfeedFragment;
+
+		BoardbookSingleton.getInstance().getMatchHandler().addListener(this);
+
+		updateMatchDatabase();
 	}
 
 	/**
 	 * Makes recyclerView to repopulate its matches with current data
 	 */
-	public void updateMatchAdapter() {
-		matchfeedAdapter.notifyDataSetChanged();
+	public void updateAdapter() {
+		new android.os.Handler(Looper.getMainLooper())
+			.post(() -> matchfeedAdapter.notifyDataSetChanged());
 	}
 
 	/**
@@ -43,29 +54,13 @@ public class MatchfeedPresenter implements IMatchHandlerListener {
 	 * @param matchRecyclerView the RecyclerView that will be populated with matches
 	 */
 	public void enableMatchFeed(RecyclerView matchRecyclerView, Context viewContext) {
-
-		User loggedIn = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
-
-
-		matchDatabase.addAll(loggedIn.getMatches());
-
-
-		// TODO: This code breaks everything and needs to be reimplemented
-		// TODO: If implemented then IMatchfeedFragment needs to extend IFutureIntractable
-		/*CompletableFuture.allOf(loggedIn
-			.getFriends()
-			.stream()
-			.map(friend -> BoardbookSingleton.getInstance().getUserHandler()
-				.find(friend.getId()).thenApply(populatedFriend -> {
-					matchDatabase.addAll(populatedFriend.getMatches());
-					return null;
-				})).toArray(CompletableFuture[]::new)).thenAccept(nothing -> {
-			// Now all are added
-
-		});*/
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
+		matchfeedAdapter = new MatchfeedAdapter(
+			viewContext,
+			matchDatabase,
+			getEntity());
+
 		matchRecyclerView.setLayoutManager(layoutManager);
-		matchfeedAdapter = new MatchfeedAdapter(viewContext, matchDatabase);
 		matchRecyclerView.setAdapter(matchfeedAdapter);
 
 
@@ -73,8 +68,7 @@ public class MatchfeedPresenter implements IMatchHandlerListener {
 
 	@Override
 	public void onAddMatch(Match match) {
-		matchDatabase.add(match);
-		updateMatchAdapter();
+		// Not necessary
 	}
 
 	@Override
@@ -84,7 +78,7 @@ public class MatchfeedPresenter implements IMatchHandlerListener {
 				matchDatabase.set(i, match);
 			}
 		}
-		updateMatchAdapter();
+		updateAdapter();
 	}
 
 	@Override
@@ -95,6 +89,30 @@ public class MatchfeedPresenter implements IMatchHandlerListener {
 				break;
 			}
 		}
-		updateMatchAdapter();
+		updateAdapter();
 	}
+
+	public void updateMatchDatabase() {
+		findEntity(
+			BoardbookSingleton
+				.getInstance()
+				.getUserHandler(),
+			BoardbookSingleton
+				.getInstance()
+				.getAuthHandler()
+				.getLoggedInUser()
+				.getId(),
+			UserHandler
+				.generatePopulatorConfig(true, true)
+		);
+	}
+
+	@Override
+	protected void onEntityFound(User entity) {
+		matchDatabase.clear();
+		matchDatabase.addAll(entity.getMatches());
+		matchfeedFragment.bindAdapterToView();
+	}
+
+
 }

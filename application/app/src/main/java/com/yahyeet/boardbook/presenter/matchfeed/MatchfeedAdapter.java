@@ -34,17 +34,19 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	private static final int PROFILE_HEADER_VIEW = 1;
 	private Context context;
 	private List<Match> matches;
+	private User currentUser;
+	private boolean isProfile = false;
 
 	//TODO: Naming might need to change
-	private User user;
 	private StatisticsUtil statisticsUtil;
 
 
-	public MatchfeedAdapter(Context context, List<Match> dataset) {
+	public MatchfeedAdapter(Context context, List<Match> dataset, User currentUser) {
 		if (dataset != null)
 			matches = dataset;
 		else
 			matches = new ArrayList<>();
+		this.currentUser = currentUser;
 
 		this.context = context;
 	}
@@ -54,10 +56,12 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			matches = dataset;
 		else
 			matches = new ArrayList<>();
-
+		currentUser = user;
 		this.context = context;
-		this.user = user;
 		this.statisticsUtil = statisticsUtil;
+
+		if(currentUser != null)
+			isProfile = true;
 	}
 
 
@@ -122,43 +126,55 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	// Method that assigns data to the view
 	@Override
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-		// TODO: Replace with model integration when match is implemented
+
+
+		if(isProfile)
+			// Position - 1 to align match list with position,
+			position -= 1;
 
 		try {
 			if (holder instanceof MatchViewHolder) {
+				// For onClickListener lambda expression
+				int finalPosition = position;
+
 				MatchPlayer currentMatchPlayer = matches
 					.get(position)
-					.getMatchPlayerByUser(BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser());
+					.getMatchPlayerByUser(currentUser);
 
 				MatchViewHolder vh = (MatchViewHolder) holder;
 				vh.tvWinLost.setText(currentMatchPlayer.getWin() ? "Winner" : "Looser");
 				vh.tvGameName.setText(matches.get(position).getGame().getName());
 				vh.tvPlayerAmount.setText(matches.get(position).getMatchPlayers().size() + " Players");
 
-				if(currentMatchPlayer.getTeam().getName() != null){
-					vh.tvTeamName.setText("In " + currentMatchPlayer.getTeam());
-					if(currentMatchPlayer.getRole().getName() != null)
-						vh.tvRoleName.setText("(" + currentMatchPlayer.getRole() + ")");
-				} else if(currentMatchPlayer.getTeam().getName() == null && currentMatchPlayer.getRole().getName() != null){
+				if(currentMatchPlayer.getTeam() != null){
+					vh.tvTeamName.setText("In " + currentMatchPlayer.getTeam().getName());
+					if(currentMatchPlayer.getRole() != null)
+						vh.tvRoleName.setText("(" + currentMatchPlayer.getRole().getName() + ")");
+					else
+						vh.tvRoleName.setText("");
+				} else if(currentMatchPlayer.getRole() != null){
 					vh.tvTeamName.setText("as " + currentMatchPlayer.getRole().getName());
 					vh.tvRoleName.setText("");
 				}
-
+				else{
+					vh.tvRoleName.setText("");
+					vh.tvTeamName.setText("");
+				}
 
 
 				vh.itemView.setOnClickListener(view -> {
 					Intent intent = new Intent(context, MatchDetailActivity.class);
-					intent.putExtra("Match", matches.get(position).getId());
+					intent.putExtra("Match", matches.get(finalPosition).getId());
 					context.startActivity(intent);
 				});
 
 				//vh.imageView.setImageURL();
 			} else if (holder instanceof HeaderViewHolder) {
 				HeaderViewHolder vh = (HeaderViewHolder) holder;
-				vh.tvUsername.setText(user.getName());
-				double stats = statisticsUtil.getWinrateFromMatches(matches, user);
+				vh.tvUsername.setText(currentUser.getName());
+				double stats = statisticsUtil.getWinrateFromMatches(currentUser.getMatches(), currentUser);
 				int percent = (int) (100 * stats);
-				vh.tvGamesPlayed.setText(Integer.toString(user.getMatches().size()));
+				vh.tvGamesPlayed.setText(Integer.toString(currentUser.getMatches().size()));
 				vh.tvWinrate.setText(percent + "%");
 				vh.pbWinrate.setProgress(percent);
 			}
@@ -173,7 +189,7 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			return 0;
 		}
 
-		if(user == null)
+		if(!isProfile)
 			return matches.size();
 
 		return matches.size() + 1;
@@ -181,7 +197,7 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 	@Override
 	public int getItemViewType(int position) {
-		if (position == 0 && user != null) {
+		if (position == 0 && isProfile) {
 			return PROFILE_HEADER_VIEW;
 		}
 		return super.getItemViewType(position);

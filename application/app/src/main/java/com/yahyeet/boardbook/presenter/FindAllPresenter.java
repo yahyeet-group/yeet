@@ -3,36 +3,46 @@ package com.yahyeet.boardbook.presenter;
 import android.os.Handler;
 import android.os.Looper;
 
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.errorprone.annotations.ForOverride;
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.model.entity.AbstractEntity;
 import com.yahyeet.boardbook.model.handler.IEntityHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Abstracts presenters that can find all of an entity
  * @param <E> An entity
  * @param <H> Handler for entity E
  */
-public abstract class AdapterPresenter<E extends AbstractEntity, H extends IEntityHandler<E>> {
+public abstract class FindAllPresenter<E extends AbstractEntity, H extends IEntityHandler<E>> {
 
-	private SearchAdapter<E> adapter;
+
+	private RecyclerView.Adapter adapter;
 	private IFutureInteractable fragment;
 	private List<E> database;
 
 	private Handler uiHandler = new android.os.Handler(Looper.getMainLooper());
 
-	public AdapterPresenter(IFutureInteractable fragment) {
-		database = new ArrayList<>();
+	public FindAllPresenter(IFutureInteractable fragment) {
 		this.fragment = fragment;
+		database = new ArrayList<>();
 	}
 
-	protected void fillDatabase(H handler) {
+	/**
+	 * Finds all entities of a specific type
+	 * @param handler defines what type of entity to be found
+	 * @param config defines if entities should be populated
+	 */
+	protected void fillDatabase(H handler, Map<String, Boolean> config) {
 		fragment.disableViewInteraction();
-		handler.all().thenAccept(initiatedGames -> {
-			if (initiatedGames != null) {
-				database.addAll(initiatedGames);
+		handler.all(config).thenAccept(initiatedEntities -> {
+			if (initiatedEntities != null) {
+				database.addAll(initiatedEntities);
 			}
 
 			uiHandler.post(() -> {
@@ -48,18 +58,24 @@ public abstract class AdapterPresenter<E extends AbstractEntity, H extends IEnti
 		});
 	}
 
-	protected void fillAndModifyDatabase(H handler) {
+	/**
+	 * Finds all entities of a specific type, also calls onDatabaseModify
+	 * @param handler defines what type of entity to be found
+	 * @param config defines if entities should be populated
+	 */
+	protected void fillAndModifyDatabase(H handler, Map<String, Boolean> config) {
 		fragment.disableViewInteraction();
-		handler.all().thenAccept(initiatedGames -> {
-			if (initiatedGames != null) {
-				database.addAll(initiatedGames);
-				modifyDatabase(database);
-
+		handler.all(config).thenAccept(initiatedEntities -> {
+			if (initiatedEntities != null) {
+				database.addAll(initiatedEntities);
 			}
 
 			uiHandler.post(() -> {
 				fragment.enableViewInteraction();
 				adapter.notifyDataSetChanged();
+
+				// Safety in case of modification affecting UI elements
+				onDatabaseModify(database);
 			});
 		}).exceptionally(e -> {
 			uiHandler.post(() -> {
@@ -68,13 +84,18 @@ public abstract class AdapterPresenter<E extends AbstractEntity, H extends IEnti
 			});
 			return null;
 		});
+	}
+
+	@ForOverride
+	protected void onDatabaseModify(List<E> database){
+		// Called in fillAndModifyDatabase, override if database should not be all entities of type T
 	}
 
 	protected void updateAdapter(){
 		adapter.notifyDataSetChanged();
 	}
 
-	protected SearchAdapter<E> getAdapter() {
+	protected RecyclerView.Adapter getAdapter() {
 		return adapter;
 	}
 
@@ -91,11 +112,8 @@ public abstract class AdapterPresenter<E extends AbstractEntity, H extends IEnti
 		database.addAll(newDatbase);
 	}
 
-	protected void setAdapter(SearchAdapter<E> adapter) {
+	protected void setAdapter(RecyclerView.Adapter adapter) {
 		this.adapter = adapter;
 	}
 
-	// To be overridden	, but not forced so not abstract
-	protected void modifyDatabase(List<E> database){}
-		// Called in fillAndModifyDatabase, override if database should not be all entities of type T
 }

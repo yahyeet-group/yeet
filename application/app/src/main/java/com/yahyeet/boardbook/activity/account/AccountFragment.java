@@ -18,6 +18,7 @@ public abstract class AccountFragment extends Fragment {
 	EditText etEmail;
 	EditText etPassword;
 
+
 	/**
 	 * Saves reference of class inflating the fragment, casts to IAccountFragmentHolder
 	 *
@@ -32,6 +33,7 @@ public abstract class AccountFragment extends Fragment {
 			// TODO: Implement consequences if fragment fragmentContainer activity does not implement IAccountManagerActivity
 			e.printStackTrace();
 		}
+
 	}
 
 	/**

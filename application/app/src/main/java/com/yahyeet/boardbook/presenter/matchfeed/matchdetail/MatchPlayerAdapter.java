@@ -22,7 +22,6 @@ import java.util.List;
 public class MatchPlayerAdapter extends RecyclerView.Adapter<MatchPlayerAdapter.MatchPlayerViewHolder>{
 
 	private List<MatchPlayer> matchPlayers;
-	private Resources resources;
 
 	static class MatchPlayerViewHolder extends RecyclerView.ViewHolder {
 
@@ -41,14 +40,12 @@ public class MatchPlayerAdapter extends RecyclerView.Adapter<MatchPlayerAdapter.
 		}
 	}
 
-	public MatchPlayerAdapter(List<MatchPlayer> dataset, Resources resources) {
+	public MatchPlayerAdapter(List<MatchPlayer> dataset) {
 		if (dataset != null)
 			matchPlayers = dataset;
 		else {
 			matchPlayers = new ArrayList<>();
 		}
-
-		this.resources = resources;
 
 	}
 
@@ -87,12 +84,16 @@ public class MatchPlayerAdapter extends RecyclerView.Adapter<MatchPlayerAdapter.
 		if(current.getWin()){
 			holder
 				.constraintLayout
-				.setBackgroundColor(resources.getColor(R.color.colorMatchWon, null));
+				.setBackgroundColor(holder
+					.itemView
+					.getResources().getColor(R.color.colorMatchWon, null));
 		}
 		else{
 			holder
 				.constraintLayout
-				.setBackgroundColor(resources.getColor(R.color.colorError, null));
+				.setBackgroundColor(holder
+					.itemView
+					.getResources().getColor(R.color.colorError, null));
 		}
 
 

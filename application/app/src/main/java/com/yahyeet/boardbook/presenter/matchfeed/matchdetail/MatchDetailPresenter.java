@@ -1,69 +1,48 @@
 package com.yahyeet.boardbook.presenter.matchfeed.matchdetail;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.os.Looper;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.home.matchfeed.matchdetail.IMatchDetailActivity;
-import com.yahyeet.boardbook.model.entity.Match;
+import com.yahyeet.boardbook.model.entity.MatchPlayer;
+import com.yahyeet.boardbook.model.handler.MatchHandler;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
+import com.yahyeet.boardbook.model.entity.Match;
+import com.yahyeet.boardbook.presenter.FindOnePresenter;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Presenter for the match detail activity
  */
-public class MatchDetailPresenter {
+public class MatchDetailPresenter extends FindOnePresenter<Match, MatchHandler> {
+
 
 	private IMatchDetailActivity matchDetailActivity;
 	private MatchPlayerAdapter matchPlayerAdapter;
-	private Match match;
+
+	private List<MatchPlayer> matchPlayers = new ArrayList<>();
 
 	public MatchDetailPresenter(IMatchDetailActivity matchDetailActivity, String matchID) {
+		super((IFutureInteractable) matchDetailActivity);
 		this.matchDetailActivity = matchDetailActivity;
 
+		findEntity(BoardbookSingleton.getInstance().getMatchHandler(), matchID,
+			MatchHandler.generatePopulatorConfig(true, true));
 
-		if(matchDetailActivity instanceof IFutureInteractable){
-
-			IFutureInteractable futureDetail = (IFutureInteractable) matchDetailActivity;
-
-			futureDetail.disableViewInteraction();
-			BoardbookSingleton.getInstance().getMatchHandler().find(matchID).thenAccept(foundMatch -> {
-				match = foundMatch;
-
-				new android.os.Handler(Looper.getMainLooper()).post(() -> {
-					setMatchDetailName();
-					matchDetailActivity.initiateMatchDetailList();
-					futureDetail.enableViewInteraction();
-				});
-
-			}).exceptionally(e -> {
-				e.printStackTrace();
-				futureDetail.displayLoadingFailed();
-				return null;
-			});
-		}
-		else{
-			throw new IllegalArgumentException("Activity not instance of IFutureIntractable");
-		}
 
 	}
 
 
 	private void setMatchDetailName() {
-		matchDetailActivity.setGameName("Game of " + match.getGame().getName());
+		matchDetailActivity.setGameName("Match of " + getEntity().getGame().getName());
 	}
 
-
-
-	/**
-	 * Makes recyclerView to repopulate its matches with current data
-	 */
-	public void updateMatchplayerAdapter() {
-		matchPlayerAdapter.notifyDataSetChanged();
-	}
 
 	/**
 	 * Initiates the adapter for a matchplayerRecyclerView
@@ -71,15 +50,29 @@ public class MatchDetailPresenter {
 	 * @param matchplayerRecyclerView view that will receive new adapter
 	 * @param viewContext             structure of current view
 	 */
-	public void enableMatchplayerAdapter(RecyclerView matchplayerRecyclerView, Context viewContext, Resources resources) {
+	public void enableMatchplayerAdapter(RecyclerView matchplayerRecyclerView, Context viewContext) {
 
 		RecyclerView.LayoutManager layoutManager = new GridLayoutManager(viewContext, 1);
+		matchPlayerAdapter = new MatchPlayerAdapter(matchPlayers);
 
 		matchplayerRecyclerView.setLayoutManager(layoutManager);
-
-		matchPlayerAdapter = new MatchPlayerAdapter(match.getMatchPlayers(), resources);
 		matchplayerRecyclerView.setAdapter(matchPlayerAdapter);
 	}
 
+	@Override
+	protected void onEntityFound(Match entity) {
+		setMatchDetailName();
 
+		matchPlayers.clear();
+		matchPlayers.addAll(sortByWin(entity.getMatchPlayers()));
+
+	}
+
+	private List<MatchPlayer> sortByWin(List<MatchPlayer> unsortedPlayers) {
+
+		return unsortedPlayers
+			.stream()
+			.sorted((left, right) -> -Boolean.compare(left.getWin(), right.getWin()))
+			.collect(Collectors.toList());
+	}
 }

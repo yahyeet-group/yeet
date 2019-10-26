@@ -1,5 +1,7 @@
 package com.yahyeet.boardbook.presenter.matchcreation.selectplayers;
 
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +13,26 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
+import com.yahyeet.boardbook.model.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerViewHolder> implements Filterable {
+/**
+ * @Author Nox/Aaron Sandgren
+ * This is the adapter that creates and configures the views in the PlayerRecycleView.
+ */
+public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filterable {
 
-	private List<User> dataset;
-	private List<User> datasetFull;
 	private CMMasterPresenter cmmp;
 	private SelectPlayersPresenter spp;
+	private List<User> usersFriends;
 
+	/**
+	 * This is the class that will be the object for every entry in the RecycleView
+	 */
 	class PlayerViewHolder extends RecyclerView.ViewHolder {
 
 		TextView playerName;
@@ -34,23 +43,38 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
 			playerName = v.findViewById(R.id.playerNameText);
 			actionButton = v.findViewById(R.id.actionButton);
 
+
+		}
+
+		/**
+		 * This is called to set the button text and color to represent one player
+		 * that had been selected from before.
+		 */
+		public void setAlreadySelected(){
+			actionButton.setText("Remove");
+			this.itemView.setBackgroundColor(Color.parseColor("#0cc43d"));
+		}
+		public String getName(){
+			return playerName.getText().toString();
 		}
 
 	}
 
-
-	public PlayerAdapter(List<User> myDataset, SelectPlayersPresenter spp) {
+	public PlayerAdapter(List<User> myDataset, SelectPlayersPresenter spp, List<User> usersFriends) {
+		super(myDataset);
 		this.spp = spp;
-		this.dataset = myDataset;
-		this.datasetFull = new ArrayList<>(dataset);
 		cmmp = spp.getMasterPresenter();
+		this.usersFriends = usersFriends;
+
+
+
 
 	}
 
 	@Override
 	public PlayerAdapter.PlayerViewHolder onCreateViewHolder(ViewGroup vg, int viewType) {
 
-		View v = LayoutInflater.from(vg.getContext()).inflate(R.layout.select_players_element, vg, false);
+		View v = LayoutInflater.from(vg.getContext()).inflate(R.layout.element_select_players, vg, false);
 
 
 		return new PlayerViewHolder(v);
@@ -58,60 +82,92 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
 	}
 
 	@Override
-	public void onBindViewHolder(PlayerAdapter.PlayerViewHolder holder, int position) {
+	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-		holder.playerName.setText(dataset.get(position).getName());
-		holder.actionButton.setOnClickListener(event -> {
-			System.out.println(holder.actionButton.getText().toString().toLowerCase());
-			if (holder.actionButton.getText().toString().toLowerCase().equals("add")) {
-				holder.actionButton.setText("Remove");
-				cmmp.getCmdh().addSelectedPlayer(dataset.get(position));
-			}else {
-				holder.actionButton.setText("Add");
-				cmmp.getCmdh().removeSelectedPlayer(dataset.get(position));
-			}
-		});
 
-	}
+		if(holder instanceof PlayerViewHolder){
 
-	@Override
-	public int getItemCount() {
-		return dataset.size();
-	}
+			PlayerViewHolder vh = (PlayerViewHolder) holder;
 
-	@Override
-	public Filter getFilter() {
-		return playerFilter;
-	}
+			// This makes is to so that friends of the logged in user is shown in a different color
+			List<User> database = getDatabase();
 
-	private Filter playerFilter = new Filter() {
-		@Override
-		protected FilterResults performFiltering(CharSequence constraint) {
-			List<User> filteredList = new ArrayList<>();
-			if (constraint == null || constraint.length() == 0) {
-				filteredList.addAll(datasetFull);
-			} else {
-				String filterPattern = constraint.toString().toLowerCase().trim();
+			// This bind the button for selecting and deselecting the player
+			// Ensuring that the button text is correct and that the user
+			// Gets added to the DataObject
+			vh.playerName.setText(database.get(position).getName());
+			vh.actionButton.setOnClickListener(event -> {
+				if (vh.actionButton.getText().toString().toLowerCase().equals("add")) {
 
-				for (User user : datasetFull) {
-					if (user.getName().toLowerCase().contains(filterPattern)) {
-						filteredList.add(user);
-					}
+					vh.actionButton.setText("Remove");
+					vh.actionButton.setBackground(vh.itemView
+						.getResources()
+						.getDrawable(R.drawable.custom_button, null));
 
+					cmmp.getCmdh().addSelectedPlayer(database.get(position));
+					holder.itemView.setBackgroundColor(Color.parseColor("#0cc43d"));
+
+				}else {
+					vh.actionButton.setText("Add");
+					vh.actionButton.setBackground(vh.itemView
+						.getResources()
+						.getDrawable(R.drawable.custom_button, null));
+
+					cmmp.getCmdh().removeSelectedPlayer(database.get(position));
+					holder.itemView.setBackgroundColor(Color.WHITE);
 				}
+			});
+
+			/// If the user where to go back from the Configuring teams part of the wizard to
+			/// Selecting players, the Recycle view would be reloaded and therefore the pliancy of the buttons.
+			/// This fixes so that players from before now look like they should do.
+			List<String> playerNames = new ArrayList<>();
+			for (User user: cmmp.getCmdh().getSelectedPlayers()) {
+				playerNames.add(user.getName());
 			}
 
-			FilterResults results = new FilterResults();
-			results.values = filteredList;
 
-			return results;
+
+			if(playerNames.contains(vh.playerName.getText())){
+				vh.setAlreadySelected();
+			}
 		}
 
-		@Override
-		protected void publishResults(CharSequence constraint, FilterResults results) {
-			dataset.clear();
-			dataset.addAll((List) results.values);
-			notifyDataSetChanged();
-		}
-	};
+
+
+	}
+
+	@Override
+	protected Filter createNewFilter() {
+		return new Filter() {
+			@Override
+			protected FilterResults performFiltering(CharSequence constraint) {
+				List<User> filteredList = new ArrayList<>();
+				if (constraint == null || constraint.length() == 0) {
+					filteredList.addAll(getAllEntities());
+				} else {
+					String filterPattern = constraint.toString().toLowerCase().trim();
+
+					for (User user : getAllEntities()) {
+						if (user.getName().toLowerCase().contains(filterPattern)) {
+							filteredList.add(user);
+						}
+
+					}
+				}
+
+				FilterResults results = new FilterResults();
+				results.values = filteredList;
+
+				return results;
+			}
+
+			@Override
+			protected void publishResults(CharSequence constraint, FilterResults results) {
+				getDatabase().clear();
+				getDatabase().addAll((List) results.values);
+				notifyDataSetChanged();
+			}
+		};
+	}
 }

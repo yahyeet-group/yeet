@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.profile.ProfileActivity;
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.presenter.SearchAdapter;
+import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +23,8 @@ import java.util.List;
 /**
  * Adapter for the friends recycler view
  */
-public class FriendsAdapter extends SearchAdapter<User> {
+public class FriendsAdapter extends AbstractSearchAdapter<User> {
 
-	private static final String TAG = "FriendsAdapter";
 	private Context context;
 
 	static class FriendViewHolder extends RecyclerView.ViewHolder {

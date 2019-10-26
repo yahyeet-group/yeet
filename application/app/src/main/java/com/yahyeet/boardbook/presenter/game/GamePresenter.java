@@ -1,6 +1,7 @@
 package com.yahyeet.boardbook.presenter.game;
 
 import android.content.Context;
+import android.os.Looper;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,19 +11,20 @@ import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.handler.GameHandler;
 import com.yahyeet.boardbook.model.handler.IGameHandlerListener;
-import com.yahyeet.boardbook.presenter.AdapterPresenter;
+import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
+import com.yahyeet.boardbook.presenter.FindAllPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
 /**
  * Presenter for the game activity
  */
-public class GamePresenter extends AdapterPresenter<Game, GameHandler> implements IGameHandlerListener {
-
+public class GamePresenter extends FindAllPresenter<Game, GameHandler> implements IGameHandlerListener {
 
 	private IFutureInteractable gameFragment;
 	private RecyclerView.LayoutManager listLayoutManager;
 	private RecyclerView.LayoutManager gridLayoutManager;
 
+	private AbstractSearchAdapter<Game> searchAdapter;
 	private DisplayType currentDisplayType;
 
 	public GamePresenter(IFutureInteractable gameFragment, Context viewContext) {
@@ -33,13 +35,14 @@ public class GamePresenter extends AdapterPresenter<Game, GameHandler> implement
 
 		GameHandler gameHandler = BoardbookSingleton.getInstance().getGameHandler();
 
-		fillDatabase(gameHandler);
+		fillDatabase(gameHandler, GameHandler.generatePopulatorConfig(false, true));
 		gameHandler.addListener(this);
 
 
 
 		setLayoutManagers(viewContext);
-		setAdapter(new GameAdapter(getDatabase(), viewContext, DisplayType.LIST));
+		searchAdapter = new GameAdapter(getDatabase(), viewContext, DisplayType.LIST);
+		setAdapter(searchAdapter);
 
 	}
 
@@ -70,7 +73,7 @@ public class GamePresenter extends AdapterPresenter<Game, GameHandler> implement
 	}
 
 	public void searchGames(String query) {
-		getAdapter().getFilter().filter(query);
+		searchAdapter.getFilter().filter(query);
 	}
 
 
@@ -79,7 +82,9 @@ public class GamePresenter extends AdapterPresenter<Game, GameHandler> implement
 	}
 
 	private void notifyAdapter() {
-		getAdapter().notifyDataSetChanged();
+		new android.os.Handler(Looper.getMainLooper())
+			.post(() -> getAdapter().notifyDataSetChanged());
+
 	}
 
 	@Override

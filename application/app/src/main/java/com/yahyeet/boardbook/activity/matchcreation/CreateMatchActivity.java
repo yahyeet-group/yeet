@@ -11,14 +11,17 @@ import com.yahyeet.boardbook.activity.matchcreation.selectplayers.SelectPlayersF
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 
 /**
- * Activity that hold all fragments for creating a match
+ * This is the main activity to the whole match logging wizard.
+ * This instantiates on the clicking of the "plus button" in the main ui
+ * where the class controls the switching of steps and handles the
+ * passing of the main presenter
  */
 public class CreateMatchActivity extends AppCompatActivity implements ICreateMatchActivity {
 
- private CMMasterPresenter presenter;
- private ConfigureTeamsFragment configureTeamsFragment;
- private SelectGameFragment selectGameFragment;
- private SelectPlayersFragment selectPlayersFragment;
+	private CMMasterPresenter presenter;
+	private ConfigureTeamsFragment configureTeamsFragment;
+	private SelectGameFragment selectGameFragment;
+	private SelectPlayersFragment selectPlayersFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +36,18 @@ public class CreateMatchActivity extends AppCompatActivity implements ICreateMat
 		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SelectGameFragment()).commit();
 	}
 
-
-
-	public CMMasterPresenter getPresenter(){
+	/**
+	 * See return
+	 * @return The master presenter for the whole activity
+	 */
+	public CMMasterPresenter getPresenter() {
 		return presenter;
 	}
 
+
+	/**
+	 * Comfigures so that the back button in the standard android uino longer exists the entire match wizard but backs a wizard page
+	 */
 	@Override
 	public void onBackPressed() {
 		if (configureTeamsFragment.equals(getSupportFragmentManager().findFragmentByTag("Teams")))
@@ -49,21 +58,34 @@ public class CreateMatchActivity extends AppCompatActivity implements ICreateMat
 			super.onBackPressed();
 	}
 
+	/**
+	 * Method to go to the configure teams part of the wizard
+	 */
 	@Override
 	public void goToConfigureTeams() {
 		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, configureTeamsFragment, "Teams").commit();
 	}
 
+	/**
+	 * Method to go to the selecting players part of the wizard
+	 */
 	@Override
 	public void goToSelectPlayers() {
 		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectPlayersFragment, "Players").commit();
 	}
 
+	/**
+	 * When the user is done logging a new match the whole wizard closes together with the activity sending the user to the location from before
+	 */
 	@Override
 	public void finalizeMatchCreation() {
 		finish();
 	}
 
+
+	/**
+	 * Method to go to the selecting game part of the wizard
+	 */
 	@Override
 	public void goToSelectGame() {
 		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectGameFragment, "Game").commit();

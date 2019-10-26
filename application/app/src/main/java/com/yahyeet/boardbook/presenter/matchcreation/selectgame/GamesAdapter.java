@@ -4,21 +4,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
-import com.yahyeet.boardbook.model.entity.Game;
+import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
+import com.yahyeet.boardbook.model.entity.Game;
 
 import java.util.List;
 
+/**
+ * This is the adapter that creates and configures the views in the GamesRecycleView.
+ */
+public class GamesAdapter extends AbstractSearchAdapter<Game> {
 
-public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHolder> {
-
-    private List<Game> dataset;
     private SelectGamePresenter sgp;
     private CMMasterPresenter cmmp;
 
@@ -41,8 +44,8 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHol
     }
 
     public GamesAdapter(List<Game> dataset, SelectGamePresenter sgp) {
+        super(dataset);
         this.sgp = sgp;
-        this.dataset = dataset;
         cmmp = sgp.getMasterPresenter();
 
     }
@@ -58,21 +61,26 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHol
     }
 
     @Override
-    public void onBindViewHolder(GamesViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        holder.gameTitle.setText(dataset.get(position).getName());
-        holder.itemView.findViewById(R.id.selectGameButton).setOnClickListener((event)->{
-            cmmp.goToSelectPlayers();
-            cmmp.getCmdh().setGame(dataset.get(position));
-            // Not working if actually implemented
-            //System.out.println(dataset.get(position).getTeams().get(0).getRoles().get(0).getName());
-        });
+        // Binds the button in the entries
+        if(holder instanceof GamesViewHolder){
+            GamesViewHolder vh = (GamesViewHolder) holder;
+            vh.gameTitle.setText(getDatabase().get(position).getName());
+            vh.itemView.findViewById(R.id.selectGameButton).setOnClickListener((event)->{
+                cmmp.getCmdh().setGame(getDatabase().get(position));
+                cmmp.goToSelectPlayers();
+
+            });
+        }
+
+
 
     }
 
     @Override
-    public int getItemCount() {
-        return dataset.size();
+    protected Filter createNewFilter() {
+        return null;
     }
 
 }

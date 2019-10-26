@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yahyeet.boardbook.R;
 import com.yahyeet.boardbook.activity.home.friends.IAddFriendActivity;
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
-import com.yahyeet.boardbook.presenter.SearchAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * Adapter for add friend recycler view
  */
-public class AddFriendsAdapter extends SearchAdapter<User> {
+public class AddFriendsAdapter extends AbstractSearchAdapter<User> {
 
 	private IAddFriendActivity parent;
 

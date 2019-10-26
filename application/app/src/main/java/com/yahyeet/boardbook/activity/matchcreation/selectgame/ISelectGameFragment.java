@@ -8,4 +8,6 @@ import android.app.Activity;
 public interface ISelectGameFragment {
 
 	Activity getActivity();
+
+	void enableRecyclerList();
 }

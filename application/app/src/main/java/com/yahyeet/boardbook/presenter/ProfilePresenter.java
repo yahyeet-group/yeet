@@ -5,19 +5,20 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yahyeet.boardbook.presenter.matchfeed.MatchfeedAdapter;
+import com.yahyeet.boardbook.activity.IFutureInteractable;
+import com.yahyeet.boardbook.model.handler.UserHandler;
 import com.yahyeet.boardbook.activity.profile.IProfileActivity;
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;
-import com.yahyeet.boardbook.presenter.matchfeed.MatchfeedAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Presenter for the profile activity
  */
-public class ProfilePresenter {
+public class ProfilePresenter extends FindOnePresenter<User, UserHandler> {
 
 	private MatchfeedAdapter matchfeedAdapter;
 	private List<Match> matchDatabase = new ArrayList<>();
@@ -26,13 +27,12 @@ public class ProfilePresenter {
 	private IProfileActivity profileActivity;
 
 	public ProfilePresenter(IProfileActivity profileActivity, String userId) {
+		super((IFutureInteractable) profileActivity);
 		this.profileActivity = profileActivity;
-		try {
-			user = BoardbookSingleton.getInstance().getUserHandler().find(userId).get();
-			matchDatabase.addAll(user.getMatches());
-		} catch (ExecutionException | InterruptedException e) {
-			// TODO: What to do here?
-		}
+
+		user = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
+		findEntity(BoardbookSingleton.getInstance().getUserHandler(), userId,
+			UserHandler.generatePopulatorConfig(false, true));
 	}
 
 	/**
@@ -55,4 +55,13 @@ public class ProfilePresenter {
 		matchRecyclerView.setAdapter(matchfeedAdapter);
 	}
 
+	@Override
+	protected void onEntityFound(User entity) {
+		matchDatabase.clear();
+		matchDatabase.addAll(entity.getMatches());
+		user = entity;
+
+		profileActivity.enableAdapter();
+		updateMatchAdapter();
+	}
 }

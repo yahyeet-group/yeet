@@ -77,7 +77,7 @@ public class FirebaseMatchRepository extends AbstractFirebaseRepository<Match> i
 				getCache().put(firebaseMatch.getId(), firebaseMatch);
 			});
 
-			gameMatchIdsCache.put(id, firebaseMatches.stream().map(AbstractFirebaseEntity::getId).collect(Collectors.toList()));
+			//gameMatchIdsCache.put(id, firebaseMatches.stream().map(AbstractFirebaseEntity::getId).collect(Collectors.toList()));
 
 			return firebaseMatches
 				.stream()
@@ -104,7 +104,7 @@ public class FirebaseMatchRepository extends AbstractFirebaseRepository<Match> i
 		return CompletableFuture.supplyAsync(() -> {
 			for (Map.Entry<String, List<String>> pair : gameMatchIdsCache.entrySet()) {
 				if (pair.getValue().stream().anyMatch(cachedMatchId -> cachedMatchId.equals(matchId))) {
-					gameMatchIdsCache.put(pair.getKey(), pair.getValue().stream().filter(cachedMatchId -> !cachedMatchId.equals(matchId)).collect(Collectors.toList()));
+					//gameMatchIdsCache.put(pair.getKey(), pair.getValue().stream().filter(cachedMatchId -> !cachedMatchId.equals(matchId)).collect(Collectors.toList()));
 					break;
 				}
 			}

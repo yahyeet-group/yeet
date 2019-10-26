@@ -1,63 +1,73 @@
 package com.yahyeet.boardbook.presenter.matchcreation.selectplayers;
 
 import android.content.Context;
+import android.os.Looper;
 import android.widget.SearchView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.yahyeet.boardbook.activity.matchcreation.selectplayers.SelectPlayersFragment;
+import com.yahyeet.boardbook.activity.IFutureInteractable;
+import com.yahyeet.boardbook.activity.matchcreation.selectplayers.ISelectPlayersFragment;
 import com.yahyeet.boardbook.model.entity.User;
+import com.yahyeet.boardbook.model.handler.UserHandler;
+import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
+import com.yahyeet.boardbook.presenter.FindAllPresenter;
+import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
+
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class SelectPlayersPresenter {
+/**
+ * This is the Presenter for the SelectingPlayers fragment.
+ * This class binds references to the MasterPresenter, Enables the RecycleView and gives it the correct adapter
+ * Enables the SearchBar by configuring its eventListener and collects some data from the database to use in the adapter class
+ */
+public class SelectPlayersPresenter extends FindAllPresenter<User, UserHandler> {
 
 	private CMMasterPresenter masterPresenter;
-	private SelectPlayersFragment spf;
-	private PlayerAdapter playerAdapter;
-	private List<User> database = new ArrayList<>();
+	private AbstractSearchAdapter<User> searchAdapter;
+	private List<User> friends = new ArrayList<>();
+	private ISelectPlayersFragment selectPlayersFragment;
 
-	public SelectPlayersPresenter(SelectPlayersFragment spf, CMMasterPresenter cma) {
+	public SelectPlayersPresenter(ISelectPlayersFragment spf, CMMasterPresenter cma) {
+		super((IFutureInteractable) spf);
+		selectPlayersFragment = spf;
 		this.masterPresenter = cma;
-		this.spf = spf;
+
+		User loggedInUser = BoardbookSingleton
+			.getInstance()
+			.getAuthHandler()
+			.getLoggedInUser();
+
+		if (!masterPresenter.getCmdh().getSelectedPlayers().contains(loggedInUser))
+			masterPresenter
+				.getCmdh()
+				.addSelectedPlayer(loggedInUser);
 
 
-	}
+		searchAdapter = new PlayerAdapter(getDatabase(), this, friends);
+		setAdapter(searchAdapter);
 
-	public void repopulateMatches() {
-		playerAdapter.notifyDataSetChanged();
+		fillAndModifyDatabase(BoardbookSingleton.getInstance().getUserHandler(),
+			UserHandler.generatePopulatorConfig(true, false));
+
 	}
 
 	public void enableGameFeed(RecyclerView gameRecycleView, Context viewContext) {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		gameRecycleView.setLayoutManager(layoutManager);
-/*
-		List<User> testSet = new LinkedList<>();
-		User testUser = new User();
-		testUser.setName("Jaan Karm");
-		testSet.add(testUser);
-		User testUser2 = new User();
-		testUser2.setName("Broberg Bror");
-		testSet.add(testUser2);
-		User testUser3 = new User();
-		testUser3.setName("Rolf the Kid");
-		testSet.add(testUser3);
-		User testUser4 = new User();
-		testUser4.setName("Daniel the Man");
-		testSet.add(testUser4);*/
-
-		playerAdapter = new PlayerAdapter(database, this);
-		gameRecycleView.setAdapter(playerAdapter);
+		gameRecycleView.setAdapter(getAdapter());
 	}
 
 	public CMMasterPresenter getMasterPresenter() {
 		return masterPresenter;
 	}
 
-	public void enableSearchBar(SearchView searchView){
+	public void enableSearchBar(SearchView searchView) {
 
 		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 			@Override
@@ -67,9 +77,62 @@ public class SelectPlayersPresenter {
 
 			@Override
 			public boolean onQueryTextChange(String newText) {
-				playerAdapter.getFilter().filter(newText);
+				searchAdapter.getFilter().filter(newText);
 				return false;
 			}
 		});
+
+
+	}
+
+	@Override
+	protected void onDatabaseModify(List<User> database) {
+
+		User notPopulatedLoggedInUser = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
+		BoardbookSingleton.getInstance().getUserHandler().find(notPopulatedLoggedInUser.getId(), UserHandler.generatePopulatorConfig(true, false)).thenAccept(loggedInUser -> {
+			List<User> notFriends = database.stream().filter(user -> {
+				if (user.equals(loggedInUser))
+					return false;
+
+				if (loggedInUser
+					.getFriends()
+					.stream()
+					.anyMatch(friend -> friend.equals(user))) {
+					return false;
+				}
+
+				return true;
+			}).collect(Collectors.toList());
+
+
+			database.clear();
+
+			database.add(loggedInUser);
+
+			database.addAll(loggedInUser
+				.getFriends()
+				.stream()
+				.sorted((left, right) -> left.getName().compareTo(right.getName()))
+				.collect(Collectors.toList()));
+
+
+			friends.addAll(loggedInUser
+				.getFriends()
+				.stream()
+				.sorted((left, right) -> left.getName().compareTo(right.getName()))
+				.collect(Collectors.toList()));
+
+			database.addAll(notFriends
+				.stream()
+				.sorted((left, right) -> left.getName().compareTo(right.getName()))
+				.collect(Collectors.toList()));
+
+			new android.os.Handler(Looper.getMainLooper()).post(() -> selectPlayersFragment.enablePlayerAdapter());
+
+		});
+
+
+
+
 	}
 }

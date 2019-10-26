@@ -9,7 +9,8 @@ import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.home.friends.IAddFriendActivity;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.handler.UserHandler;
-import com.yahyeet.boardbook.presenter.AdapterPresenter;
+import com.yahyeet.boardbook.presenter.AbstractSearchAdapter;
+import com.yahyeet.boardbook.presenter.FindAllPresenter;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 
 import java.util.List;
@@ -18,17 +19,22 @@ import java.util.stream.Collectors;
 /**
  * Presenter for the add friend activity
  */
-public class AddFriendPresenter extends AdapterPresenter<User, UserHandler> {
+public class AddFriendPresenter extends FindAllPresenter<User, UserHandler> {
 
 	private IAddFriendActivity addFriendActivity;
+	private AbstractSearchAdapter searchAdapter;
 
 	public AddFriendPresenter(IAddFriendActivity addFriendActivity) {
 		super((IFutureInteractable) addFriendActivity);
 		this.addFriendActivity = addFriendActivity;
 
-		fillAndModifyDatabase(BoardbookSingleton.getInstance().getUserHandler());
-	}
+		searchAdapter = new AddFriendsAdapter(getDatabase(), addFriendActivity);
 
+		setAdapter(searchAdapter);
+
+		fillAndModifyDatabase(BoardbookSingleton.getInstance().getUserHandler(),
+			null);
+	}
 
 
 	/**
@@ -38,13 +44,11 @@ public class AddFriendPresenter extends AdapterPresenter<User, UserHandler> {
 	 */
 	public void enableAddFriendsList(RecyclerView recyclerView, Context viewContext) {
 		recyclerView.setLayoutManager(new LinearLayoutManager(viewContext));
-
-		setAdapter(new AddFriendsAdapter(getDatabase(), addFriendActivity));
 		recyclerView.setAdapter(getAdapter());
 	}
 
 	@Override
-	protected void modifyDatabase(List<User> database) {
+	protected void onDatabaseModify(List<User> database) {
 		List<User> myFriends = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
 		if (database != null && myFriends != null) {
 
@@ -60,7 +64,7 @@ public class AddFriendPresenter extends AdapterPresenter<User, UserHandler> {
 	}
 
 	public void searchNonFriends(String query) {
-		getAdapter().getFilter().filter(query);
+		searchAdapter.getFilter().filter(query);
 
 	}
 

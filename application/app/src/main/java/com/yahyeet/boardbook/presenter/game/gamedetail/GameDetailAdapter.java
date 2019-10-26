@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yahyeet.boardbook.R;
@@ -23,8 +24,8 @@ public class GameDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	private static final int FIRST_LIST_ITEM_VIEW = 1;
 	private static final int SECOND_LIST_ITEM_VIEW = 2;
 
-	private List<GameTeam> firstList = new ArrayList<>();
-	private List<List<GameRole>> secondList = new ArrayList<>();
+	private List<GameTeam> firstList;
+	private List<List<GameRole>> secondList;
 
 	private List<String> allNames = new ArrayList<>();
 
@@ -34,18 +35,12 @@ public class GameDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 		for (GameTeam team : firstList){
 			allNames.add(team.getName());
-			for(GameRole role : team.getRoles())
-				allNames.add(role.getName());
+			if(!team.getRoles().isEmpty()){
+				for(GameRole role : team.getRoles())
+					allNames.add(role.getName());
+			}
 		}
 
-	}
-
-	public void setFirstList(List<GameTeam> firstList) {
-		this.firstList = firstList;
-	}
-
-	public void setSecondList(List<List<GameRole>> secondList) {
-		this.secondList = secondList;
 	}
 
 	public class ViewHolder extends RecyclerView.ViewHolder {
@@ -60,20 +55,20 @@ public class GameDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 			super(itemView);
 
 			// Get the view of the elements of first list
-			tvTeamName = (TextView) itemView.findViewById(R.id.gameDetailTeamName);
+			tvTeamName = itemView.findViewById(R.id.gameDetailTeamName);
 
 			// Get the view of the elements of second list
-			tvRoleName = (TextView) itemView.findViewById(R.id.gameDetailRoleName);
+			tvRoleName =  itemView.findViewById(R.id.gameDetailRoleName);
 		}
 
-		public void bindViewSecondList(int pos) {
+		void bindViewSecondList(int pos) {
 
 			final String description = allNames.get(pos);
 
 			tvRoleName.setText(description);
 		}
 
-		public void bindViewFirstList(int pos) {
+		void bindViewFirstList(int pos) {
 
 			final String description = allNames.get(pos);
 
@@ -96,8 +91,9 @@ public class GameDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		}
 	}
 
+	@NonNull
 	@Override
-	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
 		View v;
 
@@ -115,7 +111,7 @@ public class GameDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	}
 
 	@Override
-	public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
 		try {
 			if (holder instanceof SecondListItemViewHolder) {
@@ -145,7 +141,7 @@ public class GameDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
 		for (List<GameRole> list : secondList) {
-			for (GameRole role : list)
+			for (GameRole ignored : list)
 				secondListSize++;
 		}
 
@@ -159,8 +155,13 @@ public class GameDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		if (secondList == null && firstList == null)
 			return super.getItemViewType(position);
 
-		if (secondList == null)
-			return FIRST_LIST_ITEM_VIEW;
+
+		if (secondList != null) {
+			int i = (int) secondList.stream().filter(list -> !list.isEmpty()).count();
+			if (i == 0)
+				return FIRST_LIST_ITEM_VIEW;
+		}
+
 
 		if (firstList == null)
 			return SECOND_LIST_ITEM_VIEW;
@@ -169,7 +170,8 @@ public class GameDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		List<Integer> sizeList = new ArrayList<>();
 
 		for (List<GameRole> list : secondList)
-			sizeList.add(list.size());
+			if(!list.isEmpty())
+				sizeList.add(list.size());
 
 		int desiredPosition = position;
 

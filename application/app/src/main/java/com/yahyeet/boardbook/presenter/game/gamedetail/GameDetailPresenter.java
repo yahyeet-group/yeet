@@ -5,46 +5,42 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yahyeet.boardbook.activity.IFutureInteractable;
 import com.yahyeet.boardbook.activity.home.game.gamedetail.IGameDetailActivity;
 import com.yahyeet.boardbook.model.entity.Game;
 import com.yahyeet.boardbook.model.entity.GameRole;
 import com.yahyeet.boardbook.model.entity.GameTeam;
+import com.yahyeet.boardbook.model.handler.GameHandler;
 import com.yahyeet.boardbook.presenter.BoardbookSingleton;
+import com.yahyeet.boardbook.presenter.FindOnePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Presenter for the game detail activity
  */
-public class GameDetailPresenter {
+public class GameDetailPresenter extends FindOnePresenter<Game, GameHandler> {
+
 
 	private IGameDetailActivity gameDetailActivity;
 	private GameDetailAdapter teamAdapter;
-	private Game game;
+
+	private List<GameTeam> teams = new ArrayList<>();
+	private List<List<GameRole>> roleLists = new ArrayList<>();
 
 	public GameDetailPresenter(IGameDetailActivity gameDetailActivity, String gameID) {
+		super((IFutureInteractable) gameDetailActivity);
 		this.gameDetailActivity = gameDetailActivity;
-		try {
-			game = BoardbookSingleton.getInstance().getGameHandler().find(gameID).get();
-		} catch (ExecutionException | InterruptedException e) {
-			// TODO: What to do here?
-		}
+
+		findEntity(BoardbookSingleton.getInstance().getGameHandler(), gameID,
+			GameHandler.generatePopulatorConfig(false, true));
+
 	}
 
-	public void initiateGameDetail() {
+	public void initiateGameDetail(Game game) {
 		gameDetailActivity.setGameName(game.getName());
 		gameDetailActivity.setGameDescription(game.getDescription());
-		// TODO: Add rules to games, String field
-		gameDetailActivity.setGameRules("");
-	}
-
-	/**
-	 * Makes recyclerView to repopulate its matches with current data
-	 */
-	public void updateTeamAdapter() {
-		teamAdapter.notifyDataSetChanged();
 	}
 
 	/**
@@ -57,13 +53,23 @@ public class GameDetailPresenter {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		teamRecyclerView.setLayoutManager(layoutManager);
 
-		List<List<GameRole>> allTeamRoleLists = new ArrayList<>();
-
-		for(GameTeam team : game.getTeams()){
-			allTeamRoleLists.add(team.getRoles());
-		}
-
-		teamAdapter = new GameDetailAdapter(game.getTeams(), allTeamRoleLists);
+		teamAdapter = new GameDetailAdapter(teams, roleLists);
 		teamRecyclerView.setAdapter(teamAdapter);
+	}
+
+	@Override
+	protected void onEntityFound(Game entity) {
+		initiateGameDetail(entity);
+
+		teams.clear();
+		teams.addAll(entity.getTeams());
+
+		roleLists.clear();
+		getEntity().getTeams().forEach(team -> {
+			roleLists.add(team.getRoles());
+		});
+
+		gameDetailActivity.enableRecyclerView();
+
 	}
 }
