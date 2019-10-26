@@ -25,7 +25,7 @@ public class MatchfeedFragment extends Fragment implements IMatchfeedFragment, I
 	private MatchfeedPresenter matchfeedPresenter;
 	private RecyclerView rvMatch;
 
-	View parentView;
+	private View parentView;
 
 	@Nullable
 	@Override
@@ -43,12 +43,15 @@ public class MatchfeedFragment extends Fragment implements IMatchfeedFragment, I
 
 	@Override
 	public void bindAdapterToView() {
-		RecyclerView matchRecycler = getView().findViewById(R.id.homeMatchRecycler);
+		if(getView() != null){
+			RecyclerView matchRecycler = getView().findViewById(R.id.homeMatchRecycler);
 
-		// use this setting to improve performance if you know that changes
-		// in content do not change the layout size of the RecyclerView
-		matchRecycler.setHasFixedSize(true);
-		matchfeedPresenter.enableMatchFeed(matchRecycler, getView().getContext());
+			// use this setting to improve performance if you know that changes
+			// in content do not change the layout size of the RecyclerView
+			matchRecycler.setHasFixedSize(true);
+			matchfeedPresenter.enableMatchFeed(matchRecycler, getView().getContext());
+		}
+
 	}
 
 	@Override
