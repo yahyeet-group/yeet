@@ -13,6 +13,8 @@ import com.yahyeet.boardbook.presenter.BoardbookSingleton;
 import com.yahyeet.boardbook.activity.matchcreation.selectgame.ISelectGameFragment;
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 
+import java.util.List;
+
 /**
  * This is the Presenter for the SelectGame fragment.
  * This class binds references to the MasterPresenter, Enables the RecycleView and gives it the correct adapter
@@ -28,13 +30,14 @@ public class SelectGamePresenter extends FindAllPresenter<Game, GameHandler> {
 		this.selectGameFragment = selectGameFragment;
 		this.masterPresenter = cm;
 
-		fillDatabase(BoardbookSingleton.getInstance().getGameHandler(),
-			null);
 		setAdapter(new GamesAdapter(getDatabase(), this));
+		fillAndModifyDatabase(BoardbookSingleton.getInstance().getGameHandler(),
+			GameHandler.generatePopulatorConfig(false, true));
+
 
 	}
 
-	public void enableGameFeed(RecyclerView gameRecycleView, Context viewContext) {
+	public void enableGameList(RecyclerView gameRecycleView, Context viewContext) {
 		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(viewContext);
 		gameRecycleView.setLayoutManager(layoutManager);
 		gameRecycleView.setAdapter(getAdapter());
@@ -44,4 +47,9 @@ public class SelectGamePresenter extends FindAllPresenter<Game, GameHandler> {
 		return masterPresenter;
 	}
 
+
+	@Override
+	protected void onDatabaseModify(List<Game> database) {
+		selectGameFragment.enableRecyclerList();
+	}
 }

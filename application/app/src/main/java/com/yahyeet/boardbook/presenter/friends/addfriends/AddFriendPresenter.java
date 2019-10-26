@@ -48,7 +48,7 @@ public class AddFriendPresenter extends FindAllPresenter<User, UserHandler> {
 	}
 
 	@Override
-	protected void onDatabaseLoaded(List<User> database) {
+	protected void onDatabaseModify(List<User> database) {
 		List<User> myFriends = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser().getFriends();
 		if (database != null && myFriends != null) {
 

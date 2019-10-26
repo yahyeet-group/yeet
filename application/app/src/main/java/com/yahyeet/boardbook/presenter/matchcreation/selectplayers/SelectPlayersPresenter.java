@@ -86,7 +86,7 @@ public class SelectPlayersPresenter extends FindAllPresenter<User, UserHandler> 
 	}
 
 	@Override
-	protected void onDatabaseLoaded(List<User> database) {
+	protected void onDatabaseModify(List<User> database) {
 
 		User notPopulatedLoggedInUser = BoardbookSingleton.getInstance().getAuthHandler().getLoggedInUser();
 		BoardbookSingleton.getInstance().getUserHandler().find(notPopulatedLoggedInUser.getId(), UserHandler.generatePopulatorConfig(true, false)).thenAccept(loggedInUser -> {

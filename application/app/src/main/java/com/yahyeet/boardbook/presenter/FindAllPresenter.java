@@ -59,7 +59,7 @@ public abstract class FindAllPresenter<E extends AbstractEntity, H extends IEnti
 	}
 
 	/**
-	 * Finds all entities of a specific type, also calls onDatabaseLoaded
+	 * Finds all entities of a specific type, also calls onDatabaseModify
 	 * @param handler defines what type of entity to be found
 	 * @param config defines if entities should be populated
 	 */
@@ -75,7 +75,7 @@ public abstract class FindAllPresenter<E extends AbstractEntity, H extends IEnti
 				adapter.notifyDataSetChanged();
 
 				// Safety in case of modification affecting UI elements
-				onDatabaseLoaded(database);
+				onDatabaseModify(database);
 			});
 		}).exceptionally(e -> {
 			uiHandler.post(() -> {
@@ -87,7 +87,7 @@ public abstract class FindAllPresenter<E extends AbstractEntity, H extends IEnti
 	}
 
 	@ForOverride
-	protected void onDatabaseLoaded(List<E> database){
+	protected void onDatabaseModify(List<E> database){
 		// Called in fillAndModifyDatabase, override if database should not be all entities of type T
 	}
 

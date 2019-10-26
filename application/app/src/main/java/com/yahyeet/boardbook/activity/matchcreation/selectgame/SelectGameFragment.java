@@ -40,15 +40,8 @@ public class SelectGameFragment extends Fragment implements ISelectGameFragment,
 		gamesRecycleView = view.findViewById(R.id.gamesRecycleView);
 		loadingIndicator = view.findViewById(R.id.sgLoadingInd);
 		loadingText = view.findViewById(R.id.sgLoadingText);
-		enableMatchFeed();
-
 	}
 
-
-	public void enableMatchFeed() {
-		gamesRecycleView.setHasFixedSize(true);
-		selectGamePresenter.enableGameFeed(gamesRecycleView, getView().getContext());
-	}
 
 	/**
 	 * This is called when the async data from the database has been downloaded. Until then the the functional
@@ -69,5 +62,11 @@ public class SelectGameFragment extends Fragment implements ISelectGameFragment,
 	@Override
 	public void displayLoadingFailed() {
 		loadingText.setText("Loading Failed");
+	}
+
+	@Override
+	public void enableRecyclerList() {
+		gamesRecycleView.setHasFixedSize(true);
+		selectGamePresenter.enableGameList(gamesRecycleView, getView().getContext());
 	}
 }
