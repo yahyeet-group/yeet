@@ -15,14 +15,9 @@ import com.yahyeet.boardbook.activity.matchcreation.CreateMatchActivity;
 import com.yahyeet.boardbook.presenter.matchcreation.configureteams.ConfigureTeamPresenter;
 
 /**
-<<<<<<< HEAD
- * Fragment that sets team, role and win/loss for a new match
-=======
- * @Author Nox/Aaron Sandgren
  * This is the fragment for the step of configuring the teams in the Wizard.
  * This instantiates the the ConfigureTeamPresenter for the class and
  * starts up the RecycleView
->>>>>>> fix/code-comments
  */
 public class ConfigureTeamsFragment extends Fragment implements IConfigureTeamsFragment{
 
