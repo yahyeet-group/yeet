@@ -11,15 +11,10 @@ import com.yahyeet.boardbook.activity.matchcreation.selectplayers.SelectPlayersF
 import com.yahyeet.boardbook.presenter.matchcreation.CMMasterPresenter;
 
 /**
-<<<<<<< HEAD
- * Activity that hold all fragments for creating a match
-=======
- * @Author Nox/Aaron Sandgren
  * This is the main activity to the whole match logging wizard.
  * This instantiates on the clicking of the "plus button" in the main ui
  * where the class controls the switching of steps and handles the
  * passing of the main presenter
->>>>>>> fix/code-comments
  */
 public class CreateMatchActivity extends AppCompatActivity implements ICreateMatchActivity {
 
