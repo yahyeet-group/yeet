@@ -1,3 +1,48 @@
 <resources>
     <string name="app_name">Boardbook</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Log In</string>
+    <string name="username">Username</string>
+    <string name="newAcc">Make a New Account</string>
+    <string name="emailHint">email@mail.com</string>
+    <string name="passHint">Password</string>
+
+    <string name="loginInvalidAccountError">Wrong Email or Password</string>
+    <string name="emailFormatError">Email is not in a correct format</string>
+    <string name="passwordLengthError">Password needs to be more than 6 characters</string>
+    <string name="gameLoadErrorText">Games could not be loaded right now. Please try again later.</string>
+    <string name="addFriendError">Users could not be loaded right now. Please try again later.</string>
+    <string name="matchfeedError">Matches could not be loaded right now. Please try again later.</string>
+    <string name="friendsError">Friends could not be loaded right now. Please try again later.</string>
+    <string name="teamRoleError">Teams and Roles could not be loaded right now. Please try again later.</string>
+
+    <string name="home">Home</string>
+    <string name="chat">Chat</string>
+    <string name="game">Game</string>
+    <string name="friends">Friends</string>
+    <string name="friend">Friend</string>
+    <string name="overall_statistics">Overall Statistics</string>
+    <string name="winrate">Win Rate</string>
+    <string name="games_played">Games Played</string>
+
+    <string name="tempGame">Avalon</string>
+    <string name="tempTeam">as Good</string>
+    <string name="tempRole">(Merlin)</string>
+
+    <string name="searchHint">Search Games</string>
+    <string name="loadingText">Please wait a moment</string>
+
+    <string name="minusSign"> - </string>
+    <string name="space"> </string>
+
+    <string name="players"> Players</string>
+    <string name="teams"> Teams</string>
+
+
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
+    <string name="history">History</string>
+
 </resources>

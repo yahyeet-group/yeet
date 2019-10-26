@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#00BABE</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#00BABE</color>
+    <color name="colorBackground">#e8e6e4</color>
+    <color name="colorClicked">#424141</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorText">#000000</color>
+    <color name="colorError">#bb0000</color>
+    <color name="colorMatchWon">#8088DA76</color>
+    <color name="colorMatchLost">#80DA7676</color>
+    <color name="colorFriend">#add8e6</color>
+
+    <color name="colorNightPrimary">#081B33</color>
+    <color name="colorNightAccent">#152642</color>
+    <color name="colorNightackground">#2F4562</color>
+
 </resources>
