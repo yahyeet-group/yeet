@@ -57,7 +57,8 @@ public class SelectPlayersFragment extends Fragment implements ISelectPlayersFra
 	@Override
 	public void enablePlayerAdapter() {
 		playerRecyclerView.setHasFixedSize(true);
-		selectPlayersPresenter.enableGameFeed(playerRecyclerView, getView().getContext());
+		if(getView() != null)
+			selectPlayersPresenter.enableGameFeed(playerRecyclerView, getView().getContext());
 	}
 
 	public void enableSearchView() {
