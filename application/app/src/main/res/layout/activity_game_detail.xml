@@ -55,10 +55,11 @@
         app:layout_constraintTop_toBottomOf="@+id/gameDetailName" />
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorText"
         android:text="Description"
+        android:textColor="@color/colorText"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/gameDetailDescription"
         app:layout_constraintStart_toStartOf="@+id/gameDetailDescription" />
@@ -71,8 +72,8 @@
         android:text="@string/teams"
         android:textColor="@color/colorText"
         android:textSize="24sp"
-        app:layout_constraintTop_toBottomOf="@+id/gameDetailDescription"
-        tools:layout_editor_absoluteX="8dp" />
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/gameDetailDescription" />
 
     <ImageView
         android:id="@+id/gameDetailImage"
