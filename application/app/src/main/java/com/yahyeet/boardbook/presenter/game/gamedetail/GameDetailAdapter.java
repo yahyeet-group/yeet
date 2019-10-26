@@ -59,14 +59,14 @@ public class GameDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 			tvRoleName =  itemView.findViewById(R.id.gameDetailRoleName);
 		}
 
-		public void bindViewSecondList(int pos) {
+		void bindViewSecondList(int pos) {
 
 			final String description = allNames.get(pos);
 
 			tvRoleName.setText(description);
 		}
 
-		public void bindViewFirstList(int pos) {
+		void bindViewFirstList(int pos) {
 
 			final String description = allNames.get(pos);
 
@@ -153,8 +153,13 @@ public class GameDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		if (secondList == null && firstList == null)
 			return super.getItemViewType(position);
 
-		if (secondList == null)
-			return FIRST_LIST_ITEM_VIEW;
+
+		if (secondList != null) {
+			int i = (int) secondList.stream().filter(list -> !list.isEmpty()).count();
+			if (i == 0)
+				return FIRST_LIST_ITEM_VIEW;
+		}
+
 
 		if (firstList == null)
 			return SECOND_LIST_ITEM_VIEW;
