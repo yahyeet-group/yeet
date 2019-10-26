@@ -1,6 +1,5 @@
 package com.yahyeet.boardbook.presenter.matchcreation.selectplayers;
 
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,6 +91,13 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 			// This makes is to so that friends of the logged in user is shown in a different color
 			List<User> database = getDatabase();
 
+			vh.itemView.setBackgroundColor(Color.WHITE);
+
+			if(usersFriends.contains(database.get(position))){
+				vh.itemView.setBackgroundColor(vh.itemView.getResources().getColor(R.color.colorFriend, null));
+			}
+
+
 			// This bind the button for selecting and deselecting the player
 			// Ensuring that the button text is correct and that the user
 			// Gets added to the DataObject
@@ -115,6 +121,9 @@ public class PlayerAdapter extends AbstractSearchAdapter<User> implements Filter
 
 					cmmp.getCmdh().removeSelectedPlayer(database.get(position));
 					holder.itemView.setBackgroundColor(Color.WHITE);
+					if(usersFriends.contains(database.get(position))){
+						vh.itemView.setBackgroundColor(vh.itemView.getResources().getColor(R.color.colorFriend, null));
+					}
 				}
 			});
 

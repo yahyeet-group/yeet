@@ -10,6 +10,7 @@
     <color name="colorError">#bb0000</color>
     <color name="colorMatchWon">#8088DA76</color>
     <color name="colorMatchLost">#80DA7676</color>
+    <color name="colorFriend">#add8e6</color>
 
     <color name="colorNightPrimary">#081B33</color>
     <color name="colorNightAccent">#152642</color>
