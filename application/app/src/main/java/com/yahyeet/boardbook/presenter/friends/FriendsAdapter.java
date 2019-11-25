@@ -29,7 +29,6 @@ public class FriendsAdapter extends AbstractSearchAdapter<User> {
 
 	static class FriendViewHolder extends RecyclerView.ViewHolder {
 
-		// TODO Replace this area with match class as a custom view object
 		private TextView friendName;
 		private ImageView friendPicture;
 

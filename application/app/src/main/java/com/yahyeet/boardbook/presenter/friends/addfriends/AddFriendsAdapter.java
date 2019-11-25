@@ -29,12 +29,9 @@ public class AddFriendsAdapter extends AbstractSearchAdapter<User> {
 
 	static class AddFriendsViewHolder extends RecyclerView.ViewHolder {
 
-
-		// TODO Replace this area with match class as a custom view object
 		private TextView userName;
 		private ImageView userPicture;
 		private ImageButton btnAddFriend;
-
 
 		AddFriendsViewHolder(View v) {
 			super(v);
@@ -65,7 +62,7 @@ public class AddFriendsAdapter extends AbstractSearchAdapter<User> {
 
 		List<User> users = getDatabase();
 
-		if(holder instanceof AddFriendsViewHolder){
+		if (holder instanceof AddFriendsViewHolder) {
 			AddFriendsViewHolder vh = (AddFriendsViewHolder) holder;
 
 			vh.userName.setText(users.get(position).getName());
@@ -78,7 +75,6 @@ public class AddFriendsAdapter extends AbstractSearchAdapter<User> {
 				});
 			});
 		}
-
 
 
 	}

@@ -31,7 +31,6 @@ public class MatchCreationDataObject {
 	// private Activity parentActivity;
 
 	public MatchCreationDataObject(Activity activity) {
-		// TODO: Removed for now, but can get back if necessary later
 		//this.parentActivity = activity;
 	}
 

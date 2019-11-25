@@ -78,7 +78,6 @@ public class FirebaseMockTest {
 
         boardbook.getAuthHandler().signup(authUser.getEmail(), authUser.getPassword(), authUser.getUser().getName()).thenAccept(user1 -> {
             assertEquals(user.getName(), boardbook.getAuthHandler().getLoggedInUser().getName());
-            //TODO: Add more assert equals, id?
         }).get();
 
     }
