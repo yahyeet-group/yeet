@@ -30,7 +30,6 @@ public abstract class AccountFragment extends Fragment {
 		try {
 			accountManager = (IAccountFragmentHolder) context;
 		} catch (Exception e) {
-			// TODO: Implement consequences if fragment fragmentContainer activity does not implement IAccountManagerActivity
 			e.printStackTrace();
 		}
 

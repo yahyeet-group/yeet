@@ -53,8 +53,6 @@ public class CMMasterPresenter {
 			.save(finalMatch)
 			.thenAccept(u -> activity.finalizeMatchCreation())
 			.exceptionally(e -> {
-
-				// TODO: Handle firebase not able to save match, dunno what to do exactly
 				e.printStackTrace();
 				return null;
 		});

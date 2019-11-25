@@ -9,14 +9,13 @@ import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.handler.GameHandler;
 import com.yahyeet.boardbook.model.handler.MatchHandler;
 import com.yahyeet.boardbook.model.handler.UserHandler;
-import com.yahyeet.boardbook.model.mock.repository.MockGameRepository;
-import com.yahyeet.boardbook.model.mock.repository.MockGameRoleRepository;
-import com.yahyeet.boardbook.model.mock.repository.MockGameTeamRepository;
-import com.yahyeet.boardbook.model.mock.repository.MockMatchPlayerRepository;
-import com.yahyeet.boardbook.model.mock.repository.MockMatchRepository;
-import com.yahyeet.boardbook.model.mock.repository.MockUserRepository;
+import com.yahyeet.boardbook.mock.repository.MockGameRepository;
+import com.yahyeet.boardbook.mock.repository.MockGameRoleRepository;
+import com.yahyeet.boardbook.mock.repository.MockGameTeamRepository;
+import com.yahyeet.boardbook.mock.repository.MockMatchPlayerRepository;
+import com.yahyeet.boardbook.mock.repository.MockMatchRepository;
+import com.yahyeet.boardbook.mock.repository.MockUserRepository;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

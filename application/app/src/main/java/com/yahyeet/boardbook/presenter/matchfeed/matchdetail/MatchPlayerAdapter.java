@@ -25,8 +25,6 @@ public class MatchPlayerAdapter extends RecyclerView.Adapter<MatchPlayerAdapter.
 
 	static class MatchPlayerViewHolder extends RecyclerView.ViewHolder {
 
-
-		// TODO Replace this area with match class as a custom view object
 		private TextView tvPlayerName;
 		private TextView tvTeam;
 		private ConstraintLayout constraintLayout;
@@ -68,7 +66,6 @@ public class MatchPlayerAdapter extends RecyclerView.Adapter<MatchPlayerAdapter.
 
 		if(current.getRole() != null &&
 			current.getRole().getTeam() != null){
-			//TODO: Add in strings.xml
 			holder.tvTeam.setText("Played in " + current.getTeam().getName() + " ("  + current.getRole().getName()  + ")");
 		}
 		else if(current.getTeam() != null){

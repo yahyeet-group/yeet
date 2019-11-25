@@ -12,9 +12,6 @@ public class GameTests {
 
     public GameTests(){}
 
-    //TODO Write test for seeing if name,desc.... are correct, doesn't seem very important
-
-
     /// See if you can add a team
     @Test
     public void addTeam(){

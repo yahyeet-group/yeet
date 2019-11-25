@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.model.mock.repository;
+package com.yahyeet.boardbook.mock.repository;
 
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.repository.IMatchRepository;

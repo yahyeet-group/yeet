@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.model.mock.service;
+package com.yahyeet.boardbook.mock.service;
 
 import com.yahyeet.boardbook.model.entity.Match;
 import com.yahyeet.boardbook.model.entity.User;

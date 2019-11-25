@@ -27,8 +27,6 @@ public class MatchfeedPresenter extends FindOnePresenter<User, UserHandler> impl
 	private MatchfeedAdapter matchfeedAdapter;
 	private List<Match> matchDatabase = new ArrayList<>();
 
-
-	// TODO: Remove if never necessary
 	private IMatchfeedFragment matchfeedFragment;
 
 	public MatchfeedPresenter(IMatchfeedFragment matchfeedFragment) {
