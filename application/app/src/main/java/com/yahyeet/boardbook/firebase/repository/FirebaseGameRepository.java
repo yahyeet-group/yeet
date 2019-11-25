@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.model.firebase.repository;
+package com.yahyeet.boardbook.firebase.repository;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
