@@ -19,13 +19,9 @@ public class MatchDetailActivity extends AppCompatActivity implements IMatchDeta
 
 	private MatchDetailPresenter matchDetailPresenter;
 
-
-	// TODO: Add more info to page from game/match. Date, etc
-
 	private TextView tvName;
 	private RecyclerView rvMatchPlayers;
 	private ProgressBar pbLoading;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

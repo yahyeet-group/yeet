@@ -54,8 +54,6 @@ public class GameAdapter extends AbstractSearchAdapter<Game> {
 	}
 
 	static class GameGridViewHolder extends RecyclerView.ViewHolder {
-
-		// TODO Replace this area with match class as a custom view object
 		TextView textViewName;
 
 		GameGridViewHolder(View v) {

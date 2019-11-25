@@ -21,8 +21,6 @@ public interface IEntityHandler<T extends AbstractEntity> {
 	CompletableFuture<T> find(String id, Map<String, Boolean> config);
 	CompletableFuture<T> find(String id);
 
-	// TODO: Javadoc for config
-
 	/**
 	 * Saves an entity
 	 *

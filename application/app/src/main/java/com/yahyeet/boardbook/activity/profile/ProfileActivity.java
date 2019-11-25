@@ -38,7 +38,6 @@ public class ProfileActivity extends AppCompatActivity implements IProfileActivi
 				userId = extras.getString("UserId");
 			}
 		} else {
-			// TODO: Maybe bad, idk // Vex
 			userId = (String) savedInstanceState.getSerializable("UserId");
 		}
 

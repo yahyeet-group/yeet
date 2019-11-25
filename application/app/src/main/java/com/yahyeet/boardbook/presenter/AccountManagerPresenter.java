@@ -47,7 +47,6 @@ public class AccountManagerPresenter {
 			e.printStackTrace();
 			new android.os.Handler(Looper.getMainLooper()).post(() -> {
 				accountManagerActivity.enableManagerInteraction();
-				//TODO: Weird getCause calls
 				if (e.getCause().getCause() instanceof FirebaseAuthInvalidCredentialsException) {
 					accountManagerActivity.loginFailed(new Exception("Incorrect email or password"));
 				} else
@@ -79,7 +78,6 @@ public class AccountManagerPresenter {
 			finishAccountManager();
 		}).exceptionally(e -> {
 			// Handle error ("e")
-			// TODO: Make presenter tell view to act upon different exceptions
 			new android.os.Handler(Looper.getMainLooper()).post(() -> {
 				accountManagerActivity.enableManagerInteraction();
 				if (e.getCause().getCause() instanceof FirebaseAuthUserCollisionException) {
@@ -87,8 +85,6 @@ public class AccountManagerPresenter {
 				}
 				else if (e.getCause().getCause() instanceof FirebaseAuthInvalidCredentialsException){
 					accountManagerActivity.registerFailed(new EmailFailedException("Email is badly formatted, please use a valid email. Ex: yourName@email.com"));
-
-				//TODO: Hardcoded knowing it will go 2 ways deep, fix in repositories
 			}
 
 		});

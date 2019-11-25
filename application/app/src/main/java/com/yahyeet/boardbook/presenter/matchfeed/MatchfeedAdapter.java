@@ -37,7 +37,6 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	private User currentUser;
 	private boolean isProfile = false;
 
-	//TODO: Naming might need to change
 	private StatisticsUtil statisticsUtil;
 
 
@@ -84,14 +83,12 @@ public class MatchfeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 	public class MatchViewHolder extends RecyclerView.ViewHolder {
 
-		// TODO Replace this area with match class as a custom view object
 		private TextView tvWinLost;
 		private TextView tvGameName;
 		private TextView tvRoleName;
 		private TextView tvTeamName;
 		private TextView tvPlayerAmount;
 		private ImageView imageView;
-
 
 		MatchViewHolder(View v) {
 			super(v);
