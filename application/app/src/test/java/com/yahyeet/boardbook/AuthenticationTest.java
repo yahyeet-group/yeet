@@ -2,10 +2,7 @@ package com.yahyeet.boardbook;
 
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.handler.AuthHandler;
-import com.yahyeet.boardbook.model.handler.UserHandler;
-import com.yahyeet.boardbook.model.mock.service.MockAuthService;
-import com.yahyeet.boardbook.model.mock.repository.MockMatchRepository;
-import com.yahyeet.boardbook.model.mock.repository.MockUserRepository;
+import com.yahyeet.boardbook.mock.service.MockAuthService;
 
 import org.junit.After;
 import org.junit.Assert;

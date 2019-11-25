@@ -1,4 +1,4 @@
-package com.yahyeet.boardbook.model.firebase.repository;
+package com.yahyeet.boardbook.firebase.repository;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -6,7 +6,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.yahyeet.boardbook.model.entity.AbstractEntity;
 import com.yahyeet.boardbook.model.entity.User;
 import com.yahyeet.boardbook.model.repository.IUserRepository;
 
